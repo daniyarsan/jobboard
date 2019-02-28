@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -16,6 +17,17 @@ class User implements UserInterface
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Profile", mappedBy="user")
+     **/
+    private $profile;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Company", inversedBy="companies")
+     * @ORM\JoinTable(name="user_company")
+     */
+    private $companies;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
@@ -37,6 +49,45 @@ class User implements UserInterface
      * @var String
      */
     protected $plainPassword;
+
+    /**
+     * @return mixed
+     */
+    public function getCompanies()
+    {
+        return $this->companies;
+    }
+
+    /**
+     * @param mixed $companies
+     */
+    public function setCompanies($companies)
+    {
+        $this->companies = $companies;
+    }
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->companies = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProfile()
+    {
+        return $this->profile;
+    }
+
+    /**
+     * @param mixed $profile
+     */
+    public function setProfile($profile)
+    {
+        $this->profile = $profile;
+    }
 
     public function getId(): ?int
     {
