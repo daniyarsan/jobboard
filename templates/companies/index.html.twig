@@ -11,3 +11,28 @@
     </div><!-- /.widget-filter -->
 
 {% endblock %}
+
+{% block body %}
+    {% if companies|length %}
+        <div class="page-title">
+            <h2>
+                {% set count = companies.getTotalItemCount %}
+                {% transchoice count %}
+                    {0} %count% companies matching query|{1} %count% company matching query|]1,Inf[%count% companies matching query
+                {% endtranschoice %}
+            </h2>
+        </div><!-- /.page-title -->
+
+        <div class="companies">
+            {% for company in companies %}
+                {% include 'companies/company.html.twig' %}
+            {% endfor %}
+        </div><!-- /.jobs -->
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(companies) }}
+        </div>
+    {% else %}
+        No results found
+    {% endif %}
+{% endblock %}

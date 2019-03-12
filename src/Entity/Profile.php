@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -72,6 +73,12 @@ class Profile
      * @ORM\Column(name="modified", type="datetime", nullable=true)
      */
     private $modified;
+
+    public function __construct()
+    {
+        $this->educations = new ArrayCollection();
+        $this->experiences = new ArrayCollection();
+    }
 
     /**
      * @ORM\PrePersist

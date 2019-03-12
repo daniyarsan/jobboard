@@ -178,4 +178,20 @@ class User implements UserInterface
     {
         $this->plainPassword = $password;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getisVerified()
+    {
+        return $this->isVerified;
+    }
+
+    /**
+     * @param mixed $isVerified
+     */
+    public function setIsVerified($isVerified): void
+    {
+        $this->isVerified = $isVerified;
+    }
 }

@@ -19,32 +19,68 @@ class CompanyRepository extends ServiceEntityRepository
         parent::__construct($registry, Company::class);
     }
 
-//    /**
-//     * @return Company[] Returns an array of Company objects
-//     */
-    /*
-    public function findByExampleField($value)
+    public function findUserCompanies($user)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $qb = $this->createQueryBuilder('company');
 
-    /*
-    public function findOneBySomeField($value): ?Company
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
+        return $qb->innerJoin('company.users', 'user')
+            ->andWhere('user.id = :user')
+            ->setParameter('user', $user)
+            ->orderBy('company.created', 'DESC')
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->execute();
     }
-    */
+
+    public function findUserCompaniesQueryBuilder($user)
+    {
+        $qb = $this->createQueryBuilder('company');
+
+        return $qb->innerJoin('company.users', 'user')
+            ->andWhere('user.id = :user')
+            ->setParameter('user', $user)
+            ->orderBy('company.created', 'DESC');
+    }
+
+    public function hasUserCompany($user, $company)
+    {
+        $qb = $this->createQueryBuilder('company');
+
+        $results = $qb->innerJoin('company.users', 'user')
+            ->andWhere('user.id = :user')
+            ->andWhere('company.id = :company')
+            ->setParameters(
+                [
+                    'user' => $user,
+                    'company' => $company,
+                ]
+            )
+            ->getQuery()
+            ->getResult();
+
+        if (1 === count($results)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function findByFilterQuery($request)
+    {
+        $qb = $this->createQueryBuilder('company');
+
+        // Keyword
+        if (!empty($request->query->get('keyword'))) {
+            $qb->andWhere('company.name LIKE :filterKeyword OR company.description LIKE :filterKeyword')
+                ->setParameter('filterKeyword', '%'.$request->query->get('keyword').'%');
+        }
+
+        // Country
+        if (!empty($request->query->get('country'))) {
+            $qb->andWhere('company.country = :country')->setParameter('country', $request->query->get('country'));
+        }
+
+        return $qb->addOrderBy('company.created', 'DESC')
+            ->getQuery()
+            ->execute();
+    }
 }

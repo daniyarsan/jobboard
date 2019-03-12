@@ -19,32 +19,27 @@ class ProfileRepository extends ServiceEntityRepository
         parent::__construct($registry, Profile::class);
     }
 
-//    /**
-//     * @return Profile[] Returns an array of Profile objects
-//     */
-    /*
-    public function findByExampleField($value)
+    public function findByFilterQuery($request)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $qb = $this->createQueryBuilder('profile');
 
-    /*
-    public function findOneBySomeField($value): ?Profile
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
+        if (!empty($request->query->get('keyword'))) {
+            $qb->andWhere('profile.name LIKE :filterKeyword OR profile.description LIKE :filterKeyword')
+                ->setParameter('filterKeyword', '%'.$request->query->get('keyword').'%');
+        }
+
+        if (!empty($request->query->get('country'))) {
+            $qb->andWhere('profile.country = :country')
+                ->setParameter('country', $request->query->get('country'));
+        }
+
+        if (!empty($request->query->get('is_verified'))) {
+            $qb->innerJoin('profile.user', 'user')
+                ->andWhere('user.isVerified = 1');
+        }
+
+        return $qb->addOrderBy('profile.created', 'DESC')
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->execute();
     }
-    */
 }
