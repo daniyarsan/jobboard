@@ -1,0 +1,13 @@
+{% extends 'sidebar.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block sidebar %}
+    <div class="widget widget-filter">
+        <h2>{{ 'Refine Search'|trans }}</h2>
+        {{ form_start(filter, {'name': 'filter-companies-form'}) }}
+        {{ form_widget(filter) }}
+        {{ form_end(filter) }}
+    </div><!-- /.widget-filter -->
+
+{% endblock %}

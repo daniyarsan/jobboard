@@ -24,10 +24,14 @@ class User implements UserInterface
     private $profile;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Company", inversedBy="companies")
-     * @ORM\JoinTable(name="user_company")
+     * @ORM\OneToOne(targetEntity="App\Entity\Company", mappedBy="user")
      */
-    private $companies;
+    private $company;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true, name="is_verified")
+     */
+    private $isVerified;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
@@ -53,23 +57,21 @@ class User implements UserInterface
     /**
      * @return mixed
      */
-    public function getCompanies()
+    public function getCompany()
     {
-        return $this->companies;
+        return $this->company;
     }
 
     /**
      * @param mixed $companies
      */
-    public function setCompanies($companies)
+    public function setCompany($company)
     {
-        $this->companies = $companies;
+        $this->company = $company;
     }
 
     public function __construct()
     {
-        parent::__construct();
-
         $this->companies = new ArrayCollection();
     }
 

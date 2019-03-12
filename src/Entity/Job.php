@@ -303,4 +303,36 @@ class Job
         $this->user = $user;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
+    /**
+     * @param mixed $company
+     */
+    public function setCompany($company): void
+    {
+        $this->company = $company;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getContract()
+    {
+        return $this->contract;
+    }
+
+    /**
+     * @param mixed $contract
+     */
+    public function setContract($contract): void
+    {
+        $this->contract = $contract;
+    }
+
 }

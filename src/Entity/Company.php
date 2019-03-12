@@ -19,9 +19,10 @@ class Company
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="companies")
+     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="company", cascade={"persist"})
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $users;
+    private $user;
 
     /**
      * @ORM\OneToMany(targetEntity="Job", mappedBy="company")
@@ -51,7 +52,12 @@ class Company
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $location;
+    private $country;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $address;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -101,7 +107,6 @@ class Company
 
     public function __construct()
     {
-        $this->users = new ArrayCollection();
         $this->jobs = new ArrayCollection();
         $this->companies = new ArrayCollection();
     }
@@ -114,17 +119,17 @@ class Company
     /**
      * @return mixed
      */
-    public function getUsers()
+    public function getUser()
     {
-        return $this->users;
+        return $this->user;
     }
 
     /**
-     * @param mixed $users
+     * @param mixed $user
      */
-    public function setUsers($users)
+    public function setUser($user)
     {
-        $this->users = $users;
+        $this->user = $user;
     }
 
     public function getId(): ?int
@@ -180,14 +185,14 @@ class Company
         return $this;
     }
 
-    public function getLocation(): ?string
+    public function getCountry(): ?string
     {
-        return $this->location;
+        return $this->country;
     }
 
-    public function setLocation(?string $location): self
+    public function setCountry(?string $country): self
     {
-        $this->location = $location;
+        $this->country = $country;
 
         return $this;
     }

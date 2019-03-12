@@ -1,0 +1,6 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <a class="btn btn-primary" href="{{ path('security_registration', {'group' : 'company'}) }}">Company</a>
+    <a class="btn btn-primary" href="{{ path('security_registration', {'group' : 'profile'}) }}">Profile</a>
+{% endblock %}
+

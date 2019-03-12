@@ -2,32 +2,41 @@
 
 namespace App\Form;
 
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Company;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class JobType extends AbstractType
+class CompanyType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('user', UserType::class)
             ->add('name', TextType::class)
-            ->add('country', CountryType::class)
-            ->add('salary', IntegerType::class, [
+            ->add('email', EmailType::class)
+            ->add('website', TextType::class, [
                 'required' => false,
             ])
-            ->add('categories', EntityType::class, [
-                'class' => 'App\Entity\Category',
-                'multiple' => true,
+            ->add('phone', TextType::class, [
+                'required' => false,
+            ])
+            ->add('country', CountryType::class, [
+                'required' => false,
+            ])
+            ->add('latitude', TextType::class, [
+                'required' => false,
+            ])
+            ->add('longitude', TextType::class, [
                 'required' => false,
             ])
             ->add('description', TextareaType::class, [
+                'required' => false,
                 'attr' => ['class' => 'wysiwyg'],
             ])
             ->add('save', SubmitType::class, [
@@ -38,8 +47,7 @@ class JobType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'user' => null,
-            'data_class' => 'App\Entity\Job',
+          'data_class' => Company::class,
         ]);
     }
 }

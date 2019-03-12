@@ -1,11 +1,10 @@
 security:
     encoders:
-        App\Entity\User:
-            algorithm: bcrypt
+        App\Entity\User: bcrypt
 
     role_hierarchy:
         ROLE_COMPANY:     ROLE_COMPANY
-        ROLE_ADMIN:       ROLE_USER
+        ROLE_USER:        ROLE_USER
         ROLE_SUPER_ADMIN: ROLE_ADMIN
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
@@ -21,15 +20,23 @@ security:
         main:
             anonymous: true
             http_basic: ~
-            guard:
-                authenticators:
-                    - App\Security\LoginFormAuthenticator
+            form_login:
+                login_path: security_login
+                check_path: security_login
+            logout:
+                path:   /logout
+                target: /
+                invalidate_session: true
 
             # form_login: true
             # https://symfony.com/doc/current/security/form_login_setup.html
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
+
     access_control:
-         - { path: ^/admin, roles: ROLE_ADMIN }
-         - { path: ^/profile, roles: ROLE_USER }
+    - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/reset-password, role: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/admin/, role: ROLE_ADMIN }
+    - { path: ^/my-account, role: IS_AUTHENTICATED_FULLY }

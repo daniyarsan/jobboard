@@ -13,7 +13,6 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Job[]    findAll()
  * @method Job[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-
 class JobRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
@@ -67,22 +66,16 @@ class JobRepository extends ServiceEntityRepository
         }
         $qb = $this->createQueryBuilder('job');
 
-        $results = $qb->andWhere('job.company IN(:companies)')
+        return $qb->andWhere('job.company = :company')
             ->andWhere('job.id = :job')
             ->setParameters(
                 [
-                    'companies' => $user->getCompanies(),
+                    'company' => $user->getCompany(),
                     'job' => $job,
                 ]
             )
             ->getQuery()
-            ->getResult();
-
-        if (1 === count($results)) {
-            return true;
-        }
-
-        return false;
+            ->getOneOrNullResult();
     }
 
     public function findRecent($count = 8)
@@ -114,11 +107,11 @@ class JobRepository extends ServiceEntityRepository
         if (!$user) {
             return false;
         }
-
         $qb = $this->createQueryBuilder('job');
 
-        return $qb->orderBy('job.created', 'DESC')
-            ->addOrderBy('job.id', 'DESC')
+        return $qb->andWhere('job.company = :company')
+            ->setParameter('company', $user->getCompany())
+            ->orderBy('job.created', 'DESC')
             ->getQuery()
             ->execute();
     }

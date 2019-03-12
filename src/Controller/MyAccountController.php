@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Job;
+use App\Form\CompanyType;
 use App\Form\JobType;
+use App\Form\ProfileType;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,9 +23,50 @@ class MyAccountController extends AbstractController
      */
     public function index()
     {
-        return $this->render('Frontend/my_account/index.html.twig', [
+        return $this->render('my_account/index.html.twig', [
             'controller_name' => 'MyAccountController',
         ]);
+    }
+
+    /**
+     * @Route("/profile", name="_profile")
+     */
+    public function profile(Request $request)
+    {
+        if (in_array('ROLE_USER', $this->getUser()->getRoles())) {
+            $entity = $this->getDoctrine()->getRepository('App:Profile')->findOneBy(
+                ['user' => $this->getUser()->getId()]
+            );
+            $form = $this->createForm(ProfileType::class, $entity);
+
+        } elseif (in_array('ROLE_COMPANY', $this->getUser()->getRoles())) {
+            $entity = $this->getDoctrine()->getRepository('App:Company')->findOneBy(
+                ['user' => $this->getUser()->getId()]
+            );
+            $form = $this->createForm(CompanyType::class, $entity);
+        }
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($entity);
+                $em->flush();
+                $this->addFlash('success', $this->get('translator')->trans('Settings has been successfully saved.'));
+            } catch(\Exception $e) {
+                $this->addFlash('danger', $this->get('translator')->trans('An error occured when saving object.'));
+            }
+
+            return $this->redirectToRoute('my_account_profile');
+        }
+
+        return $this->render(
+            'my_account/profile.html.twig',
+            [
+                'form' => $form->createView()
+            ]
+        );
     }
 
     /**
@@ -30,6 +74,10 @@ class MyAccountController extends AbstractController
      */
     public function myJobs(Request $request, PaginatorInterface $paginator)
     {
+        if (!in_array('ROLE_COMPANY', $this->getUser()->getRoles())) {
+            throw $this->createAccessDeniedException('You are not allowed to access this page.');
+        }
+
         $jobs = $this->getDoctrine()->getRepository('App:Job')->findUserJobs($this->getUser());
         $jobs = $paginator->paginate($jobs, $request->query->getInt('page', 1), 10);
 
@@ -41,9 +89,32 @@ class MyAccountController extends AbstractController
         );
     }
 
-    public function myProfile()
+    /**
+     * @Route("/job/{id}", name="_job", requirements={"id": "\d+"})
+     * @ParamConverter("job", class="App\Entity\Job")
+     */
+    public function jobDetails(Request $request, Job $job)
     {
+        $hasUserJob = $this->getDoctrine()->getRepository('App:Job')->hasUserJob($this->getUser(), $job);
 
+        if (!$job->getIsPublished() && !$hasUserJob) {
+            throw $this->createAccessDeniedException('You are not allowed to access this page.');
+        }
+
+        /*$application = $this->getDoctrine()->getRepository('App:Application')->findOneBy(
+            [
+                'user' => $this->getUser(),
+                'job' => $job,
+            ]
+        );*/
+
+        return $this->render(
+            'my_account/job-details.html.twig',
+            [
+                //'hasCurrentUserApplied' => $application,
+                'job' => $job,
+            ]
+        );
     }
 
     /**
@@ -51,6 +122,9 @@ class MyAccountController extends AbstractController
      */
     public function createJob(Request $request, TranslatorInterface $translator)
     {
+        if (!in_array('ROLE_COMPANY', $this->getUser()->getRoles())) {
+            throw $this->createAccessDeniedException('You are not allowed to access this page.');
+        }
         $job = new Job();
 
         $form = $this->createForm(
@@ -64,6 +138,7 @@ class MyAccountController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $job = $form->getData();
             $job->setUser($this->getUser());
+            $job->setCompany($this->getUser()->getCompany());
 
             try {
                 $em = $this->getDoctrine()->getManager();
@@ -85,16 +160,3 @@ class MyAccountController extends AbstractController
         );
     }
 }
-
-
-/*'breadcrumbs' => [
-    [
-        'link' => $this->get('router')->generate('homepage'),
-        'title' => $this->get('translator')->trans('Home'),
-    ],
-    [
-        'link' => $this->get('router')->generate('job_my'),
-        'title' => $this->get('translator')->trans('My Jobs'),
-    ],
-    ['title' => $this->get('translator')->trans('Create')],
-],*/

@@ -4,13 +4,17 @@
 
 {% block body %}
     <div class="col-md-12">
+        <a href="{{ path('my_account_new_job') }}" class="btn btn-primary">Create new job</a>
+
         {% if jobs|length > 0 %}
-            <table>
+            <table class="table table-primary">
                 {% for job in jobs %}
                     <tr>
-                        <td>{{ job.id }}</td>
-                        <td>{{ job.name }}</td>
-                        <td>{{ job.location }}</td>
+                        <td><a href="{{ path('my_account_job', {'id' : job.id}) }}">{{ job.id }}</a></td>
+                        <td><a href="{{ path('my_account_job', {'id' : job.id}) }}">{{ job.name }}</a></td>
+                        <td>{{ job.country }}</td>
+                        <td>{{ job.description }}</td>
+                        <td>{{ job.categories|join(', ') }}</td>
                     </tr>
                 {% endfor %}
             </table>
