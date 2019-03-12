@@ -1,0 +1,123 @@
+{% extends 'sidebar.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block sidebar %}
+    {% if jobs|length %}
+        <div class="widget widget-items-small">
+            <h2>{{ 'Recent Jobs'|trans }}</h2>
+
+            <div class="items-small">
+                {% for job in jobs %}
+                    <div class="item-small">
+                        <div class="item-small-title">
+                            <h3><a href="{{ path('job_show', {'id': job.getId()}) }}">{{ job.getName() }}</a></h3>
+                            <h4><a href="{{ path('company_show', {'id': job.getCompany().getId()}) }}">{{ job.getCompany().getName() }}</a></h4>
+                        </div>
+
+                        <div class="item-small-more">
+                            <a href="{{ path('job_show', {'id': job.getId()}) }}"><i class="fa fa-chevron-right"></i></a>
+                        </div><!-- /.item-small-more -->
+                    </div><!-- /.item-small -->
+                {% endfor %}
+            </div><!-- /.items-small -->
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <div class="content-blocks">
+        <div class="content-block">
+           {# {% if profile.getAvatarName() %}
+                <div class="profile-avatar">
+                    <img src="" alt="{{ profile.getDisplayName() }}">
+
+                    {% if profile.user.isVerified() %}
+                        <div class="verified">
+                            <i class="fa fa-check"></i>
+                        </div><!-- /.verified -->
+                    {% endif %}
+                </div><!-- /.profile-avatar -->
+            {% else %}
+                <div class="profile-avatar-initials">
+                    {{ profile.getInitials() }}
+
+                    {% if profile.user.isVerified() %}
+                        <div class="verified">
+                            <i class="fa fa-check"></i>
+                        </div><!-- /.verified -->
+                    {% endif %}
+                </div><!-- /.profile-avatar-initials -->
+            {% endif %}#}
+
+            <div class="profile-name">
+                <h3>{{ profile.getDisplayName() }}</h3>
+            </div><!-- /.profile-address -->
+
+
+            <address class="profile-address">
+                {{ profile.getAddress()|nl2br }}
+            </address><!-- /.profile-address -->
+
+
+            {% if profile.getPhone() %}
+                <div class="profile-items">
+                    {% if profile.getPhone() %}
+                        <div class="profile-phone">
+                            <strong>{{ 'Phone'|trans }}:</strong>
+                            <span>{{ profile.getPhone() }}</span>
+                        </div><!-- /.profile-phone -->
+                    {% endif %}
+                </div><!-- /.profiles-items -->
+            {% endif %}
+        </div><!-- /.content-block -->
+
+        <div class="content-block">
+            <h3>{{ 'Candidate Overview'|trans }}</h3>
+
+            {{ profile.description|striptags('<ol><ul><li><i><b><a><p>')|raw }}
+        </div><!-- /.content-block -->
+
+        {% if profile.getEducations()|length %}
+            <div class="content-block">
+                <h3>{{ 'Educations'|trans }}</h3>
+
+                <div class="content-rows">
+                    {% for education in profile.getEducations() %}
+                        <div class="content-row">
+                            <h4>{{ education.getName() }}</h4>
+
+                            <h5>
+                                {{ education.getDegree() }}{% if education.getField() %}, {{ education.getField() }}{% endif %},
+                                <span class="profile-year">{{ education.getYearFrom() }} - {{ education.getYearTo() }}</span><!-- /.profile-date -->
+                            </h5>
+
+                            {% if education.description %}
+                                <p class="no-margin">{{ education.getDescription()|nl2br }}</p>
+                            {% endif %}
+                        </div><!-- /.content-row -->
+                    {% endfor %}
+                </div><!-- /.content-rows -->
+            </div>
+        {% endif %}
+
+        {% if profile.getExperiences()|length %}
+            <div class="content-block">
+                <h3>{{ 'Experiences'|trans }}</h3>
+
+                <div class="content-rows">
+                    {% for experience in profile.getExperiences() %}
+                        <div class="content-row">
+                            <h4>{{ experience.getCompanyName() }}</h4>
+                            <h5>{{ experience.getName() }} - {{ experience.getMonthFrom() }} {{ experience.getYearFrom() }}, {{ experience.getMonthTo() }} {{ experience.getYearTo() }}</h5>
+
+                            {% if experience.description %}
+                                <p>{{ experience.getDescription()|nl2br }}</p>
+                            {% endif %}
+                        </div><!-- /.content-row -->
+                    {% endfor %}
+                </div><!-- /.content-rows -->
+            </div>
+        {% endif %}
+    </div><!-- /.content-blocks -->
+{% endblock %}
