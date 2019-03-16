@@ -55,12 +55,12 @@ class Profile
     private $phone;
 
     /**
-     * @ORM\OneToMany(targetEntity="Education", mappedBy="user", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Education", mappedBy="profile", cascade={"persist"}, orphanRemoval=true)
      */
     private $educations;
 
     /**
-     * @ORM\OneToMany(targetEntity="Experience", mappedBy="user", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Experience", mappedBy="profile", cascade={"persist"}, orphanRemoval=true)
      */
     private $experiences;
 

@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\EducationRepository")
+ * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
  */
 class Education
@@ -18,10 +18,10 @@ class Education
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="educations")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Profile", inversedBy="educations")
+     * @ORM\JoinColumn(name="profile_id", referencedColumnName="id")
      */
-    private $user;
+    private $profile;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -93,22 +93,6 @@ class Education
     public function setId($id)
     {
         $this->id = $id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * @param mixed $user
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
     }
 
     /**
@@ -207,19 +191,20 @@ class Education
         $this->degree = $degree;
     }
 
+
     /**
      * @return mixed
      */
-    public function getCompanyName()
+    public function getProfile()
     {
-        return $this->company_name;
+        return $this->profile;
     }
 
     /**
-     * @param mixed $company_name
+     * @param mixed $profile
      */
-    public function setCompanyName($company_name)
+    public function setProfile($profile): void
     {
-        $this->company_name = $company_name;
+        $this->profile = $profile;
     }
 }

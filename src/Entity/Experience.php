@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ExperienceRepository")
+ * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
  */
 class Experience
@@ -18,10 +18,10 @@ class Experience
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="experiences")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Profile", inversedBy="experiences")
+     * @ORM\JoinColumn(name="profile_id", referencedColumnName="id")
      */
-    private $user;
+    private $profile;
 
     /**
      * @ORM\Column(type="string", length=255, name="company_name")
@@ -98,22 +98,6 @@ class Experience
     public function setId($id)
     {
         $this->id = $id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * @param mixed $user
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
     }
 
     /**
@@ -226,5 +210,21 @@ class Experience
     public function setCompanyName($companyName)
     {
         $this->companyName = $companyName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProfile()
+    {
+        return $this->profile;
+    }
+
+    /**
+     * @param mixed $profile
+     */
+    public function setProfile($profile): void
+    {
+        $this->profile = $profile;
     }
 }
