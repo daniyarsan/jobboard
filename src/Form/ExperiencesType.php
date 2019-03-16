@@ -11,7 +11,7 @@ class ExperiencesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('exp', CollectionType::class, [
+        $builder->add('experiences', CollectionType::class, [
             'label' => false,
             'entry_options' => [
                 'label' => false,
@@ -24,8 +24,8 @@ class ExperiencesType extends AbstractType
             'attr' => array(
                 'class' => 'collection',
             ),
-        ])->add('save', SubmitType::class, array(
-            'attr' => array('class' => 'btn-primary'),
-        ));
+        ])->add('save', SubmitType::class, [
+            'attr' => ['class' => 'btn-primary']
+        ]);
     }
 }

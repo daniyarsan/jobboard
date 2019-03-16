@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Education;
+use App\Entity\Experience;
 use App\Entity\Job;
 use App\Form\CompanyType;
 use App\Form\EducationsType;
@@ -187,7 +188,7 @@ class MyAccountController extends AbstractController
         $experiences = $this->getDoctrine()->getRepository('App:Experience')->findBy(
             ['profile' => $this->getUser()->getProfile()->getId()]
         );
-        $experiences = empty($experiences) ? [new Education()] : $experiences;
+        $experiences = empty($experiences) ? [new Experience()] : $experiences;
         $formExperience = $this->createForm(ExperiencesType::class, ['experiences' => $experiences], ['method' => 'POST', 'action' => $this->generateUrl('my_account_profile_experience')]);
 
         $form->handleRequest($request);
@@ -251,68 +252,34 @@ class MyAccountController extends AbstractController
     /**
      * @Route("/profile/experience", name="_profile_experience")
      */
-    public function experience(Request $request)
+    public function experience(Request $request, TranslatorInterface $translator)
     {
-        $experiences = $this->getDoctrine()->getRepository('AppBundle:Experience')->findBy(
-            ['profile' => $this->getUser()->getProfile()->getId()]
-        );
-
-        $form = $this->createForm(ExperiencesType::class, ['experiences' => $experiences]);
+        $form = $this->createForm(ExperiencesType::class, [new Experience()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $this->getUser();
+            $profile = $this->getUser()->getProfile();
             $em = $this->getDoctrine()->getManager();
 
-            $originalExperiences = new ArrayCollection();
-            foreach ($user->getExperiences() as $experience) {
-                $originalExperiences->add($experience);
-            }
 
             $newExperiences = new ArrayCollection();
             foreach ($form->getData()['experiences'] as $experience) {
-                $experience->setUser($user);
+                $experience->setProfile($profile);
                 $newExperiences->add($experience);
             }
 
-            foreach ($originalExperiences as $experience) {
-                if (false === $newExperiences->contains($experience)) {
-                    $em->remove($experience);
-                }
-            }
-
-            $user->setExperiences($newExperiences);
+            $profile->setExperiences($newExperiences);
 
             try {
-                $em->persist($user);
+                $em->persist($profile);
                 $em->flush();
-                $this->addFlash('success', $this->get('translator')->trans('Experience has been successfully saved.'));
+                $this->addFlash('success', $translator->trans('Experience has been successfully saved.'));
             } catch(\Exception $e) {
-                $this->addFlash('danger', $this->get('translator')->trans('An error occurred when saving object.'));
+                $this->addFlash('danger', $translator->trans('An error occurred when saving object.'));
             }
 
-            return $this->redirectToRoute('profile_update_experience');
         }
-
-        return $this->render(
-            'FrontBundle::Profiles/update_experience.html.twig',
-            [
-                'form' => $form->createView(),
-                'breadcrumbs' => [
-                    [
-                        'link' => $this->get('router')->generate('homepage'),
-                        'title' => $this->get('translator')->trans('Home'),
-                    ],
-                    [
-                        'link' => $this->get('router')->generate('profile_update_general'),
-                        'title' => $this->get('translator')->trans('Profile'),
-                    ],
-                    [
-                        'title' => $this->get('translator')->trans('Experience'),
-                    ],
-                ],
-            ]
-        );
+        return $this->redirectToRoute('my_account_profile');
     }
 
     /**

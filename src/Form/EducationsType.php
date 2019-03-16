@@ -24,8 +24,8 @@ class EducationsType extends AbstractType
             'attr' => array(
                 'class' => 'collection',
             ),
-        ])->add('save', SubmitType::class, array(
-            'attr' => array('class' => 'btn-primary'),
-        ));
+        ])->add('save', SubmitType::class, [
+            'attr' => ['class' => 'btn-primary'],
+        ]);
     }
 }
