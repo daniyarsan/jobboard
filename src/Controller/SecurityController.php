@@ -39,9 +39,9 @@ class SecurityController extends AbstractController
 
         if (!$group) {
             $this->get('session')->getFlashBag()->add('danger', 'Please choose user group');
+
             return $this->render('security/register-choose.html.twig');
         } else {
-
             switch ($group) {
                 case 'company':
                     $entity = new Company();
@@ -57,7 +57,7 @@ class SecurityController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $password = $passwordEncoder->encodePassword($entity->getUser(), $entity->getUser()->getPlainPassword());
                 $entity->getUser()->setPassword($password);
-                $entity->getUser()->setRoles(['ROLE_USER']);
+                $entity->setRole();
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($entity);
                 $entityManager->flush();

@@ -141,7 +141,6 @@ class MyAccountController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $job = $form->getData();
-            $job->setUser($this->getUser());
             $job->setCompany($this->getUser()->getCompany());
 
             try {

@@ -19,12 +19,6 @@ class Job
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="jobs")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     */
-    private $user;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="jobs")
      * @ORM\JoinColumn(name="company_id", referencedColumnName="id", onDelete="cascade")
      */
@@ -285,22 +279,6 @@ class Job
     public function setCategories($categories)
     {
         $this->categories = $categories;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * @param mixed $user
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
     }
 
     /**

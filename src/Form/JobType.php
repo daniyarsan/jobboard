@@ -30,6 +30,10 @@ class JobType extends AbstractType
             ->add('description', TextareaType::class, [
                 'attr' => ['class' => 'wysiwyg'],
             ])
+            ->add('contract', EntityType::class, [
+                'class' => 'App\Entity\Contract',
+                'required' => false
+            ])
             ->add('save', SubmitType::class, [
                 'attr' => ['class' => 'btn-primary'],
             ]);

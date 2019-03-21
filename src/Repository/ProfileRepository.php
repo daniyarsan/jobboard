@@ -24,7 +24,7 @@ class ProfileRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('profile');
 
         if (!empty($request->query->get('keyword'))) {
-            $qb->andWhere('profile.name LIKE :filterKeyword OR profile.description LIKE :filterKeyword')
+            $qb->andWhere('profile.firstName LIKE :filterKeyword OR profile.lastName LIKE :filterKeyword OR profile.description LIKE :filterKeyword')
                 ->setParameter('filterKeyword', '%'.$request->query->get('keyword').'%');
         }
 

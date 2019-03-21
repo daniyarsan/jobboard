@@ -12,12 +12,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class MainController extends AbstractController
 {
     /**
-     * @Route("/", name="admin_index")
+     * @Route("/", name="_index")
      */
     public function index()
     {
-        return $this->render('admin/index.html.twig', [
-            'controller_name' => 'AdminController',
+        return $this->render('admin/main/index.html.twig', [
         ]);
     }
 }

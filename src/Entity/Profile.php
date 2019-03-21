@@ -254,4 +254,25 @@ class Profile
     {
         $this->experiences = $experiences;
     }
+
+    public function setRole()
+    {
+        $this->getUser()->setRoles(['ROLE_USER']);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * @param mixed $created
+     */
+    public function setCreated($created): void
+    {
+        $this->created = $created;
+    }
 }

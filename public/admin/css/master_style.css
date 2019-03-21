@@ -39,16 +39,16 @@ Primary use:	Aries Admin - Responsive Admin Template
 -------------------------------------------------------------------*/
 
 
-/******************* 
-import icon and fonts Styles 
+/*******************
+import icon and fonts Styles
 *******************/
-@import url(../../assets/vendor_components/font-awesome/css/font-awesome.css);
-@import url(../../assets/vendor_components/Ionicons/css/ionicons.css);
-@import url(../../assets/vendor_components/themify-icons/themify-icons.css);
-@import url(../../assets/vendor_components/linea-icons/linea.css);
-@import url(../../assets/vendor_components/glyphicons/glyphicon.css);
-@import url(../../assets/vendor_components/flag-icon/css/flag-icon.css);
-@import url(../../assets/vendor_components/material-design-iconic-font/css/materialdesignicons.css);
+@import url(../vendor/font-awesome/css/font-awesome.css);
+@import url(../vendor/Ionicons/css/ionicons.css);
+@import url(../vendor/themify-icons/themify-icons.css);
+@import url(../vendor/linea-icons/linea.css);
+@import url(../vendor/glyphicons/glyphicon.css);
+@import url(../vendor/flag-icon/css/flag-icon.css);
+@import url(../vendor/material-design-iconic-font/css/materialdesignicons.css);
 @import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
 
 /*------------------------------------------------------------------
@@ -592,7 +592,7 @@ a:active, a:focus, a:hover {
 }
 .sidebar-menu>li>a>.fa, .sidebar-menu>li>a>.glyphicon, .sidebar-menu>li>a>.ion {
     width: 30px;
-	font-size: 18px;    
+	font-size: 18px;
 	display: inline-block;
     vertical-align: middle;
     color: #555f6d;
@@ -1022,13 +1022,13 @@ body .main-header .navbar .nav > li.search-box > a:hover, body .main-header .nav
     box-shadow: 0 3px 12px rgba(0, 0, 0, .05);
     -webkit-box-shadow: 0 3px 12px rgba(0, 0, 0, .05);
     -moz-box-shadow: 0 3px 12px rgba(0, 0, 0, .05);
-    border-color: rgba(120, 130, 140, .13);	
+    border-color: rgba(120, 130, 140, .13);
     display: inline-block;
     -webkit-transition: all .3s ease;
     transition: all .3s ease;
     -webkit-transform: scale(0);
     transform: scale(0);
-    transform-origin: right 0;	
+    transform-origin: right 0;
 }
 .show>.dropdown-menu.scale-up {
     transform: scale(1);
@@ -6126,7 +6126,7 @@ ul.flexbox {
   margin: 0 8px;
 }
 .media .nav-link:focus, .media .nav-link:hover {
-     background-color: transparent; 
+     background-color: transparent;
 }
 .media a:not(.btn):not(.avatar) {
   color: #616a78;
@@ -8098,8 +8098,8 @@ ul.flexbox {
 
 
 
-/*-----------------*/	
-	
+/*-----------------*/
+
 .box-comments {
     background: #f7f7f7;
 }
@@ -10774,7 +10774,7 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
     margin-right: 0;
 }
 .nav-tabs-custom>.nav-tabs.float-right>li:first-of-type>a {
-    border-left-width: 1px;	
+    border-left-width: 1px;
 }
 .nav-tabs-custom>.nav-tabs.float-right>li:first-of-type>a.active {
     border-left-color: #f4f4f4;
@@ -13991,7 +13991,7 @@ a.text-danger:hover, a.text-danger:focus {
     flex-flow: row wrap;
     margin-right: -15px;
     margin-left: -15px;
-}	
+}
 .box-deck .box {
     display: -ms-flexbox;
     display: flex;
@@ -14002,7 +14002,7 @@ a.text-danger:hover, a.text-danger:focus {
     margin-right: 15px;
     margin-bottom: 0;
     margin-left: 15px;
-}	
+}
 }
 .box-deck .box {
     margin-bottom: 20px;

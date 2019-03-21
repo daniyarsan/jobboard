@@ -284,4 +284,9 @@ class Company
     {
         $this->address = $address;
     }
+
+    public function setRole()
+    {
+        $this->getUser()->setRoles(['ROLE_COMPANY']);
+    }
 }
