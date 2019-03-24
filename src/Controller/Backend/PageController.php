@@ -78,13 +78,13 @@ class PageController extends AbstractController
             if ($form->get('saveAndExit')->isClicked()) {
                 return $this->redirect($this->generateUrl('admin_page_index'));
             }
-            return $this->redirect($this->generateUrl('admin_page_edit', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('admin_page_edit', ['id' => $entity->getId()]));
         }
 
-        return array(
+        return [
             'form' => $form->createView(),
-            'entity' => $entity,
-        );
+            'entity' => $entity
+        ];
     }
 
     /**
@@ -115,17 +115,16 @@ class PageController extends AbstractController
             }
             return $this->redirectToRoute('admin_page_edit', ['id' => $staticPage->getId()]);
         }
-
         return ['form' => $form->createView()];
     }
 
     /**
      * @Route("/page/{action}/{id}", name="_set", requirements={"id": "\d+", "action" : "disable|activate|remove"})
      */
-    public function set($id, $action)
+    public function set($id, $action, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('App:StaticPage')->findBy(array('id' => $id));
+        $entities = $em->getRepository('App:StaticPage')->findBy(['id' => $id]);
 
         if (!$entities) {
             throw $this->createNotFoundException('Unable to find StaticPage entity.');
@@ -151,7 +150,7 @@ class PageController extends AbstractController
         } catch (\Exception $ex) {
             $this->addFlash('danger', $ex->getMessage());
         }
-        return $this->redirectToRoute('admin_page_index');
+        return $this->redirect($request->get('return_url', $this->generateUrl('admin_page_index')));
     }
 
 
@@ -168,7 +167,7 @@ class PageController extends AbstractController
         if ($form->isValid()) {
             $id = array_keys($request->get('pages'));
             $action = $request->get('action');
-            return $this->set($id, $action);
+            return $this->set($id, $action, $request);
         }
         return $this->redirect($request->get('return_url', $this->generateUrl('admin_page_index')));
     }

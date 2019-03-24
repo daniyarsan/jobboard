@@ -1,0 +1,81 @@
+{% if pageCount > 1 %}
+    <nav aria-label="table pagination">
+        <ul class="pagination">
+            {% if previous is defined %}
+                <li class="page-item">
+                    <a rel="prev" class="page-link" href="{{ path(route, query|merge({(pageParameterName): previous})) }}">&laquo;&nbsp;{{ 'Previous'|trans }}</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link"><span>&laquo;&nbsp;{{ 'Previous'|trans }}</span></a>
+                </li>
+            {% endif %}
+
+            {% if startPage > 1 %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ path(route, query|merge({(pageParameterName): 1})) }}">1</a>
+                </li>
+                {% if startPage == 3 %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ path(route, query|merge({(pageParameterName): 2})) }}">2</a>
+                    </li>
+                {% elseif startPage != 2 %}
+                    <li class="page-item disabled">
+                        <a class="page-link"><span>&hellip;</span></a>
+                    </li>
+                {% endif %}
+            {% endif %}
+
+            {% for page in pagesInRange %}
+                {% if page != current %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ path(route, query|merge({(pageParameterName): page})) }}">{{ page }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item active">
+                        <a class="page-link"><span>{{ page }}</span></a>
+                    </li>
+                {% endif %}
+
+            {% endfor %}
+
+            {% if pageCount > endPage %}
+                {% if pageCount > (endPage + 1) %}
+                    {% if pageCount > (endPage + 2) %}
+                        <li class="page-item disabled">
+                            <a class="page-link"><span>&hellip;</span></a>
+                        </li>
+                    {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ path(route, query|merge({(pageParameterName): (pageCount - 1)})) }}">{{ pageCount -1 }}</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+                <li>
+                    <a href="{{ path(route, query|merge({(pageParameterName): pageCount})) }}">{{ pageCount }}</a>
+                </li>
+            {% endif %}
+
+            {% if next is defined %}
+                <li class="page-item">
+                    <a rel="next" class="page-link" href="{{ path(route, query|merge({(pageParameterName): next})) }}">{{ 'Next'|trans }}&nbsp;&raquo;</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link"><span>{{ 'Next'|trans }}&nbsp;&raquo;</span></a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <div class="dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" id="itemsPerPage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ numItemsPerPage }} {% trans %}items per page{% endtrans %} <b class="caret"></b>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            {% for itemsPerPage in [20, 50, 100] %}
+                <li ><a href="{{ path(route, query|merge({('itemsPerPage'): itemsPerPage})) }}" class="dropdown-item{% if itemsPerPage == numItemsPerPage %} disabled{% endif %}">{{ itemsPerPage }}</a></li>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}

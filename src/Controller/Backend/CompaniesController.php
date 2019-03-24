@@ -6,42 +6,67 @@ use App\Entity\Company;
 use App\Form\AdminFilterCompanyType;
 use App\Form\CompanyType;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
+ * Admin Companies Controller
+ *
  * @Route("/admin", name="admin_companies")
  */
 
 class CompaniesController extends AbstractController
 {
     /**
+     * Lists all Companies
+     *
      * @Route("/companies", name="_index")
+     * @Method("GET")
+     * @Template("admin/companies/index.html.twig")
      */
-    public function index(Request $request, PaginatorInterface $pagination)
+    public function index(Request $request, Session $session, PaginatorInterface $pagination)
     {
         $filterForm = $this->createForm(AdminFilterCompanyType::class, [], ['router' => $this->get('router')]);
         $filterForm->handleRequest($request);
 
-        $companies = $this->getDoctrine()->getRepository('App:Company')->findByFilterQuery($request);
-        $companies = $pagination->paginate($companies, $request->query->getInt('page', 1), 10);
+        $itemsPerPage = $request->query->get('itemsPerPage', 20);
+        $page = $request->query->getInt('page', 1);
 
-        return $this->render(
-            'admin/companies/index.html.twig',
-            [
-                'filterForm' => $filterForm->createView(),
-                'companies' => $companies
-            ]
-        );
+        if ($session->get('companiesItemsPerPage') != $itemsPerPage) {
+            $session->set('companiesItemsPerPage', $itemsPerPage);
+            if ($page > 1) {
+                return $this->redirectToRoute('admin_companies_index', [
+                    'itemsPerPage' => $itemsPerPage,
+                    'page' => 1
+                ]);
+            }
+        }
+        $paginatorOptions = [
+            'defaultSortFieldName' => 'c.id',
+            'defaultSortDirection' => 'desc'
+        ];
+
+
+        $companies = $this->getDoctrine()->getRepository('App:Company')->findByFilterQuery($request);
+        $companies = $pagination->paginate($companies, $page, $itemsPerPage, $paginatorOptions);
+
+        return [
+            'filterForm' => $filterForm->createView(),
+            'companies' => $companies
+        ];
     }
 
     /**
-     * @Route("/company/{id}", name="_details", requirements={"id": "\d+"})
+     * @Route("/company/{id}", name="_edit", requirements={"id": "\d+"})
      * @ParamConverter("company", class="App\Entity\Company")
      */
-    public function details(Request $request, Company $company)
+    public function edit(Request $request, Company $company, TranslatorInterface $translator)
     {
         $form = $this->createForm(CompanyType::class, $company);
         $form->handleRequest($request);
@@ -52,19 +77,113 @@ class CompaniesController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($company);
                 $em->flush();
-                $this->addFlash('success', $this->get('translator')->trans('Company has been successfully updated.'));
+                $this->addFlash('success', $translator->trans('Company has been successfully updated.'));
             } catch(\Exception $e) {
-                $this->addFlash('danger', $this->get('translator')->trans('An error occurred when saving object.'));
+                $this->addFlash('danger', $translator->trans('An error occurred when saving object.'));
             }
 
             return $this->redirectToRoute('admin_companies_details',['id' => $company->getId()]);
         }
 
-        return $this->render('admin/companies/details.html.twig', ['form' => $form->createView()]);
+        return $this->render('admin/companies/edit.html.twig', ['form' => $form->createView()]);
     }
 
-    public function create()
+    /**
+     * Create a new Company entity.
+     *
+     * @Route("/company/create", name="_create")
+     * @Template("admin/companies/create.html.twig")
+     */
+
+    public function create(Request $request, TranslatorInterface $translator)
     {
-        
+        $company = new Company();
+        $form = $this->createForm(CompanyType::class, $company);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $company = $form->getData();
+            try {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($company);
+                $em->flush();
+                $this->addFlash('success', $translator->trans('Company has been successfully updated.'));
+            } catch(\Exception $e) {
+                $this->addFlash('danger', $translator->trans('An error occurred when saving object.'));
+            }
+
+            if ($form->get('saveAndExit')->isClicked()) {
+                return $this->redirectToRoute('admin_companies_index');
+            }
+            return $this->redirect($this->generateUrl('admin_companies_edit', ['id' => $company->getId()]));
+        }
+        return [
+            'form' => $form->createView(),
+            'company' => $company
+        ];
+        return ['form' => $form->createView()];
+    }
+
+
+    /**
+     * @Route("/page/{action}/{id}", name="_set", requirements={"id": "\d+", "action" : "disable|activate|remove"})
+     */
+    public function set($id, $action, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entities = $em->getRepository('App:StaticPage')->findBy(array('id' => $id));
+
+        if (!$entities) {
+            throw $this->createNotFoundException('Unable to find StaticPage entity.');
+        }
+
+        foreach ($entities as $entity) {
+            switch ($action) {
+                case 'remove':
+                    $em->remove($entity);
+                    break;
+                case 'disable':
+                    $entity->setStatus(false);
+                    $em->persist($entity);
+                    break;
+                case 'activate':
+                    $entity->setStatus(true);
+                    $em->persist($entity);
+                    break;
+            };
+        }
+        try {
+            $em->flush();
+        } catch (\Exception $ex) {
+            $this->addFlash('danger', $ex->getMessage());
+        }
+        return $this->redirect($request->get('return_url', $this->generateUrl('admin_page_index')));
+    }
+
+
+    /**
+     * Deletes, Enables and Disables selected Pages.
+     *
+     * @Route("/bulk", name="_bulk")
+     */
+    public function bulkAction(Request $request)
+    {
+        $form = $this->createBulkActionForm();
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $id = array_keys($request->get('pages'));
+            $action = $request->get('action');
+            return $this->set($id, $action, $request);
+        }
+        return $this->redirect($request->get('return_url', $this->generateUrl('admin_page_index')));
+    }
+
+    private function createBulkActionForm()
+    {
+        return $this->createFormBuilder()
+            ->add('action')
+            ->add('pages')
+            ->getForm();
     }
 }
