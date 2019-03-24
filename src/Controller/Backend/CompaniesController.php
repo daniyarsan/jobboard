@@ -57,20 +57,10 @@ class CompaniesController extends AbstractController
                 $this->addFlash('danger', $this->get('translator')->trans('An error occurred when saving object.'));
             }
 
-            return $this->redirectToRoute(
-                'admin_companies_details',
-                [
-                    'id' => $company->getId(),
-                ]
-            );
+            return $this->redirectToRoute('admin_companies_details',['id' => $company->getId()]);
         }
 
-        return $this->render(
-            'admin/companies/details.html.twig',
-            [
-                'form' => $form->createView()
-            ]
-        );
+        return $this->render('admin/companies/details.html.twig', ['form' => $form->createView()]);
     }
 
     public function create()

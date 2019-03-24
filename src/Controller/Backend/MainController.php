@@ -8,7 +8,6 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/admin", name="admin")
  */
-
 class MainController extends AbstractController
 {
     /**
@@ -18,5 +17,11 @@ class MainController extends AbstractController
     {
         return $this->render('admin/main/index.html.twig', [
         ]);
+    }
+
+
+    public function navigation()
+    {
+
     }
 }
