@@ -46,6 +46,9 @@
         <div class="main-content">
             <div class="section__content">
                 <div class="container-fluid">
+
+                    {% include 'admin/_parts/messages.html.twig' %}
+
                     {% block content %}{% endblock %}
                 </div>
             </div>
