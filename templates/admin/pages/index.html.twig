@@ -1,7 +1,9 @@
 {% extends 'admin/admin-base.html.twig' %}
 
 {% block title %}Pages List{% endblock %}
+
 {% block pagetitle %}Pages List{% endblock %}
+
 {% block breadcrumbs %}
     <ol class="breadcrumb text-right">
         <li><a href="#">Dashboard</a></li>
@@ -10,18 +12,11 @@
 {% endblock %}
 
 {% block content %}
-    {% import 'admin/form/dialog.html.twig' as dialogs %}
+       {% import 'admin/form/dialog.html.twig' as dialogs %}
     {% import 'admin/_parts/helper.html.twig' as helper %}
-    {% set pagesCount = pages.getTotalItemCount %}
 
     <div class="card">
         <div class="card-header">
-            <strong class="card-title">{{ pagesCount }} found</strong>
-            <a href="{{ path('admin_page_create') }}" class="btn btn-outline-success btn-sm pull-right"><i class="fa fa-plus"></i>&nbsp; Add Page</a>
-        </div>
-
-        <div class="card-body">
-
             <div class="btn-group">
                 <button type="button" class="dropdown-toggle btn btn-outline-primary btn-sm bulk-action-dropdown" data-toggle="dropdown" disabled="disabled">
                     {% trans %}Choose an Action{% endtrans %}
@@ -35,6 +30,10 @@
             </div>
             {{ dialogs.confirm('static-pages-delete-bulk', 'Confirmation', 'The selected pages will be removed permanently. Are you sure?', "pageBulkAction('remove')", '') }}
 
+            <a href="{{ path('admin_page_create') }}" class="btn btn-outline-success btn-sm pull-right"><i class="fa fa-plus"></i>&nbsp; Add Page</a>
+        </div>
+
+        <div class="card-body">
             <div class="table-stats order-table">
                 <form method="post" action="{{ path('admin_page_bulk') }}" id="page-bulk-form">
                     {{ form_widget(bulk_action_form._token) }}
@@ -107,6 +106,10 @@
             <div class="dataTables_paginate paging_simple_numbers">
                 {{ knp_pagination_render(pages) }}
             </div>
+        </div>
+        <div class="card-footer">
+            {% set pagesCount = pages.getTotalItemCount %}
+            {{ pagesCount }} items - found
         </div>
     </div>
 
