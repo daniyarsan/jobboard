@@ -1,6 +1,14 @@
 {% extends 'admin/admin-base.html.twig' %}
 
-{% block title %}{% endblock %}
+{% block title %}Page Create{% endblock %}
+{% block pagetitle %}Page Create{% endblock %}
+{% block breadcrumbs %}
+    <ol class="breadcrumb text-right">
+        <li><a href="#">Dashboard</a></li>
+        <li><a href="#">Pages</a></li>
+        <li><a href="#">Create</a></li>
+    </ol>
+{% endblock %}
 
 {% block content %}
     <div class="row">
@@ -10,9 +18,7 @@
                 <div class="card-body card-block">
                     {{ form(form) }}
                 </div>
-                <div class="card-footer">
-
-                </div>
+                <div class="card-footer"></div>
             </div>
         </div>
     </div>
