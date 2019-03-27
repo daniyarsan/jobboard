@@ -52,19 +52,20 @@ class CompaniesController extends AbstractController
             'defaultSortDirection' => 'desc'
         ];
 
-
         $companies = $this->getDoctrine()->getRepository('App:Company')->findByFilterQuery($request);
         $companies = $pagination->paginate($companies, $page, $itemsPerPage, $paginatorOptions);
 
         return [
             'filterForm' => $filterForm->createView(),
-            'companies' => $companies
+            'companies' => $companies,
+            'bulk_action_form' => $this->createBulkActionForm()->createView()
         ];
     }
 
     /**
      * @Route("/company/{id}", name="_edit", requirements={"id": "\d+"})
      * @ParamConverter("company", class="App\Entity\Company")
+     * @Template("admin/companies/edit.html.twig")
      */
     public function edit(Request $request, Company $company, TranslatorInterface $translator)
     {
@@ -82,10 +83,10 @@ class CompaniesController extends AbstractController
                 $this->addFlash('danger', $translator->trans('An error occurred when saving object.'));
             }
 
-            return $this->redirectToRoute('admin_companies_details',['id' => $company->getId()]);
+            return ['id' => $company->getId()];
         }
 
-        return $this->render('admin/companies/edit.html.twig', ['form' => $form->createView()]);
+        return ['form' => $form->createView()];
     }
 
     /**
@@ -121,20 +122,19 @@ class CompaniesController extends AbstractController
             'form' => $form->createView(),
             'company' => $company
         ];
-        return ['form' => $form->createView()];
     }
 
 
     /**
-     * @Route("/page/{action}/{id}", name="_set", requirements={"id": "\d+", "action" : "disable|activate|remove"})
+     * @Route("/company/{action}/{id}", name="_set", requirements={"id": "\d+", "action" : "disable|activate|remove"})
      */
     public function set($id, $action, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('App:StaticPage')->findBy(array('id' => $id));
+        $entities = $em->getRepository('App:Company')->findBy(array('id' => $id));
 
         if (!$entities) {
-            throw $this->createNotFoundException('Unable to find StaticPage entity.');
+            throw $this->createNotFoundException('Unable to find Company entity.');
         }
 
         foreach ($entities as $entity) {
@@ -143,11 +143,11 @@ class CompaniesController extends AbstractController
                     $em->remove($entity);
                     break;
                 case 'disable':
-                    $entity->setStatus(false);
+                    $entity->setIsVerified(false);
                     $em->persist($entity);
                     break;
                 case 'activate':
-                    $entity->setStatus(true);
+                    $entity->setIsVerified(true);
                     $em->persist($entity);
                     break;
             };
@@ -157,7 +157,7 @@ class CompaniesController extends AbstractController
         } catch (\Exception $ex) {
             $this->addFlash('danger', $ex->getMessage());
         }
-        return $this->redirect($request->get('return_url', $this->generateUrl('admin_page_index')));
+        return $this->redirect($request->get('return_url', $this->generateUrl('admin_companies_index')));
     }
 
 
@@ -172,11 +172,11 @@ class CompaniesController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $id = array_keys($request->get('pages'));
+            $id = array_keys($request->get('companies'));
             $action = $request->get('action');
             return $this->set($id, $action, $request);
         }
-        return $this->redirect($request->get('return_url', $this->generateUrl('admin_page_index')));
+        return $this->redirect($request->get('return_url', $this->generateUrl('admin_companies_index')));
     }
 
     private function createBulkActionForm()

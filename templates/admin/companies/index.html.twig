@@ -1,84 +1,147 @@
 {% extends 'admin/admin-base.html.twig' %}
 
-{% block title %}{% endblock %}
+{% block title %}Companies List{% endblock %}
+
+{% block pagetitle %}Companies List{% endblock %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb text-right">
+        <li><a href="#">Dashboard</a></li>
+        <li><a href="#">Companies</a></li>
+    </ol>
+{% endblock %}
 
 {% block content %}
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h1>Companies</h1>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="breadcrumb-item active">Companies</li>
-        </ol>
-    </section>
+    {% import 'admin/form/dialog.html.twig' as dialogs %}
+    {% import 'admin/_parts/helper.html.twig' as helper %}
 
-    <!-- Main content -->
-    <section class="content">
-        <div class="row">
-            <div class="col-12">
-                <div class="box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Companies List</h3>
-                        <div class="box-tools">
-                            {{ form_start(filterForm, {'name': 'filter-companies-form'}) }}
-                            <div class="input-group input-group-sm">
-                                {{ form_widget(filterForm.country) }}
-
-                                {{ form_widget(filterForm.keyword) }}
-                                <div class="input-group-btn">
-                                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                                </div>
-                            </div>
-                            {{ form_end(filterForm) }}
-
-                        </div>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body no-padding">
-                        <table class="table table-responsive">
-                            <tbody>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Country</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
-                                    <th></th>
-                                </tr>
-                                {% for company in companies %}
-                                    <tr>
-                                        <td><a href="{{ path('admin_companies_details', {id : company.id}) }}">{{ company.name }}</a></td>
-                                        <td><a href="{{ path('admin_companies_details', {id : company.id}) }}">{{ company.email }}</a></td>
-                                        <td>{{ company.country }}</td>
-                                        <td>{% if company.isVerified %}<span class="label label-success">Active</span>{% else %}<span class="label label-default">Not Active</span>{% endif %}</td>
-                                        <td><span class="text-muted"><i class="fa fa-clock-o"></i> {{ company.created|date('y/m/d') }}</span></td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <button class="dropdown-toggle" type="button" data-toggle="dropdown">Manage</button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-pencil"></i> Edit</a>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-trash-o"></i> Delete</a>
-                                                    <div class="dropdown-divider"></div>
-                                                    <a class="dropdown-item" href="#"><i class="fa fa-codepen"></i> Activate</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- /.box-body -->
-                    <div class="box-footer clearfix">
-                        <ul class="pagination pagination-sm pull-right">
-                            {{ knp_pagination_render(companies) }}
-                        </ul>
-                    </div>
+    <div class="card">
+        <div class="card-header">
+            <div class="btn-group">
+                <button type="button" class="dropdown-toggle btn btn-outline-primary btn-sm bulk-action-dropdown" data-toggle="dropdown" disabled="disabled">
+                    {% trans %}Choose an Action{% endtrans %}
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" data-toggle="modal" href="#" onclick="pageBulkAction('activate');">Activate</a>
+                    <a class="dropdown-item" data-toggle="modal" href="#" onclick="pageBulkAction('disable');">Deactivate</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" data-toggle="modal" href="#static-companies-delete-bulk">Delete</a>
                 </div>
-                <!-- /.box -->
+            </div>
+            {{ dialogs.confirm('static-companies-delete-bulk', 'Confirmation', 'The selected Companies will be removed permanently. Are you sure?', "pageBulkAction('remove')", '') }}
+
+            <a href="{{ path('admin_companies_create') }}" class="btn btn-outline-success btn-sm pull-right"><i class="fa fa-plus"></i>&nbsp;Add New Comapny</a>
+        </div>
+
+        <div class="card-body">
+            {{ form_start(filterForm, {'name': 'filter-companies-form'}) }}
+
+            <div class="row mb-15">
+                <div class="col-sm-6 col-md-3 ">
+                    {{ form_widget(filterForm.keyword) }}
+                </div>
+                <div class="col-sm-6 col-md-3 ">
+                    {{ form_widget(filterForm.country) }}
+                </div>
+            </div>
+            {{ form_end(filterForm) }}
+
+            <div class="table-stats order-table">
+                <form method="post" action="{{ path('admin_companies_bulk') }}" id="companies-bulk-form">
+                    {{ form_widget(bulk_action_form._token) }}
+                    <input type="hidden" name="action" value=""/>
+                    <input type="hidden" name="return_url" value="{{ path('admin_companies_index') }}{{ query_string() }}"/>
+                    <table class="table ">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" class="check-all-items"/></th>
+                            <th>
+                                {{ knp_pagination_sortable(companies, 'Company Name', 'c.name') }}
+                                {% if companies.isSorted('c.name') %}
+                                    <span class="fa fa-sort-amount{% if companies.getParams.direction == 'desc' %}-desc{% else %}-asc{% endif %}"></span>
+                                {% endif %}
+                            </th>
+                            <th>Email</th>
+                            <th>Country</th>
+                            <th>
+                                {{ knp_pagination_sortable(companies, 'Status', 'c.isVerified') }}
+                                {% if companies.isSorted('c.isVerified') %}
+                                    <span class="fa fa-sort-amount{% if companies.getParams.direction == 'desc' %}-desc{% else %}-asc{% endif %}"></span>
+                                {% endif %}
+                            </th>
+                            <th>Created</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for company in companies %}
+                            <tr>
+                                <td><input type="checkbox" class="check-item" name="companies[{{ company.id }}]"/></td>
+                                <td>{{ company.name }}</td>
+                                <td>{{ company.email }}</td>
+                                <td>{{ company.country }}</td>
+                                <td>
+                                    {% if company.isVerified %}
+                                        <span class="badge badge-complete">Active</span>
+                                    {% else %}
+                                        <span class="badge badge-dark">Not Active</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ company.created|date("y m d") }}</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="dropdown-toggle btn btn-outline-secondary btn-sm" type="button" data-toggle="dropdown">
+                                            Action
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            {% if company.isVerified %}
+                                                <a target="_blank" href="{{ path('company_details', {'id' : company.id}) }}" class="dropdown-item">View</a>
+                                            {% endif %}
+                                            <a class="dropdown-item" href="{{ path('admin_companies_edit', {'id': company.id, 'return_url': path('admin_companies_index') ~ query_string()}) }}">Edit</a>
+                                            {% if company.isVerified == 1 %}
+                                                <a class="dropdown-item" href="{{ path('admin_companies_set', {'action': 'disable', 'id': company.id, 'return_url': path('admin_companies_index') ~ query_string()}) }}">Deactivate</a>
+                                            {% else %}
+                                                <a class="dropdown-item" href="{{ path('admin_companies_set', {'action': 'activate', 'id': company.id, 'return_url': path('admin_companies_index') ~ query_string()}) }}">Activate</a>
+                                            {% endif %}
+                                            <div class="dropdown-divider"></div>
+                                            <a data-toggle="modal" href="#static-company-delete-{{ company.id }}" class="dropdown-item">Delete</a>
+                                        </div>
+                                    </div>
+                                    {{ dialogs.confirm('static-company-delete-' ~ company.id, 'Confirmation', 'The selected page will be removed permanently. Are you sure?', '', path('admin_companies_set', {id: company.id, action: 'remove'})) }}
+
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </form>
+            </div> <!-- /.table-stats -->
+
+            <div class="dataTables_paginate paging_simple_numbers">
+                {{ knp_pagination_render(companies) }}
             </div>
         </div>
-    </section>
-    <!-- /.content -->
+        <div class="card-footer">
+            {% set pagesCount = companies.getTotalItemCount %}
+            {{ pagesCount }} items - found
+        </div>
     </div>
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        function pageBulkAction(action) {
+            var form = jQuery("#companies-bulk-form");
+            form.find("input[name='action']").val(action);
+            form.submit();
+        }
+    </script>
+{% endblock %}
+
+
+
+
+

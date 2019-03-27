@@ -18,7 +18,7 @@ class AdminFilterJobType extends AbstractType
                 'label' => false,
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'Search job position by keyword',
+                    'placeholder' => 'Keyword',
                 ],
             ])
             ->setMethod('GET')
