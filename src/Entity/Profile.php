@@ -11,6 +11,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Profile
 {
+    const VISIBILITY_PUBLIC = 'PUBLIC';
+
+    const VISIBILITY_AUTHENTICATED = 'AUTHENTICATED';
+
+    const VISIBILITY_PRIVATE = 'PRIVATE';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -23,6 +29,11 @@ class Profile
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
+
+    /**
+     * @ORM\Column(name="type", type="string")
+     */
+    private $visibility = self::VISIBILITY_PUBLIC;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -274,5 +285,21 @@ class Profile
     public function setCreated($created): void
     {
         $this->created = $created;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVisibility()
+    {
+        return $this->visibility;
+    }
+
+    /**
+     * @param mixed $visibility
+     */
+    public function setVisibility($visibility): void
+    {
+        $this->visibility = $visibility;
     }
 }

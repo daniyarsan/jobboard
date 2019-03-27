@@ -1,0 +1,27 @@
+{% extends 'admin/admin-base.html.twig' %}
+
+{% block title %}Profile Edit{% endblock %}
+
+{% block pagetitle %}Profile Edit{% endblock %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb text-right">
+        <li><a href="#">Dashboard</a></li>
+        <li><a href="#">Profiles</a></li>
+        <li><a href="#">Edit</a></li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">Edit Profile</div>
+                <div class="card-body card-block">
+                    {{ form(form) }}
+                </div>
+                <div class="card-footer"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
