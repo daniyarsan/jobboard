@@ -45,11 +45,12 @@ class JobsController extends AbstractController
                 ]);
             }
         }
+
         $paginatorOptions = [
-            'defaultSortFieldName' => 'j.id',
+            'defaultSortFieldName' => 'id',
             'defaultSortDirection' => 'desc'
         ];
-        
+
         $jobs = $this->getDoctrine()->getRepository('App:Job')->findByFilterQuery($request);
         $jobs = $pagination->paginate($jobs, $page, $itemsPerPage, $paginatorOptions);
 
@@ -165,7 +166,7 @@ class JobsController extends AbstractController
     /**
      * Deletes, Enables and Disables selected Pages.
      *
-     * @Route("/bulk", name="_bulk")
+     * @Route("/jobs/bulk", name="_bulk")
      */
     public function bulkAction(Request $request)
     {

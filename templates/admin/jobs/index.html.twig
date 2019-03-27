@@ -52,16 +52,16 @@
                         <tr>
                             <th><input type="checkbox" class="check-all-items"/></th>
                             <th>
-                                {{ knp_pagination_sortable(jobs, 'Job Title', 'j.name') }}
-                                {% if jobs.isSorted('j.name') %}
+                                {{ knp_pagination_sortable(jobs, 'Job Title', 'name') }}
+                                {% if jobs.isSorted('name') %}
                                     <span class="fa fa-sort-amount{% if jobs.getParams.direction == 'desc' %}-desc{% else %}-asc{% endif %}"></span>
                                 {% endif %}
                             </th>
                             <th>Country</th>
                             <th>Categories</th>
                             <th>
-                                {{ knp_pagination_sortable(jobs, 'Status', 'j.isPublished') }}
-                                {% if jobs.isSorted('j.isPublished') %}
+                                {{ knp_pagination_sortable(jobs, 'Status', 'isPublished') }}
+                                {% if jobs.isSorted('isPublished') %}
                                     <span class="fa fa-sort-amount{% if jobs.getParams.direction == 'desc' %}-desc{% else %}-asc{% endif %}"></span>
                                 {% endif %}
                             </th>

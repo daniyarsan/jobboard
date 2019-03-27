@@ -119,7 +119,10 @@ class JobRepository extends ServiceEntityRepository
     public function findByFilterQuery($request)
     {
         $qb = $this->createQueryBuilder('job');
-        $qb->andWhere('job.isPublished = 1');
+
+        if (!strstr($request->getPathInfo(), 'admin')) {
+            $qb->andWhere('job.isPublished = 1');
+        }
 
         // Keyword
         if (!empty($request->query->get('keyword'))) {

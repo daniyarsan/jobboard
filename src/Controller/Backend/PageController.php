@@ -157,7 +157,7 @@ class PageController extends AbstractController
     /**
      * Deletes, Enables and Disables selected Pages.
      *
-     * @Route("/bulk", name="_bulk")
+     * @Route("/pages/bulk", name="_bulk")
      */
     public function bulkAction(Request $request)
     {

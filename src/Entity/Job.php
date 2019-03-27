@@ -172,7 +172,7 @@ class Job
     /**
      * @return mixed
      */
-    public function getisFeatured()
+    public function getIsFeatured()
     {
         return $this->isFeatured;
     }
