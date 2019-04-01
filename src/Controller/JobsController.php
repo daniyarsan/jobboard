@@ -7,6 +7,7 @@ use App\Form\FilterJobKeywordType;
 use App\Form\FilterJobType;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,6 +17,7 @@ class JobsController extends AbstractController
 {
     /**
      * @Route("/jobs", name="jobs_index")
+     * @Template("jobs/index.html.twig")
      */
     public function index(Request $request, PaginatorInterface $paginator)
     {
@@ -28,14 +30,11 @@ class JobsController extends AbstractController
         $jobs = $this->getDoctrine()->getRepository('App:Job')->findByFilterQuery($request);
         $jobs = $paginator->paginate($jobs, $request->query->getInt('page', 1), 10);
 
-        return $this->render(
-            'jobs/index.html.twig',
-            [
-                'filter' => $filter->createView(),
-                'filterKeyword' => $filterKeyword->createView(),
-                'jobs' => $jobs
-            ]
-        );
+        return [
+            'filter' => $filter->createView(),
+            'filterKeyword' => $filterKeyword->createView(),
+            'jobs' => $jobs
+        ];
     }
 
     /**

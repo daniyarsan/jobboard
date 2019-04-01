@@ -24,7 +24,7 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route ("/page/{id}", name="_page_show")
+     * @Route ("/show-page/{id}", name="_page_show")
      * @Template("main/page.html.twig")
      */
     public function pageAction($id)
@@ -41,7 +41,7 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route("{url}", name="_url_show")
+     * @Route("/page/{url}", name="_url_show")
      */
     public function fallbackAction($url)
     {

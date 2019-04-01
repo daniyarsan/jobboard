@@ -1,38 +1,40 @@
 {% extends 'sidebar.html.twig' %}
 
-{% block title %}{% endblock %}
+{% block title %}Companies{% endblock %}
 
 {% block sidebar %}
-    <div class="widget widget-filter">
-        <h2>{{ 'Refine Search'|trans }}</h2>
-        {{ form_start(filter, {'name': 'filter-companies-form'}) }}
-        {{ form_widget(filter) }}
-        {{ form_end(filter) }}
-    </div><!-- /.widget-filter -->
-
+    <div class="sidebar mt-5 mt-lg-0">
+        <div class="single-item mb-4">
+            <h4 class="mb-4">Filter Companies</h4>
+            {{ form_start(filter, {'name': 'filter-companies-form'}) }}
+            {{ form_widget(filter) }}
+            {{ form_end(filter) }}
+        </div>
+    </div>
 {% endblock %}
 
-{% block body %}
-    {% if companies|length %}
-        <div class="page-title">
-            <h2>
+{% block content %}
+    <div class="main-content">
+        <div class="single-content1">
+            <h3>
                 {% set count = companies.getTotalItemCount %}
                 {% transchoice count %}
                     {0} %count% companies matching query|{1} %count% company matching query|]1,Inf[%count% companies matching query
                 {% endtranschoice %}
-            </h2>
-        </div><!-- /.page-title -->
+            </h3>
 
-        <div class="companies">
-            {% for company in companies %}
-                {% include 'companies/company.html.twig' %}
-            {% endfor %}
-        </div><!-- /.jobs -->
-
-        <div class="navigation text-center">
-            {{ knp_pagination_render(companies) }}
+            {% if companies|length %}
+                {% for company in companies %}
+                    {% include 'companies/company.html.twig' %}
+                {% endfor %}
+                {{ knp_pagination_render(companies) }}
+            {% else %}
+                No results found
+            {% endif %}
         </div>
-    {% else %}
-        No results found
-    {% endif %}
+    </div>
+    <div class="more-job-btn mt-5 text-center">
+        <a href="#" class="template-btn">More</a>
+    </div>
 {% endblock %}
+

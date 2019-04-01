@@ -1,43 +1,20 @@
-<div class="item-wrapper">
-    <div class="job">
-        <div class="item-title">
-            <h3>
-                <a href="{{ path('company_details', {id: company.getId() }) }}">{{ company.getName() }}</a>
-            </h3>
-
-            <div class="item-title-image">
-                <img src="" alt="{{ company.getName() }}">
-
-                {% if company.isVerified() %}
-                    <div class="verified">
-                        <i class="fa fa-check"></i>
-                    </div><!-- /.verified -->
-                {% endif %}
-            </div>
-        </div><!-- /.item-title -->
-
-        <ul class="item-meta">
-            <li class="item-meta-count">
-                <span>
+<div class="single-job mb-4 d-flex flex-row-reverse">
+    <div class="job-text flex-fill">
+        <h4><a href="{{ path('company_details', {id: company.getId() }) }}">{{ company.name }}</a></h4>
+        <ul class="mt-4">
+            <li class="mb-3"><h5><i class="fa fa-map-marker"></i> {{ company.getCountry() }}</h5></li>
+            <li class="mb-3"><h5><i class="fa fa-briefcase"></i>
                     {% set count_jobs = jobRepository.getCompanyCount(company) %}
-
                     {% transchoice count_jobs %}
                         {0} No posted job|{1} %count_jobs% job|]1,Inf] %count_jobs% posted jobs
                     {% endtranschoice %}
-                </span>
+                </h5>
             </li>
+            <li><h5><i class="fa fa-clock-o"></i> {{ company.getCreated()|date("F jS") }}</h5></li>
+        </ul>
+    </div>
+    <div class="job-img align-self-center pr-5">
+        <img src="assets/images/job1.png" alt="job">
+    </div>
+</div>
 
-            {% if company.getCountry() %}
-                <li>
-                    <i class="fa fa-map-marker"></i> <span>{{ company.getCountry() }}</span>
-                </li>
-            {% endif %}
-        </ul><!-- /.item-meta -->
-
-        {% if company.description %}
-            <div class="item-description">
-                {{ company.description|striptags[:200] ~ '...' }}
-            </div><!-- /.item-description -->
-        {% endif %}
-    </div><!-- /.job -->
-</div><!-- /.item-wrapper -->

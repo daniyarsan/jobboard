@@ -1,61 +1,19 @@
-<div class="item-wrapper">
-    <div class="job">
-        {% if job.getIsFeatured() %}
-            <span class="item-badge">{{ 'Featured'|trans }}</span>
-        {% endif %}
+<div class="single-job mb-4 d-lg-flex justify-content-between {% if job.getIsFeatured() %}highlighted{% endif %}">
+    <div class="job-text">
+        <h4><a href="{{ path('job_details', {'id' : job.id}) }}">{{ job.name }}</a></h4>
+        <ul class="mt-4">
+            <li class="mb-3"><h5><i class="fa fa-map-marker"></i> {{ job.getCountry() }}</h5></li>
+            <li class="mb-3"><h5><i class="fa fa-pie-chart"></i>{{ job.getCategories()|join('/') }}</h5></li>
+            <li><h5><i class="fa fa-clock-o"></i> {{ job.getCreated()|date("F jS") }}</h5></li>
+        </ul>
+    </div>
+    <div class="job-img align-self-center">
+        <img src="assets/images/job1.png" alt="job">
+    </div>
+</div>
 
-        <div class="item-title">
-            <h3>
-                <a href="{{ path('job_details', {'id' : job.id}) }}">{{ job.name }}</a>
-            </h3>
 
-            {% if job.getCategories()|length > 0 %}
-                <ul class="item-categories">
-                    <li>
-                        <span>
-                            {% for category in job.getCategories() %}
-                                <a href="">{{ category }}</a>
-                            {% endfor %}
-                        </span>
-                    </li>
-                </ul>
-            {% endif %}
-
-        </div><!-- /.item-title -->
-
-        <ul class="item-meta">
-            {% if job.getSalary() %}
-                <li class="item-meta-price">
-                    <span>{{ job.getSalary() }}</span>
-                </li>
-            {% endif %}
-
-            {% if job.getContract() %}
-                <li>
-                    <i class="fa fa-file"></i> <span>{{ job.getContract() }}</span>
-                </li>
-            {% endif %}
-
-            {% if job.getCompany() %}
-                <li>
-                    <i class="fa fa-users"></i> <span><a href="">{{ job.getCompany() }}</a></span>
-                </li>
-            {% endif %}
-
-            {% if job.getCountry() %}
-                <li>
-                    <i class="fa fa-map-marker"></i> <span>{{ job.getCountry() }}</span>
-                </li>
-            {% endif %}
-
-            <li>
-                <i class="fa fa-clock-o"></i> <span>{{ job.getCreated()|date("F jS") }}</span>
-            </li>
-
-        </ul><!-- /.item-meta -->
-
-        <div class="item-description">
-            {{ job.description|striptags[:200] ~ '...' }}
-        </div><!-- /.item-description -->
-    </div><!-- /.job -->
-</div><!-- /.item-wrapper -->
+{#{{ job.getSalary() }}#}
+{#{{ job.getContract() }}#}
+{#{{ job.getCompany() }}#}
+{#{{ job.description|striptags[:200] ~ '...' }}#}

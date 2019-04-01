@@ -1,9 +1,55 @@
-{% extends 'sidebar.html.twig' %}
+{% extends 'sidebar-right.html.twig' %}
 
 {% block title %}{% endblock %}
 
+{% block pagetitle %}{% endblock %}
 
 {% block sidebar %}
+    <div class="sidebar">
+        <div class="single-item mb-4">
+            <h4 class="mb-4">job by location</h4>
+            <a href="#" class="sidebar-btn d-flex justify-content-between mb-3">
+                <span>New York</span>
+                <span class="text-right">25 job</span>
+            </a>
+            <a href="#" class="sidebar-btn d-flex justify-content-between mb-3">
+                <span>California</span>
+                <span class="text-right">25 job</span>
+            </a>
+            <a href="#" class="sidebar-btn d-flex justify-content-between mb-3">
+                <span>Swizerland</span>
+                <span class="text-right">25 job</span>
+            </a>
+            <a href="#" class="sidebar-btn d-flex justify-content-between mb-3">
+                <span>Canada</span>
+                <span class="text-right">25 job</span>
+            </a>
+            <a href="#" class="sidebar-btn d-flex justify-content-between">
+                <span>Sweden</span>
+                <span class="text-right">25 job</span>
+            </a>
+        </div>
+        <div class="single-item mb-4">
+            <h4 class="mb-4">salary range</h4>
+            <a href="#" class="sidebar-btn d-flex justify-content-between mb-3">
+                <span>$20,000-$30,000</span>
+                <span class="text-right">25 job</span>
+            </a>
+            <a href="#" class="sidebar-btn d-flex justify-content-between mb-3">
+                <span>$25,000-$45,000</span>
+                <span class="text-right">25 job</span>
+            </a>
+            <a href="#" class="sidebar-btn d-flex justify-content-between">
+                <span>$40,000-$70,000</span>
+                <span class="text-right">25 job</span>
+            </a>
+        </div>
+        <div class="single-item">
+            <h4 class="mb-4">filter by salary</h4>
+            <span class="irs js-irs-0  irs-with-grid"><span class="irs"><span class="irs-line" tabindex="0"><span class="irs-line-left"></span><span class="irs-line-mid"></span><span class="irs-line-right"></span></span><span class="irs-min" style="display: none; visibility: visible;">0</span><span class="irs-max" style="display: none; visibility: visible;">1</span><span class="irs-from" style="visibility: visible; left: 14.5862%;">$1 000</span><span class="irs-to" style="visibility: visible; left: 71.2759%;">$4 000</span><span class="irs-single" style="visibility: hidden; left: 35%;">$1 000 — $4 000</span></span><span class="irs-grid" style="width: 94.4828%; left: 2.65862%;"><span class="irs-grid-pol" style="left: 0%"></span><span class="irs-grid-text js-grid-text-0" style="left: 0%; margin-left: -1.89655%;">0</span><span class="irs-grid-pol small" style="left: 20%"></span><span class="irs-grid-pol small" style="left: 15%"></span><span class="irs-grid-pol small" style="left: 10%"></span><span class="irs-grid-pol small" style="left: 5%"></span><span class="irs-grid-pol" style="left: 25%"></span><span class="irs-grid-text js-grid-text-1" style="left: 25%; visibility: visible; margin-left: -5%;">1 250</span><span class="irs-grid-pol small" style="left: 45%"></span><span class="irs-grid-pol small" style="left: 40%"></span><span class="irs-grid-pol small" style="left: 35%"></span><span class="irs-grid-pol small" style="left: 30%"></span><span class="irs-grid-pol" style="left: 50%"></span><span class="irs-grid-text js-grid-text-2" style="left: 50%; visibility: visible; margin-left: -5%;">2 500</span><span class="irs-grid-pol small" style="left: 70%"></span><span class="irs-grid-pol small" style="left: 65%"></span><span class="irs-grid-pol small" style="left: 60%"></span><span class="irs-grid-pol small" style="left: 55%"></span><span class="irs-grid-pol" style="left: 75%"></span><span class="irs-grid-text js-grid-text-3" style="left: 75%; visibility: visible; margin-left: -5%;">3 750</span><span class="irs-grid-pol small" style="left: 95%"></span><span class="irs-grid-pol small" style="left: 90%"></span><span class="irs-grid-pol small" style="left: 85%"></span><span class="irs-grid-pol small" style="left: 80%"></span><span class="irs-grid-pol" style="left: 100%"></span><span class="irs-grid-text js-grid-text-4" style="left: 100%; margin-left: -5%;">5 000</span></span><span class="irs-bar" style="left: 21.6552%; width: 56.6897%;"></span><span class="irs-shadow shadow-from" style="display: none;"></span><span class="irs-shadow shadow-to" style="display: none;"></span><span class="irs-slider from" style="left: 18.8966%;"></span><span class="irs-slider to type_last" style="left: 75.5862%;"></span></span><input type="text" id="range" value="" name="range" class="irs-hidden-input" tabindex="-1" readonly="">
+        </div>
+    </div>
+
     {% if company.getLatitude() and company.getLongitude() %}
 
         <div class="widget widget-map">
@@ -28,12 +74,12 @@
                 {% for job in recent_jobs %}
                     <div class="item-small">
                         <div class="item-small-title">
-                            <h3><a href="{{ path('job_show', {'id': job.getId()}) }}">{{ job.getName() }}</a></h3>
-                            <h4><a href="{{ path('company_show', {'id': job.getCompany().getId()}) }}">{{ job.getCompany().getName() }}</a></h4>
+                            <h3><a href="#">{{ job.getName() }}</a></h3>
+                            <h4><a href="#">{{ job.getCompany().getName() }}</a></h4>
                         </div>
 
                         <div class="item-small-more">
-                            <a href="{{ path('job_show', {'id': job.getId()}) }}"><i class="fa fa-chevron-right"></i></a>
+                            <a href="#"><i class="fa fa-chevron-right"></i></a>
                         </div><!-- /.item-small-more -->
                     </div><!-- /.item-small -->
                 {% endfor %}
@@ -42,82 +88,61 @@
     {% endif %}
 {% endblock %}
 
-{% block body %}
-    <div class="content-blocks">
+{% block content %}
+    <div class="main-content">
+        <div class="single-content">
+            <div class="single-job mb-4 d-lg-flex justify-content-between">
+                <div class="job-text">
+                    <h4>{{ company.getName() }}</h4>
+                    <ul class="mt-4">
+                        <li class="mb-3"><h5><i class="fa fa-map-marker"></i> {{ company.getAddress()|nl2br }}</h5></li>
+                        <li class="mb-3"><h5><i class="fa fa-pie-chart"></i> Applied Chemistry &amp; Chemical Engineering / Chemistry</h5></li>
+                        <li><h5><i class="fa fa-money"></i> {{ company.getEmail() }}</h5></li>
+                        <li><h5><i class="fa fa-clock-o"></i> {{ company.created|date("y/m/d") }}</h5></li>
+                    </ul>
+                </div>
+                <div class="job-btn align-self-center">
+                    <a href="#" class="forth-btn">view</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if jobs %}
         <div class="content-block">
-            <h3>{{ company.getName() }}</h3>
+            <h3>{{ 'Created Job Positions'|trans }}</h3>
 
-            {% if company.getAddress() %}
-                <address class="company-address">
-                    {{ company.getAddress()|nl2br }}
-                </address><!-- /.company-address -->
-            {% endif %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th class="min-width center">{{ 'ID'|trans }}</th>
+                    <th>{{ 'Title'|trans }}</th>
+                    <th class="min-width right">{{ 'Created'|trans }}</th>
+                    <th></th>
+                </tr>
+                </thead>
 
-            {% if company.getDescription() %}
-                {{ company.getDescription()|striptags('<ol><ul><li><i><b><a><p>')|raw }}
-            {% endif %}
-
-            <div class="profile-items">
-                {% if company.getEmail() %}
-                    <div class="profile-phone">
-                        <strong>{{ 'E-mail'|trans }}:</strong>
-                        <span>{{ company.getEmail() }}</span>
-                    </div><!-- /.profile-phone -->
-                {% endif %}
-
-                {% if company.getPhone() %}
-                    <div class="profile-phone">
-                        <strong>{{ 'Phone'|trans }}:</strong>
-                        <span><a href="{{ company.getPhone() }}">{{ company.getPhone() }}</a></span>
-                    </div><!-- /.profile-phone -->
-                {% endif %}
-
-                {% if company.getWebsite() %}
-                    <div class="profile-website">
-                        <strong>{{ 'Website'|trans }}:</strong>
-                        <span><a href="{{ company.getWebsite() }}">{{ company.getWebsite() }}</a></span>
-                    </div><!-- /.profile-website -->
-                {% endif %}
-            </div><!-- /.profiles-items -->
-        </div><!-- /.content-block -->
-
-
-        {% if jobs %}
-            <div class="content-block">
-                <h3>{{ 'Created Job Positions'|trans }}</h3>
-
-                <table class="table">
-                    <thead>
+                <tbody>
+                {% for job in jobs %}
                     <tr>
-                        <th class="min-width center">{{ 'ID'|trans }}</th>
-                        <th>{{ 'Title'|trans }}</th>
-                        <th class="min-width right">{{ 'Created'|trans }}</th>
-                        <th></th>
+                        <td class="min-width center bold">#{{ job.getId() }}</td>
+
+                        <td>
+                            <a href="{{ path('job_details', {'id': job.getId()}) }}" class="simple-link">{{ job.getName() }}</a>
+                        </td>
+
+                        <td class="min-width right not-important">
+                            {{ job.getCreated()|date("F jS") }}
+                        </td>
+
+                        <td class="min-width">
+                            <a href="{{ path('job_details', {'id': job.getId() }) }}">View Job <i class="fa fa-chevron-right"></i></a>
+                        </td>
                     </tr>
-                    </thead>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div><!-- /.content-block -->
+    {% endif %}
 
-                    <tbody>
-                    {% for job in jobs %}
-                        <tr>
-                            <td class="min-width center bold">#{{ job.getId() }}</td>
-
-                            <td>
-                                <a href="{{ path('job_details', {'id': job.getId()}) }}" class="simple-link">{{ job.getName() }}</a>
-                            </td>
-
-                            <td class="min-width right not-important">
-                                {{ job.getCreated()|date("F jS") }}
-                            </td>
-
-                            <td class="min-width">
-                                <a href="{{ path('job_details', {'id': job.getId() }) }}">View Job <i class="fa fa-chevron-right"></i></a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div><!-- /.content-block -->
-        {% endif %}
-
-    </div><!-- /.content-blocks -->
 {% endblock %}
