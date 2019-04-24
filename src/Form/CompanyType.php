@@ -17,7 +17,6 @@ class CompanyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('user', UserType::class)
             ->add('name', TextType::class)
             ->add('email', EmailType::class)
             ->add('website', TextType::class, [

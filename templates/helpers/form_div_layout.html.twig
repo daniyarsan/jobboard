@@ -1,0 +1,833 @@
+{% extends "form_div_layout.html.twig" %}
+{% block form_label %}
+    {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' col-lg-2 col-xs-4 control-label text-right')|trim}) %}
+    {{ parent() }}
+    {% if attr['data-hint'] is defined %} {{ hint(attr['data-hint']) }} {% endif %}
+{% endblock %}
+
+{% block button_row %}
+    {% spaceless %}
+        {{ form_widget(form) }}&nbsp;
+    {% endspaceless %}
+{% endblock button_row %}
+
+{% block form_row %}
+    {% spaceless %}
+        {% if form.vars.label is not sameas(false) %}
+        <div class="form-group{% if errors|length > 0 %} has-error{% endif %}">
+            {{ form_label(form) }}
+            <div class="col-lg-10 col-xs-8">
+                {{ form_widget(form) }}
+                {{ form_errors(form) }}
+            </div>
+        </div>
+        {% else %}
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_row %}
+
+{% block checkbox_row %}
+    {% spaceless %}
+        {% if form.vars.label is not sameas(false) %}
+            <div class="form-group{% if errors|length > 0 %} has-error{% endif %}">
+                {{ form_label(form) }}
+                <div class="col-lg-10 col-xs-8">
+                    <div class="checkbox">
+                        <label>
+                            {{ form_widget(form) }}
+                        </label>
+                    </div>
+                    {{ form_errors(form) }}
+                </div>
+            </div>
+        {% else %}
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+        {% endif %}
+    {% endspaceless %}
+{% endblock checkbox_row %}
+
+{% block form_widget_simple %}
+    {% set attr = attr|merge({'class': (attr.class|default('') ~ ' form-control')|trim}) %}
+    {{ parent() }}
+{% endblock form_widget_simple %}
+
+{% block choice_widget_collapsed %}
+    {% set attr = attr|merge({'class': (attr.class|default('') ~ ' form-control')|trim}) %}
+    {{ parent() }}
+{% endblock choice_widget_collapsed %}
+
+{% block textarea_widget %}
+    {% if wysiwyg %}
+        {% set attr = attr|merge({'class': (attr.class|default('') ~ ' ckeditor')|trim}) %}
+    {% else %}
+        {% set attr = attr|merge({'class': (attr.class|default('') ~ ' form-control')|trim}) %}
+    {% endif %}
+    {{ parent() }}
+{% endblock textarea_widget %}
+
+{% block keensteps_ecommercebundle_imagesize_widget %}
+    <div class="form-group image-size-field">
+        <div class="row">
+            <div class="col-xs-3 {% if form.width.vars.errors|length > 0 %} has-error{% endif %}">
+                {{ form_widget(form.width) }}
+            </div>
+            <div class="col-xs-1 text-center form-control-static">X</div>
+            <div class="col-xs-3 {% if form.height.vars.errors|length > 0 %} has-error{% endif %}">
+                {{ form_widget(form.height) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4">
+                {{ form_errors(form.width) }}
+            </div>
+            <div class="col-xs-4">
+                {{ form_errors(form.height) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block button_widget %}
+    {% set attr = attr|merge({'class': (attr.class|default('') ~ ' btn btn-default')|trim}) %}
+    {{ parent() }}
+{% endblock %}
+
+{% block percent_widget %}
+    {% spaceless %}
+        {% set type = type|default('text') %}
+        <div class="input-group">{{ block('form_widget_simple') }}<span class="input-group-addon">%</span></div>
+    {% endspaceless %}
+{% endblock percent_widget %}
+
+{% block state_widget %}
+    <select id="{{ id }}_select" name="{{ full_name }}" disabled="disabled" style="display: none;" class="form-control">
+        {% if empty_dropdown_value %}
+            <option value="">{{ empty_dropdown_value|trans }}</option>
+        {% endif %}
+        {% for stateId, stateName in states %}
+            <option value="{{ stateId }}" {% if stateId == value %}selected="selected"{% endif %}>{{ stateName|trans }}</option>
+        {% endfor %}
+    </select>
+    {% if parent.vars.value == 'US' %}
+        {% set value = '' %}
+    {% endif %}
+    {{ block('form_widget_simple') }}
+{% endblock %}
+
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            <div class="help-block" data-parent="#{{ id }}">
+                <ul class="list-unstyled">
+                    {% for error in errors %}
+                        <li><div class="label label-danger">{{ error.message }}</div></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
+
+{% block current_currency_widget %}
+    {% spaceless %}
+        <div class="input-group">
+            {% if form.vars.currency_symbol_position %}
+                <span class="input-group-addon">{{ currency_symbol }}</span>
+            {% endif %}
+            {{ block('form_widget') }}
+            {% if not form.vars.currency_symbol_position %}
+                <span class="input-group-addon">{{ currency_symbol }}</span>
+            {% endif %}
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block keensteps_ecommercebundle_image_widget %}
+
+    {% macro uploader(form, id) %}
+        <div id="{{ id ~ '-uploader' }}">
+            <div class="form-group">
+                {% if form.vars.mode == 'compact' %}
+                    {{ form_label(form.file) }}
+                {% endif %}
+                {{ form_widget(form.file) }}
+                <div class="{% if form.vars.mode == 'compact' %}col-lg-10 col-xs-8{% else %}col-lg-12{% endif %}">
+                    <div style="width: 145px; height:130px;" class="pull-left">
+                        <div style="text-align: center; line-height: 120px; width: 130px; height: 130px; position: relative;" class="image-block thumbnail">
+                            <div class="no-image" style="{% if form.file.vars.value %}display:none;{% endif %} line-height: 120px; text-align: center; overflow: hidden; z-index: 1">{% trans %}No image{% endtrans %}</div>
+                            <div class="image">
+                                <button type="button" class="btn btn-danger btn-xs" style="position: absolute; right: 0; top: 0; z-index: 3;" aria-hidden="true" onclick="setImage('{{ id }}', '')" data-toggle="tooltip" data-title="{% trans %}Delete Image{% endtrans %}">&times;</button>
+                                <a id="{{ id ~ '-image-link' }}" target="_blank" href="{{ form.file.vars.value }}">
+                                    <img id="{{ id ~ '-image' }}" src="{{ form.file.vars.value|default('default-image.jpg')|imagine_filter(form.vars.thumbnail) }}" style="display:{% if not form.file.vars.value %}none{% else %}inline-block{% endif %}; max-width: {{ form.vars.width }}; max-height: {{ form.vars.height }};" class="img-rounded" data-toggle="tooltip" data-placement="top" title="{% trans %}Click to view full size image{% endtrans %}"/>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pull-left" style="min-width: 450px;">
+                        <div><label class="control-label">{% trans %}Upload Image:{% endtrans %}</label></div>
+                        <div class="form-inline btn-group">
+                            <label for="{{ id ~ '-file-control' }}" class="btn btn-default">{% trans %}From your computer{% endtrans %}</label>
+                            <input name="file" id="{{ id ~ '-file-control' }}" type="file" style="display: none;" onchange="uploadImageFile('{{ id }}');" />
+                            <button type="button" data-toggle="modal" data-target="#{{ id ~ '-from-web' }}" class="btn btn-default">{% trans %}From the web{% endtrans %}</button>
+                            <button type="button" data-toggle="modal" data-target="#{{ id ~ '-from-gallery' }}" class="btn btn-default">{% trans %}From your gallery{% endtrans %}</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            {% if form.vars.mode != 'compact' %}
+                <div class="form-group">
+                    <div class="col-lg-12" style="min-width: 585px;">
+                        {{ form_widget(form.description) }}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    {% endmacro %}
+    {#{% set id = id ~ random() %}#}
+
+    <div id="{{ id }}-container">
+        {% if form.vars.mode == 'compact' %}
+            <div data-toggle="modal" data-target="#{{ id }}-uploader" class="image-block image-block-compact">
+                <a href="#" class="no-image" style="{% if form.file.vars.value %}display:none;{% endif %}"><div class="control-label pull-left">{% trans %}Upload Image{% endtrans %}</div></a>
+                <img data-toggle="tooltip" data-placement="top" title="{% trans %}Click to change the image{% endtrans %}" id="{{ id ~ '-image-compact' }}" src="{{ form.file.vars.value|default('default-image.jpg')|imagine_filter(form.vars.thumbnail) }}" style="{% if not form.file.vars.value %}display:none;{% endif %} max-width: {{ form.vars.width }}; max-height: {{ form.vars.height }};" class="img-rounded" />
+            </div>
+            <div class="modal fade" id="{{ id }}-uploader" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="width: 1100px">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">{% trans %}Upload Image{% endtrans %}</h4>
+                        </div>
+                        <div class="modal-body">
+                            {{ _self.uploader(form, id) }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            {{ _self.uploader(form, id) }}
+        {% endif %}
+    </div>
+
+    {#Modal dialogs#}
+
+    {#From the web#}
+    <div class="modal fade" id="{{ id ~ '-from-web' }}" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">{% trans %}Upload Image From the Web{% endtrans %}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label col-lg-3">{% trans %}Image URL:{% endtrans %}</label>
+                        <div class="col-lg-9">
+                            <input id="{{ id ~ '-url-control' }}" type="text" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                    <button onclick="uploadImageWeb('{{ id }}');" type="button" class="btn btn-primary">{% trans %}Upload Image{% endtrans %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {#Progress bar#}
+    <div class="modal fade" id="{{ id }}-progress" tabindex="-1" role="dialog" aria-labelledby="{{ id }}-uploading" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 id="{{ id }}-uploading" class="modal-title">{% trans %}Uploading{% endtrans %}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="progress progress-striped active">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                    </div>
+                    <div class="alert alert-danger" style="display: none;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default close-progress" style="display: none;" onclick="closeGalleryProgress('{{ id }}');">{% trans %}Ok{% endtrans %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {#From the Gallery#}
+    <div class="gallery modal fade" id="{{ id }}-from-gallery" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" style="width: 900px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">{% trans %}Upload Image From the Gallery{% endtrans %}</h4>
+                </div>
+                <div class="modal-body">
+                    <iframe style="height: 400px;" src="{{ path('keensteps_ecommerce_gallery_list', {'id': id}) }}"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block categorytree_widget %}
+    <div id="{{ id }}" class="tree-widget-container checkbox row category-selector">
+        <input type="hidden" name="{{ full_name }}" value="{{ value }}" />
+        <div class="selected-category">{% trans %}Root Category{% endtrans %}</div>
+        <div class="modal fade" id="{{ id }}-category-picker" tabindex="-1" role="dialog" aria-labelledby="{{ id }}_modal_title" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="{{ id }}_modal_title">{% trans %}Select Category{% endtrans %}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" data-value="">
+                            <span class="glyphicon col-lg-1"></span>
+                            <div class="tree-node tree-node-root col-lg-11">
+                                <span class="tree-text">{% trans %}Root Category{% endtrans %}</span>
+                            </div>
+                        </div>
+                        {% for entity in entities %}
+                            {{ _self.tree_row(entity, repository, exclude) }}
+                        {% endfor %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <span class="help-block">
+        <button type="button" class="btn" data-toggle="modal" data-target="#{{ id }}-category-picker">{% trans %}Select Category{% endtrans %}</button>
+    </span>
+
+    {% macro tree_row(entity, repository, exclude) %}
+        {% if entity.id != exclude %}
+            <div class="row" {% if entity.getLevel > 1 %}style="display: none;" {% endif %} data-value="{{ entity.id }}" data-parent="{{ entity.parent.id|default('') }}">
+                <span class="glyphicon glyphicon-plus col-lg-1"></span>
+                <div class="col-lg-11 tree-node {% if entity.getLevel <= 1 %}tree-node-root{% endif %}">
+                    {% if entity.getLevel > 1 %}
+                        <span style="margin-left: {{ 20 * (entity.getLevel-2) }}px;"></span>
+                        <span class="bigcommerceicon glyphicon-row-child"></span>
+                    {% endif %}
+                    <span class="tree-text">{{ entity.name|trans }}</span>
+                </div>
+            </div>
+            {% for subEntity in repository.getChildren(entity, true, 'position', 'asc') %}
+                {{ _self.tree_row(subEntity, repository, exclude) }}
+            {% endfor %}
+        {% endif %}
+    {% endmacro %}
+
+    <script type="text/javascript">
+        $().ready(function() {
+
+            $(".tree-node").click(function() {
+                var container = $(this).closest(".tree-widget-container");
+                container.find("input[type='hidden']").val($(this).closest(".row").data("value")).change();
+                container.find(".modal").modal("hide");
+            });
+
+            $(".tree-widget-container .glyphicon-plus").click(function() {
+                if ($(this).hasClass("glyphicon-plus")) {
+                    $(this).removeClass("glyphicon-plus").addClass("glyphicon-minus");
+                    $(this).closest(".tree-widget-container").find(".row[data-parent='" + $(this).closest(".row").data("value") + "']").show();
+                } else {
+                    $(this).removeClass("glyphicon-minus").addClass("glyphicon-plus");
+                    var selector = ".row[data-parent='" + $(this).closest(".row").data("value") + "']";
+                    $(this).closest(".tree-widget-container").find(selector + " .glyphicon-minus").click();
+                    $(this).closest(".tree-widget-container").find(selector).hide();
+                }
+            });
+
+            $(".tree-widget-container").find(".modal .row").each(function() {
+                if ($(this).closest(".tree-widget-container").find("*[data-parent='" + $(this).data("value") + "']").length == 0) {
+                    $(this).find(".glyphicon-plus").removeClass("glyphicon-plus");
+                }
+            });
+
+            $(".tree-widget-container input[type='hidden']").change(function() {
+                // init
+                var value = $(this).val();
+                var container = $(this).closest(".tree-widget-container");
+                var stack = new Array();
+                var row = container.find("*[data-value='" + value + "']");
+
+                // highlight selected
+                container.find(".tree-node-selected").removeClass("tree-node-selected");
+                row.find(".tree-node").addClass("tree-node-selected");
+
+                // build view
+                while (row.data("parent")) {
+                    stack.push(row.find(".tree-text").text());
+                    row = container.find("*[data-value='" + row.data("parent") + "']");
+
+                    // display selected element on start
+                    row.find(".glyphicon-plus").click();
+                }
+                stack.push(row.find(".tree-text").text());
+                var html = "";
+                var i = 0;
+                while (stack.length) {
+                    if (i < 1) {
+                        html += '<div></span>' + stack.pop() + '</div>';
+                    } else {
+                        html += '<div style="margin-left: ' + 20 * (i-1) + 'px;"><span class="bigcommerceicon glyphicon-row-child"></span>' + stack.pop() + '</div>';
+                    }
+                    i++;
+                }
+                container.find(".selected-category").html(html);
+            }).change();
+        });
+
+    </script>
+{% endblock %}
+
+{% block categories_widget %}
+    <div class="tree-widget-container category-selector">
+        <div id="{{ id }}" class="row col-lg-12">
+            <div class="selected-category"></div>
+            <div class="modal fade category-modal-selector" id="{{ id }}-category-picker" tabindex="-1" role="dialog" aria-labelledby="{{ id }}_modal_title" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="{{ id }}_modal_title">{% trans %}Select Categories{% endtrans %}</h4>
+                        </div>
+                        <div class="modal-body">
+                            {% for entity in entities %}
+                                {{ _self.categories_tree_row(entity, repository, full_name, value) }}
+                            {% endfor %}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                            <button type="button" class="btn btn-default tree-perform-select-btn" data-dismiss="modal">{% trans %}Select Categories{% endtrans %}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row col-lg-12">
+            <button type="button" class="btn tree-select-btn">{% trans %}Select Categories{% endtrans %}</button>
+        </div>
+    </div>
+
+    {% macro categories_tree_row(entity, repository, full_name, value) %}
+        <div class="row" {% if entity.getLevel > 1 %}style="display: none;"{% endif %} data-value="{{ entity.id }}" data-parent="{{ entity.parent.id|default('') }}">
+            <div class="checkbox col-lg-1">
+                <span class="glyphicon glyphicon-plus"></span>
+            </div>
+            <div class="col-lg-11 tree-node-multiple {% if entity.getLevel <= 1 %}tree-node-root{% endif %}">
+                <div class="checkbox" {% if entity.getLevel > 1 %}style="margin-left: {{ 20 * (entity.getLevel-1) }}px;"{% endif %}>
+                    <span class="tree-text">
+                        {% set selected = false %}
+                        {% for selectedEntityId in value %}
+                            {% if selectedEntityId == entity.id %}
+                                {% set selected = true %}
+                            {% endif %}
+                        {% endfor %}
+                        <input type="checkbox" {% if selected %}checked="checked"{% endif %} data-value="{{ entity.id }}" />
+                        <input type="hidden" name="{{ full_name }}" value="{{ entity.id }}" {% if not selected %}disabled="disabled"{% endif %} />
+                        {{ entity.name|trans }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        {% for subEntity in repository.getChildren(entity, true, 'position', 'asc') %}
+            {{ _self.categories_tree_row(subEntity, repository, full_name, value) }}
+        {% endfor %}
+    {% endmacro %}
+
+    <script type="text/javascript">
+        $().ready(function() {
+
+            $(".tree-widget-container .tree-select-btn").click(function() {
+                var container = $(this).closest(".tree-widget-container");
+                container.find(".modal").modal("show");
+                container.find("input[type='hidden']").each(function() {
+                    $(this).prev().prop("checked", !$(this).prop("disabled"));
+                });
+
+            });
+
+            // show hide child elements
+            $(".tree-widget-container .glyphicon-plus").click(function() {
+                if ($(this).hasClass("glyphicon-plus")) {
+                    $(this).removeClass("glyphicon-plus").addClass("glyphicon-minus");
+                    $(this).closest(".tree-widget-container").find(".row[data-parent='" + $(this).closest(".row").data("value") + "']").show();
+                } else {
+                    $(this).removeClass("glyphicon-minus").addClass("glyphicon-plus");
+                    var selector = ".row[data-parent='" + $(this).closest(".row").data("value") + "']";
+                    $(this).closest(".tree-widget-container").find(selector + " .glyphicon-minus").click();
+                    $(this).closest(".tree-widget-container").find(selector).hide();
+                }
+            });
+
+            // show expand control only if child exists
+            $(".tree-widget-container").find(".modal .row").each(function() {
+                if ($(this).closest(".tree-widget-container").find("*[data-parent='" + $(this).data("value") + "']").length == 0) {
+                    $(this).find(".glyphicon-plus").removeClass("glyphicon-plus");
+                }
+            });
+
+            // select and display selected items
+            $(".tree-perform-select-btn").click(function() {
+                var container = $(this).closest(".tree-widget-container");
+
+                // enable selected items and disable others
+                container.find("input[type='checkbox']").each(function() {
+                    $(this).next().prop("disabled", !$(this).prop("checked"));
+                });
+
+                // show dialog
+                container.find(".modal").modal("hide");
+
+                // display selected items
+                container.find(".selected-category").html("");
+                $(".tree-widget-container input[type='hidden']:enabled").each(function() {
+                    // init
+                    var value = $(this).val();
+                    var container = $(this).closest(".tree-widget-container");
+                    var stack = new Array();
+                    var row = container.find("*[data-value='" + value + "']");
+
+                    // build view
+                    while (row.data("parent")) {
+                        stack.push(row.find(".tree-text").text());
+                        row = container.find("*[data-value='" + row.data("parent") + "']");
+
+                        // display selected element on start
+                        row.find(".glyphicon-plus").click();
+                    }
+                    stack.push(row.find(".tree-text").text());
+                    var html = '<div class="row checkbox" data-selected-id="' + value + '" style="padding-bottom: 20px;">';
+                    var i = 0;
+                    html += '<div style="position: relative; width:300px;">';
+                    while (stack.length) {
+                        if (i < 1) {
+                            html += '<span>' + stack.pop() + '</span>';
+                        } else {
+                            html += '<div style="margin-left: ' + 20 * (i-1) + 'px;"><span class="bigcommerceicon glyphicon-row-child"></span>' + stack.pop() + '</div>';
+                        }
+                        i++;
+                    }
+                    html += '<span class="glyphicon glyphicon-minus" style="right: 0; position:absolute;"></span></div>';
+                    html += "</div>";
+
+                    container.find(".selected-category").append(html);
+                });
+
+                // position and handle remove selected item
+                container.find(".selected-category").find(".glyphicon-minus").each(function() {
+                    $(this).css("top", $(this).parent().height()/2 - $(this).height()/2);
+                    $(this).click(function() {
+                        var row = $(this).closest(".checkbox");
+                        row.closest(".tree-widget-container").find("*[data-value='" + row.data("selected-id") + "'] input[type='hidden']").prop("disabled", true);
+                        row.remove();
+                    });
+                });
+            }).click();
+
+        });
+
+    </script>
+{% endblock %}
+
+{% block shipping_gateway_rates_by_weight_widget %}
+    <div {{ block('widget_attributes') }}>
+        {% macro shipping_gateway_rates_by_weight_rule_row(row) %}
+            <tr>
+                <td class="col-lg-5 col-xs-4">
+                    <label for="{{ row.greaterThan.vars.id }}" class="control-label col-lg-4">{% trans %}greater than{% endtrans %}</label>
+                    <div class="input-group">
+                        {{ form_widget(row.greaterThan) }}
+                        <span class="input-group-addon">{% trans %}lbs{% endtrans %}</span>
+                    </div>
+                    {{ form_errors(row.greaterThan) }}
+                </td>
+                <td class="col-lg-5 col-xs-4">
+                    {{ form_widget(row.cost) }}
+                    {{ form_errors(row.cost) }}
+                </td>
+                <td class="col-lg-2 col-xs-4">
+                    <span class="glyphicon glyphicon-plus control-label"></span>
+                    <span class="glyphicon glyphicon-minus control-label"></span>
+                    {{ form_widget(row.position) }}
+                </td>
+            </tr>
+        {% endmacro %}
+        {% set prototype = _self.shipping_gateway_rates_by_weight_rule_row(form.rules.vars.prototype) %}
+        <table class="table table-hover" data-index="{{ form.rules|length+1 }}" data-prototype="{{ prototype|e }}">
+            <thead>
+                <tr>
+                    <th>{% trans %}Weight{% endtrans %}</th>
+                    <th>{% trans %}Shipping Cost{% endtrans %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% if form.rules|length %}
+                {% for rule in form.rules %}
+                    {{ _self.shipping_gateway_rates_by_weight_rule_row(rule) }}
+                {% endfor %}
+            {% else %}
+                {{ prototype|replace({'__name__': '0'})|raw }}
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // disable first row modification
+            var firstRow = $("#{{ id }} tbody tr").first();
+            firstRow.find(".glyphicon-minus").remove();
+            firstRow.find("input").first()
+                    .prop("readonly", true)
+                    .val('0');
+
+            // handle events
+            updateShippingGatewayRatesByWeightRuleEvents();
+
+            // sort items
+            var table = $("#{{ id }} tbody");
+            var rows = table.children();
+            rows.sort(function(a, b) {
+                if ($(a).find(".sort-position").val() > $(b).find(".sort-position").val()) {
+                    return 1;
+                }
+                else if ($(a).find(".sort-position").val() < $(b).find(".sort-position").val()) {
+                    return -1;
+                }
+                return 0;
+            });
+            table.append(rows);
+        });
+
+        function updateShippingGatewayRatesByWeightRuleEvents() {
+            $("#{{ id }} .glyphicon-plus, #{{ id }} .glyphicon-minus").off("click");
+
+            $("#{{ id }} .glyphicon-minus").click(function() {
+                $(this).closest("tr").remove();
+            });
+
+            $("#{{ id }} .glyphicon-plus").click(function() {
+                var table = $(this).closest("table");
+                $(this).closest("tr").after(table.data("prototype").replace(/__name__/g, table.data("index")));
+                table.data("index", table.data("index") + 1);
+                updateShippingGatewayRatesByWeightRuleEvents();
+
+                table.find("tbody").children().each(function(index) {
+                    $(this).find(".sort-position").val(index);
+                });
+            });
+        }
+    </script>
+{% endblock %}
+
+{% block shipping_gateway_rates_by_order_total_widget %}
+    <div {{ block('widget_attributes') }}>
+        {% macro shipping_gateway_rates_by_order_total_rule_row(row) %}
+            <tr>
+                <td class="col-lg-5 col-xs-4">
+                    <label for="{{ row.greaterThan.vars.id }}" class="control-label col-lg-4">{% trans %}greater than{% endtrans %}</label>
+                    {{ form_widget(row.greaterThan) }}
+                    {{ form_errors(row.greaterThan) }}
+                </td>
+                <td class="col-lg-5 col-xs-4">
+                    {{ form_widget(row.cost) }}
+                    {{ form_errors(row.cost) }}
+                </td>
+                <td class="col-lg-2 col-xs-4">
+                    <span class="glyphicon glyphicon-plus control-label"></span>
+                    <span class="glyphicon glyphicon-minus control-label"></span>
+                    {{ form_widget(row.position) }}
+                </td>
+            </tr>
+        {% endmacro %}
+        {% set prototype = _self.shipping_gateway_rates_by_order_total_rule_row(form.rules.vars.prototype) %}
+        <table class="table table-hover" data-index="{{ form.rules|length+1 }}" data-prototype="{{ prototype|e }}">
+            <thead>
+                <tr>
+                    <th>{% trans %}Order Total{% endtrans %}</th>
+                    <th>{% trans %}Shipping Cost{% endtrans %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% if form.rules|length %}
+                {% for rule in form.rules %}
+                    {{ _self.shipping_gateway_rates_by_order_total_rule_row(rule) }}
+                {% endfor %}
+            {% else %}
+                {{ prototype|replace({'__name__': '0'})|raw }}
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // disable first row modification
+            var firstRow = $("#{{ id }} tbody tr").first();
+            firstRow.find(".glyphicon-minus").remove();
+            firstRow.find("input").first()
+                    .prop("readonly", true)
+                    .val('0');
+
+            // handle events
+            updateShippingGatewayRatesByOrderTotalRuleEvents();
+
+            // sort items
+            var table = $("#{{ id }} tbody");
+            var rows = table.children();
+            rows.sort(function(a, b) {
+                if ($(a).find(".sort-position").val() > $(b).find(".sort-position").val()) {
+                    return 1;
+                }
+                else if ($(a).find(".sort-position").val() < $(b).find(".sort-position").val()) {
+                    return -1;
+                }
+                return 0;
+            });
+            table.append(rows);
+        });
+
+        function updateShippingGatewayRatesByOrderTotalRuleEvents() {
+            $("#{{ id }} .glyphicon-plus, #{{ id }} .glyphicon-minus").off("click");
+
+            $("#{{ id }} .glyphicon-minus").click(function() {
+                $(this).closest("tr").remove();
+            });
+
+            $("#{{ id }} .glyphicon-plus").click(function() {
+                var table = $(this).closest("table");
+                $(this).closest("tr").after(table.data("prototype").replace(/__name__/g, table.data("index")));
+                table.data("index", table.data("index") + 1);
+                updateShippingGatewayRatesByOrderTotalRuleEvents();
+
+                table.find("tbody").children().each(function(index) {
+                    $(this).find(".sort-position").val(index);
+                });
+            });
+        }
+    </script>
+{% endblock %}
+
+{% block keensteps_ecommercebundle_mediafile_row %}
+    {% macro uploadFile(form, errors, id) %}
+        <div id="{{ id ~ '-uploader' }}" class="{% if errors %} has-error{% endif %}" >
+            <div id="{{ id ~ '-upload-message' }}">
+                <div class="alert alert-success" style="display: none;"
+                     data-success-message="{{ 'File "%file%" is successfully uploaded.'|trans({'%file%': '_fileName_'})|e }}">
+                </div>
+                <div class="alert alert-danger" style="display: none;"
+                     data-error-message="{{ 'Failed to upload file "%file%".'|trans({'%file%': '_fileName_'})|e }}"
+                     data-server-error="{{ 'Internal Server Error.'|trans }}" >
+                </div>
+            </div>
+            {{ form_widget(form.fileName) }}
+            {{ form_widget(form.url) }}
+            <div id="{{ id ~ '-filename-field' }}" class="form-group" {% if not form.fileName.vars.value %}style="display: none;"{% endif %}>
+                {{ form_label(form.fileName) }}
+                <div class="col-lg-10 col-xs-8">
+                    <div class="form-control-static" id="{{ id }}-title">{{ form.fileName.vars.value }}</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-2 col-xs-4 control-label text-right">{% trans %}Upload File:{% endtrans %}</label>
+                <div class="col-lg-10 col-xs-8">
+                    <div class="btn-group">
+                        <label for="{{ id ~ '-file-control' }}" class="btn btn-default">{% trans %}From your computer{% endtrans %}</label>
+                        <input name="file" id="{{ id ~ '-file-control' }}" type="file" style="display: none;" onchange="uploadFile('{{ id }}');"/>
+                        <button type="button" data-toggle="modal" data-target="#{{ id ~ '-from-web' }}" class="btn btn-default">{% trans %}From the web{% endtrans %}</button>
+                        <button type="button" data-toggle="modal" data-target="#{{ id ~ '-from-server' }}" class="btn btn-default">{% trans %}From the server{% endtrans %}</button>
+                    </div>
+                    {{ form_errors(form) }}
+                </div>
+            </div>
+        </div>
+        {{ form_widget(form.url) }}
+        {% if form.vars.allowDescription %}
+            <div class="form-group">
+                <label class="col-lg-2 col-xs-4 control-label text-right">{% trans %}Description:{% endtrans %}</label>
+                <div class="col-lg-10 col-xs-8">{{ form_widget(form.description) }}</div>
+            </div>
+        {% endif %}
+    {% endmacro %}
+
+    {{ _self.uploadFile(form, errors, id) }}
+
+    {#From the Server#}
+    <div class="productfile modal fade" id="{{ id }}-from-server" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" style="width: 900px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">{% trans %}Upload File From the Server{% endtrans %}</h4>
+                </div>
+                <div class="modal-body">
+                    <iframe id="{{ id }}-frame-productfiles" style="height: 400px;" src="{{ path('keensteps_ecommerce_filelist_list', {'id': id}) }}"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {#From the Web#}
+    <div class="modal fade" id="{{ id ~ '-from-web' }}" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">{% trans %}Upload File From the Web{% endtrans %}</h4>
+                </div>
+                <div class="modal-body form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-lg-3">{% trans %}File URL:{% endtrans %}</label>
+                        <div class="col-lg-9">
+                            <input id="{{ id ~ '-url-control' }}" type="text" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                    <button onclick="uploadFileWeb('{{ id }}');" type="button" class="btn btn-primary">{% trans %}Upload File{% endtrans %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {#Progress bar#}
+    <div class="modal fade" id="{{ id }}-progress" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{% trans %}Uploading{% endtrans %}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="progress progress-striped active">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                    </div>
+                    <div class="alert alert-danger" style="display: none;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default close-progress" style="display: none;" onclick="closeGalleryProgress('{{ id }}');">{% trans %}Ok{% endtrans %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

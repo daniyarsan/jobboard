@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base-index.html.twig' %}
 
 {% block title %}Log in!{% endblock %}
 
@@ -7,19 +7,43 @@
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    <form action="{{ path('security_login') }}" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" class="form-control" name="_username" value="{{ last_username }}" />
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" class="form-control" name="_password" />
-
-        {#
-            If you want to control the URL the user
-            is redirected to on success (more details below)
-            <input type="hidden" name="_target_path" value="/account" />
-        #}
-
-        <button type="submit" class="btn btn-primary">login</button>
-    </form>
+    <div class="padding-top-90 padding-bottom-90 access-page-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-4 col-md-6">
+                    <div class="access-form">
+                        <div class="form-header">
+                            <h5><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>Login</h5>
+                        </div>
+                        <form action="{{ path('security_login') }}" method="POST">
+                            <div class="form-group">
+                                <input type="email" placeholder="Email Address" name="_username" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" placeholder="Password" name="_password" class="form-control">
+                            </div>
+                            <div class="more-option">
+                                <div class="mt-0 terms">
+                                    <input class="custom-radio" type="checkbox" id="radio-4" name="termsandcondition">
+                                    <label for="radio-4">
+                                        <span class="dot"></span> Remember Me
+                                    </label>
+                                </div>
+                                <a href="#">Forget Password?</a>
+                            </div>
+                            <button class="button primary-bg btn-block">Login</button>
+                        </form>
+                        <div class="shortcut-login">
+                            <span>Or connect with</span>
+                            <div class="buttons">
+                                <a href="#" class="facebook"><i class="fab fa-facebook-f"></i>Facebook</a>
+                                <a href="#" class="google"><i class="fab fa-google"></i>Google</a>
+                            </div>
+                            <p>Don't have an account? <a href="{{ path('security_registration') }}">Register</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -39,6 +39,7 @@
 	25.0 Blog Style
 	26.0 Contact Style
 	27.0 Payment Style
+	28.0 Account Style
 	
 -------------------------------------------*/
 /*----------------------------------------------
@@ -181,6 +182,10 @@ a:focus {
 
 .section-padding-bottom {
   padding-bottom: 120px;
+}
+
+.section-padding-150 {
+  padding: 150px 0;
 }
 
 .padding-top-90 {
@@ -1576,6 +1581,39 @@ a:focus {
   font-size: 1.4rem;
 }
 
+.error-page-wrap {
+  -webkit-box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.03);
+  box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.03);
+}
+
+.error-page-wrap .icon {
+  margin-bottom: 50px;
+}
+
+.error-page-wrap h1 {
+  font-size: 6.0rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.error-page-wrap p {
+  color: #656565;
+  margin-bottom: 30px;
+}
+
+.error-page-wrap .button {
+  background: #246df8;
+  border-radius: 3px;
+  color: #ffffff;
+  font-size: 1.4rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  padding: 10px 30px;
+  letter-spacing: 2px;
+}
+
 @media all and (max-width: 1199px) {
   .filtered-job-listing-wrapper, .filtered-candidate-wrapper, .filtered-employer-wrapper {
     padding: 30px 20px;
@@ -2506,6 +2544,150 @@ a:focus {
   margin-top: 8px;
 }
 
+.apply-popup .modal-dialog {
+  margin: 20px auto;
+}
+
+.apply-popup .modal-dialog .modal-content .modal-header {
+  padding: 15px 30px;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.apply-popup .modal-dialog .modal-content .modal-header h5 {
+  font-size: 1.4rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #232630;
+}
+
+.apply-popup .modal-dialog .modal-content .modal-header h5 svg {
+  height: 15px;
+  width: 15px;
+  margin-right: 7px;
+  color: #bebebe;
+}
+
+.apply-popup .modal-dialog .modal-content .modal-header .close {
+  font-size: 2rem;
+  padding: 0;
+  margin: 0;
+  height: 30px;
+  width: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 50%;
+  color: #6f7484;
+  -webkit-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease;
+  outline: none;
+}
+
+.apply-popup .modal-dialog .modal-content .modal-body {
+  padding: 30px;
+}
+
+.apply-popup .modal-dialog .modal-content .modal-body .form-group {
+  margin-bottom: 30px;
+}
+
+.apply-popup .modal-dialog .modal-content .modal-body .form-group .form-control {
+  height: 50px;
+  border: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 0;
+  outline: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  font-size: 1.4rem;
+}
+
+.apply-popup .modal-dialog .modal-content .modal-body .form-group textarea.form-control {
+  height: 100px;
+}
+
+.apply-popup .modal-dialog .modal-content .modal-body .file-input-wrap label {
+  background: #f9f9f9;
+  border-radius: 3px;
+  border: 1px dashed #d5d5d5;
+  width: 100%;
+  display: block;
+  text-align: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 20px;
+  cursor: pointer;
+}
+
+.apply-popup .modal-dialog .modal-content .modal-body .file-input-wrap label input {
+  display: none;
+}
+
+.apply-popup .modal-dialog .modal-content .modal-body .file-input-wrap label svg {
+  display: block;
+  height: 20px;
+  width: 20px;
+  color: #aaaaaa;
+  margin: 0 auto;
+}
+
+.apply-popup .modal-dialog .modal-content .modal-body .file-input-wrap label span {
+  color: #6f7484;
+  font-size: 1.4rem;
+}
+
+.apply-popup .modal-dialog .modal-content .modal-body .file-input-wrap label span span {
+  font-size: 1.2rem;
+  color: #aaaaaa;
+}
+
+.apply-popup .modal-dialog .modal-content .modal-body .more-option {
+  margin-bottom: 30px;
+}
+
+.apply-popup .modal-dialog .modal-content .modal-body .more-option label {
+  color: #6f7484;
+}
+
+.apply-popup .modal-dialog .modal-content .modal-body .more-option label .dot {
+  border: 1px solid #dcdcdc;
+  border-radius: 5px;
+}
+
+.apply-popup .modal-dialog .modal-content .modal-body .more-option label .dot:before {
+  border-radius: 2px;
+}
+
+.apply-popup .modal-dialog .modal-content .modal-body .more-option label a {
+  color: #246df8;
+  text-decoration: underline;
+}
+
+.apply-popup .modal-dialog .modal-content .modal-body .button {
+  margin-left: 0;
+  padding: 15px;
+  border: 0;
+  border-radius: 5px;
+  background: #246df8;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 1.4rem;
+  font-family: "Poppins", sans-serif;
+  outline: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
 /*---------------------------------------------
 	Job Details
 ---------------------------------------------*/
@@ -3326,7 +3508,7 @@ a:focus {
 }
 
 .leaflet-popup {
-  margin-left: -120px !important;
+  margin-left: -140px !important;
 }
 
 .leaflet-container h5 a {
@@ -3393,6 +3575,23 @@ a:focus {
 
 .job-search-result-listing .body .info span + span {
   margin-left: 20px;
+}
+
+.leaflet-popup-tip-container {
+  top: calc(100% - 1px);
+}
+
+.leaflet-marker-icon.marker-cluster div {
+  left: 0;
+  bottom: 0;
+  margin-top: 0;
+  margin-left: 0;
+  height: 46px;
+  width: 46px;
+}
+
+.leaflet-marker-icon.marker-cluster div span {
+  line-height: 46px;
 }
 
 @media all and (max-width: 1199px) {
@@ -3498,6 +3697,9 @@ a:focus {
   }
   .company-information {
     margin-bottom: 30px;
+  }
+  .apply-popup .modal-dialog {
+    margin: 15px;
   }
 }
 
@@ -5295,6 +5497,35 @@ header .absolute-nav {
   height: 14px;
   width: 14px;
   margin-right: 7px;
+}
+
+.account-entry .modal-body .account-type label {
+  cursor: pointer;
+  width: 45%;
+}
+
+.account-entry .modal-body .account-type label span {
+  padding: 15px 10px;
+  background: #f7f9fc;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 3px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 1.4rem;
+  color: #232630;
+  text-align: center;
+  width: 100%;
+  display: block;
+}
+
+.account-entry .modal-body .account-type label input[type="radio"]:checked + span {
+  color: #246df8;
+  background: rgba(36, 109, 248, 0.2);
+  border-color: transparent;
+}
+
+.account-entry .modal-body .account-type label input {
+  display: none;
 }
 
 .account-entry .modal-body .form-group {
@@ -8221,7 +8452,9 @@ header .absolute-nav {
 }
 
 .blog-details-wrapper .info {
-  width: 80%;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 20%;
+  flex: 0 0 20%;
 }
 
 .blog-details-wrapper .info span {
@@ -8245,6 +8478,14 @@ header .absolute-nav {
   width: 15px;
   margin-right: 7px;
   color: #aaa;
+}
+
+.blog-details-wrapper .post-content {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 80%;
+  flex: 0 0 80%;
+  max-width: 80%;
+  word-wrap: break-word;
 }
 
 .blog-details-wrapper .post-content h2 {
@@ -8645,8 +8886,10 @@ header .absolute-nav {
     display: block;
   }
   .blog-details-wrapper .info {
-    width: 100%;
     padding-bottom: 20px;
+  }
+  .blog-details-wrapper .post-content {
+    max-width: 100%;
   }
 }
 
@@ -9639,5 +9882,268 @@ header .absolute-nav {
   }
   .policy-tab .nav-tabs .nav-item + .nav-item {
     margin-top: 15px;
+  }
+}
+
+/*---------------------------------------------
+	28.0 Account Style
+---------------------------------------------*/
+.access-page-bg {
+  background: url("../images/bg/access-bg.jpg") no-repeat center;
+  background-size: cover;
+}
+
+.header-2.access-page-nav {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.header-2.access-page-nav .header-top {
+  margin-bottom: 0;
+  padding: 30px 0;
+}
+
+.top-nav .account-page-link {
+  background: #246df8;
+  color: #ffffff;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 1.4rem;
+  padding: 9px 30px;
+  border-radius: 3px;
+}
+
+.access-form .form-header {
+  background: #f5f5f5;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 50px;
+}
+
+.access-form .form-header h5 {
+  font-size: 1.4rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  color: #232630;
+}
+
+.access-form .form-header h5 svg {
+  height: 14px;
+  width: 14px;
+  margin-right: 8px;
+}
+
+.access-form .account-type {
+  margin-bottom: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.access-form .account-type label {
+  cursor: pointer;
+  width: 45%;
+}
+
+.access-form .account-type label span {
+  padding: 15px 10px;
+  background: #f7f9fc;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 3px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 1.4rem;
+  color: #232630;
+  text-align: center;
+  width: 100%;
+  display: block;
+}
+
+.access-form .account-type label input[type="radio"]:checked + span {
+  color: #246df8;
+  background: rgba(36, 109, 248, 0.2);
+  border-color: transparent;
+}
+
+.access-form .account-type label input {
+  display: none;
+}
+
+.access-form .form-group {
+  margin-bottom: 30px;
+}
+
+.access-form .form-group .form-control {
+  height: 50px;
+  border: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 0;
+  outline: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  font-size: 1.4rem;
+}
+
+.access-form .form-group .form-control:focus {
+  border-bottom-color: #246df8;
+}
+
+.access-form .more-option {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  color: #6f7484;
+  margin-bottom: 30px;
+}
+
+.access-form .more-option .form-check .form-check-input {
+  margin-top: 6px;
+}
+
+.access-form .more-option .form-check .form-check-label {
+  margin-left: 7px;
+}
+
+.access-form .more-option .custom-radio + label .dot {
+  border-radius: 5px;
+}
+
+.access-form .more-option .custom-radio + label .dot:before {
+  border-radius: 2px;
+}
+
+.access-form .more-option.terms .form-check-label a {
+  color: #246df8;
+  text-decoration: underline;
+}
+
+.access-form .more-option a:hover {
+  color: #246df8;
+}
+
+.access-form .button {
+  color: #ffffff;
+  padding: 14px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+}
+
+.access-form .shortcut-login {
+  margin-top: 30px;
+}
+
+.access-form .shortcut-login span {
+  font-size: 1.4rem;
+  font-family: "Roboto", sans-serif;
+  color: #6f7484;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+.access-form .shortcut-login .buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.access-form .shortcut-login .buttons a {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 3px;
+  padding: 14px 30px;
+  font-size: 1.4rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  color: #101725;
+  text-align: center;
+  width: 45%;
+}
+
+.access-form .shortcut-login .buttons a i {
+  margin-right: 7px;
+}
+
+.access-form .shortcut-login .buttons a.facebook i {
+  color: #3b5998;
+}
+
+.access-form .shortcut-login .buttons a.google i {
+  color: #ea4335;
+}
+
+.access-form .shortcut-login p {
+  font-size: 1.4rem;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  color: #6f7484;
+  margin-top: 20px;
+}
+
+.access-form .shortcut-login p a {
+  font-weight: 500;
+}
+
+.access-form .shortcut-login p a:hover {
+  color: #246df8;
+}
+
+@media all and (max-width: 991px) {
+  .access-page-nav .header-top {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+  }
+  .access-page-nav .header-top .top-nav {
+    display: block !important;
+    padding: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    position: static;
+    width: auto;
+  }
+}
+
+@media all and (max-width: 767px) {
+  .access-page-bg {
+    background: transparent;
+  }
+}
+
+@media all and (max-width: 575px) {
+  .access-page-nav .header-top .top-nav {
+    display: none !important;
+  }
+}
+
+@media all and (max-width: 375px) {
+  .access-form .shortcut-login .buttons {
+    display: block;
+  }
+  .access-form .shortcut-login .buttons a {
+    width: 100%;
+  }
+  .access-form .shortcut-login .buttons a + a {
+    margin-top: 20px;
+  }
+  .access-form .shortcut-login {
+    text-align: center;
+  }
+  .access-form .shortcut-login .buttons {
+    text-align: center;
+  }
+  .access-form .shortcut-login .buttons a {
+    width: 180px;
+    margin: 0 auto;
   }
 }

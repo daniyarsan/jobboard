@@ -1,0 +1,123 @@
+{% extends "form_div_layout.html.twig" %}
+{% block form_label %}
+    {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' col-xs-4 control-label text-right')|trim}) %}
+    {{ parent() }}
+{% endblock %}
+
+{% block button_row %}
+    {% spaceless %}
+        {{ form_widget(form) }}&nbsp;
+    {% endspaceless %}
+{% endblock button_row %}
+
+{% block form_row %}
+    {% spaceless %}
+        {% if form.vars.label is not sameas(false) %}
+            <div class="form-group{% if errors|length > 0 %} has-error{% endif %}">
+                {{ form_label(form) }}
+                <div class="col-xs-8">
+                    {{ form_widget(form) }}
+                    {{ form_errors(form) }}
+                </div>
+            </div>
+        {% else %}
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_row %}
+
+{% block checkbox_row %}
+    {% spaceless %}
+        {% if form.vars.label is not sameas(false) %}
+            <div class="form-group{% if errors|length > 0 %} has-error{% endif %}">
+                {{ form_label(form) }}
+                <div class="col-xs-8">
+                    <div class="checkbox">
+                        <label>
+                            {{ form_widget(form) }}
+                        </label>
+                    </div>
+                    {{ form_errors(form) }}
+                </div>
+            </div>
+        {% else %}
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+        {% endif %}
+    {% endspaceless %}
+{% endblock checkbox_row %}
+
+{% block form_widget_simple %}
+    {% set attr = attr|merge({'class': (attr.class|default('') ~ ' form-control')|trim}) %}
+    {{ parent() }}
+{% endblock form_widget_simple %}
+
+{% block choice_widget_collapsed %}
+    {% set attr = attr|merge({'class': (attr.class|default('') ~ ' form-control')|trim}) %}
+    {{ parent() }}
+{% endblock choice_widget_collapsed %}
+
+{% block textarea_widget %}
+    {% if wysiwyg %}
+        {% set attr = attr|merge({'class': (attr.class|default('') ~ ' ckeditor')|trim}) %}
+    {% else %}
+        {% set attr = attr|merge({'class': (attr.class|default('') ~ ' form-control')|trim}) %}
+    {% endif %}
+    {{ parent() }}
+{% endblock textarea_widget %}
+
+{% block button_widget %}
+    {% set attr = attr|merge({'class': (attr.class|default('') ~ ' btn btn-default')|trim}) %}
+    {{ parent() }}
+{% endblock %}
+
+{% block percent_widget %}
+    {% spaceless %}
+        {% set type = type|default('text') %}
+        <div class="input-group">{{ block('form_widget_simple') }}<span class="input-group-addon">%</span></div>
+    {% endspaceless %}
+{% endblock percent_widget %}
+
+{% block state_widget %}
+    <select id="{{ id }}_select" name="{{ full_name }}" disabled="disabled" style="display: none;" class="form-control">
+        {% if empty_dropdown_value %}
+            <option value="">{{ empty_dropdown_value|trans }}</option>
+        {% endif %}
+        {% for stateId, stateName in states %}
+            <option value="{{ stateId }}" {% if stateId == value %}selected="selected"{% endif %}>{{ stateName|trans }}</option>
+        {% endfor %}
+    </select>
+    {% if parent.vars.value == 'US' %}
+        {% set value = '' %}
+    {% endif %}
+    {{ block('form_widget_simple') }}
+{% endblock %}
+
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            <div class="help-block" data-parent="#{{ id }}">
+                <ul class="list-unstyled">
+                    {% for error in errors %}
+                        <li class="label label-danger">{{ error.message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
+
+{% block current_currency_widget %}
+    {% spaceless %}
+        <div class="input-group">
+            {% if form.vars.currency_symbol_position %}
+                <span class="input-group-addon">{{ currency_symbol }}</span>
+            {% endif %}
+            {{ block('form_widget') }}
+            {% if not form.vars.currency_symbol_position %}
+                <span class="input-group-addon">{{ currency_symbol }}</span>
+            {% endif %}
+        </div>
+    {% endspaceless %}
+{% endblock %}

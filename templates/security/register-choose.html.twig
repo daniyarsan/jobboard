@@ -1,6 +1,30 @@
-{% extends 'base.html.twig' %}
+{% extends 'base-index.html.twig' %}
 {% block body %}
-    <a class="btn btn-primary" href="{{ path('security_registration', {'group' : 'company'}) }}">Company</a>
-    <a class="btn btn-primary" href="{{ path('security_registration', {'group' : 'profile'}) }}">Profile</a>
+    <div class="padding-top-90 padding-bottom-90 access-page-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-4 col-md-6">
+                    <div class="access-form">
+                        <div class="form-header">
+                            <h5><i data-feather="edit"></i>Register Account</h5>
+                        </div>
+                        <a class="button primary-bg" href="{{ path('security_registration', {'group' : 'company'}) }}">Company</a>
+                        <a class="button primary-bg" href="{{ path('security_registration', {'group' : 'profile'}) }}">Profile</a>
+
+
+                        {#<div class="shortcut-login">#}
+                        {#<span>Or connect with</span>#}
+                        {#<div class="buttons">#}
+                        {#<a href="#" class="facebook"><i class="fab fa-facebook-f"></i>Facebook</a>#}
+                        {#<a href="#" class="google"><i class="fab fa-google"></i>Google</a>#}
+                        {#</div>#}
+                        {#<p>Already have an account? <a href="login.html">Login</a></p>#}
+                        {#</div>#}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 

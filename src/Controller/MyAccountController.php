@@ -10,8 +10,10 @@ use App\Form\EducationsType;
 use App\Form\ExperiencesType;
 use App\Form\JobType;
 use App\Form\ProfileType;
+use App\Form\UserType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -19,6 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -168,7 +171,7 @@ class MyAccountController extends AbstractController
     /**
      * @Route("/profile", name="_profile")
      */
-    public function profile(Request $request)
+    public function profile(Request $request, TranslatorInterface $translator)
     {
         /*if (in_array('ROLE_USER', $this->getUser()->getRoles())) {
         } */
@@ -177,6 +180,7 @@ class MyAccountController extends AbstractController
             ['user' => $this->getUser()->getId()]
         );
         $form = $this->createForm(ProfileType::class, $entity);
+        $userForm = $this->createForm(UserType::class, $this->getUser());
 
         $educations = $this->getDoctrine()->getRepository('App:Education')->findBy(
             ['profile' => $this->getUser()->getProfile()->getId()]
@@ -197,9 +201,9 @@ class MyAccountController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($entity);
                 $em->flush();
-                $this->addFlash('success', $this->get('translator')->trans('Company details has been successfully saved.'));
+                $this->addFlash('success', $translator->trans('Company details has been successfully saved.'));
             } catch(\Exception $e) {
-                $this->addFlash('danger', $this->get('translator')->trans('An error occured when saving object.'));
+                $this->addFlash('danger', $translator->trans('An error occured when saving object.'));
             }
 
             return $this->redirectToRoute('my_account_profile');
@@ -209,6 +213,7 @@ class MyAccountController extends AbstractController
             'my_account/profile.html.twig',
             [
                 'form' => $form->createView(),
+                'userForm' => $userForm->createView(),
                 'formEducation' => $formEducation->createView(),
                 'formExperience' => $formExperience->createView(),
             ]
@@ -315,5 +320,26 @@ class MyAccountController extends AbstractController
             'form' => $form->createView(),
             'data' => $data,
         ]);
+    }
+
+    /**
+     * @Route("/password", name="_password")
+     * @Method("POST")
+     */
+    public function passwordAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $currentUser = $this->getUser();
+        $userForm = $this->createForm(UserType::class, $currentUser);
+        $userForm->handleRequest($request);
+
+        if ($userForm->isSubmitted() && $userForm->isValid()) {
+            $password = $passwordEncoder->encodePassword($currentUser, $currentUser->getPlainPassword());
+            $currentUser->setPassword($password);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($currentUser);
+            $em->flush();
+            $this->addFlash('success', 'Password has been saved successfully');
+        }
+        return $this->redirectToRoute('my_account_profile');
     }
 }

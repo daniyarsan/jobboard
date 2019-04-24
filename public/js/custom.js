@@ -1,6 +1,5 @@
 
 $(document).ready(function() {
-
     /*-----------------------------------
     Smooth Scroll
     -----------------------------------*/
@@ -353,7 +352,8 @@ $(document).ready(function() {
     /*-------------------------------------
       Plyr Js  
     -------------------------------------*/
-    plyr.setup();
+    // plyr.setup();
+    const player = new Plyr('#player');
     
     /*-------------------------------------
       progressBar  

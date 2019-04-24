@@ -27,13 +27,13 @@ if(document.getElementById('searchmap') != null){
       }
     });
 
-  var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Points &copy 2012 LINZ'
+    var tiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+        maxZoom: 16
       }),
       latlng = L.latLng(-37.82, 175.24);
 
-    var map = L.map('searchmap', {center: latlng, zoom: 13, layers: [tiles]});
+    var map = L.map('searchmap', {center: latlng, zoom: 13, scrollWheelZoom: false, layers: [tiles]});
 
     var markers = L.markerClusterGroup();
     var k = 1;
