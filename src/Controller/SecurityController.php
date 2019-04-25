@@ -61,7 +61,7 @@ class SecurityController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($entity);
                 $entityManager->flush();
-                return $this->redirectToRoute('my_account_profile');
+                return $this->redirectToRoute('my_profile_settings');
             }
 
             return $this->render(

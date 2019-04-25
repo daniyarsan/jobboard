@@ -4,12 +4,16 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-
+use Serializable;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProfileRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @Vich\Uploadable
  */
-class Profile
+class Profile implements Serializable
 {
     const VISIBILITY_PUBLIC = 'PUBLIC';
 
@@ -34,6 +38,17 @@ class Profile
      * @ORM\Column(name="type", type="string")
      */
     private $visibility = self::VISIBILITY_PUBLIC;
+
+    /**
+     * @Assert\File(mimeTypes={"image/png", "image/jpeg", "image/pjpeg"})
+     * @Vich\UploadableField(mapping="avatar_image", fileNameProperty="avatar_name")
+     */
+    private $avatarImage;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true, name="avatar_name")
+     */
+    private $avatarName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -301,5 +316,89 @@ class Profile
     public function setVisibility($visibility): void
     {
         $this->visibility = $visibility;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAvatarImage()
+    {
+        return $this->avatarImage;
+    }
+
+    /**
+     * @param mixed $avatarImage
+     */
+    public function setAvatarImage(File $avatarImage)
+    {
+        $this->avatarImage = $avatarImage;
+
+        if ($avatarImage) {
+            $this->modified = new \DateTime('now');
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAvatarName()
+    {
+        return $this->avatarName;
+    }
+
+    /**
+     * @param mixed $avatarName
+     */
+    public function setAvatarName($avatarName)
+    {
+        $this->avatarName = $avatarName;
+    }
+
+    /**
+     * String representation of object
+     * @link https://php.net/manual/en/serializable.serialize.php
+     * @return string the string representation of the object or null
+     * @since 5.1.0
+     */
+    public function serialize()
+    {
+        $this->avatarImage = base64_encode($this->avatarImage);
+    }
+
+    /**
+     * Constructs the object
+     * @link https://php.net/manual/en/serializable.unserialize.php
+     * @param string $serialized <p>
+     * The string representation of the object.
+     * </p>
+     * @return void
+     * @since 5.1.0
+     */
+    public function unserialize($serialized)
+    {
+        $this->avatarImage = base64_decode($this->avatarImage);
+    }
+
+    public function getFullName()
+    {
+        if (!empty($this->firstName) && !empty($this->lastName)) {
+            return sprintf('%s %s', $this->firstName, $this->lastName);
+        }
+
+        return $this->getUser()->getUsername();
+    }
+
+    public function getShortName()
+    {
+        if (!empty($this->firstName) && !empty($this->lastName)) {
+            return $this->firstName[0] . $this->lastName[0];
+        }
+
+        return $this->getUser()->getUsername()[0];
+    }
+
+    public function getUsername()
+    {
+        return $this->getUser()->getUserName();
     }
 }

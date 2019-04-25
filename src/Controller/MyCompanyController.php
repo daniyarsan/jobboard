@@ -25,9 +25,9 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * @Route("/my-account", name="my_account")
+ * @Route("/my-company", name="my_company")
  */
-class MyAccountController extends AbstractController
+class MyCompanyController extends AbstractController
 {
     /**
      * @Route("/", name="_index")
@@ -176,42 +176,40 @@ class MyAccountController extends AbstractController
         /*if (in_array('ROLE_USER', $this->getUser()->getRoles())) {
         } */
 
-        $entity = $this->getDoctrine()->getRepository('App:Profile')->findOneBy(
-            ['user' => $this->getUser()->getId()]
-        );
-        $form = $this->createForm(ProfileType::class, $entity);
+        $profile = $this->getUser()->getProfile();
+
+        $form = $this->createForm(ProfileType::class, $profile);
         $userForm = $this->createForm(UserType::class, $this->getUser());
 
         $educations = $this->getDoctrine()->getRepository('App:Education')->findBy(
-            ['profile' => $this->getUser()->getProfile()->getId()]
+            ['profile' => $profile->getId()]
         );
-        $educations = empty($educations) ? [new Education()] : $educations;
-        $formEducation = $this->createForm(EducationsType::class, ['educations' => $educations], ['method' => 'POST', 'action' => $this->generateUrl('my_account_profile_education')]);
+        $formEducation = $this->createForm(EducationsType::class, $educations, ['method' => 'POST', 'action' => $this->generateUrl('my_profile_settings_education')]);
 
         $experiences = $this->getDoctrine()->getRepository('App:Experience')->findBy(
-            ['profile' => $this->getUser()->getProfile()->getId()]
+            ['profile' => $profile->getId()]
         );
-        $experiences = empty($experiences) ? [new Experience()] : $experiences;
-        $formExperience = $this->createForm(ExperiencesType::class, ['experiences' => $experiences], ['method' => 'POST', 'action' => $this->generateUrl('my_account_profile_experience')]);
+        $formExperience = $this->createForm(ExperiencesType::class, $experiences, ['method' => 'POST', 'action' => $this->generateUrl('my_profile_settings_experience')]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($entity);
+                $em->persist($profile);
                 $em->flush();
                 $this->addFlash('success', $translator->trans('Company details has been successfully saved.'));
             } catch(\Exception $e) {
                 $this->addFlash('danger', $translator->trans('An error occured when saving object.'));
             }
 
-            return $this->redirectToRoute('my_account_profile');
+            return $this->redirectToRoute('my_profile_settings');
         }
 
         return $this->render(
             'my_account/profile.html.twig',
             [
+                'profile' => $profile,
                 'form' => $form->createView(),
                 'userForm' => $userForm->createView(),
                 'formEducation' => $formEducation->createView(),
@@ -250,7 +248,7 @@ class MyAccountController extends AbstractController
 
         }
 
-        return $this->redirectToRoute('my_account_profile');
+        return $this->redirectToRoute('my_profile_settings');
     }
 
     /**
@@ -283,7 +281,7 @@ class MyAccountController extends AbstractController
             }
 
         }
-        return $this->redirectToRoute('my_account_profile');
+        return $this->redirectToRoute('my_profile_settings');
     }
 
     /**
@@ -340,6 +338,6 @@ class MyAccountController extends AbstractController
             $em->flush();
             $this->addFlash('success', 'Password has been saved successfully');
         }
-        return $this->redirectToRoute('my_account_profile');
+        return $this->redirectToRoute('my_profile_settings');
     }
 }

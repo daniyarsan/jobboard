@@ -1,0 +1,117 @@
+{% extends 'base-dashboard.html.twig' %}
+{% form_theme form _self %}
+
+{% block title %}{% endblock %}
+
+{% block vich_image_widget %}
+    {% spaceless %}
+        <div class="update-photo">
+            <img class="image" src="{{ image_uri }}" alt="">
+        </div>
+        <div class="file-upload">
+            {{ form_widget(form.file) }}
+            Change Avatar
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block file_widget %}
+    {% spaceless %}
+        {% set type = type|default('file') %}
+        <input type="{{ type }}" {{ block('widget_attributes') }} class="file-input" />
+    {% endspaceless %}
+{% endblock %}
+
+
+{% block body %}
+    <!-- Breadcrumb -->
+    <div class="alice-bg padding-top-70 padding-bottom-70">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="breadcrumb-area">
+                        <h1>Dashboard</h1>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <div class="alice-bg section-padding-bottom">
+        <div class="container no-gliters">
+            <div class="row no-gliters">
+                <div class="col">
+                    <div class="dashboard-container">
+                        <div class="dashboard-content-wrapper">
+                            {% include '_parts/messages.html.twig' %}
+                            <form action="{{ path('my_profile_settings') }}" class="dashboard-form">
+                                <div class="dashboard-section upload-profile-photo">
+                                    {{ form_widget(form.avatarImage) }}
+                                </div>
+                                <div class="dashboard-section basic-info-input">
+                                    <h4><i data-feather="user-check"></i>Basic Info</h4>
+                                    {{ form(form) }}
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label"></label>
+                                        <div class="col-sm-9">
+                                            <button class="button">Save Change</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="dashboard-section basic-info-input">
+                                <h4><i data-feather="lock"></i>Change Password</h4>
+                                <form action="{{ path('my_profile_password') }}" class="dashboard-form" method="POST">
+                                    {{ form_row(userForm.email) }}
+                                    {{ form_row(userForm.plainPassword) }}
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label"></label>
+                                        <div class="col-sm-9">
+                                            <button class="button">Save Change</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-sidebar">
+                            <div class="user-info">
+                                <div class="thumb">
+                                    <img src="{{ vich_uploader_asset(profile, 'avatarImage') }}" class="img-fluid" alt="">
+                                </div>
+                                <div class="user-body">
+                                    <h5>{{ profile.fullName }}</h5>
+                                    <span>{{ profile.username }}</span>
+                                </div>
+                            </div>
+                            <div class="profile-progress">
+                                <div class="progress-item">
+                                    <div class="progress-head">
+                                        <p class="progress-on">Profile</p>
+                                    </div>
+                                    <div class="progress-body">
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 0;"></div>
+                                        </div>
+                                        <p class="progress-to">70%</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% include "my-profile/_side-menu.html.twig" %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
