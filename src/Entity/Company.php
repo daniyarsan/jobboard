@@ -4,10 +4,14 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CompanyRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @vich\Uploadable
  */
 class Company
 {
@@ -28,11 +32,6 @@ class Company
      * @ORM\OneToMany(targetEntity="Job", mappedBy="company")
      */
     private $jobs;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $logoImage;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -90,6 +89,17 @@ class Company
     private $created;
 
     /**
+     * @Assert\File(mimeTypes={"image/png", "image/jpeg", "image/pjpeg"})
+     * @Vich\UploadableField(mapping="logo_image", fileNameProperty="logo_name")
+     */
+    private $logoImage;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true, name="logo_name")
+     */
+    private $logoName;
+
+    /**
      * @ORM\PrePersist
      */
     public function onPrePersist()
@@ -135,18 +145,6 @@ class Company
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getLogoImage(): ?string
-    {
-        return $this->logoImage;
-    }
-
-    public function setLogoImage(?string $logoImage): self
-    {
-        $this->logoImage = $logoImage;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -288,5 +286,41 @@ class Company
     public function setRole()
     {
         $this->getUser()->setRoles(['ROLE_COMPANY']);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLogoImage()
+    {
+        return $this->logoImage;
+    }
+
+    /**
+     * @param mixed $logoImage
+     */
+    public function setLogoImage(File $logoImage)
+    {
+        $this->logoImage = $logoImage;
+
+        if ($logoImage) {
+            $this->modified = new \DateTime('now');
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLogoName()
+    {
+        return $this->logoName;
+    }
+
+    /**
+     * @param mixed $logoName
+     */
+    public function setLogoName($logoName)
+    {
+        $this->logoName = $logoName;
     }
 }

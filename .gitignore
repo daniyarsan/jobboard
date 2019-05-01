@@ -6,3 +6,4 @@
 ###< symfony/framework-bundle ###
 /.idea/
 /public/uploads/
+config/packages/vich_uploader.yaml

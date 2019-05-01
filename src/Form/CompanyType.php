@@ -6,11 +6,13 @@ use App\Entity\Company;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class CompanyType extends AbstractType
 {
@@ -18,6 +20,7 @@ class CompanyType extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
+            ->add('logoImage', FileType::class)
             ->add('email', EmailType::class)
             ->add('website', TextType::class, [
                 'required' => false,
@@ -37,9 +40,6 @@ class CompanyType extends AbstractType
             ->add('description', TextareaType::class, [
                 'required' => false,
                 'attr' => ['class' => 'wysiwyg'],
-            ])
-            ->add('save', SubmitType::class, [
-                'attr' => ['class' => 'btn-primary'],
             ]);
     }
 

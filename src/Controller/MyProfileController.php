@@ -59,7 +59,7 @@ class MyProfileController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($profile);
                 $em->flush();
-                $this->addFlash('success', $translator->trans('Company details has been successfully saved.'));
+                $this->addFlash('success', $translator->trans('Profile details has been saved successfully.'));
             } catch(\Exception $e) {
                 $this->addFlash('danger', $translator->trans('An error occured when saving object.'));
             }

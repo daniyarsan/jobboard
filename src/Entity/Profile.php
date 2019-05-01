@@ -4,16 +4,16 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Serializable;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProfileRepository")
  * @ORM\HasLifecycleCallbacks()
  * @Vich\Uploadable
  */
-class Profile implements Serializable
+class Profile
 {
     const VISIBILITY_PUBLIC = 'PUBLIC';
 
@@ -318,6 +318,30 @@ class Profile implements Serializable
         $this->visibility = $visibility;
     }
 
+
+    public function getFullName()
+    {
+        if (!empty($this->firstName) && !empty($this->lastName)) {
+            return sprintf('%s %s', $this->firstName, $this->lastName);
+        }
+
+        return $this->getUser()->getUsername();
+    }
+
+    public function getShortName()
+    {
+        if (!empty($this->firstName) && !empty($this->lastName)) {
+            return $this->firstName[0] . $this->lastName[0];
+        }
+
+        return $this->getUser()->getUsername()[0];
+    }
+
+    public function getUsername()
+    {
+        return $this->getUser()->getUserName();
+    }
+
     /**
      * @return mixed
      */
@@ -354,51 +378,4 @@ class Profile implements Serializable
         $this->avatarName = $avatarName;
     }
 
-    /**
-     * String representation of object
-     * @link https://php.net/manual/en/serializable.serialize.php
-     * @return string the string representation of the object or null
-     * @since 5.1.0
-     */
-    public function serialize()
-    {
-        $this->avatarImage = base64_encode($this->avatarImage);
-    }
-
-    /**
-     * Constructs the object
-     * @link https://php.net/manual/en/serializable.unserialize.php
-     * @param string $serialized <p>
-     * The string representation of the object.
-     * </p>
-     * @return void
-     * @since 5.1.0
-     */
-    public function unserialize($serialized)
-    {
-        $this->avatarImage = base64_decode($this->avatarImage);
-    }
-
-    public function getFullName()
-    {
-        if (!empty($this->firstName) && !empty($this->lastName)) {
-            return sprintf('%s %s', $this->firstName, $this->lastName);
-        }
-
-        return $this->getUser()->getUsername();
-    }
-
-    public function getShortName()
-    {
-        if (!empty($this->firstName) && !empty($this->lastName)) {
-            return $this->firstName[0] . $this->lastName[0];
-        }
-
-        return $this->getUser()->getUsername()[0];
-    }
-
-    public function getUsername()
-    {
-        return $this->getUser()->getUserName();
-    }
 }
