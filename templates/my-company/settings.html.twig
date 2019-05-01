@@ -1,6 +1,8 @@
 {% extends 'base-dashboard.html.twig' %}
 {% form_theme form _self %}
 
+{% block title %}{% endblock %}
+
 {% block vich_image_widget %}
     {% spaceless %}
         <div class="update-photo">
@@ -19,8 +21,6 @@
         <input type="{{ type }}" {{ block('widget_attributes') }} class="file-input" />
     {% endspaceless %}
 {% endblock %}
-
-{% block title %}Hello {% endblock %}
 
 {% block body %}
     <!-- Breadcrumb -->
@@ -51,7 +51,8 @@
                         <div class="dashboard-content-wrapper">
                             {% include '_parts/messages.html.twig' %}
 
-                            <form action="{{ path('my_company_settings') }}" class="dashboard-form" method="POST">
+
+                            <form action="{{ path('my_company_settings') }}" class="dashboard-form" method="POST" enctype="multipart/form-data">
                                 <div class="dashboard-section upload-profile-photo">
                                     {{ form_widget(form.logoImage) }}
                                 </div>
@@ -86,6 +87,8 @@
                         <div class="dashboard-sidebar">
                             <div class="company-info">
                                 <div class="thumb">
+                                    <img src="{{ vich_uploader_asset(company, 'logoImage') }}" class="img-fluid" alt="">
+
                                     <img src="dashboard/images/company-logo.png" class="img-fluid" alt="">
                                 </div>
                                 <div class="company-body">

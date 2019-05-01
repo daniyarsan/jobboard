@@ -13,7 +13,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @ORM\HasLifecycleCallbacks()
  * @vich\Uploadable
  */
-class Company
+class Company implements \Serializable
 {
     /**
      * @ORM\Id()
@@ -98,6 +98,11 @@ class Company
      * @ORM\Column(type="string", length=255, nullable=true, name="logo_name")
      */
     private $logoName;
+
+    /**
+     * @ORM\Column(name="modified", type="datetime", nullable=true)
+     */
+    private $modified;
 
     /**
      * @ORM\PrePersist
@@ -322,5 +327,30 @@ class Company
     public function setLogoName($logoName)
     {
         $this->logoName = $logoName;
+    }
+
+    /**
+     * String representation of object
+     * @link https://php.net/manual/en/serializable.serialize.php
+     * @return string the string representation of the object or null
+     * @since 5.1.0
+     */
+    public function serialize()
+    {
+        $this->logoImage = base64_encode($this->logoImage);
+    }
+
+    /**
+     * Constructs the object
+     * @link https://php.net/manual/en/serializable.unserialize.php
+     * @param string $serialized <p>
+     * The string representation of the object.
+     * </p>
+     * @return void
+     * @since 5.1.0
+     */
+    public function unserialize($serialized)
+    {
+        $this->logoImage = base64_decode($this->logoImage);
     }
 }

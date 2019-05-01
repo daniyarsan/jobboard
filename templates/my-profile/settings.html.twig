@@ -5,8 +5,13 @@
 
 {% block vich_image_widget %}
     {% spaceless %}
-        {{ form_widget(form.file) }}
-
+        <div class="update-photo">
+            <img class="image" src="{{ image_uri }}" alt="">
+        </div>
+        <div class="file-upload">
+            {{ form_widget(form.file) }}
+            Change Avatar
+        </div>
     {% endspaceless %}
 {% endblock %}
 
@@ -41,13 +46,13 @@
 
     <div class="alice-bg section-padding-bottom">
         <div class="container no-gliters">
+            {% include '_parts/messages.html.twig' %}
+
             <div class="row no-gliters">
                 <div class="col">
                     <div class="dashboard-container">
                         <div class="dashboard-content-wrapper">
-                            {% include '_parts/messages.html.twig' %}
-
-                            <form action="{{ path('my_profile_settings') }}" class="dashboard-form" method="POST">
+                            <form action="{{ path('my_profile_settings') }}" class="dashboard-form" method="POST" enctype="multipart/form-data">
                                 <div class="dashboard-section upload-profile-photo">
                                     {{ form_widget(form.avatarImage) }}
                                 </div>

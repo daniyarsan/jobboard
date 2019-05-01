@@ -71,6 +71,7 @@ class MyCompanyController extends AbstractController
         return $this->render(
             'my-company/settings.html.twig',
             [
+                'company' => $company,
                 'form' => $form->createView(),
                 'userForm' => $userForm->createView()
             ]

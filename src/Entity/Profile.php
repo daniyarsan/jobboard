@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\File\File;
  * @ORM\HasLifecycleCallbacks()
  * @Vich\Uploadable
  */
-class Profile
+class Profile implements \Serializable
 {
     const VISIBILITY_PUBLIC = 'PUBLIC';
 
@@ -378,4 +378,28 @@ class Profile
         $this->avatarName = $avatarName;
     }
 
+    /**
+     * String representation of object
+     * @link https://php.net/manual/en/serializable.serialize.php
+     * @return string the string representation of the object or null
+     * @since 5.1.0
+     */
+    public function serialize()
+    {
+        $this->avatarImage = base64_encode($this->avatarImage);
+    }
+
+    /**
+     * Constructs the object
+     * @link https://php.net/manual/en/serializable.unserialize.php
+     * @param string $serialized <p>
+     * The string representation of the object.
+     * </p>
+     * @return void
+     * @since 5.1.0
+     */
+    public function unserialize($serialized)
+    {
+        $this->avatarImage = base64_decode($this->avatarImage);
+    }
 }
