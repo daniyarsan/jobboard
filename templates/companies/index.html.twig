@@ -1,40 +1,124 @@
-{% extends 'sidebar.html.twig' %}
+{% extends 'base-index.html.twig' %}
 
-{% block title %}Companies{% endblock %}
+{% block title %}Companies List{% endblock %}
 
-{% block sidebar %}
-    <div class="sidebar mt-5 mt-lg-0">
-        <div class="single-item mb-4">
-            <h4 class="mb-4">Filter Companies</h4>
-            {{ form_start(filter, {'name': 'filter-companies-form'}) }}
-            {{ form_widget(filter) }}
-            {{ form_end(filter) }}
+{% block body %}
+    <!-- Breadcrumb -->
+    <div class="alice-bg padding-top-70 padding-bottom-70">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="breadcrumb-area">
+                        <h1>Employer Listing</h1>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Employer Listing</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-{% endblock %}
+    <!-- Breadcrumb End -->
 
-{% block content %}
-    <div class="main-content">
-        <div class="single-content1">
-            <h3>
-                {% set count = companies.getTotalItemCount %}
-                {% transchoice count %}
-                    {0} %count% companies matching query|{1} %count% company matching query|]1,Inf[%count% companies matching query
-                {% endtranschoice %}
-            </h3>
+    <!-- Job Listing -->
+    <div class="alice-bg section-padding-bottom">
+        <div class="container">
+            <div class="row no-gutters">
+                <div class="col">
+                    <div class="employer-container">
+                        <div class="filtered-employer-wrapper">
+                            <div class="employer-view-controller-wrapper">
+                                <div class="employer-view-controller">
+                                    <div class="controller list active">
+                                        <i data-feather="menu"></i>
+                                    </div>
+                                    <div class="controller grid">
+                                        <i data-feather="grid"></i>
+                                    </div>
+                                    <div class="employer-view-filter">
+                                        <select class="selectpicker">
+                                            <option value="" selected>Most Recent</option>
+                                            <option value="california">Top Rated</option>
+                                            <option value="las-vegas">Most Popular</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="showing-number">
+                                    {% set count = companies.getTotalItemCount %}
+                                    <span>
+                                        Showing
+                                        {% transchoice count %}
+                                            {0} %count% of companies |{1} %count% of companies|]1,Inf[%count% of companies
+                                        {% endtranschoice %}
+                                    </span>
+                                </div>
+                            </div>
 
-            {% if companies|length %}
-                {% for company in companies %}
-                    {% include 'companies/company.html.twig' %}
-                {% endfor %}
-                {{ knp_pagination_render(companies) }}
-            {% else %}
-                No results found
-            {% endif %}
+                            {% if companies|length %}
+                                <div class="employer-filter-result">
+                                    {% for company in companies %}
+                                        {% include 'companies/company.html.twig' %}
+                                    {% endfor %}
+                                </div>
+                                <div class="pagination-list text-center">
+                                    {{ knp_pagination_render(companies) }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="employer-filter-wrapper">
+                            <div class="selected-options same-pad">
+                                <div class="selection-title">
+                                    <h4>You Selected</h4>
+                                    <a href="#">Clear All</a>
+                                </div>
+                                <ul class="filtered-options">
+                                </ul>
+                            </div>
+                            <div class="employer-filter-dropdown same-pad category">
+                                <select class="selectpicker">
+                                    <option value="" selected>Category</option>
+                                    <option value="california">Accounting / Finance</option>
+                                    <option value="california">Education</option>
+                                    <option value="california">Design &amp; Creative</option>
+                                    <option value="california">Health Care</option>
+                                    <option value="california">Engineer &amp; Architects</option>
+                                    <option value="california">Marketing &amp; Sales</option>
+                                    <option value="california">Garments / Textile</option>
+                                    <option value="california">Customer Support</option>
+                                    <option value="california">Digital Media</option>
+                                    <option value="california">Telecommunication</option>
+                                </select>
+                            </div>
+                            <div class="employer-filter-dropdown same-pad location">
+                                <select class="selectpicker">
+                                    <option value="" selected>Location</option>
+                                    <option value="california">Chicago</option>
+                                    <option value="california">New York City</option>
+                                    <option value="california">San Francisco</option>
+                                    <option value="california">Washington</option>
+                                    <option value="california">Boston</option>
+                                    <option value="california">Los Angeles</option>
+                                    <option value="california">Seattle</option>
+                                    <option value="california">Las Vegas</option>
+                                    <option value="california">San Diego</option>
+                                </select>
+                            </div>
+                            {{ form_start(filter, {'name': 'filter-companies-form'}) }}
+                            {{ form_widget(filter.country) }}
+                            {{ form_end(filter) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="more-job-btn mt-5 text-center">
-        <a href="#" class="template-btn">More</a>
-    </div>
+
+
+
+
 {% endblock %}
 

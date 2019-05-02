@@ -13,17 +13,11 @@ class FilterCompanyType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('keyword', TextType::class, [
-            'label' => false,
-            'required' => false,
-            'attr' => ['placeholder' => 'Search by keyword'],
+        $builder->add('category', TextType::class, [
+            'required' => false
         ])
         ->add('country', CountryType::class, [
-            'required' => false,
-        ])
-        ->add('save', SubmitType::class, [
-            'label' => 'Filter Companies',
-            'attr' => ['class' => 'btn-primary btn-block'],
+            'required' => false
         ])
         ->setMethod('GET')
         ->setAction($options['router']->generate('companies_index'));

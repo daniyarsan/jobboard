@@ -353,4 +353,20 @@ class Company implements \Serializable
     {
         $this->logoImage = base64_decode($this->logoImage);
     }
+
+    /**
+     * @return mixed
+     */
+    public function getJobs()
+    {
+        return $this->jobs;
+    }
+
+    /**
+     * @param mixed $jobs
+     */
+    public function setJobs($jobs): void
+    {
+        $this->jobs = $jobs;
+    }
 }

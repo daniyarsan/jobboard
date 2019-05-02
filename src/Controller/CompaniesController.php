@@ -39,21 +39,10 @@ class CompaniesController extends AbstractController
      */
     public function companyDetails(Request $request, Company $company)
     {
-        $jobs = $this->getDoctrine()->getRepository('App:Job')->findBy(
-            [
-                'company' => $company,
-                'isPublished' => 1,
-            ]
-        );
-        $recent_jobs = $this->getDoctrine()->getRepository('App:Job')->findRecent(4);
-
-
         return $this->render(
             'companies/company-details.html.twig',
             [
-                'company' => $company,
-                'jobs' => $jobs,
-                'recent_jobs' => $recent_jobs
+                'company' => $company
             ]
         );
     }
