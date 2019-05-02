@@ -197,27 +197,6 @@ class Profile implements \Serializable
     }
 
     /**
-     * @return string
-     */
-    public function getDisplayName()
-    {
-        if (!empty($this->firstName) && !empty($this->lastName)) {
-            return sprintf('%s %s', $this->firstName, $this->lastName);
-        }
-
-        return $this->getUser()->getUsername();
-    }
-
-    public function getInitials()
-    {
-        if (!empty($this->firstName) && !empty($this->lastName)) {
-            return $this->firstName[0] . $this->lastName[0];
-        }
-
-        return $this->getUser()->getUsername()[0];
-    }
-
-    /**
      * @return mixed
      */
     public function getAddress()
@@ -328,7 +307,7 @@ class Profile implements \Serializable
         return $this->getUser()->getUsername();
     }
 
-    public function getShortName()
+    public function getInitials()
     {
         if (!empty($this->firstName) && !empty($this->lastName)) {
             return $this->firstName[0] . $this->lastName[0];

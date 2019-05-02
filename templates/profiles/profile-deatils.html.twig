@@ -1,123 +1,244 @@
-{% extends 'sidebar.html.twig' %}
+{% extends 'base-index.html.twig' %}
 
 {% block title %}{% endblock %}
 
-{% block sidebar %}
-    {% if jobs|length %}
-        <div class="widget widget-items-small">
-            <h2>{{ 'Recent Jobs'|trans }}</h2>
-
-            <div class="items-small">
-                {% for job in jobs %}
-                    <div class="item-small">
-                        <div class="item-small-title">
-                            <h3><a href="{{ path('job_show', {'id': job.getId()}) }}">{{ job.getName() }}</a></h3>
-                            <h4><a href="{{ path('company_show', {'id': job.getCompany().getId()}) }}">{{ job.getCompany().getName() }}</a></h4>
-                        </div>
-
-                        <div class="item-small-more">
-                            <a href="{{ path('job_show', {'id': job.getId()}) }}"><i class="fa fa-chevron-right"></i></a>
-                        </div><!-- /.item-small-more -->
-                    </div><!-- /.item-small -->
-                {% endfor %}
-            </div><!-- /.items-small -->
-        </div>
-    {% endif %}
-{% endblock %}
-
 {% block body %}
-    <div class="content-blocks">
-        <div class="content-block">
-           {# {% if profile.getAvatarName() %}
-                <div class="profile-avatar">
-                    <img src="" alt="{{ profile.getDisplayName() }}">
+    <!-- Candidates Details -->
+    <div class="alice-bg padding-top-60 section-padding-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="candidate-details">
+                        <div class="title-and-info">
+                            <div class="title">
+                                <div class="thumb">
+                                    <img src="{{ vich_uploader_asset(profile, 'avatarImage') }}" class="img-fluid" alt="">
+                                </div>
+                                <div class="title-body">
+                                    <h4>{{ profile.getFullName() }}</h4>
+                                    <div class="info">
+                                        <span class="candidate-designation"><i data-feather="check-square"></i>ios Developer</span>
+                                        <span class="candidate-location"><i data-feather="map-pin"></i> {{ profile.getAddress() }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="download-resume">
+                                <a href="#">Download CV <i data-feather="download"></i></a>
+                            </div>
+                        </div>
+                        <div class="skill-and-profile">
+                            <div class="skill">
+                                <label>Skills:</label>
+                                <a href="#">Design</a>
+                                <a href="#">Illustration</a>
+                                <a href="#">iOS</a>
+                            </div>
+                            <div class="social-profile">
+                                <label>Social:</label>
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="#"><i class="fab fa-google-plus"></i></a>
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                                <a href="#"><i class="fab fa-behance"></i></a>
+                                <a href="#"><i class="fab fa-dribbble"></i></a>
+                                <a href="#"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                        <div class="details-information section-padding-60">
+                            <div class="row">
+                                <div class="col-xl-7 col-lg-8">
+                                    <div class="about-details details-section">
+                                        <h4><i data-feather="align-left"></i>About Me</h4>
+                                        {{ profile.description }}
+                                    </div>
 
-                    {% if profile.user.isVerified() %}
-                        <div class="verified">
-                            <i class="fa fa-check"></i>
-                        </div><!-- /.verified -->
-                    {% endif %}
-                </div><!-- /.profile-avatar -->
-            {% else %}
-                <div class="profile-avatar-initials">
-                    {{ profile.getInitials() }}
+                                    <div class="edication-background details-section">
+                                        <h4><i data-feather="book"></i>Education Background</h4>
 
-                    {% if profile.user.isVerified() %}
-                        <div class="verified">
-                            <i class="fa fa-check"></i>
-                        </div><!-- /.verified -->
-                    {% endif %}
-                </div><!-- /.profile-avatar-initials -->
-            {% endif %}#}
+                                        {% for education in profile.getEducations() %}
+                                            <div class="education-label">
+                                                <span class="study-year">{{ education.getYearFrom() }} - {{ education.getYearTo() }}</span>
+                                                <h5>{{ education.getName() }} - {{ education.getDegree() }}, {{ education.getField() }}</h5>
+                                                <p>{{ education.getDescription()|nl2br }}</p>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
 
-            <div class="profile-name">
-                <h3>{{ profile.getDisplayName() }}</h3>
-            </div><!-- /.profile-address -->
+                                    <div class="experience details-section">
+                                        <h4><i data-feather="briefcase"></i>Work Experiance</h4>
+                                        <div class="experience-section">
+                                            <span class="service-year">2016 - Present</span>
+                                            <h5>Lead UI/UX Designer<span>@ Codepassengers LTD</span></h5>
+                                            <p>Latin professor at Hampden-Sydney College in Virginia, looked up one of
+                                                the more obscure Latin words, consectetur, from a Lorem Ipsum
+                                                passage</p>
+                                        </div>
+                                        <div class="experience-section">
+                                            <span class="service-year">2012 - 2016</span>
+                                            <h5>Former Graphic Designer<span>@ Graphicreeeo CO</span></h5>
+                                            <p>Latin professor at Hampden-Sydney College in Virginia, looked up one of
+                                                the more obscure Latin words, consectetur, from a Lorem Ipsum
+                                                passage</p>
+                                        </div>
+                                    </div>
 
-
-            <address class="profile-address">
-                {{ profile.getAddress()|nl2br }}
-            </address><!-- /.profile-address -->
-
-
-            {% if profile.getPhone() %}
-                <div class="profile-items">
-                    {% if profile.getPhone() %}
-                        <div class="profile-phone">
-                            <strong>{{ 'Phone'|trans }}:</strong>
-                            <span>{{ profile.getPhone() }}</span>
-                        </div><!-- /.profile-phone -->
-                    {% endif %}
-                </div><!-- /.profiles-items -->
-            {% endif %}
-        </div><!-- /.content-block -->
-
-        <div class="content-block">
-            <h3>{{ 'Candidate Overview'|trans }}</h3>
-
-            {{ profile.description|striptags('<ol><ul><li><i><b><a><p>')|raw }}
-        </div><!-- /.content-block -->
-
-        {% if profile.getEducations()|length %}
-            <div class="content-block">
-                <h3>{{ 'Educations'|trans }}</h3>
-
-                <div class="content-rows">
-                    {% for education in profile.getEducations() %}
-                        <div class="content-row">
-                            <h4>{{ education.getName() }}</h4>
-
-                            <h5>
-                                {{ education.getDegree() }}{% if education.getField() %}, {{ education.getField() }}{% endif %},
-                                <span class="profile-year">{{ education.getYearFrom() }} - {{ education.getYearTo() }}</span><!-- /.profile-date -->
-                            </h5>
-
-                            {% if education.description %}
-                                <p class="no-margin">{{ education.getDescription()|nl2br }}</p>
-                            {% endif %}
-                        </div><!-- /.content-row -->
-                    {% endfor %}
-                </div><!-- /.content-rows -->
+                                    <div class="professonal-skill details-section">
+                                        <h4><i data-feather="feather"></i>Professional Skill</h4>
+                                        <p>Combined with a handful of model sentence structures, to generate lorem Ipsum
+                                            which It has survived not only five centuries, but also the leap into
+                                            electronic typesetting</p>
+                                        <div class="progress-group">
+                                            <div class="progress-item">
+                                                <div class="progress-head">
+                                                    <p class="progress-on">Photoshop</p>
+                                                </div>
+                                                <div class="progress-body">
+                                                    <div class="progress">
+                                                        <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 0;"></div>
+                                                    </div>
+                                                    <p class="progress-to">70%</p>
+                                                </div>
+                                            </div>
+                                            <div class="progress-item">
+                                                <div class="progress-head">
+                                                    <p class="progress-on">HTML/CSS</p>
+                                                </div>
+                                                <div class="progress-body">
+                                                    <div class="progress">
+                                                        <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 0;"></div>
+                                                    </div>
+                                                    <p class="progress-to">90%</p>
+                                                </div>
+                                            </div>
+                                            <div class="progress-item">
+                                                <div class="progress-head">
+                                                    <p class="progress-on">JavaScript</p>
+                                                </div>
+                                                <div class="progress-body">
+                                                    <div class="progress">
+                                                        <div class="progress-bar" role="progressbar" aria-valuenow="74" aria-valuemin="0" aria-valuemax="100" style="width: 0;"></div>
+                                                    </div>
+                                                    <p class="progress-to">74%</p>
+                                                </div>
+                                            </div>
+                                            <div class="progress-item">
+                                                <div class="progress-head">
+                                                    <p class="progress-on">PHP</p>
+                                                </div>
+                                                <div class="progress-body">
+                                                    <div class="progress">
+                                                        <div class="progress-bar" role="progressbar" aria-valuenow="86" aria-valuemin="0" aria-valuemax="100" style="width: 0;"></div>
+                                                    </div>
+                                                    <p class="progress-to">86%</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="special-qualification details-section">
+                                        <h4><i data-feather="gift"></i>Special Qualification</h4>
+                                        <ul>
+                                            <li>5 years+ experience designing and building products.</li>
+                                            <li>Skilled at any Kind Design Tools.</li>
+                                            <li>Passion for people-centered design, solid intuition.</li>
+                                            <li>Hard Worker & Quick Lerner.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="portfolio details-section">
+                                        <h4><i data-feather="gift"></i>Portfolio</h4>
+                                        <div class="portfolio-slider owl-carousel">
+                                            <div class="portfolio-item">
+                                                <img src="images/portfolio/thumb-3.jpg" class="img-fluid" alt="">
+                                                <div class="overlay">
+                                                    <a href="#"><i data-feather="eye"></i></a>
+                                                    <a href="#"><i data-feather="link"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="portfolio-item">
+                                                <img src="images/portfolio/thumb-1.jpg" class="img-fluid" alt="">
+                                                <div class="overlay">
+                                                    <a href="#"><i data-feather="eye"></i></a>
+                                                    <a href="#"><i data-feather="link"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="portfolio-item">
+                                                <img src="images/portfolio/thumb-2.jpg" class="img-fluid" alt="">
+                                                <div class="overlay">
+                                                    <a href="#"><i data-feather="eye"></i></a>
+                                                    <a href="#"><i data-feather="link"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="portfolio-item">
+                                                <img src="images/portfolio/thumb-3.jpg" class="img-fluid" alt="">
+                                                <div class="overlay">
+                                                    <a href="#"><i data-feather="eye"></i></a>
+                                                    <a href="#"><i data-feather="link"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="portfolio-item">
+                                                <img src="images/portfolio/thumb-2.jpg" class="img-fluid" alt="">
+                                                <div class="overlay">
+                                                    <a href="#"><i data-feather="eye"></i></a>
+                                                    <a href="#"><i data-feather="link"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 offset-xl-1 col-lg-4">
+                                    <div class="information-and-contact">
+                                        <div class="information">
+                                            <h4>Information</h4>
+                                            <ul>
+                                                <li><span>Category:</span> Design & Creative</li>
+                                                <li><span>Location:</span> Los Angeles</li>
+                                                <li><span>Phone:</span> {{ profile.getPhone() }}</li>
+                                                <li><span>Status:</span> Full-time</li>
+                                                <li><span>Experience:</span> 3 year(s)</li>
+                                                <li><span>Salary:</span> $32k - $36k</li>
+                                                <li><span>Gender:</span> Male</li>
+                                                <li><span>Age:</span> 24 Year(s)</li>
+                                                <li><span>Qualification:</span> Gradute</li>
+                                            </ul>
+                                        </div>
+                                        <div class="buttons">
+                                            <a href="#" class="button contact-button" data-toggle="modal" data-target="#exampleModal">Contact
+                                                Me</a>
+                                            <a href="#" class="button cover-download"><i data-feather="download"></i>Cover
+                                                Letter</a>
+                                            <a href="#" class="button contact-download"><i data-feather="download"></i>Contact</a>
+                                        </div>
+                                        <!-- Modal -->
+                                        <div class="modal fade contact-form-modal" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-body">
+                                                        <h4><i data-feather="edit"></i>Contact Me</h4>
+                                                        <form action="#">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" placeholder="Your Name">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="email" class="form-control" placeholder="Your Email">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <textarea class="form-control" placeholder="Your Message"></textarea>
+                                                            </div>
+                                                            <button class="button">Submit</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        {% endif %}
+        </div>
+    </div>
+    <!-- Candidates Details End -->
 
-        {% if profile.getExperiences()|length %}
-            <div class="content-block">
-                <h3>{{ 'Experiences'|trans }}</h3>
-
-                <div class="content-rows">
-                    {% for experience in profile.getExperiences() %}
-                        <div class="content-row">
-                            <h4>{{ experience.getCompanyName() }}</h4>
-                            <h5>{{ experience.getName() }} - {{ experience.getMonthFrom() }} {{ experience.getYearFrom() }}, {{ experience.getMonthTo() }} {{ experience.getYearTo() }}</h5>
-
-                            {% if experience.description %}
-                                <p>{{ experience.getDescription()|nl2br }}</p>
-                            {% endif %}
-                        </div><!-- /.content-row -->
-                    {% endfor %}
-                </div><!-- /.content-rows -->
-            </div>
-        {% endif %}
-    </div><!-- /.content-blocks -->
 {% endblock %}

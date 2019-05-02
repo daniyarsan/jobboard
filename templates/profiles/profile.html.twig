@@ -1,42 +1,19 @@
-<div class="item-wrapper">
-    <div class="job">
-        <div class="item-image-wrapper">
-            {% if profile.user.isVerified() %}
-                <div class="verified">
-                    <i class="fa fa-check"></i>
-                </div><!-- /.verified -->
-            {% endif %}
-
-            {#{% if profile.getAvatarName() %}
-                <div class="item-image">
-                    <img src="logo image source" alt="{{ profile.getDisplayName() }}">
-                </div><!-- /.item-image -->
-            {% else %}
-                <div class="item-image-placeholder">
-                    {{ profile.getInitials() }}
-                </div><!-- /.item-image -placeholder -->
-            {% endif %}#}
-        </div><!-- /.item-image -->
-
-        <div class="item-title">
-            <h3>
-                <a href="{{ path('profile_details', {id: profile.getId() }) }}">{{ profile.getDisplayName() }}</a>
-            </h3>
-        </div><!-- /.item-title -->
-
-        <ul class="item-meta">
-            {% if profile.getCountry() %}
-                <li>
-                    <i class="fa fa-map-marker"></i> <span>{{ profile.getCountry() }}</span>
-                </li>
-            {% endif %}
-
-        </ul><!-- /.item-meta -->
-
-        {% if profile.description %}
-            <div class="item-description">
-                {{ profile.description|striptags[:200] ~ '...' }}
-            </div><!-- /.item-description -->
-        {% endif %}
-    </div><!-- /.job -->
-</div><!-- /.item-wrapper -->
+<div class="candidate">
+    <div class="thumb">
+        <a href="{{ path('profile_details', {'id' : profile.getId()}) }}">
+            <img src="{{ vich_uploader_asset(profile, 'avatarImage') }}" class="img-fluid" alt="">
+        </a>
+    </div>
+    <div class="body">
+        <div class="content">
+            <h4><a href="{{ path('profile_details', {id: profile.getId() }) }}">{{ profile.getFullName() }}</a></h4>
+            <div class="info">
+                <span class="work-post"><a href="#"><i data-feather="check-square"></i>Senior UI / UX Designer</a></span>
+                <span class="location"><a href="#"><i data-feather="map-pin"></i>{{ profile.getCountry() }}</a></span>
+            </div>
+        </div>
+        <div class="button-area">
+            <a href="{{ path('profile_details', {'id' : profile.getId()}) }}">View Resume</a>
+        </div>
+    </div>
+</div>
