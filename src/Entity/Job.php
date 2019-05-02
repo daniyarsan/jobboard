@@ -204,7 +204,7 @@ class Job
     /**
      * @return mixed
      */
-    public function getisPublished()
+    public function getIsPublished()
     {
         return $this->isPublished;
     }

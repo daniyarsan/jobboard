@@ -48,7 +48,8 @@
                                     </div>
                                 </div>
                                 <div class="showing-number">
-                                    <span>Showing 1–12 of 28 Jobs</span>
+                                    {% set count = jobs.getTotalItemCount %}
+                                    Showing {{ count }} jobs
                                 </div>
                             </div>
                             <div class="job-filter-result">
@@ -60,85 +61,10 @@
                                     No jobs for this request
                                 {% endif %}
 
-                                <div class="job-list">
-                                    <div class="thumb">
-                                        <a href="#">
-                                            <img src="images/job/company-logo-9.png" class="img-fluid" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="body">
-                                        <div class="content">
-                                            <h4><a href="job-details.html">Nutrition Advisor</a></h4>
-                                            <div class="info">
-                                                <span class="company"><a href="#"><i data-feather="briefcase"></i>Theoreo</a></span>
-                                                <span class="office-location"><a href="#"><i data-feather="map-pin"></i>New York City</a></span>
-                                                <span class="job-type full-time"><a href="#"><i data-feather="clock"></i>Full Time</a></span>
-                                            </div>
-                                        </div>
-                                        <div class="more">
-                                            <div class="buttons">
-                                                <a href="#" class="button">Apply Now</a>
-                                                <a href="#" class="favourite"><i data-feather="heart"></i></a>
-                                            </div>
-                                            <p class="deadline">Deadline: Oct 31, 2018</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="job-list">
-                                    <div class="thumb">
-                                        <a href="#">
-                                            <img src="images/job/company-logo-10.png" class="img-fluid" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="body">
-                                        <div class="content">
-                                            <h4><a href="job-details.html">UI Designer</a></h4>
-                                            <div class="info">
-                                                <span class="company"><a href="#"><i data-feather="briefcase"></i>Degoin</a></span>
-                                                <span class="office-location"><a href="#"><i data-feather="map-pin"></i>San Francisco</a></span>
-                                                <span class="job-type part-time"><a href="#"><i data-feather="clock"></i>Part Time</a></span>
-                                            </div>
-                                        </div>
-                                        <div class="more">
-                                            <div class="buttons">
-                                                <a href="#" class="button">Apply Now</a>
-                                                <a href="#" class="favourite"><i data-feather="heart"></i></a>
-                                            </div>
-                                            <p class="deadline">Deadline: Oct 31, 2018</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="job-list">
-                                    <div class="thumb">
-                                        <a href="#">
-                                            <img src="images/job/company-logo-3.png" class="img-fluid" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="body">
-                                        <div class="content">
-                                            <h4><a href="job-details.html">Land Development Marketer</a></h4>
-                                            <div class="info">
-                                                <span class="company"><a href="#"><i data-feather="briefcase"></i>Realouse</a></span>
-                                                <span class="office-location"><a href="#"><i data-feather="map-pin"></i>Washington</a></span>
-                                                <span class="job-type freelance"><a href="#"><i data-feather="clock"></i>Freelance</a></span>
-                                            </div>
-                                        </div>
-                                        <div class="more">
-                                            <div class="buttons">
-                                                <a href="#" class="button">Apply Now</a>
-                                                <a href="#" class="favourite"><i data-feather="heart"></i></a>
-                                            </div>
-                                            <p class="deadline">Deadline: Oct 31, 2018</p>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                             {{ knp_pagination_render(jobs) }}
                         </div>
 
-                        {{ form_start(filter, {'name': 'filter-jobs-form'}) }}
-                        {{ form_widget(filter) }}
-                        {{ form_end(filter) }}
 
                         <div class="job-filter-wrapper">
                             <div class="selected-options same-pad">
@@ -181,10 +107,14 @@
                             <div data-id="job-type" class="job-filter job-type same-pad">
                                 <h4 class="option-title">Job Type</h4>
                                 <ul>
-                                    <li class="full-time"><i data-feather="clock"></i><a href="#" data-attr="Full Time">Full Time</a></li>
-                                    <li class="part-time"><i data-feather="clock"></i><a href="#" data-attr="Part Time">Part Time</a></li>
-                                    <li class="freelance"><i data-feather="clock"></i><a href="#" data-attr="Freelance">Freelance</a></li>
-                                    <li class="temporary"><i data-feather="clock"></i><a href="#" data-attr="Temporary">Temporary</a></li>
+                                    <li class="full-time"><i data-feather="clock"></i><a href="#" data-attr="Full Time">Full
+                                            Time</a></li>
+                                    <li class="part-time"><i data-feather="clock"></i><a href="#" data-attr="Part Time">Part
+                                            Time</a></li>
+                                    <li class="freelance"><i data-feather="clock"></i><a href="#" data-attr="Freelance">Freelance</a>
+                                    </li>
+                                    <li class="temporary"><i data-feather="clock"></i><a href="#" data-attr="Temporary">Temporary</a>
+                                    </li>
                                 </ul>
                             </div>
                             <div data-id="experience" class="job-filter experience same-pad">
@@ -203,7 +133,7 @@
                                 <h4 class="option-title">Salary Range</h4>
                                 <div class="price-range-slider">
                                     <div class="nstSlider" data-range_min="0" data-range_max="10000"
-                                         data-cur_min="0"    data-cur_max="6130">
+                                         data-cur_min="0" data-cur_max="6130">
                                         <div class="bar"></div>
                                         <div class="leftGrip"></div>
                                         <div class="rightGrip"></div>
@@ -246,22 +176,4 @@
         </div>
     </div>
     <!-- Job Listing End -->
-
-
-
-    <div class="main-content">
-        <div class="single-content1">
-            <h3>
-                {% set count = jobs.getTotalItemCount %}
-                {% transchoice count %}
-                    {0} %count% jobs matching query|{1} %count% job matching query|]1,Inf[%count% jobs matching query
-                {% endtranschoice %}
-            </h3>
-
-
-        </div>
-    </div>
-    <div class="more-job-btn mt-5 text-center">
-        <a href="#" class="template-btn">More</a>
-    </div>
 {% endblock %}

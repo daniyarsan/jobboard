@@ -46,107 +46,22 @@
                 <li class="menu-item"><a title="Home" href="{{ path('companies_index') }}">Companies</a></li>
                 <li class="menu-item post-job"><a title="Title" href="post-job.html"><i class="fas fa-plus"></i>Post a Job</a></li>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <li class="menu-item"><a title="Home" href="{{ path('my_profile_settings') }}">My Account</a></li>
+                    {% if is_granted('ROLE_COMPANY') %}
+                        <li class="menu-item"><a href="{{ path('my_company_settings') }}">My Account</a></li>
+                    {% else %}
+                        <li class="menu-item"><a href="{{ path('my_profile_settings') }}">My Account</a></li>
+                    {% endif %}
                 {% endif %}
             </ul>
             {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
                 <ul class="navbar-nav ml-auto account-nav">
-                    <li class="menu-item login-popup"><button title="Title" type="button" data-toggle="modal" data-target="#exampleModalLong">Login</button></li>
-                    <li class="menu-item login-popup"><button title="Title" type="button" data-toggle="modal" data-target="#exampleModalLong2">Registration</button></li>
+                    <li class="menu-item login-popup"><a href="{{ path('security_login') }}">Login</a></li>
+                    <li class="menu-item login-popup"><a href="{{ path('security_registration') }}">Registration</a></li>
                 </ul>
             {% endif %}
         </div>
     </nav>
 
-    <!-- Modal -->
-    <div class="account-entry">
-        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"><i data-feather="user"></i>Login</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="#">
-                            <div class="form-group">
-                                <input type="email" placeholder="Email Address" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <input type="password" placeholder="Password" class="form-control">
-                            </div>
-                            <div class="more-option">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                        Remember Me
-                                    </label>
-                                </div>
-                                <a href="#">Forget Password?</a>
-                            </div>
-                            <button class="button primary-bg btn-block">Login</button>
-                        </form>
-                        <div class="shortcut-login">
-                            <span>Or connect with</span>
-                            <div class="buttons">
-                                <a href="#" class="facebook"><i class="fab fa-facebook-f"></i>Facebook</a>
-                                <a href="#" class="google"><i class="fab fa-google"></i>Google</a>
-                            </div>
-                            <p>Don't have an account? <a href="#">Register</a></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="exampleModalLong2" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"><i data-feather="edit"></i>Registration</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="account-type">
-                            <a href="#" class="candidate-acc active"><i data-feather="user"></i>Candidate</a>
-                            <a href="#" class="employer-acc"><i data-feather="briefcase"></i>Employer</a>
-                        </div>
-                        <form action="#">
-                            <div class="form-group">
-                                <input type="text" placeholder="Username" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <input type="email" placeholder="Email Address" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <input type="password" placeholder="Password" class="form-control">
-                            </div>
-                            <div class="more-option terms">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
-                                    <label class="form-check-label" for="defaultCheck2">
-                                        I accept the <a href="#">terms & conditions</a>
-                                    </label>
-                                </div>
-                            </div>
-                            <button class="button primary-bg btn-block">Register</button>
-                        </form>
-                        <div class="shortcut-login">
-                            <span>Or connect with</span>
-                            <div class="buttons">
-                                <a href="#" class="facebook"><i class="fab fa-facebook-f"></i>Facebook</a>
-                                <a href="#" class="google"><i class="fab fa-google"></i>Google</a>
-                            </div>
-                            <p>Already have an account? <a href="#">Login</a></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </header>
 <!-- Header End -->
 

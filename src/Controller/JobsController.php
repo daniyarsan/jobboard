@@ -43,12 +43,6 @@ class JobsController extends AbstractController
      */
     public function jobDetails(Request $request, Job $job)
     {
-
-        return $this->render(
-            'jobs/job-details.html.twig',
-            [
-                'job' => $job
-            ]
-        );
+        return $this->render('jobs/job-details.html.twig',['job' => $job]);
     }
 }
