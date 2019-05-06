@@ -119,7 +119,6 @@ class JobRepository extends ServiceEntityRepository
     public function findByFilterQuery($request)
     {
         $qb = $this->createQueryBuilder('job');
-
         if (!strstr($request->getPathInfo(), 'admin')) {
             $qb->andWhere('job.isPublished = 1');
         }
@@ -128,18 +127,6 @@ class JobRepository extends ServiceEntityRepository
         if (!empty($request->query->get('keyword'))) {
             $qb->andWhere('job.name LIKE :filterKeyword OR job.description LIKE :filterKeyword')
                 ->setParameter('filterKeyword', '%' . $request->query->get('keyword') . '%');
-        }
-
-        // Price from
-        if (!empty($request->query->get('price_from'))) {
-            $qb->andWhere('job.price >= :priceFrom')
-                ->setParameter('priceFrom', $request->query->get('price_from'));
-        }
-
-        // Price to
-        if (!empty($request->query->get('price_to'))) {
-            $qb->andWhere('job.price <= :priceTo')
-                ->setParameter('priceTo', $request->query->get('price_to'));
         }
 
         // Categories
@@ -160,13 +147,6 @@ class JobRepository extends ServiceEntityRepository
             $qb->leftJoin('job.contract', 'contract')
                 ->andWhere('contract.id IN(:contracts)')
                 ->setParameter('contracts', $request->query->get('contracts'));
-        }
-
-        // Project types
-        if (!empty($request->query->get('project_types'))) {
-            $qb->leftJoin('job.projectType', 'projectType')
-                ->andWhere('projectType.id IN(:projectTypes)')
-                ->setParameter('projectTypes', $request->query->get('project_types'));
         }
 
         return $qb->addOrderBy('job.isFeatured', 'DESC')

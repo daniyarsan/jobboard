@@ -1,8 +1,8 @@
 <!-- Header -->
 <header>
     <nav class="navbar navbar-expand-xl absolute-nav transparent-nav cp-nav navbar-light bg-light fluid-nav">
-        <a class="navbar-brand" href="index.html">
-            <img src="images/logo.png" class="img-fluid" alt="">
+        <a class="navbar-brand" href="{{ path('main_index') }}">
+            <img src="{{ asset('images/logo-white.svg') }}" class="img-fluid" alt="">
         </a>
         <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -44,7 +44,7 @@
             <ul class="navbar-nav ml-auto main-nav">
                 <li class="menu-item"><a title="Home" href="{{ path('jobs_index') }}">Jobs</a></li>
                 <li class="menu-item"><a title="Home" href="{{ path('companies_index') }}">Companies</a></li>
-                <li class="menu-item post-job"><a title="Title" href="post-job.html"><i class="fas fa-plus"></i>Post a Job</a></li>
+                <li class="menu-item post-job"><a title="Title" href="{{ path('my_company_new_job') }}"><i class="fas fa-plus"></i>Post a Job</a></li>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     {% if is_granted('ROLE_COMPANY') %}
                         <li class="menu-item"><a href="{{ path('my_company_settings') }}">My Account</a></li>

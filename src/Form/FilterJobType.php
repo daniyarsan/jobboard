@@ -17,40 +17,25 @@ class FilterJobType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('keyword', HiddenType::class, [
+            ->setRequired(false)
+            ->add('keyword', HiddenType::class, [
             'label' => false,
-            'required' => false,
         ])
-        ->add('price_from', IntegerType::class, [
-            'label' => 'Price',
-            'required' => false,
-        ])
-        ->add('price_to', IntegerType::class, [
-            'label' => false,
-            'required' => false,
-        ])
+
         ->add('categories', EntityType::class, [
-            'attr' => [
-                'class' => 'selectpicker',
-                'data-selected-text-format' => 'count > 3',
-            ],
             'class' => 'App\Entity\Category',
             'query_builder' => function (CategoryRepository $repository) {
                 return $repository->findAllOrderedByName();
             },
-            'required' => false,
             'expanded' => false,
             'multiple' => true,
         ])
-        ->add('country', CountryType::class, [
-            'required' => false,
-        ])
+        ->add('country', CountryType::class)
         ->add('contracts', EntityType::class, [
             'label' => 'Contracts',
             'class' => 'App\Entity\Contract',
             'multiple' => true,
             'expanded' => true,
-            'required' => false,
         ])
         ->add('save', SubmitType::class, [
             'label' => 'Filter Jobs',
