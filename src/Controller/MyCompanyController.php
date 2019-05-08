@@ -71,7 +71,6 @@ class MyCompanyController extends AbstractController
         return $this->render(
             'my-company/settings.html.twig',
             [
-                'company' => $company,
                 'form' => $form->createView(),
                 'userForm' => $userForm->createView()
             ]
@@ -79,7 +78,7 @@ class MyCompanyController extends AbstractController
     }
 
     /**
-     * @Route("/my-jobs", name="_my_jobs")
+     * @Route("/my-jobs", name="_jobs")
      */
     public function myJobs(Request $request, PaginatorInterface $paginator)
     {
@@ -127,7 +126,7 @@ class MyCompanyController extends AbstractController
     }
 
     /**
-     * @Route("/new-job", name="_new_job")
+     * @Route("/job/new", name="_job_new")
      */
     public function createJob(Request $request, TranslatorInterface $translator)
     {

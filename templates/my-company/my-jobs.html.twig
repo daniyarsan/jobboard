@@ -1,26 +1,77 @@
-{% extends 'base.html.twig' %}
+{% extends 'base-dashboard.html.twig' %}
 
-{% block title %}Hello {% endblock %}
+{% block title %}{% endblock %}
 
 {% block body %}
-    <div class="col-md-12">
-        <a href="{{ path('my_account_new_job') }}" class="btn btn-primary">Create new job</a>
-
-        {% if jobs|length > 0 %}
-            <table class="table table-primary">
-                {% for job in jobs %}
-                    <tr>
-                        <td><a href="{{ path('my_account_job', {'id' : job.id}) }}">{{ job.id }}</a></td>
-                        <td><a href="{{ path('my_account_job', {'id' : job.id}) }}">{{ job.name }}</a></td>
-                        <td>{{ job.country }}</td>
-                        <td>{{ job.description }}</td>
-                        <td>{{ job.categories|join(', ') }}</td>
-                    </tr>
-                {% endfor %}
-            </table>
-            {{ knp_pagination_render(jobs) }}
-        {% else %}
-            no jobs available
-        {% endif %}
+    <!-- Breadcrumb -->
+    <div class="alice-bg padding-top-70 padding-bottom-70">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="breadcrumb-area">
+                        <h1>Employer Dashboard</h1>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Employer Dashboard</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <!-- Breadcrumb End -->
+
+    <div class="alice-bg section-padding-bottom">
+        <div class="container no-gliters">
+            <div class="row no-gliters">
+                <div class="col">
+                    <div class="dashboard-container">
+                        <div class="dashboard-content-wrapper">
+                            <div class="manage-job-container">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Job Title</th>
+                                        <th>Applications</th>
+                                        <th>Deadline</th>
+                                        <th>Status</th>
+                                        <th class="action">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for job in jobs %}
+                                        <tr class="job-items">
+                                            <td class="title">
+                                                <h5><a href="{{ path('my_account_job', {'id' : job.id}) }}">{{ job.name }}</a></h5>
+                                                <div class="info">
+                                                    <span class="office-location"><a href="#"><i data-feather="map-pin"></i>{{ job.country }}</a></span>
+                                                    <span class="job-type full-time"><a href="#"><i data-feather="clock"></i>{{ job.categories|join(', ') }}</a></span>
+                                                </div>
+                                            </td>
+                                            <td class="application"><a href="#">6 Application(s)</a></td>
+                                            <td class="deadline">Oct 31, 2018</td>
+                                            <td class="status active">{% if job.isPublished %}Active{% else %}Not Active{% endif %}</td>
+                                            <td class="action">
+                                                <a href="#" class="preview" title="Preview"><i data-feather="eye"></i></a>
+                                                <a href="#" class="edit" title="Edit"><i data-feather="edit"></i></a>
+                                                <a href="#" class="remove" title="Delete"><i data-feather="trash-2"></i></a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                {{ knp_pagination_render(jobs) }}
+                            </div>
+                        </div>
+
+                        {% include "my-company/_side-menu.html.twig" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}

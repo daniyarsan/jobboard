@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Education;
 use App\Entity\Experience;
+use App\Entity\Profile;
 use App\Form\EducationsType;
 use App\Form\ExperiencesType;
 use App\Form\ProfileType;

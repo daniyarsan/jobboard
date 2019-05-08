@@ -12,7 +12,11 @@
                         <div class="title-and-info">
                             <div class="title">
                                 <div class="thumb">
-                                    <img src="{{ vich_uploader_asset(profile, 'avatarImage') }}" class="img-fluid" alt="">
+                                    {% if profile.avatarName %}
+                                        <img src="{{ vich_uploader_asset(profile, 'avatarImage') }}" class="img-fluid" alt="">
+                                    {% else %}
+                                        <img src="{{ asset('images/no-avatar.jpg') }}" class="img-fluid" alt="">
+                                    {% endif %}
                                 </div>
                                 <div class="title-body">
                                     <h4>{{ profile.getFullName() }}</h4>

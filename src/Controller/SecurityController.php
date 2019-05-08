@@ -36,32 +36,39 @@ class SecurityController extends AbstractController
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         $group = $request->get('group');
+        $entity = new User();
 
         if (!$group) {
             $this->get('session')->getFlashBag()->add('danger', 'Please choose user group');
-
             return $this->render('security/register-choose.html.twig');
         } else {
-            switch ($group) {
-                case 'company':
-                    $entity = new Company();
-                    $form = $this->createForm(CompanyType::class, $entity);
-                    break;
-                case 'profile':
-                    $entity = new Profile();
-                    $form = $this->createForm(ProfileType::class, $entity);
-                    break;
-            }
+            $form = $this->createForm(UserType::class, $entity);
 
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-                $password = $passwordEncoder->encodePassword($entity->getUser(), $entity->getUser()->getPlainPassword());
-                $entity->getUser()->setPassword($password);
-                $entity->setRole();
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($entity);
-                $entityManager->flush();
-                return $this->redirectToRoute('my_profile_settings');
+                $password = $passwordEncoder->encodePassword($entity, $entity->getPlainPassword());
+                $entity->setPassword($password);
+
+                switch ($group) {
+                    case 'company':
+                        $entity->setRoles(['ROLE_COMPANY']);
+                        $entity->setCompany(new Company());
+                        break;
+                    case 'profile':
+                        $entity->setRoles(['ROLE_USER']);
+                        $entity->setProfile(new Profile());
+                        break;
+                }
+
+                try {
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->persist($entity);
+                    $entityManager->flush();
+                } catch (\Exception $e) {
+                    $this->get('session')->getFlashBag()->add('danger', $e->getMessage());
+                }
+
+                return $this->redirectToRoute('security_login');
             }
 
             return $this->render(

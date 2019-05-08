@@ -6,7 +6,11 @@
 {% block vich_image_widget %}
     {% spaceless %}
         <div class="update-photo">
-            <img class="image" src="{{ image_uri }}" alt="">
+            {% if app.user.company.logoName %}
+                <img class="image" src="{{ image_uri }}" alt="">
+            {% else %}
+                <img src="{{ asset('images/no-company.png') }}" class="image" alt="">
+            {% endif %}
         </div>
         <div class="file-upload">
             {{ form_widget(form.file) }}
@@ -51,7 +55,6 @@
                         <div class="dashboard-content-wrapper">
                             {% include '_parts/messages.html.twig' %}
 
-
                             <form action="{{ path('my_company_settings') }}" class="dashboard-form" method="POST" enctype="multipart/form-data">
                                 <div class="dashboard-section upload-profile-photo">
                                     {{ form_widget(form.logoImage) }}
@@ -84,33 +87,8 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="dashboard-sidebar">
-                            <div class="company-info">
-                                <div class="thumb">
-                                    <img src="{{ vich_uploader_asset(company, 'logoImage') }}" class="img-fluid" alt="">
 
-                                    <img src="dashboard/images/company-logo.png" class="img-fluid" alt="">
-                                </div>
-                                <div class="company-body">
-                                    <h5>Degoin</h5>
-                                    <span>@username</span>
-                                </div>
-                            </div>
-                            <div class="profile-progress">
-                                <div class="progress-item">
-                                    <div class="progress-head">
-                                        <p class="progress-on">Profile</p>
-                                    </div>
-                                    <div class="progress-body">
-                                        <div class="progress">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 0;"></div>
-                                        </div>
-                                        <p class="progress-to">70%</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {% include "my-company/_side-menu.html.twig" %}
+                        {% include "my-company/_side-menu.html.twig" %}
                         </div>
                     </div>
                 </div>

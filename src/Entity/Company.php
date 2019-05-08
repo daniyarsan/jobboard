@@ -44,7 +44,7 @@ class Company implements \Serializable
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $email;
 
@@ -368,5 +368,10 @@ class Company implements \Serializable
     public function setJobs($jobs): void
     {
         $this->jobs = $jobs;
+    }
+
+    public function getUsername()
+    {
+        return $this->getUser()->getUserName();
     }
 }

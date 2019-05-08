@@ -19,12 +19,12 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Profile", mappedBy="user")
+     * @ORM\OneToOne(targetEntity="App\Entity\Profile", mappedBy="user", cascade={"persist"})
      **/
     private $profile;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Company", mappedBy="user")
+     * @ORM\OneToOne(targetEntity="App\Entity\Company", mappedBy="user", cascade={"persist"})
      */
     private $company;
 
@@ -68,6 +68,8 @@ class User implements UserInterface
     public function setCompany($company)
     {
         $this->company = $company;
+        $this->company->setUser($this);
+        return $this;
     }
 
     public function __construct()
@@ -89,6 +91,8 @@ class User implements UserInterface
     public function setProfile($profile)
     {
         $this->profile = $profile;
+        $this->profile->setUser($this);
+        return $this;
     }
 
     public function getId(): ?int

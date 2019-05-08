@@ -6,7 +6,11 @@
 {% block vich_image_widget %}
     {% spaceless %}
         <div class="update-photo">
-            <img class="image" src="{{ image_uri }}" alt="">
+            {% if image_uri %}
+                <img class="image" src="{{ image_uri }}" alt="">
+            {% else %}
+                <img class="image" src="{{ asset('images/no-avatar.jpg') }}" alt="">
+            {% endif %}
         </div>
         <div class="file-upload">
             {{ form_widget(form.file) }}
@@ -86,7 +90,11 @@
                         <div class="dashboard-sidebar">
                             <div class="user-info">
                                 <div class="thumb">
-                                    <img src="{{ vich_uploader_asset(profile, 'avatarImage') }}" class="img-fluid" alt="">
+                                    {% if app.user.profile.avatarName %}
+                                        <img src="{{ vich_uploader_asset(profile, 'avatarImage') }}" class="img-fluid" alt="">
+                                    {% else %}
+                                        <img src="{{ asset('images/no-avatar.jpg') }}" class="img-fluid" alt="">
+                                    {% endif %}
                                 </div>
                                 <div class="user-body">
                                     <h5>{{ profile.fullName }}</h5>

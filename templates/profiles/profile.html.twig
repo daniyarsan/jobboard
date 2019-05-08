@@ -1,7 +1,11 @@
 <div class="candidate">
     <div class="thumb">
         <a href="{{ path('profile_details', {'id' : profile.getId()}) }}">
-            <img src="{{ vich_uploader_asset(profile, 'avatarImage') }}" class="img-fluid" alt="">
+            {% if profile.avatarName %}
+                <img src="{{ vich_uploader_asset(profile, 'avatarImage') }}" class="img-fluid" alt="">
+            {% else %}
+                <img src="{{ asset('images/no-avatar.jpg') }}" class="img-fluid" alt="">
+            {% endif %}
         </a>
     </div>
     <div class="body">

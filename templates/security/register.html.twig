@@ -9,7 +9,10 @@
                             <h5><i data-feather="edit"></i>Register {{ group }}</h5>
                         </div>
 
-                        {{ form(form) }}
+                        {{ form_start(form) }}
+                        {{ form_widget(form) }}
+                            <button type="submit" class="btn btn-outline-primary">Register</button>
+                        {{ form_end(form) }}
 
                         {#<div class="shortcut-login">#}
                             {#<span>Or connect with</span>#}

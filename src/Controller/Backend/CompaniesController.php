@@ -48,7 +48,7 @@ class CompaniesController extends AbstractController
             }
         }
         $paginatorOptions = [
-            'defaultSortFieldName' => 'c.id',
+            'defaultSortFieldName' => 'id',
             'defaultSortDirection' => 'desc'
         ];
 

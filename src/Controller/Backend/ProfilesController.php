@@ -46,7 +46,7 @@ class ProfilesController extends AbstractController
             }
         }
         $paginatorOptions = [
-            'defaultSortFieldName' => 'p.id',
+            'defaultSortFieldName' => 'id',
             'defaultSortDirection' => 'desc'
         ];
 

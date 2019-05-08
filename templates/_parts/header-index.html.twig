@@ -5,7 +5,7 @@
             <div class="col">
                 <div class="header-top">
                     <div class="logo-area">
-                        <a href="#"><img src="{{ asset('images/logo.svg') }}" alt=""></a>
+                        <a href="{{ path('main_index') }}"><img src="{{ asset('images/logo.svg') }}" alt=""></a>
                     </div>
                     <div class="header-top-toggler">
                         <div class="header-top-toggler-button"></div>
@@ -24,7 +24,7 @@
                                             {% if is_granted('ROLE_COMPANY') %}
                                                 <h5><a href="#">{{ app.user.company.name }}</a></h5>
                                             {% else %}
-                                                <h5><a href="#">{{ app.user.profile.firstName }} {{ app.user.profile.lastName }}</a></h5>
+                                                <h5><a href="#">full name</a></h5>
                                             {% endif %}
                                             <span class="mail">{{ app.user.email }}</span>
                                         </div>

@@ -260,7 +260,7 @@ class Profile implements \Serializable
         $this->experiences = $experiences;
     }
 
-    public function setRole()
+    public function setDefaultRole()
     {
         $this->getUser()->setRoles(['ROLE_USER']);
     }
