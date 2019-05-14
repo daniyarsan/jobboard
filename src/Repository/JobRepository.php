@@ -42,6 +42,17 @@ class JobRepository extends ServiceEntityRepository
             ->execute();
     }
 
+    public function activate()
+    {
+        $qb = $this->createQueryBuilder('job');
+
+        return $qb->update()
+            ->set('job.isPublished', '1')
+            ->andWhere('job.publishedUntil > CURRENT_TIMESTAMP()')
+            ->getQuery()
+            ->execute();
+    }
+
     public function getCompanyCount($company)
     {
         $qb = $this->createQueryBuilder('job');

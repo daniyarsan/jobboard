@@ -1,8 +1,10 @@
+{% set route = app.request.attributes.get('_route') %}
+
 <div class="dashboard-sidebar">
     <div class="company-info">
         <div class="thumb">
             {% if app.user.company.logoName %}
-                <img src="{{ vich_uploader_asset(profile, 'logoImage') }}" class="img-fluid" alt="">
+                <img src="{{ vich_uploader_asset(app.user.company, 'logoImage') }}" class="img-fluid" alt="">
             {% else %}
                 <img src="{{ asset('images/no-company.png') }}" class="img-fluid" alt="">
             {% endif %}
@@ -12,10 +14,12 @@
             <span>{{ app.user.company.username }}</span>
         </div>
     </div>
-    <div class="profile-progress">
+
+    {# TODO: Create progress bar feature according to profile completeness #}
+    {#<div class="profile-progress">
         <div class="progress-item">
             <div class="progress-head">
-                <p class="progress-on">Profile</p>
+                <p class="progress-on">Company</p>
             </div>
             <div class="progress-body">
                 <div class="progress">
@@ -25,24 +29,22 @@
             </div>
         </div>
     </div>
+    #}
     <div class="dashboard-menu">
         <ul>
-            <li><i class="fas fa-home"></i><a href="{{ path('my_company_index') }}">Dashboard</a></li>
-            <li class="active"><i class="fas fa-user"></i><a href="{{ path('my_company_settings') }}">Edit
-                    Profile</a></li>
-            <li><i class="fas fa-briefcase"></i><a href="{{ path('my_company_jobs') }}">Manage Jobs</a></li>
-            <li><i class="fas fa-users"></i><a href="employer-dashboard-manage-candidate.html">Manage Candidates</a>
-            </li>
-            <li><i class="fas fa-heart"></i><a href="#">Shortlisted Resumes</a></li>
-            <li><i class="fas fa-plus-square"></i><a href="{{ path('my_company_job_new') }}">Post New Job</a></li>
-            <li><i class="fas fa-comment"></i><a href="employer-dashboard-message.html">Message</a></li>
-            <li><i class="fas fa-calculator"></i><a href="employer-dashboard-pricing.html">Pricing Plans</a></li>
+            <li {{ route ==  'my_company_index' ? 'class="active"' }}><i class="fas fa-home"></i><a href="{{ path('my_company_index') }}">Dashboard</a></li>
+            <li {{ route ==  'my_company_settings' ? 'class="active"' }}><i class="fas fa-user"></i><a href="{{ path('my_company_settings') }}">Edit Profile</a></li>
+            <li {{ route ==  'my_company_jobs' ? 'class="active"' }}><i class="fas fa-briefcase"></i><a href="{{ path('my_company_jobs') }}">Manage Jobs</a></li>
+            <li {{ route ==  'my_company_job_new' ? 'class="active"' }}><i class="fas fa-plus-square"></i><a href="{{ path('my_company_job_new') }}">Post New Job</a></li>
+            <li {{ route ==  'my_company_candidates' ? 'class="active"' }}><i class="fas fa-users"></i><a href="#">Manage Candidates</a></li>
+            <li {{ route ==  'my_company_resumes' ? 'class="active"' }}><i class="fas fa-heart"></i><a href="#">Shortlisted Resumes</a></li>
+            <li {{ route ==  'my_company_messages' ? 'class="active"' }}><i class="fas fa-comment"></i><a href="#">Message</a></li>
         </ul>
         <ul class="delete">
             <li><i class="fas fa-power-off"></i><a href="{{ path('security_logout') }}">Logout</a></li>
-            <li><i class="fas fa-trash-alt"></i><a href="#" data-toggle="modal" data-target="#modal-delete">Delete
-                    Profile</a></li>
+            <li><i class="fas fa-trash-alt"></i><a href="#" data-toggle="modal" data-target="#modal-delete">Delete Profile</a></li>
         </ul>
+
         <!-- Modal -->
         <div class="modal fade modal-delete" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document">

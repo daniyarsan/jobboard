@@ -98,34 +98,6 @@ class MyCompanyController extends AbstractController
     }
 
     /**
-     * @Route("/job/{id}", name="_job", requirements={"id": "\d+"})
-     * @ParamConverter("job", class="App\Entity\Job")
-     */
-    public function jobDetails(Request $request, Job $job)
-    {
-        $hasUserJob = $this->getDoctrine()->getRepository('App:Job')->hasUserJob($this->getUser(), $job);
-
-        if (!$job->getIsPublished() && !$hasUserJob) {
-            throw $this->createAccessDeniedException('You are not allowed to access this page.');
-        }
-
-        /*$application = $this->getDoctrine()->getRepository('App:Application')->findOneBy(
-            [
-                'user' => $this->getUser(),
-                'job' => $job,
-            ]
-        );*/
-
-        return $this->render(
-            'my-company/job-details.html.twig',
-            [
-                //'hasCurrentUserApplied' => $application,
-                'job' => $job,
-            ]
-        );
-    }
-
-    /**
      * @Route("/job/new", name="_job_new")
      */
     public function createJob(Request $request, TranslatorInterface $translator)
@@ -156,7 +128,7 @@ class MyCompanyController extends AbstractController
                 $this->addFlash('danger', $translator->trans('An error occurred when saving object.'));
             }
 
-            return $this->redirectToRoute('my-company_my_jobs');
+            return $this->redirectToRoute('my_company_jobs');
         }
 
         return $this->render(
@@ -187,4 +159,228 @@ class MyCompanyController extends AbstractController
         }
         return $this->redirectToRoute('my_company_settings');
     }
+
+    /**
+     * @Route("/job/edit/{id}", name="_job_edit", requirements={"id": "\d+"})
+     * @ParamConverter("job", class="App\Entity\Job")
+     */
+    public function editAction(Request $request, Job $job)
+    {
+        $form = $this->createForm(
+            JobType::class,
+            $job,
+            [
+                'user' => $this->getUser(),
+            ]
+        );
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $job = $form->getData();
+
+            try {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($job);
+                $em->flush();
+                $this->addFlash('success', $this->get('translator')->trans('Job has been successfully updated.'));
+            } catch (\Exception $e) {
+                $this->addFlash('danger', $this->get('translator')->trans('An error occurred when saving object.'));
+            }
+
+
+            return $this->redirectToRoute('my_company_jobs');
+        }
+
+        return $this->render(
+            'my-company/edit-job.html.twig',
+            [
+                'form' => $form->createView()
+            ]
+        );
+    }
+
+    /**
+     * @Route("/account/jobs/delete/{id}", name="job_delete", requirements={"id": "\d+"})
+     * @ParamConverter("job", class="JobPlatform\AppBundle\Entity\Job")
+     */
+    public function deleteAction(Request $request, Job $job)
+    {
+
+        if (!$this->getDoctrine()->getRepository('AppBundle:Job')->hasUserJob($this->getUser(), $job)) {
+            throw $this->createAccessDeniedException('You are not allowed to access this page.');
+        }
+
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($job);
+            $em->flush();
+            $this->addFlash('success', $this->get('translator')->trans('Job has been successfully deleted.'));
+        } catch (\Exception $e) {
+            $this->addFlash('danger', $this->get('translator')->trans('An error occurred when deleting object.'));
+        }
+
+        return $this->redirectToRoute('job_my');
+    }
+
+    /**
+     * @Route("/job/publish/{id}", name="_job_publish", requirements={"id": "\d+"})
+     * @ParamConverter("job", class="App\Entity\Job")
+     */
+    public function publishAction(Request $request, Job $job)
+    {
+        $payments = $this->getParameter('app.payments');
+
+        if ($payments['pay_for_publish']['enabled']) {
+            $session = $request->getSession();
+            if ($session->get('products')) {
+                foreach ($session->get('products') as $product) {
+                    if ($product['type'] == 'pay_for_publish' && $product['job_id'] == $job->getId()) {
+                        $this->addFlash('danger', $this->get('translator')->trans('Product is already in cart.'));
+
+                        return $this->redirectToRoute('job_my');
+                    }
+                }
+            }
+
+            $product = [
+                'type' => 'pay_for_publish',
+                'job_id' => $job->getId(),
+                'price' => $payments['pay_for_publish']['price'],
+                'duration' => $payments['pay_for_publish']['duration'],
+            ];
+
+            if ($session->has('products')) {
+                $products = $session->get('products');
+
+                array_push($products, $product);
+                $session->set('products', $products);
+            } else {
+                $session->set('products', [$product]);
+            }
+
+            $this->addFlash(
+                'success',
+                $this->get('translator')->trans('Request for publishing job has been added into cart.')
+            );
+        } else {
+            $job->setIsPublished(true);
+
+            try {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($job);
+                $em->flush();
+            } catch (\Exception $e) {
+                $this->addFlash('danger', $this->get('translator')->trans('An error occurred when saving object.'));
+            }
+        }
+
+        return $this->redirectToRoute('my_company_jobs');
+    }
+
+    /**
+     * @Route("/job/unpublish/{id}", name="_job_unpublish", requirements={"id": "\d+"})
+     * @ParamConverter("job", class="App\Entity\Job")
+     */
+    public function unpublishAction(Request $request, Job $job)
+    {
+        $job->setIsPublished(false);
+
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($job);
+            $em->flush();
+            $this->addFlash('success', $this->get('translator')->trans('Job has been successfully unpublished.'));
+        } catch (\Exception $e) {
+            $this->addFlash('danger', $this->get('translator')->trans('An error occurred when saving object.'));
+        }
+
+        return $this->redirectToRoute('my_company_jobs');
+    }
+
+    /**
+     * @Route("/job/feature/{id}", name="_job_feature", requirements={"id": "\d+"})
+     * @ParamConverter("job", class="App\Entity\Job")
+     */
+    public function featureAction(Request $request, Job $job)
+    {
+        $payments = $this->getParameter('app.payments');
+
+        if ($payments['pay_for_featured']['enabled']) {
+            $session = $request->getSession();
+
+            if ($session->get('products')) {
+                foreach ($session->get('products') as $product) {
+                    if ($product['type'] == 'pay_for_featured' && $product['job_id'] == $job->getId()) {
+                        $this->addFlash('danger', $this->get('translator')->trans('Product is already in cart.'));
+
+                        return $this->redirectToRoute('my_company_jobs');
+                    }
+                }
+            }
+
+            $product = [
+                'type' => 'pay_for_featured',
+                'job_id' => $job->getId(),
+                'price' => $payments['pay_for_featured']['price'],
+                'duration' => $payments['pay_for_featured']['duration'],
+            ];
+
+            if ($session->has('products')) {
+                $products = $session->get('products');
+
+                array_push($products, $product);
+                $session->set('products', $products);
+            } else {
+                $session->set('products', [$product]);
+            }
+
+            $this->addFlash(
+                'success',
+                $this->get('translator')->trans('Request for featuring job has been added into cart.')
+            );
+        } else {
+            $job->setIsFeatured(true);
+
+            try {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($job);
+                $em->flush();
+
+                $this->addFlash(
+                    'success',
+                    $this->get('translator')->trans('Job has been successfully marked as featured.')
+                );
+            } catch (\Exception $e) {
+                $this->addFlash('danger', $this->get('translator')->trans('An error occurred when saving object.'));
+            }
+        }
+
+        return $this->redirectToRoute('job_my');
+    }
+
+    /**
+     * @Route("/job/unfeature/{id}", name="_job_unfeature", requirements={"id": "\d+"})
+     * @ParamConverter("job", class="App\Entity\Job")
+     */
+    public function unfeatureAction(Request $request, Job $job)
+    {
+        $job->setIsFeatured(false);
+
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($job);
+            $em->flush();
+            $this->addFlash(
+                'success',
+                $this->get('translator')->trans('Featured sign has been successfully removed from job.')
+            );
+        } catch (\Exception $e) {
+            $this->addFlash('danger', $this->get('translator')->trans('An error occurred when saving object.'));
+        }
+
+
+        return $this->redirectToRoute('my_company_jobs');
+    }
+
 }

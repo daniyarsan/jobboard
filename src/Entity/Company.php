@@ -34,7 +34,7 @@ class Company implements \Serializable
     private $jobs;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $name;
 
@@ -52,6 +52,11 @@ class Company implements \Serializable
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $country;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $state;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -373,5 +378,21 @@ class Company implements \Serializable
     public function getUsername()
     {
         return $this->getUser()->getUserName();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param mixed $state
+     */
+    public function setState($state): void
+    {
+        $this->state = $state;
     }
 }

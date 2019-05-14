@@ -44,7 +44,9 @@
                                     {% for job in jobs %}
                                         <tr class="job-items">
                                             <td class="title">
-                                                <h5><a href="{{ path('my_account_job', {'id' : job.id}) }}">{{ job.name }}</a></h5>
+                                                <h5>
+                                                    <a href="{{ path('job_details', {'id' : job.id}) }}">{{ job.title }}</a>
+                                                </h5>
                                                 <div class="info">
                                                     <span class="office-location"><a href="#"><i data-feather="map-pin"></i>{{ job.country }}</a></span>
                                                     <span class="job-type full-time"><a href="#"><i data-feather="clock"></i>{{ job.categories|join(', ') }}</a></span>
@@ -52,11 +54,16 @@
                                             </td>
                                             <td class="application"><a href="#">6 Application(s)</a></td>
                                             <td class="deadline">Oct 31, 2018</td>
-                                            <td class="status active">{% if job.isPublished %}Active{% else %}Not Active{% endif %}</td>
+
+                                            {% if job.isPublished %}
+                                                <td class="status active">Active</td>
+                                            {% else %}
+                                                <td class="status pending">Pending</td>
+                                            {% endif %}
                                             <td class="action">
-                                                <a href="#" class="preview" title="Preview"><i data-feather="eye"></i></a>
-                                                <a href="#" class="edit" title="Edit"><i data-feather="edit"></i></a>
-                                                <a href="#" class="remove" title="Delete"><i data-feather="trash-2"></i></a>
+                                                <a href="{{ path('job_details', {'id' : job.id}) }}" class="preview" title="Preview"><i data-feather="eye"></i></a>
+                                                <a href="{{ path('my_company_job_edit', {'id': job.id}) }}" class="edit" title="Edit"><i data-feather="edit"></i></a>
+                                                <a href="#" data-toggle="modal" data-target="#modal-delete-job" class="remove" title="Delete"><i data-feather="trash-2"></i></a>
                                             </td>
                                         </tr>
                                     {% endfor %}
@@ -73,5 +80,19 @@
         </div>
     </div>
 
-
+    <!-- Modal -->
+    <div class="modal fade modal-delete" id="modal-delete-job" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h4><i data-feather="trash-2"></i>Delete Job</h4>
+                    <p>Are you sure! You want to delete this job listing...</p>
+                    <div class="buttons">
+                        <button class="delete-button">Save Update</button>
+                        <button class="">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

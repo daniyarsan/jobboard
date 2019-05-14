@@ -19,31 +19,22 @@ class CompanyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->setRequired(false)
             ->add('name', TextType::class)
             ->add('logoImage', VichImageType::class, [
-                'required' => false,
                 'allow_delete' => true,
                 'download_link' => true,
             ])
             ->add('email', EmailType::class)
-            ->add('website', TextType::class, [
-                'required' => false,
-            ])
-            ->add('phone', TextType::class, [
-                'required' => false,
-            ])
-            ->add('country', CountryType::class, [
-                'required' => false,
-            ])
-            ->add('latitude', TextType::class, [
-                'required' => false,
-            ])
-            ->add('longitude', TextType::class, [
-                'required' => false,
-            ])
+            ->add('website', TextType::class)
+            ->add('phone', TextType::class)
+            ->add('country', CountryType::class)
+            ->add('state', TextType::class)
+            ->add('address', TextType::class)
+            ->add('latitude', TextType::class)
+            ->add('longitude', TextType::class)
             ->add('description', TextareaType::class, [
-                'required' => false,
-                'attr' => ['class' => 'wysiwyg'],
+                'attr' => ['class' => 'wysiwyg']
             ]);
     }
 

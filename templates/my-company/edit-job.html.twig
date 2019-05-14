@@ -33,6 +33,12 @@
                             <div class="dashboard-section basic-info-input">
                                 <h4><i data-feather="user-check"></i>Post A Job</h4>
                                 {{ form_row(form.title) }}
+                                {{ form_row(form.contract) }}
+                                {{ form_row(form.country) }}
+                                {{ form_row(form.state) }}
+                                {{ form_row(form.salary) }}
+                                {{ form_row(form.categories) }}
+                                {{ form_row(form.description, {'attr' : {'class' : 'tinymce-editor tinymce-editor-1'}}) }}
                             </div>
                             {{ form_end(form) }}
                         </div>

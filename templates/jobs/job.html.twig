@@ -6,7 +6,7 @@
     </div>
     <div class="body">
         <div class="content">
-            <h4><a href="{{ path('job_details', {'id' : job.id}) }}">{{ job.name }} </a></h4>
+            <h4><a href="{{ path('job_details', {'id' : job.id}) }}">{{ job.title }} </a></h4>
             <div class="info">
                 <span class="company"><a href="#"><i data-feather="briefcase"></i>{{ job.getCategories()|join('/') }}</a></span>
                 <span class="office-location"><a href="#"><i data-feather="map-pin"></i>{{ job.getCountry() }}</a></span>

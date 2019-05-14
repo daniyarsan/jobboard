@@ -44,7 +44,7 @@ class Job
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $name;
+    private $title;
 
     /**
      * @ORM\Column(type="text")
@@ -55,6 +55,11 @@ class Job
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $country;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $state;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=0, nullable=true)
@@ -117,14 +122,14 @@ class Job
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getTitle(): ?string
     {
-        return $this->name;
+        return $this->title;
     }
 
-    public function setName(string $name): self
+    public function setTitle(string $title): self
     {
-        $this->name = $name;
+        $this->title = $title;
 
         return $this;
     }
@@ -311,6 +316,22 @@ class Job
     public function setContract($contract): void
     {
         $this->contract = $contract;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param mixed $state
+     */
+    public function setState($state): void
+    {
+        $this->state = $state;
     }
 
 }

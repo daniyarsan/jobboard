@@ -39,12 +39,12 @@ class SecurityController extends AbstractController
         $entity = new User();
 
         if (!$group) {
-            $this->get('session')->getFlashBag()->add('danger', 'Please choose user group');
             return $this->render('security/register-choose.html.twig');
         } else {
             $form = $this->createForm(UserType::class, $entity);
 
             $form->handleRequest($request);
+
             if ($form->isSubmitted() && $form->isValid()) {
                 $password = $passwordEncoder->encodePassword($entity, $entity->getPlainPassword());
                 $entity->setPassword($password);
