@@ -52,8 +52,8 @@
                         <tr>
                             <th><input type="checkbox" class="check-all-items"/></th>
                             <th>
-                                {{ knp_pagination_sortable(jobs, 'Job Title', 'name') }}
-                                {% if jobs.isSorted('name') %}
+                                {{ knp_pagination_sortable(jobs, 'Job Title', 'title') }}
+                                {% if jobs.isSorted('title') %}
                                     <span class="fa fa-sort-amount{% if jobs.getParams.direction == 'desc' %}-desc{% else %}-asc{% endif %}"></span>
                                 {% endif %}
                             </th>
@@ -74,7 +74,7 @@
                         {% for job in jobs %}
                             <tr>
                                 <td><input type="checkbox" class="check-item" name="jobs[{{ job.id }}]"/></td>
-                                <td>{{ job.name }}</td>
+                                <td>{{ job.title }}</td>
                                 <td>{{ job.country }}</td>
                                 <td>{{ job.categories|join(', ') }}</td>
                                 <td>

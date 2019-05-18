@@ -107,11 +107,7 @@ class MyCompanyController extends AbstractController
         }
         $job = new Job();
 
-        $form = $this->createForm(
-            JobType::class,
-            $job,
-            ['user' => $this->getUser()]
-        );
+        $form = $this->createForm(JobType::class, $job, ['user' => $this->getUser()]);
 
         $form->handleRequest($request);
 
@@ -164,7 +160,7 @@ class MyCompanyController extends AbstractController
      * @Route("/job/edit/{id}", name="_job_edit", requirements={"id": "\d+"})
      * @ParamConverter("job", class="App\Entity\Job")
      */
-    public function editAction(Request $request, Job $job)
+    public function editAction(Request $request, Job $job, TranslatorInterface $translator)
     {
         $form = $this->createForm(
             JobType::class,
@@ -178,16 +174,14 @@ class MyCompanyController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $job = $form->getData();
-
             try {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($job);
                 $em->flush();
-                $this->addFlash('success', $this->get('translator')->trans('Job has been successfully updated.'));
+                $this->addFlash('success', $translator->trans('Job has been successfully updated.'));
             } catch (\Exception $e) {
-                $this->addFlash('danger', $this->get('translator')->trans('An error occurred when saving object.'));
+                $this->addFlash('danger', $translator->trans('An error occurred when saving object.'));
             }
-
 
             return $this->redirectToRoute('my_company_jobs');
         }

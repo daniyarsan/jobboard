@@ -18,20 +18,25 @@ class JobType extends AbstractType
     {
         $builder
             ->add('title', TextType::class)
-            ->add('country', CountryType::class)
+            ->add('country', CountryType::class, [
+                'empty_data' => 'Choose Country',
+            ])
             ->add('state', TextType::class)
             ->add('salary', IntegerType::class, [
                 'required' => false,
             ])
             ->add('categories', EntityType::class, [
+                'placeholder' => 'Choose Category',
                 'class' => 'App\Entity\Category',
                 'multiple' => true,
                 'required' => false,
             ])
             ->add('description', TextareaType::class, [
                 'attr' => ['class' => 'wysiwyg'],
+                'required' => false
             ])
             ->add('contract', EntityType::class, [
+                'placeholder' => 'Choose Contract',
                 'class' => 'App\Entity\Contract',
                 'required' => false
             ])
