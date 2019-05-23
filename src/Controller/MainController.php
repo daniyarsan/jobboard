@@ -16,8 +16,8 @@ class MainController extends AbstractController
 {
     /**
      * @Route("/", name="_index")
-     * @Template("main/index.html.twig")
-     */
+* @Template("main/index.html.twig")
+*/
     public function index()
     {
         return [];

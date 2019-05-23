@@ -68,6 +68,10 @@ class CompanyRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('company');
 
+        if (!strstr($request->getPathInfo(), 'admin')) {
+            $qb->andWhere('company.isVerified = 1');
+        }
+
         // Keyword
         if (!empty($request->query->get('keyword'))) {
             $qb->andWhere('company.name LIKE :filterKeyword OR company.description LIKE :filterKeyword')

@@ -83,7 +83,10 @@ class CompaniesController extends AbstractController
                 $this->addFlash('danger', $translator->trans('An error occurred when saving object.'));
             }
 
-            return ['id' => $company->getId()];
+            if ($form->get('saveAndExit')->isClicked()) {
+                return $this->redirectToRoute('admin_companies_index');
+            }
+            return $this->redirect($this->generateUrl('admin_companies_edit', ['id' => $company->getId()]));
         }
 
         return ['form' => $form->createView()];

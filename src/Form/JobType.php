@@ -17,6 +17,12 @@ class JobType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('company', EntityType::class, [
+                'placeholder' => 'Choose Company',
+                'class' => 'App\Entity\Company',
+                'required' => false,
+            ])
+
             ->add('title', TextType::class)
             ->add('country', CountryType::class, [
                 'empty_data' => 'Choose Country',
@@ -32,7 +38,6 @@ class JobType extends AbstractType
                 'required' => false,
             ])
             ->add('description', TextareaType::class, [
-                'attr' => ['class' => 'wysiwyg'],
                 'required' => false
             ])
             ->add('contract', EntityType::class, [
@@ -40,9 +45,8 @@ class JobType extends AbstractType
                 'class' => 'App\Entity\Contract',
                 'required' => false
             ])
-            ->add('save', SubmitType::class, [
-                'attr' => ['class' => 'btn-primary'],
-            ]);
+            ->add('save', SubmitType::class)
+            ->add('saveAndExit', SubmitType::class, ['label' => 'Save and Exit']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

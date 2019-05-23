@@ -1,0 +1,104 @@
+{% extends 'admin/admin-base.html.twig' %}
+
+{% block title %}Categories List{% endblock %}
+
+{% block pagetitle %}Categories List{% endblock %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb text-right">
+        <li><a href="#">Dashboard</a></li>
+        <li><a href="#">Categories</a></li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    {% import 'admin/form/dialog.html.twig' as dialogs %}
+    {% import 'admin/_parts/helper.html.twig' as helper %}
+
+    <div class="card">
+        <div class="card-header">
+            <div class="btn-group">
+                <button type="button" class="dropdown-toggle btn btn-outline-primary btn-sm bulk-action-dropdown" data-toggle="dropdown" disabled="disabled">
+                    {% trans %}Choose an Action{% endtrans %}
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" data-toggle="modal" href="#categories-delete-bulk">Delete</a>
+                </div>
+            </div>
+            {{ dialogs.confirm('categories-delete-bulk', 'Confirmation', 'The selected categories will be removed permanently. Are you sure?', "categoryBulkAction('remove')", '') }}
+            <a href="{{ path('admin_category_create') }}" class="btn btn-outline-success btn-sm pull-right"><i class="fa fa-plus"></i>&nbsp; Add Category</a>
+        </div>
+
+        <div class="card-body">
+            <div class="table-stats order-table">
+                <form method="post" action="{{ path('admin_category_bulk') }}" id="category-bulk-form">
+                    {{ form_widget(bulk_action_form._token) }}
+                    <input type="hidden" name="action" value=""/>
+                    <input type="hidden" name="return_url" value="{{ path('admin_category_index') }}{{ query_string() }}"/>
+                    <table class="table ">
+                        <thead>
+                        <tr>
+                            <th class="serial"><input type="checkbox" class="check-all-items"/></th>
+                            <th>
+                                {{ knp_pagination_sortable(categories, 'Page Name', 'c.name') }}
+                                {% if categories.isSorted('c.name') %}
+                                    <span class="fa fa-sort-amount{% if categories.getParams.direction == 'desc' %}-desc{% else %}-asc{% endif %}"></span>
+                                {% endif %}
+                            </th>
+                            <th>Slug</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for category in categories %}
+                            <tr>
+                                <td><input type="checkbox" class="check-item" name="pages[{{ category.id }}]"/></td>
+                                <td>{{ category.name }}</td>
+                                <td>{{ category.slug }}</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="dropdown-toggle btn btn-outline-secondary btn-sm" type="button" data-toggle="dropdown">
+                                            Action
+                                        </button>
+                                        <div class="dropdown-menu">
+
+                                            <a class="dropdown-item" href="{{ path('admin_category_edit', {'id': category.id, 'return_url': path('admin_category_index') ~ query_string()}) }}">Edit</a>
+
+                                            <div class="dropdown-divider"></div>
+                                            <a data-toggle="modal" href="#static-page-delete-{{ category.id }}" class="dropdown-item">Delete</a>
+                                        </div>
+                                    </div>
+                                    {{ dialogs.confirm('static-page-delete-' ~ category.id, 'Confirmation', 'The selected page will be removed permanently. Are you sure?', '', path('admin_category_set', {id: category.id, action: 'remove'})) }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </form>
+            </div> <!-- /.table-stats -->
+
+            <div class="dataTables_paginate paging_simple_numbers">
+                {{ knp_pagination_render(categories) }}
+            </div>
+        </div>
+        <div class="card-footer">
+            {% set pagesCount = categories.getTotalItemCount %}
+            {{ pagesCount }} items - found
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        function categoryBulkAction(action) {
+            var form = jQuery("#category-bulk-form");
+            form.find("input[name='action']").val(action);
+            form.submit();
+        }
+    </script>
+{% endblock %}

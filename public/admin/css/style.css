@@ -2010,7 +2010,7 @@ header .form-inline .search-form.close {
 	color: #343a40;
 	font-size: 14px;
 	font-weight: 600;
-	text-transform: capitalize;
+	text-transform: inherit;
 	vertical-align: middle;
 }
 

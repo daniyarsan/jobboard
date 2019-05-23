@@ -92,4 +92,21 @@ jQuery(document).ready(function ($) {
         $(".bulk-action-dropdown").prop("disabled", $(".check-item:checked").length == 0);
     });
 
+    tinymce.init({
+        selector: '.tinymce-editor-1',
+        height: 120,
+        menubar: false,
+        theme: 'modern',
+        mobile: {
+            theme: 'mobile',
+            plugins: ['autosave', 'lists', 'autolink', 'code']
+        },
+        plugins: [
+            'advlist autolink lists link image charmap print preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table contextmenu paste code'
+        ],
+        toolbar: 'bold underline italic | bullist numlist | alignleft aligncenter alignright alignjustify | link code',
+    });
+
 });

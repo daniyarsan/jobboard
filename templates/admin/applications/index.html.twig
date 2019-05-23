@@ -1,0 +1,112 @@
+{% extends 'admin/admin-base.html.twig' %}
+
+{% block title %}Applications List{% endblock %}
+
+{% block pagetitle %}Applications List{% endblock %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb text-right">
+        <li><a href="#">Dashboard</a></li>
+        <li><a href="#">Applications</a></li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    {% import 'admin/form/dialog.html.twig' as dialogs %}
+    {% import 'admin/_parts/helper.html.twig' as helper %}
+
+    <div class="card">
+        <div class="card-header">
+            <div class="btn-group">
+                <button type="button" class="dropdown-toggle btn btn-outline-primary btn-sm bulk-action-dropdown" data-toggle="dropdown" disabled="disabled">
+                    {% trans %}Choose an Action{% endtrans %}
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" data-toggle="modal" href="#applications-delete-bulk">Delete</a>
+                </div>
+            </div>
+            {{ dialogs.confirm('applications-delete-bulk', 'Confirmation', 'The selected applications will be removed permanently. Are you sure?', "applicationBulkAction('remove')", '') }}
+        </div>
+
+        <div class="card-body">
+            <div class="table-stats order-table">
+                <form method="post" action="{{ path('admin_application_bulk') }}" id="application-bulk-form">
+                    {{ form_widget(bulk_action_form._token) }}
+                    <input type="hidden" name="action" value=""/>
+                    <input type="hidden" name="return_url" value="{{ path('admin_application_index') }}{{ query_string() }}"/>
+                    <table class="table ">
+                        <thead>
+                        <tr>
+                            <th class="serial"><input type="checkbox" class="check-all-items"/></th>
+                            <th>
+                                {{ knp_pagination_sortable(applications, 'Id', 'a.id') }}
+                                {% if applications.isSorted('a.id') %}
+                                    <span class="fa fa-sort-amount{% if applications.getParams.direction == 'desc' %}-desc{% else %}-asc{% endif %}"></span>
+                                {% endif %}
+                            </th>
+                            <th>Owner</th>
+                            <th>Job</th>
+                            <th>Applicant</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for application in applications %}
+                            <tr>
+                                <td><input type="checkbox" class="check-item" name="pages[{{ application.id }}]"/></td>
+                                <td>{{ application.id }}</td>
+                                <td>
+                                    {{ application.job.company.name }}
+                                </td>
+                                <td>{{ application.job.title }}</td>
+                                <td>
+                                    {{ application.user.profile.fullName }} <br>
+                                    {{ application.user.email }}
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="dropdown-toggle btn btn-outline-secondary btn-sm" type="button" data-toggle="dropdown">
+                                            Action
+                                        </button>
+                                        <div class="dropdown-menu">
+
+                                            <a class="dropdown-item" href="{{ path('admin_application_edit', {'id': application.id, 'return_url': path('admin_application_index') ~ query_string()}) }}">Edit</a>
+
+                                            <div class="dropdown-divider"></div>
+                                            <a data-toggle="modal" href="#static-page-delete-{{ application.id }}" class="dropdown-item">Delete</a>
+                                        </div>
+                                    </div>
+                                    {{ dialogs.confirm('static-page-delete-' ~ application.id, 'Confirmation', 'The selected page will be removed permanently. Are you sure?', '', path('admin_application_set', {id: application.id, action: 'remove'})) }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </form>
+            </div> <!-- /.table-stats -->
+
+            <div class="dataTables_paginate paging_simple_numbers">
+                {{ knp_pagination_render(applications) }}
+            </div>
+        </div>
+        <div class="card-footer">
+            {% set pagesCount = applications.getTotalItemCount %}
+            {{ pagesCount }} items - found
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        function applicationBulkAction(action) {
+            var form = jQuery("#application-bulk-form");
+            form.find("input[name='action']").val(action);
+            form.submit();
+        }
+    </script>
+{% endblock %}

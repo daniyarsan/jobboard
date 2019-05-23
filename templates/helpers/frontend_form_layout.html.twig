@@ -1,10 +1,6 @@
 {% use "bootstrap_4_horizontal_layout.html.twig" %}
 
-{% block choice_widget_collapsed -%}
-    {{- parent() -}}
-    <i class="fa fa-caret-down"></i>
-{%- endblock choice_widget_collapsed %}
-
 {%- block textarea_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' tinymce-editor tinymce-editor-1')|trim}) %}
     <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
 {%- endblock textarea_widget -%}
