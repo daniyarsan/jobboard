@@ -66,22 +66,22 @@ class Company implements \Serializable
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $website;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $phone;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
     private $latitude;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $longitude;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $website;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $phone;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)

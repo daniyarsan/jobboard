@@ -1,0 +1,128 @@
+{% extends 'admin/admin-base.html.twig' %}
+
+{% block title %}Blogs List{% endblock %}
+
+{% block pagetitle %}Blogs List{% endblock %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb text-right">
+        <li><a href="#">Dashboard</a></li>
+        <li><a href="#">Blogs</a></li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+       {% import 'admin/form/dialog.html.twig' as dialogs %}
+    {% import 'admin/_parts/helper.html.twig' as helper %}
+
+    <div class="card">
+        <div class="card-header">
+            <div class="btn-group">
+                <button type="button" class="dropdown-toggle btn btn-outline-primary btn-sm bulk-action-dropdown" data-toggle="dropdown" disabled="disabled">
+                    {% trans %}Choose an Action{% endtrans %}
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" data-toggle="modal" href="#" onclick="pageBulkAction('activate');">Activate</a>
+                    <a class="dropdown-item" data-toggle="modal" href="#" onclick="pageBulkAction('disable');">Deactivate</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" data-toggle="modal" href="#blogs-delete-bulk">Delete</a>
+                </div>
+            </div>
+            {{ dialogs.confirm('blogs-delete-bulk', 'Confirmation', 'The selected blogs will be removed permanently. Are you sure?', "blogBulkAction('remove')", '') }}
+
+            <a href="{{ path('admin_blog_create') }}" class="btn btn-outline-success btn-sm pull-right"><i class="fa fa-plus"></i>&nbsp; Add Blog</a>
+        </div>
+
+        <div class="card-body">
+            <div class="table-stats order-table">
+                <form method="post" action="{{ path('admin_blog_bulk') }}" id="blog-bulk-form">
+                    {{ form_widget(bulk_action_form._token) }}
+                    <input type="hidden" name="action" value=""/>
+                    <input type="hidden" name="return_url" value="{{ path('admin_blog_index') }}{{ query_string() }}"/>
+                    <table class="table ">
+                        <thead>
+                        <tr>
+                            <th class="serial"><input type="checkbox" class="check-all-items"/></th>
+                            <th>
+                                {{ knp_pagination_sortable(blogs, 'Blog Name', 'b.title') }}
+                                {% if blogs.isSorted('b.title') %}
+                                    <span class="fa fa-sort-amount{% if blogs.getParams.direction == 'desc' %}-desc{% else %}-asc{% endif %}"></span>
+                                {% endif %}
+                            </th>
+                            <th>Url</th>
+                            <th>
+                                {{ knp_pagination_sortable(blogs, 'Active', 'b.active') }}
+                                {% if blogs.isSorted('b.active') %}
+                                    <span class="fa fa-sort-amount{% if blogs.getParams.direction == 'desc' %}-desc{% else %}-asc{% endif %}"></span>
+                                {% endif %}
+                            </th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for blog in blogs %}
+                            <tr>
+                                <td><input type="checkbox" class="check-item" name="blogs[{{ blog.id }}]"/></td>
+                                <td>{{ blog.title }}</td>
+                                <td>{{ blog.slug }}</td>
+                                <td>
+                                    {% if blog.active %}
+                                        <span class="badge badge-complete">Active</span>
+                                    {% else %}
+                                        <span class="badge badge-dark">Not Active</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="dropdown-toggle btn btn-outline-secondary btn-sm" type="button" data-toggle="dropdown">
+                                            Action
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            {% if blog.active %}
+                                                <a target="_blank" href="" class="dropdown-item">View</a>
+                                            {% endif %}
+                                            <a class="dropdown-item" href="{{ path('admin_blog_edit', {'id': blog.id, 'return_url': path('admin_blog_index') ~ query_string()}) }}">Edit</a>
+                                            {% if blog.active == 1 %}
+                                                <a class="dropdown-item" href="{{ path('admin_blog_set', {'action': 'disable', 'id': blog.id, 'return_url': path('admin_blog_index') ~ query_string()}) }}">Deactivate</a>
+                                            {% else %}
+                                                <a class="dropdown-item" href="{{ path('admin_blog_set', {'action': 'activate', 'id': blog.id, 'return_url': path('admin_blog_index') ~ query_string()}) }}">Activate</a>
+                                            {% endif %}
+                                            <div class="dropdown-divider"></div>
+                                            <a data-toggle="modal" href="#static-blog-delete-{{ blog.id }}" class="dropdown-item">Delete</a>
+                                        </div>
+                                    </div>
+                                    {{ dialogs.confirm('blog-delete-' ~ blog.id, 'Confirmation', 'The selected blog will be removed permanently. Are you sure?', '', path('admin_blog_set', {id: blog.id, action: 'remove'})) }}
+
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </form>
+            </div> <!-- /.table-stats -->
+
+            <div class="dataTables_paginate paging_simple_numbers">
+                {{ knp_pagination_render(blogs) }}
+            </div>
+        </div>
+        <div class="card-footer">
+            {% set blogsCount = blogs.getTotalItemCount %}
+            {{ blogsCount }} items - found
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        function blogBulkAction(action) {
+            var form = jQuery("#blog-bulk-form");
+            form.find("input[name='action']").val(action);
+            form.submit();
+        }
+    </script>
+{% endblock %}
