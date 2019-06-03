@@ -53,14 +53,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav">
-                            <li class="menu-item"><a title="Home" href="{{ path('jobs_index') }}">Jobs</a></li>
-                            <li class="menu-item"><a title="Home" href="{{ path('companies_index') }}">Companies</a></li>
-                            <li class="menu-item"><a title="Home" href="">Candidates</a></li>
-                            {% if is_granted('ROLE_COMPANY') %}
-                                <li class="menu-item post-job"><a href="{{ path('my_company_job_new') }}"><i class="fas fa-plus"></i>Post a Job</a></li>
-                            {% endif %}
-                        </ul>
+                        {{ render(controller('App\\Controller\\MenuController::main')) }}
                     </div>
                 </nav>
             </div>

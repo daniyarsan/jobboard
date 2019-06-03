@@ -39,13 +39,6 @@
                                     <div class="controller grid">
                                         <i data-feather="grid"></i>
                                     </div>
-                                    <div class="job-view-filter">
-                                        <select class="selectpicker">
-                                            <option value="" selected>Most Recent</option>
-                                            <option value="california">Top Rated</option>
-                                            <option value="las-vegas">Most Popular</option>
-                                        </select>
-                                    </div>
                                 </div>
                                 <div class="showing-number">
                                     {% set count = jobs.getTotalItemCount %}
@@ -61,7 +54,7 @@
                                     No jobs for this request
                                 {% endif %}
                             </div>
-                            {{ knp_pagination_render(jobs) }}
+                            {{ knp_pagination_render(jobs, '_parts/paginator.html.twig') }}
                         </div>
 
                         <div class="job-filter-wrapper">

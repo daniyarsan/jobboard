@@ -39,13 +39,6 @@
                                     <div class="controller grid">
                                         <i data-feather="grid"></i>
                                     </div>
-                                    <div class="candidate-view-filter">
-                                        <select class="selectpicker">
-                                            <option value="" selected>Most Recent</option>
-                                            <option value="california">Top Rated</option>
-                                            <option value="las-vegas">Most Popular</option>
-                                        </select>
-                                    </div>
                                 </div>
                                 <div class="showing-number">
                                     {% set count = profiles.getTotalItemCount %}
@@ -62,7 +55,7 @@
                                     {% include 'profiles/profile.html.twig' %}
                                 {% endfor %}
                             </div>
-                            {{ knp_pagination_render(profiles) }}
+                            {{ knp_pagination_render(profiles, '_parts/paginator.html.twig') }}
                         </div>
 
 

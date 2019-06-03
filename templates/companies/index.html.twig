@@ -38,13 +38,6 @@
                                     <div class="controller grid">
                                         <i data-feather="grid"></i>
                                     </div>
-                                    <div class="employer-view-filter">
-                                        <select class="selectpicker">
-                                            <option value="" selected>Most Recent</option>
-                                            <option value="california">Top Rated</option>
-                                            <option value="las-vegas">Most Popular</option>
-                                        </select>
-                                    </div>
                                 </div>
                                 <div class="showing-number">
                                     {% set count = companies.getTotalItemCount %}
@@ -63,9 +56,8 @@
                                         {% include 'companies/company.html.twig' %}
                                     {% endfor %}
                                 </div>
-                                <div class="pagination-list text-center">
-                                    {{ knp_pagination_render(companies) }}
-                                </div>
+                                {{ knp_pagination_render(companies, '_parts/paginator.html.twig') }}
+
                             {% endif %}
                         </div>
 
