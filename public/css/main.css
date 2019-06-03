@@ -8281,11 +8281,9 @@ header .absolute-nav {
 }
 
 .blog-list .info span.date {
-  font-size: 1.6rem;
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   margin-bottom: 20px;
-  text-transform: uppercase;
 }
 
 .blog-list .info span.author {

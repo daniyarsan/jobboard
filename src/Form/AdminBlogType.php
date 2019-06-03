@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class AdminBlogType extends AbstractType
 {
@@ -21,6 +22,11 @@ class AdminBlogType extends AbstractType
     {
         $builder
             ->setRequired(false)
+            ->add('image', VichImageType::class, [
+                'required' => false,
+                'allow_delete' => true,
+                'download_link' => true,
+            ])
             ->add('title', TextType::class, [
                 'label' => 'Title',
                 'required' => true,

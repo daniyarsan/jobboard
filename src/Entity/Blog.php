@@ -3,10 +3,14 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BlogRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @Vich\Uploadable
  */
 class Blog
 {
@@ -46,6 +50,17 @@ class Blog
      * @ORM\Column(name="modified", type="datetime", nullable=true)
      */
     private $modified;
+
+    /**
+     * @Assert\File(mimeTypes={"image/png", "image/jpeg", "image/pjpeg"})
+     * @Vich\UploadableField(mapping="blog_image", fileNameProperty="image_name")
+     */
+    private $image;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true, name="image_name")
+     */
+    private $imageName;
 
     public function getId(): ?int
     {
@@ -121,5 +136,57 @@ class Blog
     public function __toString()
     {
         return $this->title;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $avatarImage
+     */
+    public function setImage(File $image)
+    {
+        $this->image = $image;
+
+        if ($image) {
+            $this->modified = new \DateTime('now');
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImageName()
+    {
+        return $this->imageName;
+    }
+
+    /**
+     * @param mixed $avatarName
+     */
+    public function setImageName($imageName)
+    {
+        $this->imageName = $imageName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * @param mixed $created
+     */
+    public function setCreated($created): void
+    {
+        $this->created = $created;
     }
 }

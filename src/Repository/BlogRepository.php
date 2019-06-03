@@ -19,6 +19,18 @@ class BlogRepository extends ServiceEntityRepository
         parent::__construct($registry, Blog::class);
     }
 
+    public function findByFilterQuery($request)
+    {
+        $qb = $this->createQueryBuilder('b');
+        if (!strstr($request->getPathInfo(), 'admin')) {
+            $qb->andWhere('b.active = 1');
+        }
+
+        return $qb->addOrderBy('b.created', 'DESC')
+            ->getQuery()
+            ->execute();
+    }
+
     // /**
     //  * @return Blog[] Returns an array of Blog objects
     //  */

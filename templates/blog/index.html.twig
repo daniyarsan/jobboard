@@ -18,7 +18,6 @@
                         </nav>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -32,30 +31,20 @@
                         {% for blog in blogs %}
                             <article class="blog-list">
                                 <div class="info">
-                                    <span class="date">24th dec,  2019</span>
-                                    <span class="comments"><i data-feather="message-circle"></i>42</span>
+                                    <span class="date">{{ blog.created|date("j. F Y")  }}</span>
+                                    <span class="comments"><i data-feather="eye"></i>0</span>
                                 </div>
                                 <div class="content">
                                     <h3><a href="{{ path('blog_details', {'slug': blog.slug}) }}">{{ blog.title }}</a></h3>
-                                    <p>{{ blog.content }}</p>
+                                    <p>{{ blog.content|striptags("&nbsp;&gt;")|truncate(200, '...')|raw }}</p>
                                 </div>
                                 <div class="read-more">
                                     <a href="{{ path('blog_details', {'slug': blog.slug}) }}" class="button">Read More</a>
                                 </div>
                             </article>
                         {% endfor %}
-                        <div class="pagination-list text-center">
-                            <nav class="navigation pagination">
-                                <div class="nav-links">
-                                    <a class="prev page-numbers" href="#"><i class="fas fa-angle-left"></i></a>
-                                    <a class="page-numbers" href="#">1</a>
-                                    <span aria-current="page" class="page-numbers current">2</span>
-                                    <a class="page-numbers" href="#">3</a>
-                                    <a class="page-numbers" href="#">4</a>
-                                    <a class="next page-numbers" href="#"><i class="fas fa-angle-right"></i></a>
-                                </div>
-                            </nav>
-                        </div>
+
+                        {{ knp_pagination_render(blogs, '_parts/paginator.html.twig') }}
                     </div>
                 </div>
             </div>

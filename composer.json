@@ -24,6 +24,7 @@
         "symfony/var-dumper": "*",
         "symfony/web-profiler-bundle": "*",
         "symfony/yaml": "*",
+        "twig/extensions": "^1.5",
         "vich/uploader-bundle": "^1.8"
     },
     "require-dev": {
