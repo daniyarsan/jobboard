@@ -11,6 +11,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface
 {
+    public const ROLE_USER = 'ROLE_USER';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -55,6 +57,21 @@ class User implements UserInterface
     protected $plainPassword;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $confirmationCode;
+
+
+    public function __construct()
+    {
+        $this->roles = [self::ROLE_USER];
+        $this->enabled = false;
+        $this->companies = new ArrayCollection();
+    }
+
+    /**
      * @return mixed
      */
     public function getCompany()
@@ -70,11 +87,6 @@ class User implements UserInterface
         $this->company = $company;
         $this->company->setUser($this);
         return $this;
-    }
-
-    public function __construct()
-    {
-        $this->companies = new ArrayCollection();
     }
 
     /**
@@ -129,7 +141,7 @@ class User implements UserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = self::ROLE_USER;
 
         return array_unique($roles);
     }
@@ -186,7 +198,7 @@ class User implements UserInterface
     /**
      * @return mixed
      */
-    public function getisVerified()
+    public function getisVerified(): bool
     {
         return $this->isVerified;
     }
@@ -194,8 +206,26 @@ class User implements UserInterface
     /**
      * @param mixed $isVerified
      */
-    public function setIsVerified($isVerified): void
+    public function setIsVerified($isVerified): self
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfirmationCode(): string
+    {
+        return $this->confirmationCode;
+    }
+
+    /**
+     * @param string $confirmationCode
+     */
+    public function setConfirmationCode(string $confirmationCode): void
+    {
+        $this->confirmationCode = $confirmationCode;
     }
 }
