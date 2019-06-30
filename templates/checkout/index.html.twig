@@ -1,0 +1,100 @@
+{% extends 'base-index.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+    <!-- Breadcrumb -->
+    <div class="alice-bg padding-top-70 padding-bottom-70">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="breadcrumb-area">
+                        <h1>Checkout Page</h1>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Checkout Page</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <div class="alice-bg section-padding-bottom">
+        <div class="container">
+            {{ form(order) }}
+            <div class="row">
+                <div class="col">
+                    <div class="block-wrapper">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="checkout-form">
+                                    <form action="payment-complete.html">
+                                        <div class="row">
+                                            <div class="col-md-9 offset-md-3">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" placeholder="Cardholder Name">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" placeholder="Cardholder Number">
+                                                        </div>
+                                                    </div>
+                                                    <div class="w-100"></div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" placeholder="Expired Month">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" placeholder="Expired Year">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" placeholder="CVV">
+                                                        </div>
+                                                    </div>
+                                                    <div class="w-100"></div>
+                                                    <div class="col">
+                                                        <div class="form-group terms">
+                                                            <input class="custom-radio" type="checkbox" id="radio-4" name="termsandcondition">
+                                                            <label for="radio-4">
+                                                                <span class="dot"></span> You accepts our <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a>
+                                                            </label>
+                                                        </div>
+                                                        <button class="button">Proceed Payment</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="payment-summery">
+                                    <h4>Summary</h4>
+                                    <ul>
+                                        <li class="payment-list">
+                                            <span class="title">{{ product.title }}</span> <span class="amount">{{ product.price }}</span>
+                                        </li>
+                                    </ul>
+                                    <div class="total-amount">
+                                        <span class="title">Final Price</span><span class="amount">{{ product.price }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
