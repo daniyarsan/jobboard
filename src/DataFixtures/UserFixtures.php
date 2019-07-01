@@ -1416,14 +1416,14 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-//        $superUser = new User();
-//        $superUser->setEmail('daniyar.san@gmail.com');
-//        $superUser->setPassword($this->encoder->encodePassword($superUser, '121212'));
-//        $superUser->setRoles(['ROLE_ADMIN']);
-//        $manager->persist($superUser);
-//        $manager->flush();
+        $superUser = new User();
+        $superUser->setEmail('daniyar.san@gmail.com');
+        $superUser->setPassword($this->encoder->encodePassword($superUser, '121212'));
+        $superUser->setRoles(['ROLE_ADMIN']);
+        $manager->persist($superUser);
+        $manager->flush();
 
-        for ($i = 1; $i <= 20; $i++) {
+        /*for ($i = 1; $i <= 20; $i++) {
             $user = new User();
             $user->setPassword($this->encoder->encodePassword($user, '121212'));
             $user->setEmail('profile' . $i . '@gmail.com');
@@ -1444,7 +1444,7 @@ class UserFixtures extends Fixture
                 $user->setProfile($profile);
             }
             $manager->persist($user);
-        }
+        }*/
         //        $manager->flush();
 
     }
