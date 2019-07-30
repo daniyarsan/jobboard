@@ -29,7 +29,7 @@ class Company implements \Serializable
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="Job", mappedBy="company")
+     * @ORM\OneToMany(targetEntity="Job", mappedBy="company", cascade={"persist"})
      */
     private $jobs;
 
