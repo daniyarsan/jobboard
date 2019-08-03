@@ -22,13 +22,13 @@
                     {% trans %}Choose an Action{% endtrans %}
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" data-toggle="modal" href="#" onclick="pageBulkAction('activate');">Activate</a>
-                    <a class="dropdown-item" data-toggle="modal" href="#" onclick="pageBulkAction('disable');">Deactivate</a>
+                    <a class="dropdown-item" data-toggle="modal" href="#" onclick="blogBulkAction('activate');">Activate</a>
+                    <a class="dropdown-item" data-toggle="modal" href="#" onclick="blogBulkAction('disable');">Deactivate</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" data-toggle="modal" href="#blogs-delete-bulk">Delete</a>
+                    <a class="dropdown-item" data-toggle="modal" href="#blog-delete-bulk">Delete</a>
                 </div>
             </div>
-            {{ dialogs.confirm('blogs-delete-bulk', 'Confirmation', 'The selected blogs will be removed permanently. Are you sure?', "blogBulkAction('remove')", '') }}
+            {{ dialogs.confirm('blog-delete-bulk', 'Confirmation', 'The selected blogs will be removed permanently. Are you sure?', "blogBulkAction('remove')", '') }}
 
             <a href="{{ path('admin_blog_create') }}" class="btn btn-outline-success btn-sm pull-right"><i class="fa fa-plus"></i>&nbsp; Add Blog</a>
         </div>
@@ -49,7 +49,7 @@
                                     <span class="fa fa-sort-amount{% if blogs.getParams.direction == 'desc' %}-desc{% else %}-asc{% endif %}"></span>
                                 {% endif %}
                             </th>
-                            <th>Url</th>
+                            <th>Slug</th>
                             <th>
                                 {{ knp_pagination_sortable(blogs, 'Active', 'b.active') }}
                                 {% if blogs.isSorted('b.active') %}

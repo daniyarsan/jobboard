@@ -129,7 +129,7 @@ class BlogController extends AbstractController
         $entities = $em->getRepository('App:Blog')->findBy(['id' => $id]);
 
         if (!$entities) {
-            throw $this->createNotFoundException('Unable to find StaticPage entity.');
+            throw $this->createNotFoundException('Unable to find Blog entity.');
         }
 
         foreach ($entities as $entity) {
@@ -138,11 +138,11 @@ class BlogController extends AbstractController
                     $em->remove($entity);
                     break;
                 case 'disable':
-                    $entity->setStatus(false);
+                    $entity->setActive(false);
                     $em->persist($entity);
                     break;
                 case 'activate':
-                    $entity->setStatus(true);
+                    $entity->setActive(true);
                     $em->persist($entity);
                     break;
             };
@@ -157,7 +157,7 @@ class BlogController extends AbstractController
 
 
     /**
-     * Deletes, Enables and Disables selected Pages.
+     * Deletes, Enables and Disables selected Blogs.
      *
      * @Route("/blog/bulk", name="blog_bulk")
      */
@@ -167,7 +167,7 @@ class BlogController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $id = array_keys($request->get('pages'));
+            $id = array_keys($request->get('blogs'));
             $action = $request->get('action');
             return $this->set($id, $action, $request);
         }

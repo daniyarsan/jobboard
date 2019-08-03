@@ -23,18 +23,10 @@ class JobsController extends AbstractController
      */
     public function index(Request $request, PaginatorInterface $paginator)
     {
-        $filter = $this->createForm(FilterJobType::class, [], ['router' => $this->get('router')]);
-        $filter->handleRequest($request);
-
-        $filterKeyword = $this->createForm(FilterJobKeywordType::class, [], ['router' => $this->get('router')]);
-        $filterKeyword->handleRequest($request);
-
         $jobs = $this->getDoctrine()->getRepository('App:Job')->findByFilterQuery($request);
         $jobs = $paginator->paginate($jobs, $request->query->getInt('page', 1), 10);
 
         return [
-            'filter' => $filter->createView(),
-            'filterKeyword' => $filterKeyword->createView(),
             'jobs' => $jobs
         ];
     }

@@ -21,10 +21,12 @@ class BlogController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
         $queryBuilder = $em->getRepository('App:Blog')->createQueryBuilder('b');
+        $queryBuilder->where('b.active = 1');
 
         $itemsPerPage = $request->query->get('itemsPerPage', 10);
         $page = $request->query->get('page', 1);
 
+        /* Paginate */
         if ($session->get('pagesItemsPerPage') != $itemsPerPage) {
             $session->set('pagesItemsPerPage', $itemsPerPage);
             if ($page > 1) {
@@ -39,6 +41,7 @@ class BlogController extends AbstractController
             'defaultSortDirection' => 'asc'
         ];
         $blogs = $paginator->paginate($queryBuilder, $page, $itemsPerPage, $paginatorOptions);
+        /* Paginate */
 
         return [
             'blogs' => $blogs

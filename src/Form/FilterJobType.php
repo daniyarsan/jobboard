@@ -27,15 +27,12 @@ class FilterJobType extends AbstractType
             'query_builder' => function (CategoryRepository $repository) {
                 return $repository->findAllOrderedByName();
             },
-            'expanded' => false,
-            'multiple' => true,
+            'expanded' => false
         ])
-        ->add('country', CountryType::class)
+        ->add('location', CountryType::class)
         ->add('contracts', EntityType::class, [
             'label' => 'Contracts',
             'class' => 'App\Entity\Contract',
-            'multiple' => true,
-            'expanded' => true,
         ])
         ->add('save', SubmitType::class, [
             'label' => 'Filter Jobs',
