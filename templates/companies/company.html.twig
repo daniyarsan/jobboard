@@ -1,8 +1,12 @@
 <div class="employer">
     <div class="thumb">
-        <a href="#">
-            <img src="{{ vich_uploader_asset(company, 'logoImage') }}" class="img-fluid" alt="">
-        </a>
+        {% if company.logoImage %}
+            <a href="{{ path('company_details', {id: company.getId() }) }}">
+                <img src="{{ vich_uploader_asset(company, 'logoImage') }}" class="img-fluid" alt="">
+            </a>
+        {% else %}
+            <img src="{{ asset('images/no-company.png') }}" class="img-fluid" alt="">
+        {% endif %}
     </div>
     <div class="body">
         <div class="content">
@@ -14,7 +18,7 @@
         </div>
         <div class="button-area">
             {% set count_jobs = jobRepository.getCompanyCount(company) %}
-            <a href="{{ path('company_details', {id: company.getId() }) }}">
+            <a href="">
                 {% transchoice count_jobs %}
                     {0} No Open Positions|{1} %count_jobs% Open position|]1,Inf] %count_jobs% Open positions
                 {% endtranschoice %}

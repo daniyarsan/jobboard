@@ -12,7 +12,13 @@
                         <div class="title-and-info">
                             <div class="title">
                                 <div class="thumb">
-                                    <img src="{{ vich_uploader_asset(company, 'logoImage') }}" class="img-fluid" alt="">
+                                    {% if company.logoImage %}
+                                        <a href="{{ path('company_details', {id: company.getId() }) }}">
+                                            <img src="{{ vich_uploader_asset(company, 'logoImage') }}" class="img-fluid" alt="">
+                                        </a>
+                                    {% else %}
+                                        <img src="{{ asset('images/no-company.png') }}" class="img-fluid" alt="">
+                                    {% endif %}
                                 </div>
                                 <div class="title-body">
                                     <h4>{{ company.getName() }}</h4>
@@ -22,6 +28,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="download-resume">
                                 <a href="#" class="save-btn"><i data-feather="heart"></i>Save</a>
                                 <a href="#">4 Open Positions</a>
@@ -34,76 +41,16 @@
                                         <h4><i data-feather="align-left"></i>About Us</h4>
                                         {{ company.description}}
                                     </div>
-{#                                    <div class="intor-video details-section">
-                                        <h4><i data-feather="video"></i>Intro Video</h4>
-                                        <div class="video-area">
-                                            <!-- <div data-type="vimeo" data-video-id="126777001"></div> -->
-                                            <div id="player" data-plyr-provider="vimeo" data-plyr-embed-id="126777001"></div>
-                                        </div>
-                                    </div>
-                                    <div class="portfolio details-section">
-                                        <h4><i data-feather="grid"></i>Image Gallery</h4>
-                                        <div class="portfolio-slider owl-carousel">
-                                            <div class="portfolio-item">
-                                                <img src="images/portfolio/thumb-3.jpg" class="img-fluid" alt="">
-                                                <div class="overlay">
-                                                    <a href="#"><i data-feather="eye"></i></a>
-                                                    <a href="#"><i data-feather="link"></i></a>
-                                                </div>
-                                            </div>
-                                            <div class="portfolio-item">
-                                                <img src="images/portfolio/thumb-1.jpg" class="img-fluid" alt="">
-                                                <div class="overlay">
-                                                    <a href="#"><i data-feather="eye"></i></a>
-                                                    <a href="#"><i data-feather="link"></i></a>
-                                                </div>
-                                            </div>
-                                            <div class="portfolio-item">
-                                                <img src="images/portfolio/thumb-2.jpg" class="img-fluid" alt="">
-                                                <div class="overlay">
-                                                    <a href="#"><i data-feather="eye"></i></a>
-                                                    <a href="#"><i data-feather="link"></i></a>
-                                                </div>
-                                            </div>
-                                            <div class="portfolio-item">
-                                                <img src="images/portfolio/thumb-3.jpg" class="img-fluid" alt="">
-                                                <div class="overlay">
-                                                    <a href="#"><i data-feather="eye"></i></a>
-                                                    <a href="#"><i data-feather="link"></i></a>
-                                                </div>
-                                            </div>
-                                            <div class="portfolio-item">
-                                                <img src="images/portfolio/thumb-2.jpg" class="img-fluid" alt="">
-                                                <div class="overlay">
-                                                    <a href="#"><i data-feather="eye"></i></a>
-                                                    <a href="#"><i data-feather="link"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>#}
 
                                     <div class="open-job details-section">
                                         <h4><i data-feather="check-circle"></i>Open Job</h4>
-                                        {% for job in company.jobs %}
-                                            <div class="job-list">
-                                                <div class="body">
-                                                    <div class="content">
-                                                        <h4><a href="{{ path('job_details', {'id' : job.id}) }}">{{ job.name }} </a></h4>
-                                                        <div class="info">
-                                                            <span class="office-location"><a href="#"><i data-feather="map-pin"></i>{{ job.getCountry() }}</a></span>
-                                                            <span class="job-type temporary"><a href="#"><i data-feather="clock"></i>{{ job.getCategories()|join('/') }}</a></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="more">
-                                                        <div class="buttons">
-                                                            <a href="#" class="button">Apply Now</a>
-                                                            <a href="#" class="favourite"><i data-feather="heart"></i></a>
-                                                        </div>
-                                                        <p class="deadline">Posted: {{ job.getCreated()|date("F jS") }}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        {% endfor %}
+                                        {% if company.jobs|length %}
+                                            {% for job in company.jobs %}
+                                                {% include 'companies/job.html.twig' %}
+                                            {% endfor %}
+                                        {% else %}
+                                            No jobs for this request
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="col-xl-4 offset-xl-1 col-lg-4">

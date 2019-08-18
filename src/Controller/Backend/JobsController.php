@@ -66,7 +66,7 @@ class JobsController extends AbstractController
      * @ParamConverter("job", class="App\Entity\Job")
      * @Template("admin/jobs/edit.html.twig")
      */
-    public function edit(Request $request, Job $job)
+    public function edit(Request $request, Job $job, TranslatorInterface $translator)
     {
         $form = $this->createForm(JobType::class, $job);
         $form->handleRequest($request);
@@ -77,9 +77,9 @@ class JobsController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($job);
                 $em->flush();
-                $this->addFlash('success', $this->get('translator')->trans('Job has been successfully updated.'));
+                $this->addFlash('success', $translator->trans('Job has been successfully updated.'));
             } catch(\Exception $e) {
-                $this->addFlash('danger', $this->get('translator')->trans('An error occurred when saving object.'));
+                $this->addFlash('danger', $translator->trans('An error occurred when saving object.'));
             }
 
             if ($form->get('saveAndExit')->isClicked()) {

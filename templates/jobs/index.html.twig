@@ -2,6 +2,18 @@
 
 {% block title %}{% endblock %}
 
+{% import 'form/dialog.html.twig' as dialogs %}
+
+{% form_theme applicationForm _self %}
+
+{% block file_widget %}
+    {% spaceless %}
+        {% set type = type|default('file') %}
+        <input type="{{ type }}" {{ block('widget_attributes') }} />
+    {% endspaceless %}
+{% endblock %}
+
+
 {% block body %}
     <!-- Breadcrumb -->
     <div class="alice-bg padding-top-70 padding-bottom-70">
@@ -56,7 +68,7 @@
                             </div>
                             {{ knp_pagination_render(jobs, '_parts/paginator.html.twig') }}
                         </div>
-                        
+
                         {{ render(controller('App\\Controller\\FilterController::sideFilter')) }}
                     </div>
                 </div>
@@ -64,4 +76,18 @@
         </div>
     </div>
     <!-- Job Listing End -->
+
+    {{ dialogs.apply(applicationForm) }}
+
 {% endblock %}
+
+{% block javascript %}
+    <script>
+        /* Dynamically set action of apply modal after apply button click */
+        $('#apply-popup-id').on('show.bs.modal', function(e) {
+            var url = $(e.relatedTarget).data('url');
+            $(this).find('form').attr('action', url);
+        });
+    </script>
+{% endblock %}
+

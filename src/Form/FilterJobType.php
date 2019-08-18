@@ -21,7 +21,6 @@ class FilterJobType extends AbstractType
             ->add('keyword', HiddenType::class, [
             'label' => false,
         ])
-
         ->add('categories', EntityType::class, [
             'class' => 'App\Entity\Category',
             'query_builder' => function (CategoryRepository $repository) {
@@ -33,10 +32,6 @@ class FilterJobType extends AbstractType
         ->add('contracts', EntityType::class, [
             'label' => 'Contracts',
             'class' => 'App\Entity\Contract',
-        ])
-        ->add('save', SubmitType::class, [
-            'label' => 'Filter Jobs',
-            'attr' => ['class' => 'btn-primary btn-block'],
         ])
         ->setMethod('GET')
         ->setAction($options['router']->generate('jobs_index'));

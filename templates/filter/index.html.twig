@@ -1,0 +1,21 @@
+<div class="job-filter-wrapper">
+    <div class="selected-options same-pad">
+        <div class="selection-title">
+            <h4>You Selected</h4>
+            <a href="#">Clear All</a>
+        </div>
+        <ul class="filtered-options">
+        </ul>
+    </div>
+    <div class="job-filter-dropdown category">
+        {{ form_widget(filter.categories, {'attr' : {'class' : 'selectpicker'}}) }}
+    </div>
+
+    <div class="job-filter-dropdown">
+        {{ form_widget(filter.location, {'attr' : {'class' : 'selectpicker'}}) }}
+    </div>
+
+    <div class="job-filter-dropdown">
+        {{ form_widget(filter.contracts, {'attr' : {'class' : 'selectpicker'}}) }}
+    </div>
+</div>

@@ -17,11 +17,6 @@ class Contract
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Job", mappedBy="contract")
-     */
-    private $jobs;
-
-    /**
      * @ORM\Column(type="string", length=100)
      */
     private $name;
@@ -67,5 +62,13 @@ class Contract
     public function setName($name): void
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getJobs()
+    {
+        return $this->jobs;
     }
 }

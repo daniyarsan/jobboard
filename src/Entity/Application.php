@@ -3,10 +3,14 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ApplicationRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @Vich\Uploadable
  */
 class Application
 {
@@ -33,6 +37,11 @@ class Application
      * @ORM\Column(type="text", nullable=true)
      */
     private $cover;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $resume;
 
     /**
      * @ORM\Column(name="created", type="datetime")
@@ -143,5 +152,21 @@ class Application
     public function onPreUpdate()
     {
         $this->modified = new \DateTime('now');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResume()
+    {
+        return $this->resume;
+    }
+
+    /**
+     * @param mixed $resume
+     */
+    public function setResume($resume): void
+    {
+        $this->resume = $resume;
     }
 }

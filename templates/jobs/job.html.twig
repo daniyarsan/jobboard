@@ -1,30 +1,28 @@
 <div class="job-list">
     <div class="thumb">
-        <a href="#">
-            <img src="{{ vich_uploader_asset(job.company, 'logoImage') }}" class="img-fluid" alt="">
-        </a>
+        {% if job.company.logoImage %}
+            <a href="{{ path('job_details', {'id' : job.id}) }}">
+                <img src="{{ vich_uploader_asset(company, 'logoImage') }}" class="img-fluid" alt="">
+            </a>
+        {% else %}
+            <img src="{{ asset('images/no-company.png') }}" class="img-fluid" alt="">
+        {% endif %}
     </div>
     <div class="body">
         <div class="content">
             <h4><a href="{{ path('job_details', {'id' : job.id}) }}">{{ job.title }} </a></h4>
             <div class="info">
-                <span class="company"><a href="#"><i data-feather="briefcase"></i>{{ job.getCategories()|join('/') }}</a></span>
+                <span class="company"><a href="{{ path('company_details', {id: job.company.getId() }) }}"><i data-feather="briefcase"></i>{{ job.company }}</a></span>
                 <span class="office-location"><a href="#"><i data-feather="map-pin"></i>{{ job.getCountry() }}</a></span>
-                <span class="job-type temporary"><a href="#"><i data-feather="clock"></i>Temporary</a></span>
+                <span class="job-type temporary"><a href="#"><i data-feather="clock"></i>{{ job.contract }}</a></span>
             </div>
         </div>
         <div class="more">
             <div class="buttons">
-                <a href="#" class="button">Apply Now</a>
+                <a href="#" class="button apply-button" data-url="{{ path('job_apply', {'id' : job.id}) }}" data-toggle="modal" data-target="#apply-popup-id">Apply Now</a>
                 <a href="#" class="favourite"><i data-feather="heart"></i></a>
             </div>
             <p class="deadline">Posted: {{ job.getCreated()|date("F jS") }}</p>
         </div>
     </div>
 </div>
-
-
-{#{{ job.getSalary() }}#}
-{#{{ job.getContract() }}#}
-{#{{ job.getCompany() }}#}
-{#{{ job.description|striptags[:200] ~ '...' }}#}

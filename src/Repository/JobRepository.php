@@ -136,7 +136,7 @@ class JobRepository extends ServiceEntityRepository
 
         // Keyword
         if (!empty($request->query->get('keyword'))) {
-            $qb->andWhere('job.name LIKE :filterKeyword OR job.description LIKE :filterKeyword')
+            $qb->andWhere('job.title LIKE :filterKeyword OR job.description LIKE :filterKeyword')
                 ->setParameter('filterKeyword', '%' . $request->query->get('keyword') . '%');
         }
 

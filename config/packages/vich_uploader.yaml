@@ -17,9 +17,9 @@ vich_uploader:
             delete_on_update:   true
             delete_on_remove:   true
         logo_image:
-          uri_prefix:         /uploads/logos
-          upload_destination: '%kernel.root_dir%/../public/uploads/logos'
-          namer:              vich_uploader.namer_uniqid
-          inject_on_load:     false
-          delete_on_update:   true
-          delete_on_remove:   true
+            uri_prefix:         /uploads/logos
+            upload_destination: '%kernel.root_dir%/../public/uploads/logos'
+            namer:              vich_uploader.namer_uniqid
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true

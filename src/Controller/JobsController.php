@@ -7,6 +7,7 @@ use App\Entity\Job;
 use App\Form\ApplicationType;
 use App\Form\FilterJobKeywordType;
 use App\Form\FilterJobType;
+use App\Service\FileUploader;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -23,11 +24,16 @@ class JobsController extends AbstractController
      */
     public function index(Request $request, PaginatorInterface $paginator)
     {
+        $applicationForm = $this->createForm(ApplicationType::class, null, [
+            'method' => 'POST']
+        );
+
         $jobs = $this->getDoctrine()->getRepository('App:Job')->findByFilterQuery($request);
         $jobs = $paginator->paginate($jobs, $request->query->getInt('page', 1), 10);
 
         return [
-            'jobs' => $jobs
+            'jobs' => $jobs,
+            'applicationForm' => $applicationForm->createView()
         ];
     }
 
@@ -62,13 +68,12 @@ class JobsController extends AbstractController
      * @Route("/job/{id}/apply", name="job_apply", requirements={"id": "\d+"})
      * @ParamConverter("job", class="App\Entity\Job")
      */
-    public function createAction(Request $request, Job $job, TranslatorInterface $translator)
+    public function applyAction(Request $request, Job $job, TranslatorInterface $translator, FileUploader $fileUploader)
     {
         if (!$job) {
             $this->addFlash('danger', $translator->trans('Job does not exists.'));
             return $this->redirect($request->server->get('HTTP_REFERER'));
         }
-
         if (!$this->getUser()) {
             $this->addFlash('danger', $translator->trans('Please log in before submitting proposal.'));
             return $this->redirectToRoute('job_details', ['id' => $job->getId()]);
@@ -78,9 +83,11 @@ class JobsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $fileUploader->setTargetDirectory($this->getParameter('resumes_dir'));
             $application = $form->getData();
             $application->setUser($this->getUser());
             $application->setJob($job);
+            $application->setResume($fileUploader->upload($form['resume']->getData()));
 
             try {
                 $em = $this->getDoctrine()->getManager();
@@ -100,7 +107,7 @@ class JobsController extends AbstractController
      * @Route("/account/proposals/withdraw/{id}", name="application_withdraw", requirements={"id": "\d+"})
      * @ParamConverter("job", class="JobPlatform\AppBundle\Entity\Job")
      */
-    public function withdrawAction(Request $request, Job $job)
+    public function withdrawAction(Request $request, Job $job, TranslatorInterface $translator)
     {
         if ($job->getUser() != $this->getUser()) {
             throw $this->createAccessDeniedException('You are not allowed to access this page.');
@@ -108,14 +115,14 @@ class JobsController extends AbstractController
 
         // Job exists
         if (!$job) {
-            $this->addFlash('danger', $this->get('translator')->trans('Job does not exists.'));
+            $this->addFlash('danger', $translator->trans('Job does not exists.'));
 
             return $this->redirect($request->server->get('HTTP_REFERER'));
         }
 
         // User is logged in
         if (!$this->getUser()) {
-            $this->addFlash('danger', $this->get('translator')->trans('Please log in before withdrawing application.'));
+            $this->addFlash('danger', $translator->trans('Please log in before withdrawing application.'));
 
             return $this->redirect($request->server->get('HTTP_REFERER'));
         }
@@ -128,7 +135,7 @@ class JobsController extends AbstractController
         );
 
         if (!$application) {
-            $this->addFlash('danger', $this->get('translator')->trans('You did not applied for this job.'));
+            $this->addFlash('danger', $translator->trans('You did not applied for this job.'));
 
             return $this->redirect($request->server->get('HTTP_REFERER'));
         }
@@ -137,11 +144,23 @@ class JobsController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->remove($application);
             $em->flush();
-            $this->addFlash('success', $this->get('translator')->trans('Application has been successfully withdrawn.'));
+            $this->addFlash('success', $translator->trans('Application has been successfully withdrawn.'));
         } catch(\Exception $e) {
-            $this->addFlash('danger', $this->get('translator')->trans('An error occurred when saving object'));
+            $this->addFlash('danger', $translator->trans('An error occurred when saving object'));
         }
 
         return $this->redirect($request->server->get('HTTP_REFERER'));
     }
+
+
+    /**
+     * @return string
+     */
+    private function generateUniqueFileName()
+    {
+        // md5() reduces the similarity of the file names generated by
+        // uniqid(), which is based on timestamps
+        return md5(uniqid());
+    }
+
 }

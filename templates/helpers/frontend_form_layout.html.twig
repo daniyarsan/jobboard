@@ -1,6 +1,6 @@
 {% use "bootstrap_4_horizontal_layout.html.twig" %}
 
-{%- block textarea_widget -%}
-    {% set attr = attr|merge({class: (attr.class|default('') ~ ' tinymce-editor tinymce-editor-1')|trim}) %}
-    <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
-{%- endblock textarea_widget -%}
+
+{% block text_widget -%}
+{#    {{ dump() }}#}
+{%- endblock text_widget %}
