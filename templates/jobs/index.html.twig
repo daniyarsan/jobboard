@@ -2,17 +2,12 @@
 
 {% block title %}{% endblock %}
 
-{% import 'form/dialog.html.twig' as dialogs %}
-
-{% form_theme applicationForm _self %}
-
 {% block file_widget %}
     {% spaceless %}
         {% set type = type|default('file') %}
         <input type="{{ type }}" {{ block('widget_attributes') }} />
     {% endspaceless %}
 {% endblock %}
-
 
 {% block body %}
     <!-- Breadcrumb -->
@@ -30,7 +25,6 @@
                         </nav>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -39,6 +33,7 @@
     <!-- Job Listing -->
     <div class="alice-bg section-padding-bottom">
         <div class="container">
+            {% include "_parts/messages.html.twig" %}
             <div class="row no-gutters">
                 <div class="col">
                     <div class="job-listing-container">
@@ -77,7 +72,7 @@
     </div>
     <!-- Job Listing End -->
 
-    {{ dialogs.apply(applicationForm) }}
+    {{ render(controller('App\\Controller\\ApplicationController:index', { 'jobId': 0})) }}
 
 {% endblock %}
 

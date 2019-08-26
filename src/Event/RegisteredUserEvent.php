@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 class RegisteredUserEvent extends Event
 {
-    public const NAME = 'user.register';
+    public const USER_REGISTER = 'user.register';
 
     /**
      * @var User

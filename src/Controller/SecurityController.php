@@ -22,6 +22,8 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+    public const PROFILE_MYACCOUNT = 'my_profile_settings';
+    public const COMPANY_MYACCOUNT = 'my_company_settings';
     /**
      * @Route("/login", name="security_login")
      */
@@ -60,12 +62,12 @@ class SecurityController extends AbstractController
 
                 switch ($group) {
                     case 'company':
-                        $user->setRoles(['ROLE_COMPANY']);
+                        $user->setRoles([User::ROLE_COMPANY]);
                         $user->setCompany(new Company());
                         break;
 
                     case 'profile':
-                        $user->setRoles(['ROLE_USER']);
+                        $user->setRoles([User::ROLE_PROFILE]);
                         $user->setProfile(new Profile());
                         break;
                 }
@@ -81,7 +83,7 @@ class SecurityController extends AbstractController
                 $userRegisteredEvent = new RegisteredUserEvent($user);
                 $eventDispatcher->dispatch(RegisteredUserEvent::NAME, $userRegisteredEvent);
 
-                //return $this->redirectToRoute('security_login');
+                return $this->redirectToRoute('security_success');
             }
 
             return $this->render(
@@ -121,5 +123,13 @@ class SecurityController extends AbstractController
         return $this->render('security/confirmation.html.twig', [
             'user' => $user,
         ]);
+    }
+
+    /**
+     * @Route("/success", name="security_success")
+     */
+    public function success()
+    {
+        return $this->render('security/success.html.twig');
     }
 }

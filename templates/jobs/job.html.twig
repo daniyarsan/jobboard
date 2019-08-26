@@ -19,7 +19,9 @@
         </div>
         <div class="more">
             <div class="buttons">
-                <a href="#" class="button apply-button" data-url="{{ path('job_apply', {'id' : job.id}) }}" data-toggle="modal" data-target="#apply-popup-id">Apply Now</a>
+                {% if is_granted("ROLE_PROFILE") %}
+                    <a href="#" class="button apply-button" data-url="{{ path('application_job', {'id' : job.id}) }}" data-toggle="modal" data-target="#apply-popup-id">Apply Now</a>
+                {% endif %}
                 <a href="#" class="favourite"><i data-feather="heart"></i></a>
             </div>
             <p class="deadline">Posted: {{ job.getCreated()|date("F jS") }}</p>

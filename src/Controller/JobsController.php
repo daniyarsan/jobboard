@@ -14,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class JobsController extends AbstractController
@@ -44,70 +45,23 @@ class JobsController extends AbstractController
     public function jobDetails(Request $request, Job $job)
     {
         $form = $this->createForm(ApplicationType::class, new Application(), array(
-            'action' => $this->generateUrl('job_apply', ['id' => $job->getId()]),
+            'action' => $this->generateUrl('application_job', ['id' => $job->getId()]),
             'method' => 'POST',
         ));
-
-        $hasApplication = $this->getDoctrine()->getRepository('App:Application')->findOneBy(
-            [
-                'user' => $this->getUser(),
-                'job' => $job,
-            ]
-        );
 
         return $this->render('jobs/job-details.html.twig',
             [
                 'job' => $job,
-                'hasApplication' => $hasApplication,
                 'applyForm' => $form->createView()
             ]
         );
     }
 
-    /**
-     * @Route("/job/{id}/apply", name="job_apply", requirements={"id": "\d+"})
-     * @ParamConverter("job", class="App\Entity\Job")
-     */
-    public function applyAction(Request $request, Job $job, TranslatorInterface $translator, FileUploader $fileUploader)
-    {
-        if (!$job) {
-            $this->addFlash('danger', $translator->trans('Job does not exists.'));
-            return $this->redirect($request->server->get('HTTP_REFERER'));
-        }
-        if (!$this->getUser()) {
-            $this->addFlash('danger', $translator->trans('Please log in before submitting proposal.'));
-            return $this->redirectToRoute('job_details', ['id' => $job->getId()]);
-        }
-
-        $form = $this->createForm(ApplicationType::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $fileUploader->setTargetDirectory($this->getParameter('resumes_dir'));
-            $application = $form->getData();
-            $application->setUser($this->getUser());
-            $application->setJob($job);
-            $application->setResume($fileUploader->upload($form['resume']->getData()));
-
-            try {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($application);
-                $em->flush();
-                $this->addFlash('success', $translator->trans('Proposal has been successfully saved.'));
-            } catch(\Exception $e) {
-                $this->addFlash('danger', $translator->trans('An error occurred when saving object.'));
-            }
-
-        }
-
-        return $this->redirectToRoute('job_details', ['id' => $job->getId()]);
-    }
-
-    /**
+     /**
      * @Route("/account/proposals/withdraw/{id}", name="application_withdraw", requirements={"id": "\d+"})
      * @ParamConverter("job", class="JobPlatform\AppBundle\Entity\Job")
      */
-    public function withdrawAction(Request $request, Job $job, TranslatorInterface $translator)
+    public function withdraw(Request $request, Job $job, TranslatorInterface $translator)
     {
         if ($job->getUser() != $this->getUser()) {
             throw $this->createAccessDeniedException('You are not allowed to access this page.');

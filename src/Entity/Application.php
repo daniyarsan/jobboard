@@ -22,16 +22,26 @@ class Application
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="applications")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="cascade")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Company")
+     * @ORM\JoinColumn(name="company_id", referencedColumnName="id", onDelete="cascade")
      */
-    private $user;
+    private $company;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Job", inversedBy="applications")
      * @ORM\JoinColumn(name="job_id", referencedColumnName="id", onDelete="cascade")
      */
     private $job;
+
+    /**
+     * @ORM\Column(type="string", length=200)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="string", length=200)
+     */
+    private $email;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -48,30 +58,9 @@ class Application
      */
     private $created;
 
-    /**
-     * @ORM\Column(name="modified", type="datetime", nullable=true)
-     */
-    private $modified;
-
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * @param mixed $user
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
     }
 
     /**
@@ -123,22 +112,6 @@ class Application
     }
 
     /**
-     * @return mixed
-     */
-    public function getModified()
-    {
-        return $this->modified;
-    }
-
-    /**
-     * @param mixed $modified
-     */
-    public function setModified($modified)
-    {
-        $this->modified = $modified;
-    }
-
-    /**
      * @ORM\PrePersist
      */
     public function onPrePersist()
@@ -168,5 +141,53 @@ class Application
     public function setResume($resume): void
     {
         $this->resume = $resume;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email): void
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
+    /**
+     * @param mixed $company
+     */
+    public function setCompany($company): void
+    {
+        $this->company = $company;
     }
 }

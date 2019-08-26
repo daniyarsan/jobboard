@@ -61,6 +61,11 @@ class Profile implements \Serializable
     private $lastName;
 
     /**
+     * @ORM\Column(type="string", name="email", length=255, nullable=true)
+     */
+    private $email;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
@@ -380,5 +385,21 @@ class Profile implements \Serializable
     public function unserialize($serialized)
     {
         $this->avatarImage = base64_decode($this->avatarImage);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email): void
+    {
+        $this->email = $email;
     }
 }

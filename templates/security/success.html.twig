@@ -1,0 +1,45 @@
+{% extends 'base-index.html.twig' %}
+
+{% block body %}
+    <!-- Breadcrumb -->
+    <div class="alice-bg padding-top-70 padding-bottom-70">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="breadcrumb-area">
+                        <h1>Registration Success</h1>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Registration Success</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <div class="alice-bg section-padding-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="block-wrapper">
+                        <div class="payment-result">
+                            <div class="icon">
+                                <i data-feather="check"></i>
+                            </div>
+                            <h3>You have been registered <span>successfully</span></h3>
+                            <p>Please confirm your email and...</p>
+                            <div class="w-100"></div>
+                            <a href="{{ path('security_login') }}" class="view-invoice">Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

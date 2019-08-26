@@ -14,11 +14,10 @@
                         <div class="form-group">
                             {{ form_widget(form.cover, {'attr' : {'placeholder' : 'Message'}}) }}
                         </div>
-                        {{ form_widget(form.resume) }}
 
                         <div class="form-group file-input-wrap">
-                            <label for="application_resume_file">
-
+                            <label for="application_resume">
+                                {{ form_widget(form.resume) }}
                                 <i data-feather="upload-cloud"></i>
                                 <span>Upload your resume <span>(pdf,zip,doc,docx)</span></span>
                             </label>

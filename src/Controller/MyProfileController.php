@@ -5,13 +5,18 @@ namespace App\Controller;
 use App\Entity\Education;
 use App\Entity\Experience;
 use App\Entity\Profile;
+use App\Event\TestEvent;
 use App\Form\EducationsType;
 use App\Form\ExperiencesType;
 use App\Form\ProfileType;
 use App\Form\UserType;
+use App\Service\Breadcrumbs;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -25,18 +30,18 @@ class MyProfileController extends AbstractController
     /**
      * @Route("/", name="_index")
      */
-    public function index()
+    public function index(Request $request, TranslatorInterface $translator)
     {
+        /* TODO: Create dashboard for my account */
         return $this->render('my-profile/index.html.twig', []);
     }
-    
+
     /**
      * @Route("/settings", name="_settings")
      */
-    public function settings(Request $request, TranslatorInterface $translator)
+    public function settings(Request $request, TranslatorInterface $translator, Breadcrumbs $breadcrumbs)
     {
-        /*if (in_array('ROLE_USER', $this->getUser()->getRoles())) {
-        } */
+        /*if (in_array('ROLE_USER', $this->getUser()->getRoles())) {} */
 
         $profile = $this->getUser()->getProfile();
 
@@ -75,7 +80,7 @@ class MyProfileController extends AbstractController
                 'form' => $form->createView(),
                 'userForm' => $userForm->createView(),
                 'formEducation' => $formEducation->createView(),
-                'formExperience' => $formExperience->createView(),
+                'formExperience' => $formExperience->createView()
             ]
         );
     }

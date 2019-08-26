@@ -2,23 +2,14 @@
 
 namespace App\Controller;
 
-use App\Entity\Education;
-use App\Entity\Experience;
 use App\Entity\Job;
 use App\Form\CompanyType;
-use App\Form\EducationsType;
-use App\Form\ExperiencesType;
 use App\Form\JobType;
-use App\Form\ProfileType;
 use App\Form\UserType;
-use Doctrine\Common\Collections\ArrayCollection;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -45,7 +36,6 @@ class MyCompanyController extends AbstractController
     {
         /*if (!in_array('ROLE_COMPANY', $this->getUser()->getRoles())) {
         }*/
-
         $company = $this->getUser()->getCompany();
         $em = $this->getDoctrine()->getManager();
         $company = $em->getRepository('App:Company')->find($company->getId());
@@ -139,7 +129,7 @@ class MyCompanyController extends AbstractController
      * @Route("/password", name="_password")
      * @Method("POST")
      */
-    public function passwordAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function password(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         $currentUser = $this->getUser();
         $userForm = $this->createForm(UserType::class, $currentUser);
@@ -160,7 +150,7 @@ class MyCompanyController extends AbstractController
      * @Route("/job/edit/{id}", name="_job_edit", requirements={"id": "\d+"})
      * @ParamConverter("job", class="App\Entity\Job")
      */
-    public function editAction(Request $request, Job $job, TranslatorInterface $translator)
+    public function edit(Request $request, Job $job, TranslatorInterface $translator)
     {
         $form = $this->createForm(
             JobType::class,
@@ -198,7 +188,7 @@ class MyCompanyController extends AbstractController
      * @Route("/account/jobs/delete/{id}", name="job_delete", requirements={"id": "\d+"})
      * @ParamConverter("job", class="JobPlatform\AppBundle\Entity\Job")
      */
-    public function deleteAction(Request $request, Job $job)
+    public function delete(Request $request, Job $job)
     {
 
         if (!$this->getDoctrine()->getRepository('AppBundle:Job')->hasUserJob($this->getUser(), $job)) {
@@ -221,7 +211,7 @@ class MyCompanyController extends AbstractController
      * @Route("/job/publish/{id}", name="_job_publish", requirements={"id": "\d+"})
      * @ParamConverter("job", class="App\Entity\Job")
      */
-    public function publishAction(Request $request, Job $job)
+    public function publish(Request $request, Job $job)
     {
         $payments = $this->getParameter('app.payments');
 
@@ -276,7 +266,7 @@ class MyCompanyController extends AbstractController
      * @Route("/job/unpublish/{id}", name="_job_unpublish", requirements={"id": "\d+"})
      * @ParamConverter("job", class="App\Entity\Job")
      */
-    public function unpublishAction(Request $request, Job $job)
+    public function unpublish(Request $request, Job $job)
     {
         $job->setIsPublished(false);
 
@@ -296,7 +286,7 @@ class MyCompanyController extends AbstractController
      * @Route("/job/feature/{id}", name="_job_feature", requirements={"id": "\d+"})
      * @ParamConverter("job", class="App\Entity\Job")
      */
-    public function featureAction(Request $request, Job $job)
+    public function feature(Request $request, Job $job)
     {
         $payments = $this->getParameter('app.payments');
 
@@ -357,7 +347,7 @@ class MyCompanyController extends AbstractController
      * @Route("/job/unfeature/{id}", name="_job_unfeature", requirements={"id": "\d+"})
      * @ParamConverter("job", class="App\Entity\Job")
      */
-    public function unfeatureAction(Request $request, Job $job)
+    public function unfeature(Request $request, Job $job)
     {
         $job->setIsFeatured(false);
 
@@ -373,8 +363,25 @@ class MyCompanyController extends AbstractController
             $this->addFlash('danger', $this->get('translator')->trans('An error occurred when saving object.'));
         }
 
-
         return $this->redirectToRoute('my_company_jobs');
     }
 
+    /**
+     * @Route("/candidates", name="_candidates")
+     */
+    public function candidates(Request $request, PaginatorInterface $paginator)
+    {
+        $company = $this->getUser()->getCompany();
+        $em = $this->getDoctrine()->getManager();
+
+        $applicants = $em->getRepository('App:Application')->findBy([
+            'company' => $company->getId()
+        ]);
+
+        $applicants = $paginator->paginate($applicants, $request->query->getInt('page', 1), 10);
+
+        return $this->render('my-company/candidates.html.twig', [
+            'applicants' => $applicants
+        ]);
+    }
 }

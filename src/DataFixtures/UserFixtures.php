@@ -20,7 +20,7 @@ class UserFixtures extends Fixture
     public const JOBS_NUM = 5;
 
     public const USER_PASS = '121212';
-    public const USER_ROLE = 'ROLE_USER';
+    public const USER_ROLE = 'ROLE_PROFILE';
     public const COMPANY_ROLE = 'ROLE_COMPANY';
 
     private $encoder;

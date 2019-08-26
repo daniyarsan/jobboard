@@ -3,3 +3,7 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     form_themes: ['helpers/frontend_form_layout.html.twig']
+#    Creation of custom services for twig
+    globals:
+        breadcrumbs: '@App\Service\Breadcrumbs'
+        menu: '@App\Service\Menu'

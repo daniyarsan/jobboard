@@ -1,0 +1,99 @@
+{% extends 'base-dashboard.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+    <!-- Breadcrumb -->
+    <div class="alice-bg padding-top-70 padding-bottom-70">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="breadcrumb-area">
+                        <h1>Employer Dashboard</h1>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Employer Dashboard</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <div class="alice-bg section-padding-bottom">
+        <div class="container no-gliters">
+            <div class="row no-gliters">
+                <div class="col">
+                    <div class="dashboard-container">
+                        <div class="dashboard-content-wrapper">
+                            <div class="manage-job-container">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Job Title</th>
+                                        <th>Applications</th>
+                                        <th>Deadline</th>
+                                        <th>Status</th>
+                                        <th class="action">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for applicant in applicants %}
+                                        {{ applicant.name }} asdfasdfasdf
+{#                                        <tr class="job-items">#}
+{#                                            <td class="title">#}
+{#                                                <h5>#}
+{#                                                    <a href="{{ path('job_details', {'id' : job.id}) }}">{{ job.title }}</a>#}
+{#                                                </h5>#}
+{#                                                <div class="info">#}
+{#                                                    <span class="office-location"><a href="#"><i data-feather="map-pin"></i>{{ job.country }}</a></span>#}
+{#                                                    <span class="job-type full-time"><a href="#"><i data-feather="clock"></i>{{ job.categories|join(', ') }}</a></span>#}
+{#                                                </div>#}
+{#                                            </td>#}
+{#                                            <td class="application"><a href="#">6 Application(s)</a></td>#}
+{#                                            <td class="deadline">Oct 31, 2018</td>#}
+
+{#                                            {% if job.isPublished %}#}
+{#                                                <td class="status active">Active</td>#}
+{#                                            {% else %}#}
+{#                                                <td class="status pending">Pending</td>#}
+{#                                            {% endif %}#}
+{#                                            <td class="action">#}
+{#                                                <a href="{{ path('job_details', {'id' : job.id}) }}" class="preview" title="Preview"><i data-feather="eye"></i></a>#}
+{#                                                <a href="{{ path('my_company_job_edit', {'id': job.id}) }}" class="edit" title="Edit"><i data-feather="edit"></i></a>#}
+{#                                                <a href="#" data-toggle="modal" data-target="#modal-delete-job" class="remove" title="Delete"><i data-feather="trash-2"></i></a>#}
+{#                                            </td>#}
+{#                                        </tr>#}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                {{ knp_pagination_render(applicants) }}
+                            </div>
+                        </div>
+
+                        {% include "my-company/_side-menu.html.twig" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade modal-delete" id="modal-delete-job" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h4><i data-feather="trash-2"></i>Delete Job</h4>
+                    <p>Are you sure! You want to delete this job listing...</p>
+                    <div class="buttons">
+                        <button class="delete-button">Save Update</button>
+                        <button class="">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

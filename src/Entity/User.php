@@ -4,14 +4,19 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ *  @UniqueEntity(
+ *     fields={"email"},
+ *     message="This email address is already in use.")
  */
 class User implements UserInterface
 {
-    public const ROLE_USER = 'ROLE_USER';
+    public const ROLE_PROFILE = 'ROLE_PROFILE';
+    public const ROLE_COMPANY = 'ROLE_COMPANY';
 
     /**
      * @ORM\Id()
@@ -66,7 +71,7 @@ class User implements UserInterface
 
     public function __construct()
     {
-        $this->roles = [self::ROLE_USER];
+        $this->roles = [self::ROLE_PROFILE];
         $this->enabled = false;
         $this->companies = new ArrayCollection();
     }
@@ -140,8 +145,8 @@ class User implements UserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = self::ROLE_USER;
+        // guarantee every user at least has ROLE_PROFILE
+        $roles[] = self::ROLE_PROFILE;
 
         return array_unique($roles);
     }

@@ -9,7 +9,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="breadcrumb-area">
-                        <h1>Candidates Dashboard</h1>
+                        <h1>{{ "Candidates Dashboard"|trans }}</h1>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -137,8 +137,8 @@
                                 </div>
                             </div>
 
-                            {% include "my-profile/_side-menu.html.twig" %}
-
+                            {# Service: My Profile Side Menu #}
+                            {{ menu.myProfileSide()|raw }}
                         </div>
                     </div>
                 </div>

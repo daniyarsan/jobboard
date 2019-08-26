@@ -3,9 +3,8 @@ security:
         App\Entity\User: bcrypt
 
     role_hierarchy:
-        ROLE_COMPANY:     ROLE_COMPANY
-        ROLE_USER:        ROLE_USER
-        ROLE_SUPER_ADMIN: ROLE_ADMIN
+        ROLE_ADMIN: [ROLE_PROFILE, ROLE_COMPANY]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN]
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         # used to reload user from session & other features (e.g. switch_user)
@@ -18,12 +17,16 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
             anonymous: true
             http_basic: ~
             access_denied_handler: App\Security\AccessDeniedHandler
             form_login:
                 login_path: security_login
                 check_path: security_login
+                default_target_path: security_login_redirect
             logout:
                 path:   /logout
                 target: /

@@ -28,17 +28,21 @@
 
 
 {% block body %}
+    {{ breadcrumbs.add(path('main_index'), 'Home page') }}
+    {{ breadcrumbs.add(path('my_profile_index'), 'My Profile') }}
+
     <!-- Breadcrumb -->
     <div class="alice-bg padding-top-70 padding-bottom-70">
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
                     <div class="breadcrumb-area">
-                        <h1>Dashboard</h1>
+                        <h1>{{ 'Dashboard'|trans }}</h1>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                                {% for route, name in breadcrumbs.getBreadcrumbs() %}
+                                    <li class="breadcrumb-item"><a href="{{ route }}">{{ name }}</a></li>
+                                {% endfor %}
                             </ol>
                         </nav>
                     </div>
@@ -101,21 +105,9 @@
                                     <span>{{ profile.username }}</span>
                                 </div>
                             </div>
-                            <div class="profile-progress">
-                                <div class="progress-item">
-                                    <div class="progress-head">
-                                        <p class="progress-on">Profile</p>
-                                    </div>
-                                    <div class="progress-body">
-                                        <div class="progress">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 0;"></div>
-                                        </div>
-                                        <p class="progress-to">70%</p>
-                                    </div>
-                                </div>
-                            </div>
 
-                            {% include "my-profile/_side-menu.html.twig" %}
+                            {# Service: My Profile Side Menu #}
+                            {{ menu.myProfileSide()|raw }}
                         </div>
                     </div>
                 </div>

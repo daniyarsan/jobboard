@@ -5,6 +5,7 @@ namespace App\EventSubscriber;
 use App\Event\RegisteredUserEvent;
 use App\Service\Mailer;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Twig_Error_Loader;
 use Twig_Error_Runtime;
 use Twig_Error_Syntax;
@@ -30,7 +31,7 @@ class UserSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            RegisteredUserEvent::NAME => 'onUserRegister'
+            RegisteredUserEvent::USER_REGISTER => 'onUserRegister',
         ];
     }
 

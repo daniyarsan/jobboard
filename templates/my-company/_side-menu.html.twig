@@ -36,7 +36,7 @@
             <li {{ route ==  'my_company_settings' ? 'class="active"' }}><i class="fas fa-user"></i><a href="{{ path('my_company_settings') }}">Edit Profile</a></li>
             <li {{ route ==  'my_company_jobs' ? 'class="active"' }}><i class="fas fa-briefcase"></i><a href="{{ path('my_company_jobs') }}">Manage Jobs</a></li>
             <li {{ route ==  'my_company_job_new' ? 'class="active"' }}><i class="fas fa-plus-square"></i><a href="{{ path('my_company_job_new') }}">Post New Job</a></li>
-            <li {{ route ==  'my_company_candidates' ? 'class="active"' }}><i class="fas fa-users"></i><a href="#">Manage Candidates</a></li>
+            <li {{ route ==  'my_company_candidates' ? 'class="active"' }}><i class="fas fa-users"></i><a href="{{ path('my_company_candidates') }}">Manage Candidates</a></li>
             <li {{ route ==  'my_company_resumes' ? 'class="active"' }}><i class="fas fa-heart"></i><a href="#">Shortlisted Resumes</a></li>
             <li {{ route ==  'my_company_messages' ? 'class="active"' }}><i class="fas fa-comment"></i><a href="#">Message</a></li>
         </ul>
