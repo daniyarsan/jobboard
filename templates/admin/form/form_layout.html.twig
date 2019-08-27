@@ -1,0 +1,5 @@
+{% use "bootstrap_4_layout.html.twig" %}
+
+{% block file_widget -%}
+    <input class="dropify" data-height="200" type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{% endblock %}

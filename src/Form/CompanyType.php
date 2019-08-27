@@ -21,10 +21,7 @@ class CompanyType extends AbstractType
         $builder
             ->setRequired(false)
             ->add('name', TextType::class)
-            ->add('logoImage', VichImageType::class, [
-                'allow_delete' => true,
-                'download_link' => true,
-            ])
+            ->add('logoImage', FileType::class)
             ->add('email', EmailType::class)
             ->add('website', TextType::class)
             ->add('phone', TextType::class)

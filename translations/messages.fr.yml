@@ -1,0 +1,17 @@
+Cancel: __Cancel
+Ok: __Ok
+'Choose an Action': '__Choose an Action'
+'items per page': '__items per page'
+Previous: __Previous
+Next: __Next
+'%count% items found': '__%count% items found'
+Show: __Show
+'per page': '__per page'
+'Sort By': '__Sort By'
+'Product Name': '__Product Name'
+Price: __Price
+'No results found': '__No results found'
+'Back to homepage': '__Back to homepage'
+'{0} %count% candidates matching query|{1} %count% candidate matching query|]1,Inf[%count% candidates matching query': '__{0} %count% candidates matching query|{1} %count% candidate matching query|]1,Inf[%count% candidates matching query'
+'{0} %count% of companies |{1} %count% of companies|]1,Inf[%count% of companies': '__{0} %count% of companies |{1} %count% of companies|]1,Inf[%count% of companies'
+'{0} No Open Positions|{1} %count_jobs% Open position|]1,Inf] %count_jobs% Open positions': '__{0} No Open Positions|{1} %count_jobs% Open position|]1,Inf] %count_jobs% Open positions'

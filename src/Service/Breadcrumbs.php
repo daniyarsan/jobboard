@@ -10,15 +10,15 @@ use Twig\Environment;
 
 class Breadcrumbs
 {
-    protected  $routes = [];
+    protected  $breadcrumbs = [];
 
-    public function add($route, $name)
+    public function add($breadcrumbs)
     {
-        $this->routes[$route] = $name;
+        $this->breadcrumbs[] = $breadcrumbs;
     }
 
     public function getBreadcrumbs()
     {
-        return $this->routes;
+        return $this->breadcrumbs;
     }
 }

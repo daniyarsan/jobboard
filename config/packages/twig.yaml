@@ -6,4 +6,4 @@ twig:
 #    Creation of custom services for twig
     globals:
         breadcrumbs: '@App\Service\Breadcrumbs'
-        menu: '@App\Service\Menu'
+        menuGenerator: '@App\Service\MenuGenerator'

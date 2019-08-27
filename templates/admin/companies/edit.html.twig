@@ -1,27 +1,121 @@
-{% extends 'admin/admin-base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
 {% block title %}Company Edit{% endblock %}
 
-{% block pagetitle %}Company Edit{% endblock %}
-
-{% block breadcrumbs %}
-    <ol class="breadcrumb text-right">
-        <li><a href="#">Dashboard</a></li>
-        <li><a href="#">Company</a></li>
-        <li><a href="#">Edit</a></li>
-    </ol>
-{% endblock %}
-
 {% block content %}
+    {{ breadcrumbs.add({'url' : 'admin_index', 'title' : 'Dashboard'|trans}) }}
+    {{ breadcrumbs.add({'url' : 'admin_companies_index', 'title' : 'Companies'|trans}) }}
+    {{ breadcrumbs.add({'url' : '', 'title' : 'Edit Company'|trans}) }}
+
+    <!-- start page title -->
     <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">Edit Company</div>
-                <div class="card-body card-block">
-                    {{ form(form) }}
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        {% for breadcrumb in breadcrumbs.getBreadcrumbs() %}
+                            <li class="breadcrumb-item"><a href="{% if breadcrumb.url is not empty %}{{ path(breadcrumb.url) }}{% else %}javascript: void(0);{% endif %}">{{ breadcrumb.title }}</a></li>
+                        {% endfor %}
+                    </ol>
                 </div>
-                <div class="card-footer"></div>
+                <h4 class="page-title">{{ 'Edit Company'|trans }}</h4>
             </div>
         </div>
     </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card-box">
+                <h5 class="text-uppercase bg-light p-2 mt-0 mb-3">General</h5>
+
+                {{ form(form) }}
+
+                <div class="form-group mb-3">
+                    <label for="product-name">Product Name <span class="text-danger">*</span></label>
+                    <input type="text" id="product-name" class="form-control" placeholder="e.g : Apple iMac">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="product-reference">Reference <span class="text-danger">*</span></label>
+                    <input type="text" id="product-reference" class="form-control" placeholder="e.g : Apple iMac">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="product-description">Product Description <span class="text-danger">*</span></label>
+                    <textarea class="form-control" id="product-description" rows="5" placeholder="Please enter description"></textarea>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="product-summary">Product Summary</label>
+                    <textarea class="form-control" id="product-summary" rows="3" placeholder="Please enter summary"></textarea>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="product-category">Categories <span class="text-danger">*</span></label>
+                    <select class="form-control select2" id="product-category">
+                        <option>Select</option>
+                        <optgroup label="Shopping">
+                            <option value="SH1">Shopping 1</option>
+                            <option value="SH2">Shopping 2</option>
+                            <option value="SH3">Shopping 3</option>
+                            <option value="SH4">Shopping 4</option>
+                        </optgroup>
+                        <optgroup label="CRM">
+                            <option value="CRM1">Crm 1</option>
+                            <option value="CRM2">Crm 2</option>
+                            <option value="CRM3">Crm 3</option>
+                            <option value="CRM4">Crm 4</option>
+                        </optgroup>
+                        <optgroup label="eCommerce">
+                            <option value="E1">eCommerce 1</option>
+                            <option value="E2">eCommerce 2</option>
+                            <option value="E3">eCommerce 3</option>
+                            <option value="E4">eCommerce 4</option>
+                        </optgroup>
+
+                    </select>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="product-price">Price <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="product-price" placeholder="Enter amount">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="mb-2">Status <span class="text-danger">*</span></label>
+                    <br/>
+                    <div class="radio form-check-inline">
+                        <input type="radio" id="inlineRadio1" value="option1" name="radioInline" checked="">
+                        <label for="inlineRadio1"> Online </label>
+                    </div>
+                    <div class="radio form-check-inline">
+                        <input type="radio" id="inlineRadio2" value="option2" name="radioInline">
+                        <label for="inlineRadio2"> Offline </label>
+                    </div>
+                    <div class="radio form-check-inline">
+                        <input type="radio" id="inlineRadio3" value="option3" name="radioInline">
+                        <label for="inlineRadio3"> Draft </label>
+                    </div>
+                </div>
+
+                <div class="form-group mb-0">
+                    <label>Comment</label>
+                    <textarea class="form-control" rows="3" placeholder="Please enter comment"></textarea>
+                </div>
+            </div> <!-- end card-box -->
+        </div> <!-- end col -->
+    </div>
+    <!-- end row -->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="text-center mb-3">
+                <button type="button" class="btn w-sm btn-light waves-effect">Cancel</button>
+                <button type="button" class="btn w-sm btn-success waves-effect waves-light">Save</button>
+                <button type="button" class="btn w-sm btn-danger waves-effect waves-light">Delete</button>
+            </div>
+        </div> <!-- end col -->
+    </div>
+    <!-- end row -->
 {% endblock %}

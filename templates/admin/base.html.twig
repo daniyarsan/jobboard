@@ -1,0 +1,93 @@
+{% form_theme form 'admin/form/form_layout.html.twig' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    {# TODO: Project title from database #}
+    <title>BestJobBoard Dashboard - {% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+    <meta content="Coderthemes" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+    {% block stylesheets %}
+        <!-- Plugins css -->
+        <link href="/backend/assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
+        <link href="/backend/assets/libs/dropify/dropify.min.css" rel="stylesheet" type="text/css" />
+
+        <!-- App css -->
+        <link href="/backend/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="/backend/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="/backend/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+    {% endblock %}
+</head>
+
+<body>
+{% include 'admin/_parts/messages.html.twig' %}
+
+<!-- Begin page -->
+<div id="wrapper">
+    <!-- Topbar Start -->
+    {% include 'admin/_parts/header.html.twig' %}
+    <!-- end Topbar -->
+
+    <!-- ========== Left Sidebar Start ========== -->
+    {# Menu Generator Service #}
+    {{ menuGenerator.adminSideMenu()|raw }}
+    <!-- Left Sidebar End -->
+
+    <!-- ============================================================== -->
+    <!-- Start Page Content here -->
+    <!-- ============================================================== -->
+
+    <div class="content-page">
+        <div class="content">
+            <!-- Start Content-->
+            <div class="container-fluid">
+                {% block content %}{% endblock %}
+            </div> <!-- container -->
+        </div> <!-- content -->
+
+        <!-- Footer Start -->
+        {% include 'admin/_parts/footer.html.twig' %}
+        <!-- end Footer -->
+
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- End Page content -->
+    <!-- ============================================================== -->
+
+
+</div>
+<!-- END wrapper -->
+
+{% block javascripts %}
+    <!-- Vendor js -->
+    <script src="/backend/assets/js/vendor.min.js"></script>
+
+    <!-- Plugins js-->
+    <script src="/backend/assets/libs/flatpickr/flatpickr.min.js"></script>
+    <script src="/backend/assets/libs/jquery-knob/jquery.knob.min.js"></script>
+    <script src="/backend/assets/libs/jquery-sparkline/jquery.sparkline.min.js"></script>
+    <script src="/backend/assets/libs/flot-charts/jquery.flot.js"></script>
+    <script src="/backend/assets/libs/flot-charts/jquery.flot.time.js"></script>
+    <script src="/backend/assets/libs/flot-charts/jquery.flot.tooltip.min.js"></script>
+    <script src="/backend/assets/libs/flot-charts/jquery.flot.selection.js"></script>
+    <script src="/backend/assets/libs/flot-charts/jquery.flot.crosshair.js"></script>
+    <script src="/backend/assets/libs/dropify/dropify.min.js"></script>
+    <script>
+        $(".dropify").dropify({messages:{default:"Drag and drop a file here or click",replace:"Drag and drop or click to replace",remove:"Remove",error:"Ooops, something wrong appended."},error:{fileSize:"The file size is too big (1M max)."}});
+    </script>
+    <!-- Dashboar 1 init js-->
+    <script src="/backend/assets/js/pages/dashboard-1.init.js"></script>
+
+    <!-- App js-->
+    <script src="/backend/assets/js/app.min.js"></script>
+{% endblock %}
+
+</body>
+</html>
