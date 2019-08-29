@@ -3,22 +3,6 @@
 
 {% block title %}{% endblock %}
 
-{% block vich_image_widget %}
-    {% spaceless %}
-        <div class="update-photo">
-            {% if app.user.company.logoName %}
-                <img class="image" src="{{ image_uri }}" alt="">
-            {% else %}
-                <img src="{{ asset('images/no-company.png') }}" class="image" alt="">
-            {% endif %}
-        </div>
-        <div class="file-upload">
-            {{ form_widget(form.file) }}
-            Change Avatar
-        </div>
-    {% endspaceless %}
-{% endblock %}
-
 {% block file_widget %}
     {% spaceless %}
         {% set type = type|default('file') %}

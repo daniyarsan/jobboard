@@ -1,0 +1,78 @@
+{% import 'admin/form/dialog.html.twig' as dialogs %}
+
+<form method="post" action="{{ path('admin_jobs_bulk') }}" id="bulk-table-form">
+    <input type="hidden" name="return_url" value="{{ path('admin_jobs_index') }}{{ query_string() }}"/>
+    {{ form_widget(bulk_action_form._token) }}
+    <input type="hidden" name="action" value=""/>
+
+    <div class="table-responsive">
+        <table class="table table-centered table-striped">
+            <thead>
+            <tr>
+                <th style="width: 20px;">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input bulk-item-check" id="checkAll">
+                        <label class="custom-control-label" for="checkAll">&nbsp;</label>
+                    </div>
+                </th>
+                <th>
+                    {{ knp_pagination_sortable(jobs, 'Job Title', 'title') }}
+                    {% if jobs.isSorted('title') %}
+                        <span class="fa fa-sort-amount{% if jobs.getParams.direction == 'desc' %}-desc{% else %}-asc{% endif %}"></span>
+                    {% endif %}
+                </th>
+                <th>{{ 'Company'|trans }}</th>
+                <th style="width: 15%">{{ 'Location'|trans }}</th>
+                <th>{{ 'Create Date'|trans }}</th>
+                <th>
+                    {{ knp_pagination_sortable(jobs, 'Status', 'c.isPublished') }}
+                    {% if jobs.isSorted('c.isPublished') %}
+                        <span class="fa fa-sort-amount{% if jobs.getParams.direction == 'desc' %}-desc{% else %}-asc{% endif %}"></span>
+                    {% endif %}
+                </th>
+                <th style="width: 15%">{{ 'Action'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for job in jobs %}
+                <tr>
+                    <td>
+                        <div class="custom-control custom-checkbox">
+                            <input id="bulk-item-{{ job.id }}" type="checkbox" name="jobs[{{ job.id }}]" class="custom-control-input bulk-item-check">
+                            <label class="custom-control-label" for="bulk-item-{{ job.id }}">&nbsp;</label>
+                        </div>
+                    </td>
+                    <td class="table-user">
+                        <a href="javascript:void(0);" class="text-body font-weight-semibold">{{ job.title }}</a>
+                    </td>
+                    <td>{{ job.company }}</td>
+                    <td>{{ job.country }}</td>
+                    <td>{{ job.created|date("y m d") }} </td>
+                    <td>
+                        {% if job.isPublished %}
+                            <span class="badge bg-soft-success text-success">{{ 'Published'|trans }}</span>
+                        {% else %}
+                            <span class="badge bg-soft-danger text-danger">{{ 'On Hold'|trans }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('admin_jobs_edit', {'id': job.id, 'return_url': path('admin_jobs_index') ~ query_string()}) }}" class="action-icon">
+                            <i class="mdi mdi-square-edit-outline"></i></a>
+                        {% if job.isPublished == 1 %}
+                            <a href="{{ path('admin_jobs_set', {'action': 'disable', 'id': job.id, 'return_url': path('admin_jobs_index') ~ query_string()}) }}" class="action-icon">
+                                <i class="mdi mdi-eye-off"></i></a>
+                        {% else %}
+                            <a href="{{ path('admin_jobs_set', {'action': 'activate', 'id': job.id, 'return_url': path('admin_jobs_index') ~ query_string()}) }}" class="action-icon">
+                                <i class="mdi mdi-eye"></i></a>
+                        {% endif %}
+                        <a data-toggle="modal" href="#delete-{{ job.id }}" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                    </td>
+                </tr>
+                {{ dialogs.confirm('delete-' ~ job.id, 'Confirmation', 'The selected item will be removed permanently. Are you sure?', '', path('admin_jobs_set', {id: job.id, action: 'remove'})) }}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</form>
+
+{{ knp_pagination_render(jobs, 'admin/_parts/paginator.html.twig') }}

@@ -5,6 +5,7 @@ namespace App\Controller\Backend;
 use App\Entity\Company;
 use App\Form\AdminFilterCompanyType;
 use App\Form\CompanyType;
+use App\Service\FileUploader;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -67,17 +68,25 @@ class CompaniesController extends AbstractController
      * @ParamConverter("company", class="App\Entity\Company")
      * @Template("admin/companies/edit.html.twig")
      */
-    public function edit(Request $request, Company $company, TranslatorInterface $translator)
+    public function edit(Request $request, Company $company, TranslatorInterface $translator, FileUploader $fileUploader)
     {
         $form = $this->createForm(CompanyType::class, $company);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $company = $form->getData();
             try {
+                $company = $form->getData();
+
+                /* Logo Upload */
+                if ($logoFile = $form['logo']->getData()) {
+                    $fileUploader->setTargetDirectory($this->getParameter('resumes_dir'));
+                    $company->setLogoName($fileUploader->upload($logoFile));
+                }
+
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($company);
                 $em->flush();
+
                 $this->addFlash('success', $translator->trans('Company has been successfully updated.'));
             } catch(\Exception $e) {
                 $this->addFlash('danger', $translator->trans('An error occurred when saving object.'));

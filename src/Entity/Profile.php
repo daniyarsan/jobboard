@@ -5,13 +5,11 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProfileRepository")
  * @ORM\HasLifecycleCallbacks()
- * @Vich\Uploadable
  */
 class Profile implements \Serializable
 {
@@ -41,14 +39,8 @@ class Profile implements \Serializable
 
     /**
      * @Assert\File(mimeTypes={"image/png", "image/jpeg", "image/pjpeg"})
-     * @Vich\UploadableField(mapping="avatar_image", fileNameProperty="avatar_name")
      */
-    private $avatarImage;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true, name="avatar_name")
-     */
-    private $avatarName;
+    private $avatar;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -344,22 +336,6 @@ class Profile implements \Serializable
         if ($avatarImage) {
             $this->modified = new \DateTime('now');
         }
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAvatarName()
-    {
-        return $this->avatarName;
-    }
-
-    /**
-     * @param mixed $avatarName
-     */
-    public function setAvatarName($avatarName)
-    {
-        $this->avatarName = $avatarName;
     }
 
     /**

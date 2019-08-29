@@ -5,16 +5,17 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CompanyRepository")
  * @ORM\HasLifecycleCallbacks()
- * @vich\Uploadable
  */
-class Company implements \Serializable
+class Company
 {
+    protected const LOGO_DIR_NAME = 'logos';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -37,6 +38,11 @@ class Company implements \Serializable
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $name;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $logoName;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -92,17 +98,6 @@ class Company implements \Serializable
      * @ORM\Column(type="datetime")
      */
     private $created;
-
-    /**
-     * @Assert\File(mimeTypes={"image/png", "image/jpeg", "image/pjpeg"})
-     * @Vich\UploadableField(mapping="logo_image", fileNameProperty="logo_name")
-     */
-    private $logoImage;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true, name="logo_name")
-     */
-    private $logoName;
 
     /**
      * @ORM\Column(name="modified", type="datetime", nullable=true)
@@ -162,7 +157,7 @@ class Company implements \Serializable
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -186,7 +181,7 @@ class Company implements \Serializable
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(?string $email): self
     {
         $this->email = $email;
 
@@ -301,67 +296,6 @@ class Company implements \Serializable
     /**
      * @return mixed
      */
-    public function getLogoImage()
-    {
-        return $this->logoImage;
-    }
-
-    /**
-     * @param mixed $logoImage
-     */
-    public function setLogoImage(File $logoImage)
-    {
-        $this->logoImage = $logoImage;
-
-        if ($logoImage) {
-            $this->modified = new \DateTime('now');
-        }
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLogoName()
-    {
-        return $this->logoName;
-    }
-
-    /**
-     * @param mixed $logoName
-     */
-    public function setLogoName($logoName)
-    {
-        $this->logoName = $logoName;
-    }
-
-    /**
-     * String representation of object
-     * @link https://php.net/manual/en/serializable.serialize.php
-     * @return string the string representation of the object or null
-     * @since 5.1.0
-     */
-    public function serialize()
-    {
-        $this->logoImage = base64_encode($this->logoImage);
-    }
-
-    /**
-     * Constructs the object
-     * @link https://php.net/manual/en/serializable.unserialize.php
-     * @param string $serialized <p>
-     * The string representation of the object.
-     * </p>
-     * @return void
-     * @since 5.1.0
-     */
-    public function unserialize($serialized)
-    {
-        $this->logoImage = base64_decode($this->logoImage);
-    }
-
-    /**
-     * @return mixed
-     */
     public function getJobs()
     {
         return $this->jobs;
@@ -394,5 +328,21 @@ class Company implements \Serializable
     public function setState($state): void
     {
         $this->state = $state;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLogoName()
+    {
+        return $this->logoName;
+    }
+
+    /**
+     * @param mixed $logoName
+     */
+    public function setLogoName($logoName): void
+    {
+        $this->logoName = $logoName;
     }
 }

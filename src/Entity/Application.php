@@ -3,14 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\File;
 
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ApplicationRepository")
  * @ORM\HasLifecycleCallbacks()
- * @Vich\Uploadable
  */
 class Application
 {

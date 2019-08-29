@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use Doctrine\Migrations\Tools\Console\Exception\DirectoryDoesNotExist;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -18,7 +19,7 @@ class FileUploader
         try {
             $file->move($this->getTargetDirectory(), $fileName);
         } catch (FileException $e) {
-            // ... handle exception if something happens during file upload
+            throw new FileException('File cant be uploaded');
         }
 
         return $fileName;

@@ -2,12 +2,8 @@
 
 namespace App\Service;
 
-
 class Helper
 {
-    public const RANDOM_STRING = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-
     public static function slugify($text)
     {
         // replace non letter or digits by -
@@ -41,11 +37,13 @@ class Helper
      */
     public function getConfirmationCode()
     {
-        $stringLength = strlen(self::RANDOM_STRING);
+        $randomString = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        $stringLength = strlen($randomString);
         $code = '';
 
         for ($i = 0; $i < $stringLength; $i++) {
-            $code .= self::RANDOM_STRING[rand(0, $stringLength - 1)];
+            $code .= $randomString[rand(0, $stringLength - 1)];
         }
 
         return $code;

@@ -5,18 +5,18 @@ namespace App\Form;
 use App\Entity\Profile;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class ProfileType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('avatarImage', VichImageType::class, [
+            ->add('avatarImage', FileType::class, [
                 'required' => false,
                 'allow_delete' => true,
                 'download_link' => true,

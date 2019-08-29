@@ -1,4 +1,5 @@
 {% extends 'admin/base.html.twig' %}
+{#{% import 'admin/_parts/helper.html.twig' as helper %}#}
 
 {% block title %}{{ 'Companies List'|trans }}{% endblock %}
 
@@ -15,11 +16,13 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         {% for breadcrumb in breadcrumbs.getBreadcrumbs() %}
-                            <li class="breadcrumb-item"><a href="{% if breadcrumb.url is not empty %}{{ path(breadcrumb.url) }}{% else %}javascript: void(0);{% endif %}">{{ breadcrumb.title }}</a></li>
+                            <li class="breadcrumb-item">
+                                <a href="{% if breadcrumb.url is not empty %}{{ path(breadcrumb.url) }}{% else %}javascript: void(0);{% endif %}">{{ breadcrumb.title }}</a>
+                            </li>
                         {% endfor %}
                     </ol>
                 </div>
-                <h4 class="page-title">{{ 'Customers'|trans }}</h4>
+                <h4 class="page-title">{{ 'Customers'|trans }} - {{ companies.getTotalItemCount }} {{ 'found'|trans }}</h4>
             </div>
         </div>
     </div>
@@ -30,19 +33,36 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row mb-2">
-                        <div class="col-sm-4">
-                            <a href="{{path('admin_companies_create')}}" class="btn btn-danger waves-effect waves-light"><i class="mdi mdi-plus-circle mr-1"></i> {{ 'Add Company'|trans }}</a>
+                        <div class="col-md-3">
+                            <form class="form-inline">
+                                <div class="form-group mb-2">
+                                    <label for="inputPassword2" class="sr-only">Search</label>
+                                    <input type="search" class="form-control" id="inputPassword2" placeholder="Search...">
+                                </div>
+                            </form>
                         </div>
-                        <div class="col-sm-8">
-                            <div class="text-sm-right">
-                                <button type="button" class="btn btn-success mb-2 mr-1"><i class="mdi mdi-settings"></i></button>
-                                <button type="button" class="btn btn-light mb-2 mr-1">Import</button>
-                                <button type="button" class="btn btn-light mb-2">Export</button>
+
+                        <div class="col-md-3">
+                            <div class="btn-group">
+                                <button id="bulk-action-button" type="button" class="btn btn-warning waves-effect waves-light mb-2 mr-1 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: none;">
+                                    <i class="mdi mdi-settings"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" data-toggle="modal" href="#" onclick="itemsBulkAction('activate');">{{ 'Activate'|trans }}</a>
+                                    <a class="dropdown-item" data-toggle="modal" href="#" onclick="itemsBulkAction('disable');">{{ 'Deactivate'|trans }}</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" data-toggle="modal" href="#items-bulk-delete">{{ 'Delete'|trans }}</a>
+                                </div>
+                            </div><!-- /btn-group -->
+                        </div>
+                        <div class="col-md-6">
+                            <div class="text-md-right">
+                                <a href="{{ path('admin_companies_create') }}" class="btn btn-success waves-effect waves-light mb-2 mr-2"><i class="mdi mdi-plus-circle mr-1"></i> {{ 'Add Company'|trans }}</a>
                             </div>
-                        </div>
+                        </div><!-- end col-->
                     </div>
 
-                    {# Main companies table #}
+                    {# Main items table #}
                     {% include 'admin/companies/_table.html.twig' with companies %}
 
                 </div> <!-- end card-body-->
@@ -51,27 +71,7 @@
     </div>
     <!-- end row -->
 
-    {# {% import 'admin/_parts/helper.html.twig' as helper %}
-
-     <a class="dropdown-item" data-toggle="modal" href="#" onclick="pageBulkAction('activate');">Activate</a>
-     <a class="dropdown-item" data-toggle="modal" href="#" onclick="pageBulkAction('disable');">Deactivate</a>
-     <div class="dropdown-divider"></div>
-     <a class="dropdown-item" data-toggle="modal" href="#static-companies-delete-bulk">Delete</a>
-     {% set pagesCount = companies.getTotalItemCount %}
-     {{ pagesCount }} items - found
-
-     #}{#            {{ dialogs.confirm('static-companies-delete-bulk', 'Confirmation', 'The selected Companies will be removed permanently. Are you sure?', "pageBulkAction('remove')", '') }}#}{#
-     {{ form_start(filterForm, {'name': 'filter-companies-form'}) }}
-
-     <div class="row mb-15">
-         <div class="col-sm-6 col-md-3 ">
-             {{ form_widget(filterForm.keyword) }}
-         </div>
-         <div class="col-sm-6 col-md-3 ">
-             {{ form_widget(filterForm.country) }}
-         </div>
-     </div>
-     {{ form_end(filterForm) }}#}
+    {{ dialogs.confirm('items-bulk-delete', 'Confirmation'|trans, 'The selected items will be removed permanently. Are you sure?'|trans, "itemsBulkAction('remove')", '') }}
 
 {% endblock %}
 
@@ -79,11 +79,23 @@
     {{ parent() }}
 
     <script type="text/javascript">
-        function pageBulkAction(action) {
-            var form = jQuery("#companies-bulk-form");
+        function itemsBulkAction(action) {
+            var form = jQuery("#bulk-table-form");
             form.find("input[name='action']").val(action);
             form.submit();
         }
+
+        /* Check all */
+        $(".bulk-item-check").click(function(){
+            if (this.checked) {
+                $('#bulk-action-button').show();
+            } else {
+                $('#bulk-action-button').hide();
+            }
+        });
+        $("#checkAll").click(function(){
+            $('input:checkbox.bulk-item-check').not(this).prop('checked', this.checked);
+        });
     </script>
 {% endblock %}
 

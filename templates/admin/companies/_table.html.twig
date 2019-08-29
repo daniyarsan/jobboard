@@ -1,17 +1,17 @@
 {% import 'admin/form/dialog.html.twig' as dialogs %}
 
-<form method="post" action="{{ path('admin_companies_bulk') }}" id="companies-bulk-form">
+<form method="post" action="{{ path('admin_companies_bulk') }}" id="bulk-table-form">
     {{ form_widget(bulk_action_form._token) }}
     <input type="hidden" name="action" value=""/>
     <input type="hidden" name="return_url" value="{{ path('admin_companies_index') }}{{ query_string() }}"/>
 
     <div class="table-responsive">
-        <table class="table table-centered table-striped" id="companies-datatable">
+        <table class="table table-centered table-striped">
             <thead>
             <tr>
                 <th style="width: 20px;">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="checkAll">
+                        <input type="checkbox" class="custom-control-input bulk-item-check" id="checkAll">
                         <label class="custom-control-label" for="checkAll">&nbsp;</label>
                     </div>
                 </th>
@@ -38,8 +38,8 @@
                 <tr>
                     <td>
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" name="companies[{{ company.id }}]" class="custom-control-input">
-                            <label class="custom-control-label" for="customCheck2">&nbsp;</label>
+                            <input id="bulk-item-{{ company.id }}" type="checkbox" name="companies[{{ company.id }}]" class="custom-control-input bulk-item-check">
+                            <label class="custom-control-label" for="bulk-item-{{ company.id }}">&nbsp;</label>
                         </div>
                     </td>
                     <td class="table-user">
@@ -53,9 +53,9 @@
                     <td>{{ company.created|date("y m d") }} </td>
                     <td>
                         {% if company.isVerified %}
-                            <span class="badge bg-soft-success text-success">Active</span>
+                            <span class="badge bg-soft-success text-success">{{ 'Active'|trans }}</span>
                         {% else %}
-                            <span class="badge bg-soft-danger text-danger">Not Active</span>
+                            <span class="badge bg-soft-danger text-danger">{{ 'Not Active'|trans }}</span>
                         {% endif %}
                     </td>
                     <td>
@@ -68,11 +68,10 @@
                             <a href="{{ path('admin_companies_set', {'action': 'activate', 'id': company.id, 'return_url': path('admin_companies_index') ~ query_string()}) }}" class="action-icon">
                                 <i class="mdi mdi-eye"></i></a>
                         {% endif %}
-                        <a data-toggle="modal" href="#company-delete-{{ company.id }}" class="action-icon">
-                            <i class="mdi mdi-delete"></i></a>
+                        <a data-toggle="modal" href="#delete-{{ company.id }}" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                     </td>
                 </tr>
-                {{ dialogs.confirm('company-delete-' ~ company.id, 'Confirmation', 'The selected page will be removed permanently. Are you sure?', '', path('admin_companies_set', {id: company.id, action: 'remove'})) }}
+                {{ dialogs.confirm('delete-' ~ company.id, 'Confirmation', 'The selected item will be removed permanently. Are you sure?', '', path('admin_companies_set', {id: company.id, action: 'remove'})) }}
             {% endfor %}
             </tbody>
         </table>

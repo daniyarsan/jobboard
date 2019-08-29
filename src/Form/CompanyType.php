@@ -12,6 +12,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\File;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class CompanyType extends AbstractType
@@ -21,7 +23,21 @@ class CompanyType extends AbstractType
         $builder
             ->setRequired(false)
             ->add('name', TextType::class)
-            ->add('logoImage', FileType::class)
+            ->add('logo', FileType::class, [
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/jpg',
+                            'image/png'
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid Image type',
+                    ])
+                ]
+            ])
             ->add('email', EmailType::class)
             ->add('website', TextType::class)
             ->add('phone', TextType::class)
