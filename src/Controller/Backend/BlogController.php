@@ -4,15 +4,16 @@ namespace App\Controller\Backend;
 
 use App\Entity\Blog;
 use App\Form\AdminBlogType;
+use App\Form\AdminFilterType;
+use App\Service\FileUploader;
 use App\Service\Helper;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -26,13 +27,12 @@ class BlogController extends AbstractController
      * Lists all blogs items.
      *
      * @Route("/blog", name="blog_index")
-     * @Method("GET")
      * @Template("admin/blog/index.html.twig")
      */
-    public function index(Request $request, Session $session, PaginatorInterface $paginator)
+    public function index(Request $request, Session $session, PaginatorInterface $pagination)
     {
-        $em = $this->getDoctrine()->getManager();
-        $queryBuilder = $em->getRepository('App:Blog')->createQueryBuilder('b');
+        $filterForm = $this->createForm(AdminFilterType::class);
+        $filterForm->handleRequest($request);
 
         $itemsPerPage = $request->query->get('itemsPerPage', 20);
         $page = $request->query->get('page', 1);
@@ -47,13 +47,15 @@ class BlogController extends AbstractController
             }
         }
         $paginatorOptions = [
-            'defaultSortFieldName' => 'b.title',
+            'defaultSortFieldName' => 'title',
             'defaultSortDirection' => 'asc'
         ];
-        $blogs = $paginator->paginate($queryBuilder, $page, $itemsPerPage, $paginatorOptions);
+        $entities = $this->getDoctrine()->getRepository('App:Blog')->findByFilterQuery($request);
+        $entities = $pagination->paginate($entities, $page, $itemsPerPage, $paginatorOptions);
 
         return [
-            'blogs' => $blogs,
+            'entities' => $entities,
+            'filter_form' => $filterForm->createView(),
             'bulk_action_form' => $this->createBulkActionForm()->createView()
         ];
     }
@@ -64,13 +66,19 @@ class BlogController extends AbstractController
      * @Route("/blog/create", name="blog_create")
      * @Template("admin/blog/create.html.twig")
      */
-    public function create(Request $request)
+    public function create(Request $request, FileUploader $fileUploader)
     {
         $entity = new Blog();
         $form = $this->createForm(AdminBlogType::class, $entity);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /* Logo Upload */
+            if ($imageFile = $form['image']->getData()) {
+                $fileUploader->setTargetDirectory($this->getParameter('blog_images_dir'));
+                $entity->setImageName($fileUploader->upload($imageFile));
+            }
+
             $em = $this->getDoctrine()->getManager();
             $entity->setSlug(Helper::slugify($entity->getTitle()));
             $em->persist($entity);

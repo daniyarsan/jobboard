@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Company;
-use App\Form\FilterCompanyType;
+use App\Form\FilterType;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,7 +17,7 @@ class CompaniesController extends AbstractController
      */
     public function index(Request $request, PaginatorInterface $pagination)
     {
-        $filter = $this->createForm(FilterCompanyType::class, [], ['router' => $this->get('router')]);
+        $filter = $this->createForm(FilterType::class, [], ['router' => $this->get('router')]);
         $filter->handleRequest($request);
 
         $companies = $this->getDoctrine()->getRepository('App:Company')->findByFilterQuery($request);

@@ -50,12 +50,7 @@ class Blog
     private $modified;
 
     /**
-     * @Assert\File(mimeTypes={"image/png", "image/jpeg", "image/pjpeg"})
-     */
-    private $image;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true, name="image_name")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $imageName;
 
@@ -133,26 +128,6 @@ class Blog
     public function __toString()
     {
         return $this->title;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    /**
-     * @param mixed $avatarImage
-     */
-    public function setImage(File $image)
-    {
-        $this->image = $image;
-
-        if ($image) {
-            $this->modified = new \DateTime('now');
-        }
     }
 
     /**

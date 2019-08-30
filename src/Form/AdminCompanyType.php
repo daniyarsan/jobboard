@@ -17,28 +17,16 @@ class AdminCompanyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->setRequired(false)
             ->add('user', UserType::class)
             ->add('name', TextType::class)
             ->add('email', EmailType::class)
-            ->add('website', TextType::class, [
-                'required' => false,
-            ])
-            ->add('phone', TextType::class, [
-                'required' => false,
-            ])
-            ->add('country', CountryType::class, [
-                'required' => false,
-            ])
-            ->add('latitude', TextType::class, [
-                'required' => false,
-            ])
-            ->add('longitude', TextType::class, [
-                'required' => false,
-            ])
-            ->add('description', TextareaType::class, [
-                'required' => false,
-                'attr' => ['class' => 'wysiwyg'],
-            ])
+            ->add('website', TextType::class)
+            ->add('phone', TextType::class)
+            ->add('country', CountryType::class)
+            ->add('latitude', TextType::class)
+            ->add('longitude', TextType::class)
+            ->add('description', TextareaType::class)
             ->add('save', SubmitType::class)
             ->add('saveAndExit', SubmitType::class, ['label' => 'Save and Exit']);
     }

@@ -16,25 +16,25 @@
                     </div>
                 </th>
                 <th>
-                    {{ knp_pagination_sortable(jobs, 'Job Title', 'title') }}
-                    {% if jobs.isSorted('title') %}
-                        <span class="fa fa-sort-amount{% if jobs.getParams.direction == 'desc' %}-desc{% else %}-asc{% endif %}"></span>
+                    {{ knp_pagination_sortable(entities, 'Job Title', 'title') }}
+                    {% if entities.isSorted('title') %}
+                        <span class="fas fa-sort-alpha-{% if entities.getParams.direction == 'desc' %}down{% else %}up{% endif %}"></span>
                     {% endif %}
                 </th>
                 <th>{{ 'Company'|trans }}</th>
                 <th style="width: 15%">{{ 'Location'|trans }}</th>
                 <th>{{ 'Create Date'|trans }}</th>
                 <th>
-                    {{ knp_pagination_sortable(jobs, 'Status', 'c.isPublished') }}
-                    {% if jobs.isSorted('c.isPublished') %}
-                        <span class="fa fa-sort-amount{% if jobs.getParams.direction == 'desc' %}-desc{% else %}-asc{% endif %}"></span>
+                    {{ knp_pagination_sortable(entities, 'Status', 'isPublished') }}
+                    {% if entities.isSorted('isPublished') %}
+                        <span class="fas fa-sort-alpha-{% if entities.getParams.direction == 'desc' %}down{% else %}up{% endif %}"></span>
                     {% endif %}
                 </th>
                 <th style="width: 15%">{{ 'Action'|trans }}</th>
             </tr>
             </thead>
             <tbody>
-            {% for job in jobs %}
+            {% for job in entities %}
                 <tr>
                     <td>
                         <div class="custom-control custom-checkbox">
@@ -75,4 +75,4 @@
     </div>
 </form>
 
-{{ knp_pagination_render(jobs, 'admin/_parts/paginator.html.twig') }}
+{{ knp_pagination_render(entities, 'admin/_parts/paginator.html.twig') }}

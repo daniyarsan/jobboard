@@ -16,25 +16,25 @@
                     </div>
                 </th>
                 <th>
-                    {{ knp_pagination_sortable(companies, 'Company Name', 'c.name') }}
-                    {% if companies.isSorted('c.name') %}
-                        <span class="fa fa-sort-amount{% if companies.getParams.direction == 'desc' %}-desc{% else %}-asc{% endif %}"></span>
+                    {{ knp_pagination_sortable(entities, 'Company Name', 'name') }}
+                    {% if entities.isSorted('name') %}
+                        <span class="fas fa-sort-alpha-{% if entities.getParams.direction == 'desc' %}up{% else %}down{% endif %}"></span>
                     {% endif %}
                 </th>
                 <th>{{ 'Email'|trans }}</th>
                 <th style="width: 15%">Location</th>
                 <th>{{ 'Create Date'|trans }}</th>
                 <th>
-                    {{ knp_pagination_sortable(companies, 'Status', 'c.isVerified') }}
-                    {% if companies.isSorted('c.isVerified') %}
-                        <span class="fa fa-sort-amount{% if companies.getParams.direction == 'desc' %}-desc{% else %}-asc{% endif %}"></span>
+                    {{ knp_pagination_sortable(entities, 'Status', 'isVerified') }}
+                    {% if entities.isSorted('isVerified') %}
+                        <span class="fas fa-sort-alpha-{% if entities.getParams.direction == 'desc' %}up{% else %}down{% endif %}"></span>
                     {% endif %}
                 </th>
                 <th style="width: 15%">{{ 'Action'|trans }}</th>
             </tr>
             </thead>
             <tbody>
-            {% for company in companies %}
+            {% for company in entities %}
                 <tr>
                     <td>
                         <div class="custom-control custom-checkbox">
@@ -78,6 +78,6 @@
     </div>
 </form>
 
-{{ knp_pagination_render(companies, 'admin/_parts/paginator.html.twig') }}
+{{ knp_pagination_render(entities, 'admin/_parts/paginator.html.twig') }}
 
 

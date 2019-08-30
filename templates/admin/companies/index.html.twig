@@ -22,7 +22,7 @@
                         {% endfor %}
                     </ol>
                 </div>
-                <h4 class="page-title">{{ 'Customers'|trans }} - {{ companies.getTotalItemCount }} {{ 'found'|trans }}</h4>
+                <h4 class="page-title">{{ 'Customers'|trans }} - {{ entities.getTotalItemCount }} {{ 'found'|trans }}</h4>
             </div>
         </div>
     </div>
@@ -34,12 +34,9 @@
                 <div class="card-body">
                     <div class="row mb-2">
                         <div class="col-md-3">
-                            <form class="form-inline">
-                                <div class="form-group mb-2">
-                                    <label for="inputPassword2" class="sr-only">Search</label>
-                                    <input type="search" class="form-control" id="inputPassword2" placeholder="Search...">
-                                </div>
-                            </form>
+                            {{ form_start(filter_form) }}
+                            {{ form_widget(filter_form.keyword, {attr : {placeholder : 'Search...'|trans}}) }}
+                            {{ form_end(filter_form) }}
                         </div>
 
                         <div class="col-md-3">
@@ -63,7 +60,7 @@
                     </div>
 
                     {# Main items table #}
-                    {% include 'admin/companies/_table.html.twig' with companies %}
+                    {% include 'admin/companies/_table.html.twig' with entities %}
 
                 </div> <!-- end card-body-->
             </div> <!-- end card-->

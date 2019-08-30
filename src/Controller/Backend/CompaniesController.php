@@ -3,11 +3,10 @@
 namespace App\Controller\Backend;
 
 use App\Entity\Company;
-use App\Form\AdminFilterCompanyType;
+use App\Form\AdminFilterType;
 use App\Form\CompanyType;
 use App\Service\FileUploader;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,12 +27,11 @@ class CompaniesController extends AbstractController
      * Lists all Companies
      *
      * @Route("/companies", name="_index")
-     * @Method("GET")
      * @Template("admin/companies/index.html.twig")
      */
     public function index(Request $request, Session $session, PaginatorInterface $pagination)
     {
-        $filterForm = $this->createForm(AdminFilterCompanyType::class, [], ['router' => $this->get('router')]);
+        $filterForm = $this->createForm(AdminFilterType::class);
         $filterForm->handleRequest($request);
 
         $itemsPerPage = $request->query->get('itemsPerPage', 20);
@@ -53,12 +51,14 @@ class CompaniesController extends AbstractController
             'defaultSortDirection' => 'desc'
         ];
 
-        $companies = $this->getDoctrine()->getRepository('App:Company')->findByFilterQuery($request);
-        $companies = $pagination->paginate($companies, $page, $itemsPerPage, $paginatorOptions);
+        /* Find entities by filter (Keywords and pagination) */
+
+        $entites = $this->getDoctrine()->getRepository('App:Company')->findByFilterQuery($request);
+        $entites = $pagination->paginate($entites, $page, $itemsPerPage, $paginatorOptions);
 
         return [
-            'filterForm' => $filterForm->createView(),
-            'companies' => $companies,
+            'entities' => $entites,
+            'filter_form' => $filterForm->createView(),
             'bulk_action_form' => $this->createBulkActionForm()->createView()
         ];
     }
@@ -79,7 +79,7 @@ class CompaniesController extends AbstractController
 
                 /* Logo Upload */
                 if ($logoFile = $form['logo']->getData()) {
-                    $fileUploader->setTargetDirectory($this->getParameter('resumes_dir'));
+                    $fileUploader->setTargetDirectory($this->getParameter('logos_dir'));
                     $company->setLogoName($fileUploader->upload($logoFile));
                 }
 
@@ -198,4 +198,5 @@ class CompaniesController extends AbstractController
             ->add('pages')
             ->getForm();
     }
+
 }

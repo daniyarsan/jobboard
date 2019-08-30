@@ -14,8 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Company
 {
-    protected const LOGO_DIR_NAME = 'logos';
-
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

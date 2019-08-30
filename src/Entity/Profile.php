@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\File\File;
  * @ORM\Entity(repositoryClass="App\Repository\ProfileRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class Profile implements \Serializable
+class Profile
 {
     const VISIBILITY_PUBLIC = 'PUBLIC';
 
@@ -38,9 +38,9 @@ class Profile implements \Serializable
     private $visibility = self::VISIBILITY_PUBLIC;
 
     /**
-     * @Assert\File(mimeTypes={"image/png", "image/jpeg", "image/pjpeg"})
+     * @ORM\Column(type="string", nullable=true)
      */
-    private $avatar;
+    private $avatarName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -321,51 +321,6 @@ class Profile implements \Serializable
     /**
      * @return mixed
      */
-    public function getAvatarImage()
-    {
-        return $this->avatarImage;
-    }
-
-    /**
-     * @param mixed $avatarImage
-     */
-    public function setAvatarImage(File $avatarImage)
-    {
-        $this->avatarImage = $avatarImage;
-
-        if ($avatarImage) {
-            $this->modified = new \DateTime('now');
-        }
-    }
-
-    /**
-     * String representation of object
-     * @link https://php.net/manual/en/serializable.serialize.php
-     * @return string the string representation of the object or null
-     * @since 5.1.0
-     */
-    public function serialize()
-    {
-        $this->avatarImage = base64_encode($this->avatarImage);
-    }
-
-    /**
-     * Constructs the object
-     * @link https://php.net/manual/en/serializable.unserialize.php
-     * @param string $serialized <p>
-     * The string representation of the object.
-     * </p>
-     * @return void
-     * @since 5.1.0
-     */
-    public function unserialize($serialized)
-    {
-        $this->avatarImage = base64_decode($this->avatarImage);
-    }
-
-    /**
-     * @return mixed
-     */
     public function getEmail()
     {
         return $this->email;
@@ -377,5 +332,21 @@ class Profile implements \Serializable
     public function setEmail($email): void
     {
         $this->email = $email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAvatarName()
+    {
+        return $this->avatarName;
+    }
+
+    /**
+     * @param mixed $avatarName
+     */
+    public function setAvatarName($avatarName): void
+    {
+        $this->avatarName = $avatarName;
     }
 }

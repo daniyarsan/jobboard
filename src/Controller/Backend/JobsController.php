@@ -3,7 +3,7 @@
 namespace App\Controller\Backend;
 
 use App\Entity\Job;
-use App\Form\AdminFilterJobType;
+use App\Form\AdminFilterType;
 use App\Form\JobType;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -30,7 +30,7 @@ class JobsController extends AbstractController
      */
     public function index(Request $request, Session $session, PaginatorInterface $pagination)
     {
-        $filterForm = $this->createForm(AdminFilterJobType::class, [], ['router' => $this->get('router')]);
+        $filterForm = $this->createForm(AdminFilterType::class);
         $filterForm->handleRequest($request);
         
         $itemsPerPage = $request->query->get('itemsPerPage', 20);
@@ -51,12 +51,12 @@ class JobsController extends AbstractController
             'defaultSortDirection' => 'desc'
         ];
 
-        $jobs = $this->getDoctrine()->getRepository('App:Job')->findByFilterQuery($request);
-        $jobs = $pagination->paginate($jobs, $page, $itemsPerPage, $paginatorOptions);
+        $entities = $this->getDoctrine()->getRepository('App:Job')->findByFilterQuery($request);
+        $entities = $pagination->paginate($entities, $page, $itemsPerPage, $paginatorOptions);
 
         return [
-            'filterForm' => $filterForm->createView(),
-            'jobs' => $jobs,
+            'entities' => $entities,
+            'filter_form' => $filterForm->createView(),
             'bulk_action_form' => $this->createBulkActionForm()->createView()
         ];
     }

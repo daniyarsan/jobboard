@@ -6,6 +6,9 @@
 parameters:
     locale: 'en'
     resumes_dir: '%kernel.project_dir%/public/uploads/resumes'
+    logos_dir: '%kernel.project_dir%/public/uploads/logos'
+    avatars_dir: '%kernel.project_dir%/public/uploads/avatars'
+    blog_images_dir: '%kernel.project_dir%/public/uploads/blogimg'
 
 services:
     twig.extension.text:

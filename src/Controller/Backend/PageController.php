@@ -3,33 +3,35 @@
 namespace App\Controller\Backend;
 
 use App\Entity\StaticPage;
+use App\Form\AdminFilterType;
 use App\Form\AdminStaticPageType;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * StaticPage controller.
+ * Content Page Controller.
  *
  * @Route("/admin", name="admin_page")
  */
 class PageController extends AbstractController
 {
     /**
-     * Lists all StaticPage entities.
+     * Lists all Page entities.
      *
      * @Route("/pages", name="_index")
-     * @Method("GET")
      * @Template("admin/pages/index.html.twig")
      */
     public function index(Request $request, Session $session, PaginatorInterface $paginator)
     {
+        $filterForm = $this->createForm(AdminFilterType::class);
+        $filterForm->handleRequest($request);
+
         $em = $this->getDoctrine()->getManager();
         $queryBuilder = $em->getRepository('App:StaticPage')->createQueryBuilder('p');
 
@@ -46,19 +48,22 @@ class PageController extends AbstractController
             }
         }
         $paginatorOptions = [
-            'defaultSortFieldName' => 'p.name',
+            'defaultSortFieldName' => 'name',
             'defaultSortDirection' => 'asc'
         ];
-        $pages = $paginator->paginate($queryBuilder, $page, $itemsPerPage, $paginatorOptions);
+
+        $entites = $this->getDoctrine()->getRepository('App:StaticPage')->findByFilterQuery($request);
+        $entites = $paginator->paginate($entites, $page, $itemsPerPage, $paginatorOptions);
 
         return [
-            'pages' => $pages,
+            'entities' => $entites,
+            'filter_form' => $filterForm->createView(),
             'bulk_action_form' => $this->createBulkActionForm()->createView()
         ];
     }
 
     /**
-     * Create a new StaticPage entity.
+     * Create a new Page entity.
      *
      * @Route("/page/create", name="_create")
      * @Template("admin/pages/create.html.twig")

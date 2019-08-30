@@ -74,13 +74,8 @@ class CompanyRepository extends ServiceEntityRepository
 
         // Keyword
         if (!empty($request->query->get('keyword'))) {
-            $qb->andWhere('company.name LIKE :filterKeyword OR company.description LIKE :filterKeyword')
+            $qb->andWhere('company.name LIKE :filterKeyword OR company.description LIKE :filterKeyword OR company.email LIKE :filterKeyword')
                 ->setParameter('filterKeyword', '%'.$request->query->get('keyword').'%');
-        }
-
-        // Country
-        if (!empty($request->query->get('country'))) {
-            $qb->andWhere('company.country = :country')->setParameter('country', $request->query->get('country'));
         }
 
         return $qb->addOrderBy('company.created', 'DESC')

@@ -1,131 +1,97 @@
 {% extends 'admin/base.html.twig' %}
+{#{% import 'admin/_parts/helper.html.twig' as helper %}#}
 
-{% block title %}Profiles List{% endblock %}
+{% block title %}{{ 'Candidates List'|trans }}{% endblock %}
 
-{% block pagetitle %}Profiles List{% endblock %}
-
-{% block breadcrumbs %}
-    <ol class="breadcrumb text-right">
-        <li><a href="#">Dashboard</a></li>
-        <li><a href="#">Profiles</a></li>
-    </ol>
-{% endblock %}
+{% import 'admin/form/dialog.html.twig' as dialogs %}
 
 {% block content %}
-    {% import 'admin/form/dialog.html.twig' as dialogs %}
-    {% import 'admin/_parts/helper.html.twig' as helper %}
+    {{ breadcrumbs.add({'url' : 'admin_index', 'title' : 'Dashboard'|trans}) }}
+    {{ breadcrumbs.add({'url' : '', 'title' : 'Candidates'|trans}) }}
 
-    <div class="card">
-        <div class="card-header">
-            <div class="btn-group">
-                <button type="button" class="dropdown-toggle btn btn-outline-primary btn-sm bulk-action-dropdown" data-toggle="dropdown" disabled="disabled">
-                    {% trans %}Choose an Action{% endtrans %}
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" data-toggle="modal" href="#" onclick="pageBulkAction('activate');">Activate</a>
-                    <a class="dropdown-item" data-toggle="modal" href="#" onclick="pageBulkAction('disable');">Deactivate</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" data-toggle="modal" href="#static-profiles-delete-bulk">Delete</a>
-                </div>
-            </div>
-            {{ dialogs.confirm('static-profiles-delete-bulk', 'Confirmation', 'The selected Profiles will be removed permanently. Are you sure?', "pageBulkAction('remove')", '') }}
-
-            <a href="{{ path('admin_profiles_create') }}" class="btn btn-outline-success btn-sm pull-right"><i class="fa fa-plus"></i>&nbsp;Add New Profile</a>
-        </div>
-
-        <div class="card-body">
-            {{ form_start(filterForm, {'name': 'filter-profiles-form'}) }}
-
-            <div class="row mb-15">
-                <div class="col-sm-6 col-md-3 ">
-                    {{ form_widget(filterForm.keyword) }}
-                </div>
-                <div class="col-sm-6 col-md-3 ">
-                    {{ form_widget(filterForm.country) }}
-                </div>
-            </div>
-            {{ form_end(filterForm) }}
-
-            <div class="table-stats order-table">
-                <form method="post" action="{{ path('admin_profiles_bulk') }}" id="profiles-bulk-form">
-                    {{ form_widget(bulk_action_form._token) }}
-                    <input type="hidden" name="action" value=""/>
-                    <input type="hidden" name="return_url" value="{{ path('admin_profiles_index') }}{{ query_string() }}"/>
-                    <table class="table ">
-                        <thead>
-                        <tr>
-                            <th><input type="checkbox" class="check-all-items"/></th>
-                            <th>
-                                {{ knp_pagination_sortable(profiles, 'Name', 'p.firstName') }}
-                                {% if profiles.isSorted('p.firstName') %}
-                                    <span class="fa fa-sort-amount{% if profiles.getParams.direction == 'desc' %}-desc{% else %}-asc{% endif %}"></span>
-                                {% endif %}
-                            </th>
-                            <th>Email</th>
-                            <th>Country</th>
-                            <th>
-                                {{ knp_pagination_sortable(profiles, 'Status', 'p.visibility') }}
-                                {% if profiles.isSorted('p.visibility') %}
-                                    <span class="fa fa-sort-amount{% if profiles.getParams.direction == 'desc' %}-desc{% else %}-asc{% endif %}"></span>
-                                {% endif %}
-                            </th>
-                            <th>Created</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        {% for profile in profiles %}
-                            <tr>
-                                <td><input type="checkbox" class="check-item" name="profiles[{{ profile.id }}]"/></td>
-                                <td>{{ profile.firstName }} {{ profile.lastName }}</td>
-                                <td>{{ profile.user.email }}</td>
-                                <td>{{ profile.country }}</td>
-                                <td>
-                                    <span class="badge badge-complete">{{ profile.visibility }}</span>
-                                </td>
-                                <td>{{ profile.created|date("y m d") }}</td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="dropdown-toggle btn btn-outline-secondary btn-sm" type="button" data-toggle="dropdown">
-                                            Action
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a target="_blank" href="{{ path('profile_details', {'id' : profile.id}) }}" class="dropdown-item">View</a>
-
-                                            <a class="dropdown-item" href="{{ path('admin_profiles_edit', {'id': profile.id, 'return_url': path('admin_profiles_index') ~ query_string()}) }}">Edit</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a data-toggle="modal" href="#static-profile-delete-{{ profile.id }}" class="dropdown-item">Delete</a>
-                                        </div>
-                                    </div>
-                                    {{ dialogs.confirm('static-profile-delete-' ~ profile.id, 'Confirmation', 'The selected page will be removed permanently. Are you sure?', '', path('admin_profiles_set', {id: profile.id, action: 'remove'})) }}
-                                </td>
-                            </tr>
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        {% for breadcrumb in breadcrumbs.getBreadcrumbs() %}
+                            <li class="breadcrumb-item">
+                                <a href="{% if breadcrumb.url is not empty %}{{ path(breadcrumb.url) }}{% else %}javascript: void(0);{% endif %}">{{ breadcrumb.title }}</a>
+                            </li>
                         {% endfor %}
-
-                        </tbody>
-                    </table>
-                </form>
-            </div> <!-- /.table-stats -->
-
-            <div class="dataTables_paginate paging_simple_numbers">
-                {{ knp_pagination_render(profiles) }}
+                    </ol>
+                </div>
+                <h4 class="page-title">{{ 'Candidates'|trans }} - {{ entities.getTotalItemCount }} {{ 'found'|trans }}</h4>
             </div>
-        </div>
-        <div class="card-footer">
-            {% set pagesCount = profiles.getTotalItemCount %}
-            {{ pagesCount }} items - found
         </div>
     </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-md-3">
+                            {{ form_start(filter_form) }}
+                            {{ form_widget(filter_form.keyword, {attr : {placeholder : 'Search...'|trans}}) }}
+                            {{ form_end(filter_form) }}
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="btn-group">
+                                <button id="bulk-action-button" type="button" class="btn btn-warning waves-effect waves-light mb-2 mr-1 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: none;">
+                                    <i class="mdi mdi-settings"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" data-toggle="modal" href="#" onclick="itemsBulkAction('activate');">{{ 'Activate'|trans }}</a>
+                                    <a class="dropdown-item" data-toggle="modal" href="#" onclick="itemsBulkAction('disable');">{{ 'Deactivate'|trans }}</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" data-toggle="modal" href="#items-bulk-delete">{{ 'Delete'|trans }}</a>
+                                </div>
+                            </div><!-- /btn-group -->
+                        </div>
+                        <div class="col-md-6">
+                            <div class="text-md-right">
+                                <a href="{{ path('admin_profiles_create') }}" class="btn btn-success waves-effect waves-light mb-2 mr-2"><i class="mdi mdi-plus-circle mr-1"></i> {{ 'Add Candidate'|trans }}</a>
+                            </div>
+                        </div><!-- end col-->
+                    </div>
+
+                    {# Main items table #}
+                    {% include 'admin/profiles/_table.html.twig' with entities %}
+
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div> <!-- end col -->
+    </div>
+    <!-- end row -->
+
+    {{ dialogs.confirm('items-bulk-delete', 'Confirmation'|trans, 'The selected items will be removed permanently. Are you sure?'|trans, "itemsBulkAction('remove')", '') }}
+
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+
     <script type="text/javascript">
-        function pageBulkAction(action) {
-            var form = jQuery("#companies-bulk-form");
+        function itemsBulkAction(action) {
+            var form = jQuery("#bulk-table-form");
             form.find("input[name='action']").val(action);
             form.submit();
         }
+
+        /* Check all */
+        $(".bulk-item-check").click(function(){
+            if (this.checked) {
+                $('#bulk-action-button').show();
+            } else {
+                $('#bulk-action-button').hide();
+            }
+        });
+        $("#checkAll").click(function(){
+            $('input:checkbox.bulk-item-check').not(this).prop('checked', this.checked);
+        });
     </script>
 {% endblock %}

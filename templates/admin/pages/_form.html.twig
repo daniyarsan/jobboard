@@ -1,0 +1,36 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}{{ pageTitle }}{% endblock %}
+
+{% block content %}
+    {{ breadcrumbs.add({'url' : 'admin_index', 'title' : 'Dashboard'|trans}) }}
+    {{ breadcrumbs.add({'url' : 'admin_page_index', 'title' : 'Candidates'|trans}) }}
+    {{ breadcrumbs.add({'url' : '', 'title' : pageTitle|trans}) }}
+    <!-- start page title -->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        {% for breadcrumb in breadcrumbs.getBreadcrumbs() %}
+                            <li class="breadcrumb-item"><a href="{% if breadcrumb.url is not empty %}{{ path(breadcrumb.url) }}{% else %}javascript: void(0);{% endif %}">{{ breadcrumb.title }}</a></li>
+                        {% endfor %}
+                    </ol>
+                </div>
+                <h4 class="page-title">{{ pageTitle|trans }}</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card-box">
+                <h5 class="text-uppercase bg-light p-2 mt-0 mb-3">{{ 'General'|trans }}</h5>
+                {{ form(form) }}
+            </div> <!-- end card-box -->
+        </div> <!-- end col -->
+    </div>
+    <!-- end row -->
+{% endblock %}

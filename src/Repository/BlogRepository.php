@@ -21,42 +21,15 @@ class BlogRepository extends ServiceEntityRepository
 
     public function findByFilterQuery($request)
     {
-        $qb = $this->createQueryBuilder('b');
-        if (!strstr($request->getPathInfo(), 'admin')) {
-            $qb->andWhere('b.active = 1');
+        $qb = $this->createQueryBuilder('blog');
+        // Keyword
+        if (!empty($request->query->get('keyword'))) {
+            $qb->andWhere('blog.title LIKE :filterKeyword OR blog.slug LIKE :filterKeyword')
+                ->setParameter('filterKeyword', '%' . $request->query->get('keyword') . '%');
         }
 
-        return $qb->addOrderBy('b.created', 'DESC')
+        return $qb->addOrderBy('blog.created', 'DESC')
             ->getQuery()
             ->execute();
     }
-
-    // /**
-    //  * @return Blog[] Returns an array of Blog objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Blog
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

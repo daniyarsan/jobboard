@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class StaticPage
  *
- * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\StaticPageRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class StaticPage
 {
@@ -31,7 +31,7 @@ class StaticPage
     /**
      * @var string
      *
-     * @ORM\Column(name="url", type="string", length=255, unique=true, nullable=true)
+     * @ORM\Column(name="url", type="string", length=255, unique=true)
      */
     private $url;
 

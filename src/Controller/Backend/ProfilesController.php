@@ -3,8 +3,9 @@
 namespace App\Controller\Backend;
 
 use App\Entity\Profile;
-use App\Form\AdminFilterProfileType;
+use App\Form\AdminFilterType;
 use App\Form\ProfileType;
+use App\Service\FileUploader;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -30,7 +31,7 @@ class ProfilesController extends AbstractController
      */
     public function index(Request $request, Session $session, PaginatorInterface $pagination)
     {
-        $filterForm = $this->createForm(AdminFilterProfileType::class, [], ['router' => $this->get('router')]);
+        $filterForm = $this->createForm(AdminFilterType::class);
         $filterForm->handleRequest($request);
 
         $itemsPerPage = $request->query->get('itemsPerPage', 20);
@@ -50,12 +51,12 @@ class ProfilesController extends AbstractController
             'defaultSortDirection' => 'desc'
         ];
 
-        $profiles = $this->getDoctrine()->getRepository('App:Profile')->findByFilterQuery($request);
-        $profiles = $pagination->paginate($profiles, $page, $itemsPerPage, $paginatorOptions);
+        $entities = $this->getDoctrine()->getRepository('App:Profile')->findByFilterQuery($request);
+        $entities = $pagination->paginate($entities, $page, $itemsPerPage, $paginatorOptions);
 
         return [
-            'filterForm' => $filterForm->createView(),
-            'profiles' => $profiles,
+            'entities' => $entities,
+            'filter_form' => $filterForm->createView(),
             'bulk_action_form' => $this->createBulkActionForm()->createView()
         ];
     }
@@ -66,7 +67,7 @@ class ProfilesController extends AbstractController
      * @Route("/profile/create", name="_create")
      * @Template("admin/profiles/create.html.twig")
      */
-    public function create(Request $request, TranslatorInterface $translator)
+    public function create(Request $request, TranslatorInterface $translator, FileUploader $fileUploader)
     {
         $profile = new Profile();
         $form = $this->createForm(ProfileType::class, $profile);
@@ -74,6 +75,12 @@ class ProfilesController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $profile = $form->getData();
+            /* Avatar Upload */
+            if ($avatarFile = $form['avatar']->getData()) {
+                $fileUploader->setTargetDirectory($this->getParameter('avatars_dir'));
+                $profile->setAvatarName($fileUploader->upload($avatarFile));
+            }
+
             try {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($profile);

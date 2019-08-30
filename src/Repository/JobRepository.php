@@ -133,7 +133,6 @@ class JobRepository extends ServiceEntityRepository
         if (!strstr($request->getPathInfo(), 'admin')) {
             $qb->andWhere('job.isPublished = 1');
         }
-
         // Keyword
         if (!empty($request->query->get('keyword'))) {
             $qb->andWhere('job.title LIKE :filterKeyword OR job.description LIKE :filterKeyword')

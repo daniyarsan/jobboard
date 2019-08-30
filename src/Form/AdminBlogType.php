@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class AdminBlogType extends AbstractType
@@ -23,13 +24,22 @@ class AdminBlogType extends AbstractType
         $builder
             ->setRequired(false)
             ->add('image', FileType::class, [
+                'mapped' => false,
                 'required' => false,
-                'allow_delete' => true,
-                'download_link' => true,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/jpg',
+                            'image/png'
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid Image type',
+                    ])
+                ]
             ])
             ->add('title', TextType::class, [
                 'label' => 'Title',
-                'required' => true,
                 'constraints' => [new NotBlank(['message' => 'Blog is a required field'])]
             ])
             ->add('active', ChoiceType::class, [
