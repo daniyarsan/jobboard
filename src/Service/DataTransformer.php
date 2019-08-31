@@ -2,9 +2,28 @@
 
 namespace App\Service;
 
-class Helper
+
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+class DataTransformer
 {
-    public static function slugify($text)
+    protected $container;
+
+    /**
+     * DataTransformer constructor.
+     * @param $container
+     */
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
+    public function getAvatarPath(string $fileName): string
+    {
+        return $this->container->getParameter('resumes_dir') . $fileName;
+    }
+
+    public function slugify(string $text): string
     {
         // replace non letter or digits by -
         $text = preg_replace('~[^\pL\d]+~u', '-', $text);
@@ -32,20 +51,4 @@ class Helper
     }
 
 
-    /**
-     * @return string
-     */
-    public function getConfirmationCode()
-    {
-        $randomString = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-        $stringLength = strlen($randomString);
-        $code = '';
-
-        for ($i = 0; $i < $stringLength; $i++) {
-            $code .= $randomString[rand(0, $stringLength - 1)];
-        }
-
-        return $code;
-    }
 }

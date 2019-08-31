@@ -297,11 +297,11 @@ class Profile
 
     public function getFullName()
     {
-        if (!empty($this->firstName) && !empty($this->lastName)) {
+        if (!empty($this->firstName) || !empty($this->lastName)) {
             return sprintf('%s %s', $this->firstName, $this->lastName);
         }
 
-        return $this->getUser()->getUsername();
+        return '';
     }
 
     public function getInitials()
@@ -342,11 +342,21 @@ class Profile
         return $this->avatarName;
     }
 
+    public function getAvatarPath(): string
+    {
+        return $this->avatarName;
+    }
+
     /**
      * @param mixed $avatarName
      */
     public function setAvatarName($avatarName): void
     {
         $this->avatarName = $avatarName;
+    }
+
+    public function getLocation()
+    {
+        return $this->getCountry();
     }
 }

@@ -233,4 +233,9 @@ class User implements UserInterface
     {
         $this->confirmationCode = $confirmationCode;
     }
+
+    public function hasRole(string $role)
+    {
+        return in_array($role, $this->roles) ? true : false;
+    }
 }

@@ -4,7 +4,9 @@ namespace App\Form;
 
 use App\Entity\Profile;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -33,10 +35,13 @@ class ProfileType extends AbstractType
                     ])
                 ]
             ])
-            ->add('country', CountryType::class)
             ->add('firstName', TextType::class)
             ->add('lastName', TextType::class)
             ->add('description', TextareaType::class)
+            ->add('country', CountryType::class)
+            ->add('educations', CollectionType::class, [
+                'entry_type' => EmailType::class
+            ])
             ->add('save', SubmitType::class)
             ->add('saveAndExit', SubmitType::class, ['label' => 'Save and Exit']);
     }

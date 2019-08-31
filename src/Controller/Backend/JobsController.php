@@ -25,7 +25,6 @@ class JobsController extends AbstractController
      * Lists all Companies
      *
      * @Route("/jobs", name="_index")
-     * @Method("GET")
      * @Template("admin/jobs/index.html.twig")
      */
     public function index(Request $request, Session $session, PaginatorInterface $pagination)

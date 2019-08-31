@@ -34,4 +34,5 @@ class FileUploader
     {
         $this->targetDirectory = $path;
     }
+
 }

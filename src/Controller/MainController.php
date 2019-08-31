@@ -16,8 +16,8 @@ class MainController extends AbstractController
 {
     /**
      * @Route("/", name="_index")
-* @Template("main/index.html.twig")
-*/
+     * @Template("frontend/main/index.html.twig")
+    */
     public function index()
     {
         return [];
@@ -25,7 +25,7 @@ class MainController extends AbstractController
 
     /**
      * @Route ("/show-page/{id}", name="_page_show")
-     * @Template("main/page.html.twig")
+     * @Template("frontend/main/page.html.twig")
      */
     public function pageAction($id)
     {

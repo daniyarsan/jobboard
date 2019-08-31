@@ -6,16 +6,28 @@ use App\Entity\Category;
 use App\Service\Helper;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CategoriesFixtures extends Fixture
 {
+    protected $container;
+
+    /**
+     * CategoriesFixtures constructor.
+     * @param $container
+     */
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
     public function load(ObjectManager $manager)
     {
 
         foreach ($this->getCategoriesList() as $categoryItem) {
             $category = new Category();
             $category->setName($categoryItem);
-            $category->setSlug(Helper::slugify($categoryItem));
+            $category->setSlug($this->slougify($categoryItem));
             $manager->persist($category);
         }
 
@@ -81,5 +93,32 @@ class CategoriesFixtures extends Fixture
             'Veterinary Services',
             'Warehouse'
         ];
+    }
+
+    public function slougify($text)
+    {
+        // replace non letter or digits by -
+        $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+
+        // transliterate
+        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+
+        // remove unwanted characters
+        $text = preg_replace('~[^-\w]+~', '', $text);
+
+        // trim
+        $text = trim($text, '-');
+
+        // remove duplicate -
+        $text = preg_replace('~-+~', '-', $text);
+
+        // lowercase
+        $text = strtolower($text);
+
+        if (empty($text)) {
+            return 'n-a';
+        }
+
+        return $text;
     }
 }

@@ -5,6 +5,7 @@ namespace App\Controller\Backend;
 use App\Entity\Blog;
 use App\Form\AdminBlogType;
 use App\Form\AdminFilterType;
+use App\Service\DataTransformer;
 use App\Service\FileUploader;
 use App\Service\Helper;
 use Knp\Component\Pager\PaginatorInterface;
@@ -66,7 +67,7 @@ class BlogController extends AbstractController
      * @Route("/blog/create", name="blog_create")
      * @Template("admin/blog/create.html.twig")
      */
-    public function create(Request $request, FileUploader $fileUploader)
+    public function create(Request $request, FileUploader $fileUploader, DataTransformer $dataTransformer)
     {
         $entity = new Blog();
         $form = $this->createForm(AdminBlogType::class, $entity);
@@ -80,7 +81,7 @@ class BlogController extends AbstractController
             }
 
             $em = $this->getDoctrine()->getManager();
-            $entity->setSlug(Helper::slugify($entity->getTitle()));
+            $entity->setSlug($dataTransformer->slugify($entity->getTitle()));
             $em->persist($entity);
             $em->flush();
 

@@ -4,6 +4,7 @@ namespace App\Controller\Backend;
 
 use App\Entity\Category;
 use App\Form\AdminCategoryType;
+use App\Service\DataTransformer;
 use App\Service\Helper;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -64,7 +65,7 @@ class CategoriesController extends AbstractController
      * @Route("/category/create", name="category_create")
      * @Template("admin/categories/create.html.twig")
      */
-    public function create(Request $request)
+    public function create(Request $request, DataTransformer $dataTransformer)
     {
         $entity = new Category();
         $form = $this->createForm(AdminCategoryType::class, $entity);
@@ -72,7 +73,7 @@ class CategoriesController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity->setSlug(Helper::slugify($entity->getName()));
+            $entity->setSlug($dataTransformer->slugify($entity->getName()));
             $em->persist($entity);
             $em->flush();
             $this->addFlash('success', 'The Category was successfully created.');
@@ -97,7 +98,7 @@ class CategoriesController extends AbstractController
      *
      * @Template("admin/categories/edit.html.twig")
      */
-    public function edit(Request $request, Category $category, TranslatorInterface $translator)
+    public function edit(Request $request, Category $category, TranslatorInterface $translator, DataTransformer $dataTransformer)
     {
         $form = $this->createForm(AdminCategoryType::class, $category);
         $form->handleRequest($request);
@@ -105,7 +106,7 @@ class CategoriesController extends AbstractController
             $category = $form->getData();
             try {
                 $em = $this->getDoctrine()->getManager();
-                $category->setSlug(Helper::slugify($category->getName()));
+                $category->setSlug($dataTransformer->slugify($category->getName()));
                 $em->persist($category);
                 $em->flush();
                 $this->addFlash('success', $translator->trans('Category has been successfully updated.'));

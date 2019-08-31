@@ -7,3 +7,5 @@ twig:
     globals:
         breadcrumbs: '@App\Service\Breadcrumbs'
         menuGenerator: '@App\Service\MenuGenerator'
+        dataTransformer: '@App\Service\DataTransformer'
+        assetFinder: '@App\Service\AssetFinder'

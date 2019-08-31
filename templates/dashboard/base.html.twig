@@ -1,0 +1,95 @@
+{% if form is defined %}
+    {% form_theme form 'dashboard/form/form_layout.html.twig' %}
+{% endif %}
+{% if filter_form is defined %}
+    {% form_theme filter_form 'dashboard/form/form_layout.html.twig' %}
+{% endif %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    {# TODO: Project title from database #}
+    <title>BestJobBoard Dashboard - {% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+    <meta content="Coderthemes" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="{{ asset('/dashboard/images/favicon.ico') }}">
+
+    {% block stylesheets %}
+        <!-- Plugins css -->
+        <link href="{{ asset('/dashboard/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('/dashboard/libs/dropify/dropify.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('/dashboard/libs/select2/select2.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('/dashboard/libs/summernote/summernote-bs4.css') }}" rel="stylesheet" type="text/css" />
+        <!-- App css -->
+        <link href="{{ asset('/dashboard/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('/dashboard/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('/dashboard/css/app.min.css') }}" rel="stylesheet" type="text/css" />
+    {% endblock %}
+</head>
+
+<body>
+{% include 'dashboard/_parts/messages.html.twig' %}
+
+<!-- Begin page -->
+<div id="wrapper">
+    <!-- Topbar Start -->
+    {% include 'dashboard/_parts/header.html.twig' %}
+    <!-- end Topbar -->
+
+    <!-- ========== Left Sidebar Start ========== -->
+    {# Menu Generator Service #}
+    {{ menuGenerator.profileSideMenu()|raw }}
+    <!-- Left Sidebar End -->
+
+    <!-- ============================================================== -->
+    <!-- Start Page Content here -->
+    <!-- ============================================================== -->
+
+    <div class="content-page">
+        <div class="content">
+            <!-- Start Content-->
+            <div class="container-fluid">
+                {% block content %}{% endblock %}
+            </div> <!-- container -->
+        </div> <!-- content -->
+
+        <!-- Footer Start -->
+        {% include 'dashboard/_parts/footer.html.twig' %}
+        <!-- end Footer -->
+
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- End Page content -->
+    <!-- ============================================================== -->
+
+
+</div>
+<!-- END wrapper -->
+
+{% block javascripts %}
+    <!-- Vendor js -->
+    <script src="{{ asset('/dashboard/js/vendor.min.js') }}"></script>
+
+    <!-- Plugins js-->
+    <script src="{{ asset('/dashboard/libs/flatpickr/flatpickr.min.js') }}"></script>
+    <script src="{{ asset('/dashboard/libs/dropify/dropify.min.js') }}"></script>
+    <script src="{{ asset('/dashboard/libs/select2/select2.min.js') }}"></script>
+    <script src="{{ asset('/dashboard/libs/summernote/summernote-bs4.min.js') }}"></script>
+    <script>
+        $(".dropify").dropify({messages:{default:"Drag and drop a file here or click",replace:"Drag and drop or click to replace",remove:"Remove",error:"Ooops, something wrong appended."},error:{fileSize:"The file size is too big (1M max)."}});
+        jQuery(document).ready(function(){$(".summernote-editor").summernote({height:250,minHeight:null,maxHeight:null,focus:!1}),$("#summernote-inline").summernote({airMode:!0})});
+    </script>
+
+    <!-- App js-->
+    <script src="{{ asset('/dashboard/js/app.min.js') }}"></script>
+    <script src="{{ asset('/dashboard/js/pages/form-advanced.init.js') }}"></script>
+
+{% endblock %}
+
+</body>
+</html>

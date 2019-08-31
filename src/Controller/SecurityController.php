@@ -6,12 +6,9 @@ use App\Entity\Company;
 use App\Entity\Profile;
 use App\Entity\User;
 use App\Event\RegisteredUserEvent;
-use App\Form\CompanyType;
-use App\Form\ProfileType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
-use App\Service\Helper;
-use App\Service\Mailer;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,27 +21,32 @@ class SecurityController extends AbstractController
 {
     public const PROFILE_MYACCOUNT = 'my_profile_settings';
     public const COMPANY_MYACCOUNT = 'my_company_settings';
+
     /**
      * @Route("/login", name="security_login")
+     * @Template("frontend/security/login.html.twig")
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils)
     {
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return [
+            'last_username' => $lastUsername,
+            'error' => $error
+        ];
     }
 
     /**
      * @Route("/register", name="security_registration")
+     * @Template("frontend/security/register.html.twig")
      */
     public function register(
         UserPasswordEncoderInterface $passwordEncoder,
         Request $request,
-        EventDispatcherInterface $eventDispatcher,
-        Helper $helper)
+        EventDispatcherInterface $eventDispatcher)
     {
         $group = $request->get('group');
 
@@ -86,9 +88,10 @@ class SecurityController extends AbstractController
                 return $this->redirectToRoute('security_success');
             }
 
-            return $this->render(
-                'security/register.html.twig', ['form' => $form->createView(), 'group' => $group]
-            );
+            return [
+                'form' => $form->createView(),
+                'group' => $group
+            ];
         }
     }
 
@@ -103,6 +106,7 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/confirm/{code}", name="security_confirmation")
+     * @Template("frontend/security/confirmation.html.twig")
      */
     public function confirmEmail(UserRepository $userRepository, string $code)
     {
@@ -114,22 +118,49 @@ class SecurityController extends AbstractController
         }
 
         $user->setIsVerified(true);
-        $user->setConfirmationCode('');
+        $user->setConfirmationCode($this->getConfirmationCode());
 
         $em = $this->getDoctrine()->getManager();
 
         $em->flush();
 
-        return $this->render('security/confirmation.html.twig', [
+        return [
             'user' => $user,
-        ]);
+        ];
     }
 
     /**
      * @Route("/success", name="security_success")
+     * @Template("frontend/security/success.html.twig")
      */
     public function success()
     {
-        return $this->render('security/success.html.twig');
+        return [];
     }
+
+    /**
+     * @Route("/redirect", name="security_login_redirect")
+     * @Template("frontend/security/success.html.twig")
+     */
+    public function redirectAction()
+    {
+        return $this->getUser()->hasRole(User::ROLE_COMPANY)
+            ? $this->redirectToRoute('my_company_index')
+            : $this->redirectToRoute('my_profile_index');
+    }
+
+    public function getConfirmationCode()
+    {
+        $randomString = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        $stringLength = strlen($randomString);
+        $code = '';
+
+        for ($i = 0; $i < $stringLength; $i++) {
+            $code .= $randomString[ rand(0, $stringLength - 1) ];
+        }
+
+        return $code;
+    }
+
 }

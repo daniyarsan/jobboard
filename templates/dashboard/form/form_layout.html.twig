@@ -1,0 +1,15 @@
+{% use "bootstrap_4_layout.html.twig" %}
+
+{# Widgets customization #}
+{% block file_widget -%}
+    <input class="dropify" data-height="200" type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{% endblock %}
+
+{% block choice_widget_collapsed -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) -%}
+    {%- set attr = attr|merge({'data-toggle': 'select2'}) -%}
+    {{- parent() -}}
+{%- endblock choice_widget_collapsed %}
+
+
+

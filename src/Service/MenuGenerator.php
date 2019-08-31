@@ -12,20 +12,27 @@ class MenuGenerator
     {
         $this->view = $environment;
     }
-    protected  $routes = [];
 
-    public function add($route, $name)
+    public function profileSideMenu()
     {
-        $this->routes[$route] = $name;
+        $menus = [
+            ['title' => 'My Profile', 'url' => 'my_profile_index', 'icon' => 'fe-airplay', 'sub' => []],
+            ['title' => 'Companies', 'url' => '', 'icon' => 'fe-pocket', 'sub' => [
+                ['title' => 'Companies', 'url' => 'admin_companies_index'],
+                ['title' => 'Jobs', 'url' => 'admin_jobs_index']
+            ]]
+        ];
+
+        return $this->view->render('dashboard/_parts/menu-side-profile.html.twig', ['menus' => $menus]);
     }
 
-    public function myProfileSide()
+    public function companySideMenu()
     {
         $menus = [
             'my_profile_index' => 'Dashboard',
             'my_profile_settings' => 'My Profile'
         ];
-        return $this->view->render('my-profile/_side-menu.html.twig', ['menus' => $menus]);
+        return $this->view->render('dashboard/_parts/menu-side-company.html.twig', ['menus' => $menus]);
     }
 
     public function adminSideMenu()

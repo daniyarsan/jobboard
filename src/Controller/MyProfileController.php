@@ -11,8 +11,10 @@ use App\Form\ExperiencesType;
 use App\Form\ProfileType;
 use App\Form\UserType;
 use App\Service\Breadcrumbs;
+use App\Service\FileUploader;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -29,17 +31,19 @@ class MyProfileController extends AbstractController
 {
     /**
      * @Route("/", name="_index")
+     * @Template("dashboard/profile/index.html.twig")
      */
     public function index(Request $request, TranslatorInterface $translator)
     {
         /* TODO: Create dashboard for my account */
-        return $this->render('my-profile/index.html.twig', []);
+        return [];
     }
 
     /**
      * @Route("/settings", name="_settings")
+     * @Template("dashboard/profile/settings.html.twig")
      */
-    public function settings(Request $request, TranslatorInterface $translator, Breadcrumbs $breadcrumbs)
+    public function settings(Request $request, TranslatorInterface $translator, FileUploader $fileUploader)
     {
         /*if (in_array('ROLE_USER', $this->getUser()->getRoles())) {} */
 
@@ -62,6 +66,12 @@ class MyProfileController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
+                /* Avatar Upload */
+                if ($avatarFile = $form['avatar']->getData()) {
+                    $fileUploader->setTargetDirectory($this->getParameter('avatars_dir'));
+                    $profile->setAvatarName($fileUploader->upload($avatarFile));
+                }
+
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($profile);
                 $em->flush();
@@ -73,16 +83,13 @@ class MyProfileController extends AbstractController
             return $this->redirectToRoute('my_profile_settings');
         }
 
-        return $this->render(
-            'my-profile/settings.html.twig',
-            [
-                'profile' => $profile,
-                'form' => $form->createView(),
-                'userForm' => $userForm->createView(),
-                'formEducation' => $formEducation->createView(),
-                'formExperience' => $formExperience->createView()
-            ]
-        );
+        return [
+            'profile' => $profile,
+            'form' => $form->createView(),
+            'userForm' => $userForm->createView(),
+            'formEducation' => $formEducation->createView(),
+            'formExperience' => $formExperience->createView()
+        ];
     }
 
     /**
