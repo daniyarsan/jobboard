@@ -241,6 +241,18 @@ class Profile
         $this->educations = $educations;
     }
 
+    public function addEducation(Education $education): void
+    {
+        $this->educations->add($education);
+        $education->setProfile($this);
+    }
+
+    public function addExperience(Experience $experience): void
+    {
+        $this->experiences->add($experience);
+        $experience->setProfile($this);
+    }
+
     /**
      * @return mixed
      */

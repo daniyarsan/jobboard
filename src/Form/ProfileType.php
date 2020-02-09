@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Education;
 use App\Entity\Profile;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -39,9 +40,6 @@ class ProfileType extends AbstractType
             ->add('lastName', TextType::class)
             ->add('description', TextareaType::class)
             ->add('country', CountryType::class)
-            ->add('educations', CollectionType::class, [
-                'entry_type' => EmailType::class
-            ])
             ->add('save', SubmitType::class)
             ->add('saveAndExit', SubmitType::class, ['label' => 'Save and Exit']);
     }

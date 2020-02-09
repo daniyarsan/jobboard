@@ -55,12 +55,16 @@ class MyProfileController extends AbstractController
         $educations = $this->getDoctrine()->getRepository('App:Education')->findBy(
             ['profile' => $profile->getId()]
         );
-        $formEducation = $this->createForm(EducationsType::class, $educations, ['method' => 'POST', 'action' => $this->generateUrl('my_profile_education')]);
+        $educations = empty($educations) ? [new Education()] : $educations;
+
+        $formEducation = $this->createForm(EducationsType::class, ['educations' => $educations], ['method' => 'POST', 'action' => $this->generateUrl('my_profile_education')]);
 
         $experiences = $this->getDoctrine()->getRepository('App:Experience')->findBy(
             ['profile' => $profile->getId()]
         );
-        $formExperience = $this->createForm(ExperiencesType::class, $experiences, ['method' => 'POST', 'action' => $this->generateUrl('my_profile_experience')]);
+        $experiences = empty($experiences) ? [new Experience()] : $experiences;
+
+        $formExperience = $this->createForm(ExperiencesType::class, ['experiences' => $experiences], ['method' => 'POST', 'action' => $this->generateUrl('my_profile_experience')]);
 
         $form->handleRequest($request);
 
@@ -87,8 +91,8 @@ class MyProfileController extends AbstractController
             'profile' => $profile,
             'form' => $form->createView(),
             'userForm' => $userForm->createView(),
-            'formEducation' => $formEducation->createView(),
-            'formExperience' => $formExperience->createView()
+            'educationForm' => $formEducation->createView(),
+            'experienceForm' => $formExperience->createView()
         ];
     }
 

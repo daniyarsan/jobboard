@@ -32,60 +32,50 @@
         <div class="col-lg-6">
             <div class="card-box">
                 <h5 class="text-uppercase mt-0 mb-3 bg-light p-2">{{ 'Profile Image'|trans }}</h5>
-               {{ form_row(form.avatar) }}
+                {{ form_row(form.avatar) }}
             </div> <!-- end col-->
-
-            <div class="card-box">
-                <h5 class="text-uppercase bg-light p-2 mt-0 mb-3">{{ 'General'|trans }}</h5>
-                {% for emailField in form.educations %}
-                    <li>
-                        {{ form_errors(emailField) }}
-                        {{ form_widget(emailField) }}
-                    </li>
-                {% endfor %}
-                {{ form(form) }}
-            </div> <!-- end card-box -->
         </div> <!-- end col -->
 
         <div class="col-lg-6">
             <div class="card-box">
-                <h5 class="text-uppercase mt-0 mb-3 bg-light p-2">Education</h5>
-
-                <div class="form-group mb-3">
-                    <label for="product-meta-title">Meta title</label>
-                    <input type="text" class="form-control" id="product-meta-title" placeholder="Enter title">
-                </div>
-
-                <div class="form-group mb-3">
-                    <label for="product-meta-keywords">Meta Keywords</label>
-                    <input type="text" class="form-control" id="product-meta-keywords" placeholder="Enter keywords">
-                </div>
-
-                <div class="form-group mb-0">
-                    <label for="product-meta-description">Meta Description </label>
-                    <textarea class="form-control" rows="5" id="product-meta-description" placeholder="Please enter description"></textarea>
-                </div>
-            </div> <!-- end card-box -->
-            <div class="card-box">
-                <h5 class="text-uppercase mt-0 mb-3 bg-light p-2">Experience</h5>
-
-                <div class="form-group mb-3">
-                    <label for="product-meta-title">Meta title</label>
-                    <input type="text" class="form-control" id="product-meta-title" placeholder="Enter title">
-                </div>
-
-                <div class="form-group mb-3">
-                    <label for="product-meta-keywords">Meta Keywords</label>
-                    <input type="text" class="form-control" id="product-meta-keywords" placeholder="Enter keywords">
-                </div>
-
-                <div class="form-group mb-0">
-                    <label for="product-meta-description">Meta Description </label>
-                    <textarea class="form-control" rows="5" id="product-meta-description" placeholder="Please enter description"></textarea>
-                </div>
+                <h5 class="text-uppercase bg-light p-2 mt-0 mb-3">{{ 'General'|trans }}</h5>
+                {{ form(form) }}
             </div> <!-- end card-box -->
         </div> <!-- end col-->
     </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            {% macro educationRow(form) %}
+                <div class="card-box">
+                    <h5 class="text-uppercase mt-0 mb-3 bg-light p-2">{{ 'Education'|trans }}</h5>
+                    {{ form_widget(form) }}
+                    <button type="button" class="btn w-sm btn-danger waves-effect waves-light education-remove">Remove
+                    </button>
+                </div> <!-- end card-box -->
+            {% endmacro %}
+
+            {{ form_start(educationForm) }}
+            <div id="education-container">
+                {% for edu in educationForm.educations %}
+                    {{ _self.educationRow(edu) }}
+                {% endfor %}
+            </div>
+            {% set prototype = _self.educationRow(educationForm.educations.vars.prototype) %}
+            <button type="button" id="add-education-row" class="btn w-sm btn-success waves-effect waves-light" data-prototype="{{ prototype|e }}">
+                Add
+            </button>
+            {{ form_end(educationForm) }}
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card-box">
+                <h5 class="text-uppercase mt-0 mb-3 bg-light p-2">{{ 'Experience'|trans }}</h5>
+                {{ form(experienceForm) }}
+            </div> <!-- end card-box -->
+        </div>
+    </div>
+
     <!-- end row -->
     {{ form_end(form) }}
 
@@ -99,4 +89,29 @@
         </div> <!-- end col -->
     </div>
     <!-- end row -->
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $().ready(function () {
+            $("#education-container").data("index", $("#education-container").children().length);
+
+            $('#add-education-row').click(function () {
+                var index = $("#education-container").data("index");
+                var newEducation = $(this).data("prototype").replace(/__name__/g, index);
+                $("#education-container").data("index", index + 1);
+                $("#education-container").append(newEducation);
+
+                $("#education-container .education-remove").off('click');
+                $("#education-container .education-remove").click(function () {
+                    $(this).closest('.card-box').remove()
+                });
+            });
+
+            $("#education-container .education-remove").click(function () {
+                $(this).closest('.card-box').remove()
+            });
+        });
+    </script>
 {% endblock %}

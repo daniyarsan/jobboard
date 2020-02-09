@@ -15,6 +15,9 @@ class EducationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->setByReference(false)
+            ->setRequired(false)
+
             ->add('name', TextType::class)
             ->add('degree', TextType::class)
             ->add('field', TextType::class, [
@@ -22,9 +25,7 @@ class EducationType extends AbstractType
             ])
             ->add('yearFrom', IntegerType::class)
             ->add('yearTo', IntegerType::class)
-            ->add('description', TextareaType::class, [
-                'required' => false,
-            ]);
+            ->add('description', TextareaType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

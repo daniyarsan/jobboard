@@ -25,9 +25,8 @@ class MyCompanyController extends AbstractController
      */
     public function index()
     {
-        return $this->render('my-company/index.html.twig', []);
+        return $this->render('dashboard/company/index.html.twig', []);
     }
-
 
     /**
      * @Route("/settings", name="_settings")
@@ -59,7 +58,7 @@ class MyCompanyController extends AbstractController
         }
 
         return $this->render(
-            'my-company/settings.html.twig',
+            'dashboard/company/settings.html.twig',
             [
                 'form' => $form->createView(),
                 'userForm' => $userForm->createView()
@@ -80,7 +79,7 @@ class MyCompanyController extends AbstractController
         $jobs = $paginator->paginate($jobs, $request->query->getInt('page', 1), 10);
 
         return $this->render(
-            'my-company/my-jobs.html.twig',
+            'dashboard/company/my-jobs.html.twig',
             [
                 'jobs' => $jobs
             ]
@@ -118,7 +117,7 @@ class MyCompanyController extends AbstractController
         }
 
         return $this->render(
-            'my-company/new-job.html.twig',
+            'dashboard/company/new-job.html.twig',
             [
                 'form' => $form->createView()
             ]
@@ -177,7 +176,7 @@ class MyCompanyController extends AbstractController
         }
 
         return $this->render(
-            'my-company/edit-job.html.twig',
+            'dashboard/company/edit-job.html.twig',
             [
                 'form' => $form->createView()
             ]
@@ -380,7 +379,7 @@ class MyCompanyController extends AbstractController
 
         $applicants = $paginator->paginate($applicants, $request->query->getInt('page', 1), 10);
 
-        return $this->render('my-company/candidates.html.twig', [
+        return $this->render('dashboard/company/candidates.html.twig', [
             'applicants' => $applicants
         ]);
     }
