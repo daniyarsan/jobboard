@@ -1,74 +1,47 @@
-<!-- Header -->
-<header>
-    <nav class="navbar navbar-expand-xl absolute-nav transparent-nav cp-nav navbar-light bg-light fluid-nav">
-        <a class="navbar-brand" href="{{ path('main_index') }}">
-            <img src="{{ asset('images/logo-white.svg') }}" class="img-fluid" alt="">
-        </a>
-        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+<!-- header -->
+<header id="header" class="clearfix">
+    <!-- navbar -->
+    <nav class="navbar navbar-default navbar-expand-lg">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"><i class="fa fa-align-justify"></i></span>
+            </button>
+            <a class="navbar-brand" href="index.html"><img class="img-fluid" src="images/logo.png" alt="Logo"></a>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto job-browse">
-                <li class="nav-item dropdown">
-                    <a class="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Browse Jobs</a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li class="search-by">
-                            <h5>BY Category</h5>
-                            <ul>
-                                <li><a href="#">Accounting / Finance <span>(233)</span></a></li>
-                                <li><a href="#">Education <span>(46)</span></a></li>
-                                <li><a href="#">Design & Creative <span>(156)</span></a></li>
-                                <li><a href="#">Health Care <span>(98)</span></a></li>
-                                <li><a href="#">Engineer & Architects <span>(188)</span></a></li>
-                                <li><a href="#">Marketing & Sales <span>(124)</span></a></li>
-                                <li><a href="#">Garments / Textile <span>(584)</span></a></li>
-                                <li><a href="#">Customer Support <span>(233)</span></a></li>
-                            </ul>
-                        </li>
-                        <li class="search-by">
-                            <h5>BY LOcation</h5>
-                            <ul>
-                                <li><a href="#">New York City <span>(508)</span></a></li>
-                                <li><a href="#">Washington, D.C <span>(96)</span></a></li>
-                                <li><a href="#">Chicago <span>(155)</span></a></li>
-                                <li><a href="#">San Francisco <span>(24)</span></a></li>
-                                <li><a href="#">Los Angeles <span>(268)</span></a></li>
-                                <li><a href="#">Boston <span>(46)</span></a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-
-            <ul class="navbar-nav ml-auto main-nav">
-                <li class="menu-item"><a title="Home" href="{{ path('jobs_index') }}">Jobs</a></li>
-                <li class="menu-item"><a title="Home" href="{{ path('companies_index') }}">Companies</a></li>
-                <li class="menu-item"><a title="Home" href="{{ path('profiles_index') }}">Profiles</a></li>
-                <li class="menu-item"><a title="Home" href="{{ path('blog') }}">Blogs</a></li>
-
-                {% if is_granted('ROLE_COMPANY') %}
-                    <li class="menu-item post-job"><a title="Title" href="{{ path('my_company_job_new') }}"><i class="fas fa-plus"></i>Post a Job</a></li>
-                {% endif %}
-
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    {% if is_granted('ROLE_COMPANY') %}
-                        <li class="menu-item"><a href="{{ path('my_company_settings') }}">My Account</a></li>
-                    {% else %}
-                        <li class="menu-item"><a href="{{ path('my_profile_settings') }}">My Account</a></li>
-                    {% endif %}
-                {% endif %}
-            </ul>
-            {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
-                <ul class="navbar-nav ml-auto account-nav">
-                    <li class="menu-item login-popup"><a href="{{ path('security_login') }}">Login</a></li>
-                    <li class="menu-item login-popup"><a href="{{ path('security_registration') }}">Registration</a></li>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="index.html">Home</a></li>
+                    <li><a href="job-list.html">Job list</a></li>
+                    <li><a href="details.html">Job Details</a></li>
+                    <li><a href="resume.html">Resume</a></li>
+                    <li class="dropdown"><a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Pages<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="profile.html">Profile</a></li>
+                            <li><a href="post-resume.html">Post Resume</a></li>
+                            <li><a href="post.html">Job Post</a></li>
+                            <li><a href="edit-resume.html">Edit Resume</a></li>
+                            <li><a href="profile-details.html">profile Details</a></li>
+                            <li><a href="bookmark.html">Bookmark</a></li>
+                            <li><a href="applied-job.html">Applied Job</a></li>
+                            <li><a href="delete-account.html">Close Account</a></li>
+                            <li><a href="signup.html">Job Signup</a></li>
+                            <li><a href="signin.html">Job Signin</a></li>
+                        </ul>
+                    </li>
                 </ul>
-            {% endif %}
-        </div>
-    </nav>
+            </div>
 
-</header>
-<!-- Header End -->
+            <!-- nav-right -->
+            <div class="nav-right">
+                <ul class="sign-in">
+                    <li><i class="fa fa-user"></i></li>
+                    <li><a href="signin.html">Sign In</a></li>
+                    <li><a href="signup.html">Register</a></li>
+                </ul><!-- sign-in -->
 
-
+                <a href="post.html" class="btn">Post Your Job</a>
+            </div>
+            <!-- nav-right -->
+        </div><!-- container -->
+    </nav><!-- navbar -->
+</header><!-- header -->
