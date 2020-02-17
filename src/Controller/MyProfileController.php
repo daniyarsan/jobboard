@@ -4,25 +4,19 @@ namespace App\Controller;
 
 use App\Entity\Education;
 use App\Entity\Experience;
-use App\Entity\Profile;
-use App\Event\TestEvent;
 use App\Form\EducationsType;
 use App\Form\ExperiencesType;
 use App\Form\ProfileType;
 use App\Form\UserType;
-use App\Service\Breadcrumbs;
-use App\Service\FileUploader;
+use App\Service\FileManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/my-profile", name="my_profile")
@@ -43,7 +37,7 @@ class MyProfileController extends AbstractController
      * @Route("/settings", name="_settings")
      * @Template("dashboard/profile/settings.html.twig")
      */
-    public function settings(Request $request, TranslatorInterface $translator, FileUploader $fileUploader)
+    public function settings(Request $request, TranslatorInterface $translator, FileManager $fileManager)
     {
         /*if (in_array('ROLE_USER', $this->getUser()->getRoles())) {} */
 
@@ -72,8 +66,7 @@ class MyProfileController extends AbstractController
             try {
                 /* Avatar Upload */
                 if ($avatarFile = $form['avatar']->getData()) {
-                    $fileUploader->setTargetDirectory($this->getParameter('avatars_dir'));
-                    $profile->setAvatarName($fileUploader->upload($avatarFile));
+                    $profile->setAvatarName($fileManager->upload($this->getParameter('avatars_dir')));
                 }
 
                 $em = $this->getDoctrine()->getManager();

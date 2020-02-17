@@ -52,8 +52,7 @@ class JobType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'user' => null,
-            'data_class' => 'App\Entity\Job',
+            'data_class' => 'App\Entity\Job'
         ]);
     }
 }

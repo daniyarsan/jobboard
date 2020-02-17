@@ -5,7 +5,7 @@ namespace App\Controller\Backend;
 use App\Entity\Profile;
 use App\Form\AdminFilterType;
 use App\Form\ProfileType;
-use App\Service\FileUploader;
+use App\Service\FileManager;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -67,7 +67,7 @@ class ProfilesController extends AbstractController
      * @Route("/profile/create", name="_create")
      * @Template("admin/profiles/create.html.twig")
      */
-    public function create(Request $request, TranslatorInterface $translator, FileUploader $fileUploader)
+    public function create(Request $request, TranslatorInterface $translator, FileManager $fileManager)
     {
         $profile = new Profile();
         $form = $this->createForm(ProfileType::class, $profile);
@@ -77,8 +77,7 @@ class ProfilesController extends AbstractController
             $profile = $form->getData();
             /* Avatar Upload */
             if ($avatarFile = $form['avatar']->getData()) {
-                $fileUploader->setTargetDirectory($this->getParameter('avatars_dir'));
-                $profile->setAvatarName($fileUploader->upload($avatarFile));
+                $profile->setAvatarName($fileManager->upload($this->getParameter('avatars_dir')));
             }
 
             try {

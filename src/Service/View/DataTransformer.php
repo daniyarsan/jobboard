@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\View;
 
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -18,10 +18,6 @@ class DataTransformer
         $this->container = $container;
     }
 
-    public function getAvatarPath(string $fileName): string
-    {
-        return $this->container->getParameter('resumes_dir') . $fileName;
-    }
 
     public function slugify(string $text): string
     {

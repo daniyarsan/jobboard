@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\View;
 
 use Doctrine\Migrations\Tools\Console\Exception\DirectoryDoesNotExist;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;

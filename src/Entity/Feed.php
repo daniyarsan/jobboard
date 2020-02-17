@@ -1,0 +1,185 @@
+<?php
+
+namespace App\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\FeedRepository")
+ * @ORM\HasLifecycleCallbacks()
+ */
+class Feed
+{
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $url;
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $mapper = [];
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $mapper_default = [];
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $xml_text;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $created;
+
+    /**
+     * @ORM\Column(name="modified", type="datetime", nullable=true)
+     */
+    private $modified;
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->created = new \DateTime('now');
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate()
+    {
+        $this->modified = new \DateTime('now');
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(string $url): self
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    public function getMapper(): ?array
+    {
+        return $this->mapper;
+    }
+
+    public function setMapper(array $mapper): self
+    {
+        $this->mapper = $mapper;
+
+        return $this;
+    }
+
+    public function getMapperDefault(): ?array
+    {
+        return $this->mapper_default;
+    }
+
+    public function setMapperDefault(?array $mapper_default): self
+    {
+        $this->mapper_default = $mapper_default;
+
+        return $this;
+    }
+
+    public function getXmlText(): ?string
+    {
+        return $this->xml_text;
+    }
+
+    public function setXmlText(string $xml_text): self
+    {
+        $this->xml_text = $xml_text;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * @param mixed $created
+     */
+    public function setCreated($created): void
+    {
+        $this->created = $created;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getModified()
+    {
+        return $this->modified;
+    }
+
+    /**
+     * @param mixed $modified
+     */
+    public function setModified($modified): void
+    {
+        $this->modified = $modified;
+    }
+
+}

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\View;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;

@@ -5,9 +5,8 @@ namespace App\Controller\Backend;
 use App\Entity\Blog;
 use App\Form\AdminBlogType;
 use App\Form\AdminFilterType;
-use App\Service\DataTransformer;
-use App\Service\FileUploader;
-use App\Service\Helper;
+use App\Service\View\DataTransformer;
+use App\Service\FileManager;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -67,7 +66,7 @@ class BlogController extends AbstractController
      * @Route("/blog/create", name="blog_create")
      * @Template("admin/blog/create.html.twig")
      */
-    public function create(Request $request, FileUploader $fileUploader, DataTransformer $dataTransformer)
+    public function create(Request $request, FileManager $fileManager, DataTransformer $dataTransformer)
     {
         $entity = new Blog();
         $form = $this->createForm(AdminBlogType::class, $entity);
@@ -76,8 +75,7 @@ class BlogController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /* Logo Upload */
             if ($imageFile = $form['image']->getData()) {
-                $fileUploader->setTargetDirectory($this->getParameter('blog_images_dir'));
-                $entity->setImageName($fileUploader->upload($imageFile));
+                $entity->setImageName($fileManager->upload($imageFile, $this->getParameter('blog_images_dir')));
             }
 
             $em = $this->getDoctrine()->getManager();

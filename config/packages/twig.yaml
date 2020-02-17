@@ -5,7 +5,7 @@ twig:
     form_themes: ['helpers/frontend_form_layout.html.twig']
 #    Creation of custom services for twig
     globals:
-        breadcrumbs: '@App\Service\Breadcrumbs'
-        menuGenerator: '@App\Service\MenuGenerator'
-        dataTransformer: '@App\Service\DataTransformer'
-        assetFinder: '@App\Service\AssetFinder'
+        breadcrumbs: '@App\Service\View\Breadcrumbs'
+        menuGenerator: '@App\Service\View\MenuGenerator'
+        dataTransformer: '@App\Service\View\DataTransformer'
+        assetFinder: '@App\Service\View\AssetFinder'

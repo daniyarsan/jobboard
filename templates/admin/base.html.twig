@@ -9,8 +9,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    {# TODO: Project title from database #}
-    <title>BestJobBoard Dashboard - {% block title %}{% endblock %}</title>
+    <title>{% block title %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
     <meta content="Coderthemes" name="author" />
@@ -32,8 +31,6 @@
 </head>
 
 <body>
-{% include 'admin/_parts/messages.html.twig' %}
-
 <!-- Begin page -->
 <div id="wrapper">
     <!-- Topbar Start -->
@@ -53,6 +50,8 @@
         <div class="content">
             <!-- Start Content-->
             <div class="container-fluid">
+                {% include 'admin/_parts/messages.html.twig' %}
+
                 {% block content %}{% endblock %}
             </div> <!-- container -->
         </div> <!-- content -->
@@ -60,13 +59,7 @@
         <!-- Footer Start -->
         {% include 'admin/_parts/footer.html.twig' %}
         <!-- end Footer -->
-
     </div>
-
-    <!-- ============================================================== -->
-    <!-- End Page content -->
-    <!-- ============================================================== -->
-
 
 </div>
 <!-- END wrapper -->

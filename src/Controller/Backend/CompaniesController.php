@@ -5,7 +5,7 @@ namespace App\Controller\Backend;
 use App\Entity\Company;
 use App\Form\AdminFilterType;
 use App\Form\CompanyType;
-use App\Service\FileUploader;
+use App\Service\FileManager;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Admin Companies Controller
@@ -68,7 +68,7 @@ class CompaniesController extends AbstractController
      * @ParamConverter("company", class="App\Entity\Company")
      * @Template("admin/companies/edit.html.twig")
      */
-    public function edit(Request $request, Company $company, TranslatorInterface $translator, FileUploader $fileUploader)
+    public function edit(Request $request, Company $company, TranslatorInterface $translator, FileManager $fileManager)
     {
         $form = $this->createForm(CompanyType::class, $company);
         $form->handleRequest($request);
@@ -79,8 +79,7 @@ class CompaniesController extends AbstractController
 
                 /* Logo Upload */
                 if ($logoFile = $form['logo']->getData()) {
-                    $fileUploader->setTargetDirectory($this->getParameter('logos_dir'));
-                    $company->setLogoName($fileUploader->upload($logoFile));
+                    $company->setLogoName($fileManager->upload($logoFile, $this->getParameter('logos_dir')));
                 }
 
                 $em = $this->getDoctrine()->getManager();

@@ -12,7 +12,9 @@
 {%- endblock choice_widget_collapsed %}
 
 {% block textarea_widget -%}
-    {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-control summernote-editor')|trim}) %}
+    {% if attr.raw is not defined %}
+        {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-control summernote-editor')|trim}) %}
+    {% endif %}
     {{- parent() -}}
 {%- endblock textarea_widget %}
 

@@ -4,8 +4,7 @@ namespace App\Controller\Backend;
 
 use App\Entity\Category;
 use App\Form\AdminCategoryType;
-use App\Service\DataTransformer;
-use App\Service\Helper;
+use App\Service\View\DataTransformer;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

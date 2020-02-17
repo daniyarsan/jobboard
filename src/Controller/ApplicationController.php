@@ -5,8 +5,7 @@ namespace App\Controller;
 use App\Entity\Application;
 use App\Entity\Job;
 use App\Form\ApplicationType;
-use App\Service\FileUploader;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use App\Service\FileManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +36,7 @@ class ApplicationController extends AbstractController
      * @Route("/job/{id}", name="_job", requirements={"id": "\d+"})
      * @ParamConverter("job", class="App\Entity\Job")
      */
-    public function apply(Request $request, Job $job, TranslatorInterface $translator, FileUploader $fileUploader)
+    public function apply(Request $request, Job $job, TranslatorInterface $translator, FileManager $fileManager)
     {
         if (!$job) {
             $this->addFlash('danger', $translator->trans('Job does not exist.'));
@@ -48,7 +47,6 @@ class ApplicationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $fileUploader->setTargetDirectory($this->getParameter('resumes_dir'));
             $application = $form->getData();
             $currentUser = $this->getUser();
 
@@ -57,7 +55,7 @@ class ApplicationController extends AbstractController
                 $application->setJob($job);
                 $application->setName($currentUser->getProfile()->getFullName());
                 $application->setEmail($currentUser->getUserName());
-                $application->setResume($fileUploader->upload($form['resume']->getData()));
+                $application->setResume($fileManager->upload($form['resume']->getData(), $this->getParameter('resumes_dir')));
 
                 $em = $this->getDoctrine()->getManager();
 
