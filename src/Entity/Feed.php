@@ -18,6 +18,12 @@ class Feed
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="feeds")
+     * @ORM\JoinColumn(name="company_id", referencedColumnName="id", onDelete="cascade")
+     */
+    private $company;
+
+    /**
      * @ORM\Column(type="string", length=100)
      */
     private $name;
@@ -180,6 +186,22 @@ class Feed
     public function setModified($modified): void
     {
         $this->modified = $modified;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
+    /**
+     * @param mixed $company
+     */
+    public function setCompany($company): void
+    {
+        $this->company = $company;
     }
 
 }

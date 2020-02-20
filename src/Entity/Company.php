@@ -33,6 +33,11 @@ class Company
     private $jobs;
 
     /**
+     * @ORM\OneToMany(targetEntity="Feed", mappedBy="company", cascade={"persist"})
+     */
+    private $feeds;
+
+    /**
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $name;
@@ -121,6 +126,7 @@ class Company
     public function __construct()
     {
         $this->jobs = new ArrayCollection();
+        $this->feeds = new ArrayCollection();
         $this->companies = new ArrayCollection();
     }
 
@@ -305,6 +311,22 @@ class Company
     public function setJobs($jobs): void
     {
         $this->jobs = $jobs;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFeeds()
+    {
+        return $this->feeds;
+    }
+
+    /**
+     * @param mixed $jobs
+     */
+    public function setFeeds($feeds): void
+    {
+        $this->feeds = $feeds;
     }
 
     public function getUsername()

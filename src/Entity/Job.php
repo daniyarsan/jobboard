@@ -25,21 +25,11 @@ class Job
     private $company;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Contract", inversedBy="jobs")
-     * @ORM\JoinColumn(name="contract_id", referencedColumnName="id")
-     */
-    private $contract;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="jobs")
      * @ORM\JoinTable(name="job_category")
      */
     private $categories;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Favorite", mappedBy="job")
-     */
-    private $favorites;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -87,6 +77,11 @@ class Job
     private $publishedUntil;
 
     /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $extraFields = [];
+
+    /**
      * @ORM\Column(name="created", type="datetime")
      */
     private $created;
@@ -98,7 +93,6 @@ class Job
 
     public function __construct()
     {
-        $this->favorites = new ArrayCollection();
     }
 
     /**
@@ -305,22 +299,6 @@ class Job
     /**
      * @return mixed
      */
-    public function getContract()
-    {
-        return $this->contract;
-    }
-
-    /**
-     * @param mixed $contract
-     */
-    public function setContract($contract): void
-    {
-        $this->contract = $contract;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getState()
     {
         return $this->state;
@@ -332,6 +310,18 @@ class Job
     public function setState($state): void
     {
         $this->state = $state;
+    }
+
+    public function getExtraFields(): ?array
+    {
+        return $this->extraFields;
+    }
+
+    public function setExtraFields(array $extraFields): self
+    {
+        $this->extraFields = $extraFields;
+
+        return $this;
     }
 
 }

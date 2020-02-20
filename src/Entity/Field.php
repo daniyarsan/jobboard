@@ -5,12 +5,21 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\FieldRepository")
  */
 class Field
 {
+    public const FIELD_TYPE = [
+        'text' => TextType::class,
+        'select' => ChoiceType::class,
+        'textarea' => TextareaType::class,
+    ];
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -72,12 +81,12 @@ class Field
         return $this;
     }
 
-    public function getFieldId(): ?int
+    public function getFieldId(): ?string
     {
         return $this->field_id;
     }
 
-    public function setFieldId(int $field_id): self
+    public function setFieldId(string $field_id): self
     {
         $this->field_id = $field_id;
 

@@ -3,9 +3,10 @@
 namespace App\Controller\Backend;
 
 use App\Entity\Feed;
+use App\Entity\Job;
 use App\Form\AdminFilterType;
 use App\Form\FeedType;
-use App\FeedImporter\XmlImporter;
+use App\FeedImporter\XmlParser;
 use App\Service\XmlProcessor;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -187,10 +188,11 @@ class FeedController extends AbstractController
     public function import(Feed $feed)
     {
         /* TODO:  Make an opportunity to load file and import from local file */
-        $importer = new XmlImporter($feed->getUrl());
-        $importer->run();
+//        file_exists($this->getParameter('import.xml.dir') . '/file.xml');
+        $em = $this->getDoctrine()->getManager();
 
-        exit;
+        $xmlParser = new XmlParser($em, $feed);
+        $xmlParser->parse($feed->getUrl());
     }
 
     private function createBulkActionForm()

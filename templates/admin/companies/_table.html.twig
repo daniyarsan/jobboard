@@ -50,7 +50,7 @@
                     </td>
                     <td>{{ company.email }}</td>
                     <td>{{ company.country }}</td>
-                    <td>{{ company.created|date("y m d") }} </td>
+                    <td>{{ company.created|date("d/m/Y") }} </td>
                     <td>
                         {% if company.isVerified %}
                             <span class="badge bg-soft-success text-success">{{ 'Active'|trans }}</span>

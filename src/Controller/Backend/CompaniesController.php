@@ -79,7 +79,7 @@ class CompaniesController extends AbstractController
 
                 /* Logo Upload */
                 if ($logoFile = $form['logo']->getData()) {
-                    $company->setLogoName($fileManager->upload($logoFile, $this->getParameter('logos_dir')));
+                    $company->setLogoName($fileManager->uploadLogo($logoFile));
                 }
 
                 $em = $this->getDoctrine()->getManager();

@@ -5,10 +5,11 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
-    resumes_dir: '%kernel.project_dir%/public/uploads/resumes'
-    logos_dir: '%kernel.project_dir%/public/uploads/logos'
-    avatars_dir: '%kernel.project_dir%/public/uploads/avatars'
-    blog_images_dir: '%kernel.project_dir%/public/uploads/blogimg'
+    resumes_dir: '%kernel.project_dir%/public/uploads/resume'
+    logos_dir: '%kernel.project_dir%/public/uploads/logo'
+    avatars_dir: '%kernel.project_dir%/public/uploads/avatar'
+    blog_images_dir: '%kernel.project_dir%/public/uploads/blog'
+    import.xml.dir: '%kernel.project_dir%/public/uploads/import/xml'
 
 services:
     twig.extension.text:

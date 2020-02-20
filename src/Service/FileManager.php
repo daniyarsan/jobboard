@@ -4,12 +4,20 @@ namespace Daniyarsan\Helpers;
 
 namespace App\Service;
 
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileManager
 {
+
+    protected $settings;
+
+    public function __construct(ParameterBagInterface $parameterBag)
+    {
+        $this->settings = $parameterBag;
+    }
 
     /**
      * Returns content by path
@@ -66,14 +74,14 @@ class FileManager
      * @param $path
      * @return string
      */
-    public function uploadFileToPath(UploadedFile $file, $path)
+    public function uploadLogo(UploadedFile $file)
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
         $fileName = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
 
         try {
-            $file->move($path, $fileName);
+            $file->move($this->settings->get('logos_dir'), $fileName);
         } catch (FileException $e) {
             throw new FileException('File cant be uploaded');
         }

@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Field;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -16,13 +17,19 @@ class JobType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        /** @var \Doctrine\ORM\EntityManager $entityManager */
+
+        $entityManager = $options[ 'entity_manager' ];
+
+        $fieldRepository = $entityManager->getRepository('App:Field');
+        $jobFields = $fieldRepository->findAll();
+
         $builder
             ->add('company', EntityType::class, [
                 'placeholder' => 'Choose Company',
                 'class' => 'App\Entity\Company',
                 'required' => false,
             ])
-
             ->add('title', TextType::class)
             ->add('country', CountryType::class, [
                 'empty_data' => 'Choose Country',
@@ -44,8 +51,16 @@ class JobType extends AbstractType
                 'placeholder' => 'Choose Contract',
                 'class' => 'App\Entity\Contract',
                 'required' => false
-            ])
-            ->add('save', SubmitType::class)
+            ]);
+
+        /* Adding custom fields to form */
+        foreach ($jobFields as $jobField) {
+            $builder->add($jobField->getFieldId(), Field::FIELD_TYPE[ $jobField->getType() ], [
+                'mapped' => false
+            ]);
+        }
+
+        $builder->add('save', SubmitType::class)
             ->add('saveAndExit', SubmitType::class, ['label' => 'Save and Exit']);
     }
 
@@ -54,5 +69,6 @@ class JobType extends AbstractType
         $resolver->setDefaults([
             'data_class' => 'App\Entity\Job'
         ]);
+        $resolver->setRequired('entity_manager');
     }
 }
