@@ -47,7 +47,7 @@
                     </td>
                     <td>{{ job.company }}</td>
                     <td>{{ job.country }}</td>
-                    <td>{{ job.created|date("y m d") }} </td>
+                    <td>{{ job.created|date("d/m/Y") }} </td>
                     <td>
                         {% if job.isPublished %}
                             <span class="badge bg-soft-success text-success">{{ 'Published'|trans }}</span>

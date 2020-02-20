@@ -30,7 +30,6 @@ class Job
      */
     private $categories;
 
-
     /**
      * @ORM\Column(type="string", length=100)
      */

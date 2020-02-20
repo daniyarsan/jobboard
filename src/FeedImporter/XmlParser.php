@@ -33,6 +33,7 @@ class XmlParser
             $xmlItem = $this->getArrayFromXmlString($this->xmlReader->readOuterXML());
 
             $job = new Job();
+            $job->setCompany($this->feed->getCompany());
             foreach ($this->feed->getMapper() as $mapKey => $mapItem) {
                 if ($mapItem) {
                     $method = 'set' . $mapItem;
@@ -42,13 +43,14 @@ class XmlParser
                 }
             }
 
-            dump($job);
-            exit;
-
-            $job = new Job();
+            $this->em->persist($job);
+            $this->em->flush($job);
 
             $this->xmlReader->next('job');
             unset($element);
+            dump($job);
+            exit;
+
         }
     }
 

@@ -47,7 +47,7 @@
                     </td>
                     <td>{{ profile.user.email }}</td>
                     <td>{{ profile.country }}</td>
-                    <td>{{ profile.created|date("y m d") }}</td>
+                    <td>{{ profile.created|date("d/m/Y") }}</td>
                     <td>
                         {% if profile.visibility %}
                             <span class="badge bg-soft-success text-success">{{ 'Published'|trans }}</span>
