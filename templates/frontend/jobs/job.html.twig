@@ -2,7 +2,7 @@
     <div class="item-info">
         <div class="item-image-box">
             <div class="item-image">
-                {% if job.company.logoName is defined %}
+                {% if job.company.logoName %}
                     <a href="{{ path('job_details', {'id' : job.id}) }}">
                         <img src="{{ assetFinder.logoPath(job.company.logoName) }}" class="img-fluid" alt="">
                     </a>
