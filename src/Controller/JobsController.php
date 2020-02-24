@@ -18,7 +18,7 @@ class JobsController extends AbstractController
 {
     /**
      * @Route("/jobs", name="jobs_index")
-     * @Template("jobs/index.html.twig")
+     * @Template("frontend/jobs/index.html.twig")
      */
     public function index(Request $request, PaginatorInterface $paginator)
     {

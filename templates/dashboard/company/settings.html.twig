@@ -6,7 +6,7 @@
 {% block file_widget %}
     {% spaceless %}
         {% set type = type|default('file') %}
-        <input type="{{ type }}" {{ block('widget_attributes') }} class="file-input" />
+        <input type="{{ type }}" {{ block('widget_attributes') }} class="file-input"/>
     {% endspaceless %}
 {% endblock %}
 
@@ -41,7 +41,7 @@
 
                             <form action="{{ path('my_company_settings') }}" class="dashboard-form" method="POST" enctype="multipart/form-data">
                                 <div class="dashboard-section upload-profile-photo">
-                                    {{ form_widget(form.logoImage) }}
+                                    {{ form_widget(form.logo) }}
                                 </div>
 
                                 <div class="dashboard-section basic-info-input">
@@ -71,13 +71,12 @@
                                 </form>
                             </div>
                         </div>
-
-                        {% include "my-company/_side-menu.html.twig" %}
-                        </div>
+                        {{ menuGenerator.adminSideMenu()|raw }}
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     {{ form_start(form) }}

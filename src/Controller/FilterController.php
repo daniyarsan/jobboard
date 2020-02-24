@@ -15,14 +15,14 @@ class FilterController extends AbstractController
      */
     public function sideFilter(Request $request)
     {
-        $filter = $this->createForm(FilterJobType::class, [], ['router' => $this->get('router')]);
-        $filter->handleRequest($request);
-
-        $filterKeyword = $this->createForm(FilterJobKeywordType::class, [], ['router' => $this->get('router')]);
-        $filterKeyword->handleRequest($request);
+//        $filter = $this->createForm(FilterJobType::class, [], ['router' => $this->get('router')]);
+//        $filter->handleRequest($request);
+//
+//        $filterKeyword = $this->createForm(FilterJobKeywordType::class, [], ['router' => $this->get('router')]);
+//        $filterKeyword->handleRequest($request);
 
         return $this->render('filter/index.html.twig', [
-            'filter' => $filter->createView()
+//            'filter' => $filter->createView()
         ]);
     }
 }
