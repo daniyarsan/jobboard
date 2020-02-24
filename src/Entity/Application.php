@@ -32,12 +32,12 @@ class Application
     private $job;
 
     /**
-     * @ORM\Column(type="string", length=200)
+     * @ORM\Column(type="string", length=190)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=200)
+     * @ORM\Column(type="string", length=190)
      */
     private $email;
 

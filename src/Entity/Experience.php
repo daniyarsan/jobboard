@@ -24,12 +24,12 @@ class Experience
     private $profile;
 
     /**
-     * @ORM\Column(type="string", length=255, name="company_name")
+     * @ORM\Column(type="string", length=190, name="company_name")
      */
     private $companyName;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=190)
      */
     private $name;
 

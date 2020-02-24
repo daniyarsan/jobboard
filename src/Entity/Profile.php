@@ -43,17 +43,17 @@ class Profile
     private $avatarName;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=190, nullable=true)
      */
     private $firstName;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=190, nullable=true)
      */
     private $lastName;
 
     /**
-     * @ORM\Column(type="string", name="email", length=255, nullable=true)
+     * @ORM\Column(type="string", name="email", length=190, nullable=true)
      */
     private $email;
 
@@ -63,12 +63,12 @@ class Profile
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=190, nullable=true)
      */
     private $country;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=190, nullable=true)
      */
     private $address;
 

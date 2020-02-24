@@ -24,14 +24,14 @@ class StaticPage
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=190)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="url", type="string", length=255, unique=true)
+     * @ORM\Column(name="url", type="string", length=190, unique=true)
      */
     private $url;
 
@@ -52,21 +52,21 @@ class StaticPage
     /**
      * @var string
      *
-     * @ORM\Column(name="metaTitle", type="string", length=255, nullable=true)
+     * @ORM\Column(name="metaTitle", type="string", length=190, nullable=true)
      */
     private $metaTitle;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="metaDescription", type="string", length=1000, nullable=true)
+     * @ORM\Column(name="metaDescription", type="text", nullable=true)
      */
     private $metaDescription;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="metaKeywords", type="string", length=1000, nullable=true)
+     * @ORM\Column(name="metaKeywords", type="text", nullable=true)
      */
     private $metaKeywords;
 
