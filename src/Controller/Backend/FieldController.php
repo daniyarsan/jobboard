@@ -2,11 +2,10 @@
 
 namespace App\Controller\Backend;
 
-use App\Entity\Feed;
+
+use App\Entity\Field;
 use App\Form\AdminFilterType;
-use App\Form\FeedType;
-use App\FeedImporter\XmlParser;
-use App\Service\XmlProcessor;
+use App\Form\FieldType;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -17,15 +16,15 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * @Route("/admin", name="admin_feeds")
+ * @Route("/admin", name="admin_field")
  */
-class FeedController extends AbstractController
+class FieldController extends AbstractController
 {
     /**
-     * Lists all Feeds
+     * Lists all Fields
      *
-     * @Route("/feeds", name="_index")
-     * @Template("admin/feeds/index.html.twig")
+     * @Route("/field", name="_index")
+     * @Template("admin/field/index.html.twig")
      */
     public function index(Request $request, Session $session, PaginatorInterface $pagination)
     {
@@ -38,7 +37,7 @@ class FeedController extends AbstractController
         if ($session->get('jobsItemsPerPage') != $itemsPerPage) {
             $session->set('jobsItemsPerPage', $itemsPerPage);
             if ($page > 1) {
-                return $this->redirectToRoute('admin_feeds_index', [
+                return $this->redirectToRoute('admin_field_index', [
                     'itemsPerPage' => $itemsPerPage,
                     'page' => 1
                 ]);
@@ -50,7 +49,7 @@ class FeedController extends AbstractController
             'defaultSortDirection' => 'desc'
         ];
 
-        $entities = $this->getDoctrine()->getRepository('App:Feed')->findByFilterQuery($request);
+        $entities = $this->getDoctrine()->getRepository('App:Field')->findByFilterQuery($request);
         $entities = $pagination->paginate($entities, $page, $itemsPerPage, $paginatorOptions);
 
         return [
@@ -61,51 +60,45 @@ class FeedController extends AbstractController
     }
 
     /**
-     * Create a new Feed entity.
+     * Create a new Field entity.
      *
-     * @Route("/feeds/new", name="_new")
-     * @Template("admin/feeds/new.html.twig")
+     * @Route("/field/new", name="_new")
+     * @Template("admin/field/new.html.twig")
      */
 
     public function new(Request $request, TranslatorInterface $translator)
     {
-        $feed = new Feed();
-        $form = $this->createForm(FeedType::class, $feed);
+        $field = new Field();
+        $form = $this->createForm(Field::class, $field);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $feed = $form->getData();
+            $field = $form->getData();
+
             try {
                 $em = $this->getDoctrine()->getManager();
-
-                /* Feed xml with field values */
-                $xmlTextSample = $feed->getXmlText();
-                $defaultMapper = XmlParser::getXmlFieldNames($xmlTextSample);
-                $feed->setMapperDefault($defaultMapper);
-                /* Feed xml with field values */
-
-                $em->persist($feed);
+                $em->persist($field);
                 $em->flush();
-                $this->addFlash('success', $translator->trans('Feed has been successfully updated.'));
+                $this->addFlash('success', $translator->trans('Field has been successfully updated.'));
             } catch(\Exception $e) {
                 $this->addFlash('danger', $translator->trans('An error occurred when saving object.'));
             }
 
             if ($form->get('saveAndExit')->isClicked()) {
-                return $this->redirectToRoute('admin_feeds_index');
+                return $this->redirectToRoute('admin_field_index');
             }
-            return $this->redirect($this->generateUrl('admin_feeds_edit', ['id' => $feed->getId()]));
+            return $this->redirect($this->generateUrl('admin_field_edit', ['id' => $field->getId()]));
         }
         return [
             'form' => $form->createView(),
-            'feed' => $feed
+            'field' => $field
         ];
     }
 
     /**
-     * Deletes, Enables and Disables selected Feeds.
+     * Deletes, Enables and Disables selected Fields.
      *
-     * @Route("/feeds/bulk", name="_bulk")
+     * @Route("/field/bulk", name="_bulk")
      */
     public function bulkAction(Request $request)
     {
@@ -117,56 +110,58 @@ class FeedController extends AbstractController
             $action = $request->get('action');
             return $this->set($id, $action, $request);
         }
-        return $this->redirect($request->get('return_url', $this->generateUrl('admin_feeds_index')));
+        return $this->redirect($request->get('return_url', $this->generateUrl('admin_field_index')));
     }
 
     /**
-     * @Route("/feeds/{id}", name="_edit", requirements={"id": "\d+"})
-     * @ParamConverter("feed", class="App\Entity\Feed")
-     * @Template("admin/feeds/edit.html.twig")
+     * @Route("/field/{id}", name="_edit", requirements={"id": "\d+"})
+     * @ParamConverter("field", class="App\Entity\Field")
+     * @Template("admin/field/edit.html.twig")
      */
-    public function edit(Request $request, Feed $feed, TranslatorInterface $translator)
+    public function edit(Request $request, Field $field, TranslatorInterface $translator)
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(FeedType::class, $feed);
+        $form = $this->createForm(FieldType::class, $field);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $feed = $form->getData();
+            $field = $form->getData();
             try {
-                /* Feed xml with field values */
-                $xmlTextSample = $feed->getXmlText();
-                $defaultMapper = XmlParser::getXmlFieldNames($xmlTextSample);
-                $feed->setMapperDefault($defaultMapper);
-                /* Feed xml with field values */
+                /* Field xml with field values */
+                $xmlTextSample = $field->getXmlText();
+                $fields = XmlProcessor::xmlFieldValues($xmlTextSample);
+                $defaultSet = array_map(function($v){
+                    return (!is_null($v)) ? "" : $v;
+                }, array_flip($fields));
+                $field->setMapperDefault($defaultSet);
 
-                $em->persist($feed);
+                $em->persist($field);
                 $em->flush();
-                $this->addFlash('success', $translator->trans('Feed has been successfully updated.'));
+                $this->addFlash('success', $translator->trans('Field has been successfully updated.'));
             } catch(\Exception $e) {
                 $this->addFlash('danger', $translator->trans('An error occurred when saving object.'));
             }
 
             if ($form->get('saveAndExit')->isClicked()) {
-                return $this->redirectToRoute('admin_feeds_index');
+                return $this->redirectToRoute('admin_field_index');
             }
 
-            return $this->redirect($this->generateUrl('admin_feeds_edit', ['id' => $feed->getId()]));
+            return $this->redirect($this->generateUrl('admin_field_edit', ['id' => $field->getId()]));
         }
 
         return ['form' => $form->createView()];
     }
 
     /**
-     * @Route("/feeds/{action}/{id}", name="_set", requirements={"id": "\d+", "action" : "disable|activate|remove"})
+     * @Route("/field/{action}/{id}", name="_set", requirements={"id": "\d+", "action" : "disable|activate|remove"})
      */
     public function set($id, $action, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('App:Feed')->findBy(array('id' => $id));
+        $entities = $em->getRepository('App:Field')->findBy(array('id' => $id));
 
         if (!$entities) {
-            throw $this->createNotFoundException('Unable to find а Feed.');
+            throw $this->createNotFoundException('Unable to find а Field.');
         }
 
         foreach ($entities as $entity) {
@@ -181,25 +176,9 @@ class FeedController extends AbstractController
         } catch (\Exception $ex) {
             $this->addFlash('danger', $ex->getMessage());
         }
-        return $this->redirect($request->get('return_url', $this->generateUrl('admin_feeds_index')));
+        return $this->redirect($request->get('return_url', $this->generateUrl('admin_field_index')));
     }
 
-    /**
-     * @Route("/import/{id}", name="_import", requirements={"id": "\d+"})
-     * @ParamConverter("feed", class="App\Entity\Feed")
-     */
-    public function import(Feed $feed)
-    {
-        /* TODO:  Make an opportunity to load file and import from local file */
-//        file_exists($this->getParameter('import.xml.dir') . '/file.xml');
-        $em = $this->getDoctrine()->getManager();
-
-        $xmlParser = new XmlParser($em, $feed);
-        $xmlParser->parse($feed->getUrl());
-
-
-        return $this->redirectToRoute('admin_feeds_index');
-    }
 
     private function createBulkActionForm()
     {

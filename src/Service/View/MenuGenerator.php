@@ -48,7 +48,11 @@ class MenuGenerator
             ]],
             ['title' => 'Content', 'url' => '', 'icon' => 'fe-file-text', 'sub' => [
                 ['title' => 'Pages', 'url' => 'admin_page_index'],
-                ['title' => 'Blogs', 'url' => 'admin_blog_index'],
+                ['title' => 'Blog', 'url' => 'admin_blog_index'],
+                ['title' => 'Fields', 'url' => 'admin_field_index'],
+            ]],
+            ['title' => 'BackFill', 'url' => '', 'icon' => 'fe-file-text', 'sub' => [
+                ['title' => 'Feeds', 'url' => 'admin_feeds_index'],
             ]],
             ['title' => 'Settings', 'url' => '', 'icon' => 'fe-settings', 'sub' => [
                 ['title' => 'Categories', 'url' => 'admin_category_index'],

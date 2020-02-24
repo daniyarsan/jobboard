@@ -30,42 +30,55 @@ class XmlParser
         }
 
         while ($this->xmlReader->name == 'job') {
-            $xmlItem = $this->getArrayFromXmlString($this->xmlReader->readOuterXML());
+            $xmlItem = self::getArrayFromXmlString($this->xmlReader->readOuterXML());
 
             $job = new Job();
             $job->setCompany($this->feed->getCompany());
             foreach ($this->feed->getMapper() as $mapKey => $mapItem) {
                 if ($mapItem) {
-                    $method = 'set' . $mapItem;
+                    $method = 'set' . ucfirst($mapItem);
                     if (method_exists($job, $method)) {
-                        $job->$method($xmlItem[$mapKey]);
+                        $job->$method($xmlItem[ $mapKey ]);
                     }
                 }
             }
+
 
             $this->em->persist($job);
             $this->em->flush($job);
 
             $this->xmlReader->next('job');
             unset($element);
-            dump($job);
-            exit;
-
         }
     }
 
-    protected function xmlToArray($xmlObject, $out = array())
+    public static function xmlToArray($xmlObject, $out = array())
     {
         foreach ((array)$xmlObject as $index => $node)
-            $out[ $index ] = (is_object($node)) ? $this->xmlToArray($node) : $node;
+            $out[ $index ] = (is_object($node)) ? self::xmlToArray($node) : $node;
 
         return $out;
     }
 
-    protected function getArrayFromXmlString($xmlString)
+    public static function getArrayFromXmlString($xmlString)
     {
         $xml = simplexml_load_string($xmlString, 'SimpleXMLElement', LIBXML_NOCDATA);
 
         return json_decode(json_encode($xml), TRUE);
+    }
+
+    public static function getXmlFieldNames($xmlString): ?array
+    {
+        $xml = self::getArrayFromXmlString($xmlString);
+
+        $keys = [];
+
+        foreach ($xml as $key => $value) {
+            $keys[] = $key;
+        }
+
+        return array_map(function ($v) {
+            return (!is_null($v)) ? "" : $v;
+        }, array_flip($keys));
     }
 }

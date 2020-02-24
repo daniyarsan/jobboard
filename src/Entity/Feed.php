@@ -120,7 +120,7 @@ class Feed
         return $this;
     }
 
-    public function getMapper(): ?array
+    public function getMapper()
     {
         return $this->mapper;
     }
@@ -203,5 +203,4 @@ class Feed
     {
         $this->company = $company;
     }
-
 }

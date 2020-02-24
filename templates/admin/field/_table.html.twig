@@ -1,0 +1,57 @@
+{% import 'admin/form/dialog.html.twig' as dialogs %}
+
+<form method="post" action="{{ path('admin_field_bulk') }}" id="bulk-table-form">
+    <input type="hidden" name="return_url" value="{{ path('admin_field_index') }}{{ query_string() }}"/>
+    {{ form_widget(bulk_action_form._token) }}
+    <input type="hidden" name="action" value=""/>
+
+    <div class="table-responsive">
+        <table class="table table-centered table-striped">
+            <thead>
+            <tr>
+                <th style="width: 20px;">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input bulk-item-check" id="checkAll">
+                        <label class="custom-control-label" for="checkAll">&nbsp;</label>
+                    </div>
+                </th>
+                <th>
+                    {{ knp_pagination_sortable(entities, 'Field Name', 'name') }}
+                    {% if entities.isSorted('name') %}
+                        <span class="fas fa-sort-alpha-{% if entities.getParams.direction == 'desc' %}down{% else %}up{% endif %}"></span>
+                    {% endif %}
+                </th>
+                <th>{{ 'Type'|trans }}</th>
+                <th style="width: 15%">{{ 'Action'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for field in entities %}
+                <tr>
+                    <td>
+                        <div class="custom-control custom-checkbox">
+                            <input id="bulk-item-{{ field.id }}" type="checkbox" name="jobs[{{ field.id }}]" class="custom-control-input bulk-item-check">
+                            <label class="custom-control-label" for="bulk-item-{{ field.id }}">&nbsp;</label>
+                        </div>
+                    </td>
+                    <td class="table-user">
+                        <a href="javascript:void(0);" class="text-body font-weight-semibold">{{ field.name }}</a>
+                    </td>
+                    <td>
+                        {{ field.type }}
+                    </td>
+                    <td>
+                        <a href="{{ path('admin_field_edit', {'id': field.id, 'return_url': path('admin_field_index') ~ query_string()}) }}" class="action-icon">
+                            <i class="mdi mdi-square-edit-outline"></i>
+                        </a>
+                        <a data-toggle="modal" href="#delete-{{ field.id }}" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                    </td>
+                </tr>
+                {{ dialogs.confirm('delete-' ~ field.id, 'Confirmation', 'The selected item will be removed permanently. Are you sure?', '', path('admin_field_set', {id: field.id, action: 'remove'})) }}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</form>
+
+{{ knp_pagination_render(entities, 'admin/_parts/paginator.html.twig') }}

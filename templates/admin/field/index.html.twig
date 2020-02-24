@@ -1,0 +1,96 @@
+{% extends 'admin/base.html.twig' %}
+{#{% import 'admin/_parts/helper.html.twig' as helper %}#}
+
+{% block title %}{{ 'Import List'|trans }}{% endblock %}
+
+{% import 'admin/form/dialog.html.twig' as dialogs %}
+
+{% block content %}
+    {{ breadcrumbs.add({'url' : 'admin_index', 'title' : 'Dashboard'|trans}) }}
+    {{ breadcrumbs.add({'url' : '', 'title' : 'Fields List'|trans}) }}
+
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        {% for breadcrumb in breadcrumbs.getBreadcrumbs() %}
+                            <li class="breadcrumb-item">
+                                <a href="{% if breadcrumb.url is not empty %}{{ path(breadcrumb.url) }}{% else %}javascript: void(0);{% endif %}">{{ breadcrumb.title }}</a>
+                            </li>
+                        {% endfor %}
+                    </ol>
+                </div>
+                <h4 class="page-title">{{ 'Fields'|trans }} - {{ entities.getTotalItemCount }} found</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-md-3">
+                            <form class="form-inline">
+                                <div class="form-group mb-2">
+                                    {{ form_start(filter_form) }}
+                                    {{ form_widget(filter_form.keyword, {attr : {placeholder : 'Search...'|trans}}) }}
+                                    {{ form_end(filter_form) }}
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="btn-group">
+                                <button id="bulk-action-button" type="button" class="btn btn-warning waves-effect waves-light mb-2 mr-1 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: none;">
+                                    <i class="mdi mdi-settings"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" data-toggle="modal" href="#" onclick="itemsBulkAction('activate');">{{ 'Activate'|trans }}</a>
+                                    <a class="dropdown-item" data-toggle="modal" href="#" onclick="itemsBulkAction('disable');">{{ 'Deactivate'|trans }}</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" data-toggle="modal" href="#items-bulk-delete">{{ 'Delete'|trans }}</a>
+                                </div>
+                            </div><!-- /btn-group -->
+                        </div>
+                    </div>
+
+                    {# Main items table #}
+                    {% include 'admin/field/_table.html.twig' with entities %}
+
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div> <!-- end col -->
+    </div>
+    <!-- end row -->
+
+    {{ dialogs.confirm('items-bulk-delete', 'Confirmation'|trans, 'The selected items will be removed permanently. Are you sure?'|trans, "itemsBulkAction('remove')", '') }}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        function itemsBulkAction(action) {
+            var form = jQuery("#bulk-table-form");
+            form.find("input[name='action']").val(action);
+            form.submit();
+        }
+
+        /* Check all */
+        $(".bulk-item-check").click(function(){
+            if (this.checked) {
+                $('#bulk-action-button').show();
+            } else {
+                $('#bulk-action-button').hide();
+            }
+        });
+        $("#checkAll").click(function(){
+            $('input:checkbox.bulk-item-check').not(this).prop('checked', this.checked);
+        });
+    </script>
+{% endblock %}

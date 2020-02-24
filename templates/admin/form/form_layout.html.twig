@@ -18,4 +18,23 @@
     {{- parent() -}}
 {%- endblock textarea_widget %}
 
+{% block mapping_row %}
+    {% spaceless %}
+        <div class="row">
+            <div class="col-md-12">
+                {{ form_label(form) }}
+            </div>
 
+            {% for child in form.children if not child.rendered %}
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_label(child) }}
+                        {{ form_widget(child) }}
+                        {{ form_help(child) }}
+                        {{ form_errors(child) }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endspaceless %}
+{% endblock %}

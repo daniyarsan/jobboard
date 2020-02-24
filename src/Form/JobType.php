@@ -18,7 +18,6 @@ class JobType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         /** @var \Doctrine\ORM\EntityManager $entityManager */
-
         $entityManager = $options[ 'entity_manager' ];
 
         $fieldRepository = $entityManager->getRepository('App:Field');
@@ -45,11 +44,6 @@ class JobType extends AbstractType
                 'required' => false,
             ])
             ->add('description', TextareaType::class, [
-                'required' => false
-            ])
-            ->add('contract', EntityType::class, [
-                'placeholder' => 'Choose Contract',
-                'class' => 'App\Entity\Contract',
                 'required' => false
             ]);
 

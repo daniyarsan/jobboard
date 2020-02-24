@@ -19,6 +19,21 @@ class FieldRepository extends ServiceEntityRepository
         parent::__construct($registry, Field::class);
     }
 
+    public function findByFilterQuery($request)
+    {
+        $qb = $this->createQueryBuilder('field');
+
+        // Keyword
+        if (!empty($request->query->get('keyword'))) {
+            $qb->andWhere('field.name LIKE :filterKeyword')
+                ->setParameter('filterKeyword', '%' . $request->query->get('keyword') . '%');
+        }
+
+        return $qb
+            ->getQuery()
+            ->execute();
+    }
+
     public function findAllFieldIds()
     {
         $result = $this->createQueryBuilder('f')
@@ -28,4 +43,14 @@ class FieldRepository extends ServiceEntityRepository
 
         return array_map('current', $result);
     }
+    public function findAllFieldNames()
+    {
+        $result = $this->createQueryBuilder('f')
+            ->select('f.name')
+            ->getQuery()
+            ->getScalarResult();
+
+        return array_map('current', $result);
+    }
+
 }

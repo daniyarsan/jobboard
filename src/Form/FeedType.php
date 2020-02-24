@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Feed;
+use App\Form\Type\MappingType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -22,12 +23,19 @@ class FeedType extends AbstractType
             ])
             ->add('name')
             ->add('description')
-            ->add('url', TextType::class)
+            ->add('url', TextType::class);
+
+        $builder
             ->add('xml_text', TextareaType::class, [
                 'attr' => [
                     'raw' => true
                 ]
-            ])
+            ]);
+
+        $builder
+            ->add('mapper', MappingType::class);
+
+        $builder
             ->add('save', SubmitType::class)
             ->add('saveAndExit', SubmitType::class, ['label' => 'Save and Exit']);
     }

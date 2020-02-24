@@ -35,4 +35,15 @@ class FeedRepository extends ServiceEntityRepository
             ->execute();
     }
 
+
+    public function findDefaultMappingFields()
+    {
+        $result = $this->createQueryBuilder('feed')
+            ->select('feed.mapper_default')
+            ->getQuery()
+            ->getScalarResult();
+
+        return array_map('current', $result);
+
+    }
 }
