@@ -3332,3 +3332,9 @@ input, select, a, .transition,
 .language-proficiency .list-inline-item:not(:last-child) {
 	margin-right: 0;
 }
+
+/* Custom Styles */
+
+.navbar-brand img {
+    max-width: 200px;
+}

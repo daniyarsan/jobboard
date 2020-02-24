@@ -48,51 +48,49 @@ class SecurityController extends AbstractController
         Request $request,
         EventDispatcherInterface $eventDispatcher)
     {
+        $user = new User();
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        $formCompany = $this->createForm(UserType::class, $user);
+        $formCompany->handleRequest($request);
+
         $group = $request->get('group');
 
-        if (!$group) {
-            return $this->render('security/register-choose.html.twig');
-        } else {
-            $user = new User();
-            $form = $this->createForm(UserType::class, $user);
-            $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
+            $user->setPassword($password);
+            $user->setConfirmationCode(sha1(rand()));
+            switch ($group) {
+                case 'company':
+                    $user->setRoles([User::ROLE_COMPANY]);
+                    $user->setCompany(new Company());
+                    break;
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
-                $user->setPassword($password);
-                $user->setConfirmationCode($helper->getConfirmationCode());
-
-                switch ($group) {
-                    case 'company':
-                        $user->setRoles([User::ROLE_COMPANY]);
-                        $user->setCompany(new Company());
-                        break;
-
-                    case 'profile':
-                        $user->setRoles([User::ROLE_PROFILE]);
-                        $user->setProfile(new Profile());
-                        break;
-                }
-
-                try {
-                    $entityManager = $this->getDoctrine()->getManager();
-                    $entityManager->persist($user);
-                    $entityManager->flush();
-                } catch (\Exception $e) {
-                    $this->get('session')->getFlashBag()->add('danger', $e->getMessage());
-                }
-
-                $userRegisteredEvent = new RegisteredUserEvent($user);
-                $eventDispatcher->dispatch(RegisteredUserEvent::NAME, $userRegisteredEvent);
-
-                return $this->redirectToRoute('security_success');
+                case 'profile':
+                    $user->setRoles([User::ROLE_PROFILE]);
+                    $user->setProfile(new Profile());
+                    break;
             }
 
-            return [
-                'form' => $form->createView(),
-                'group' => $group
-            ];
+            try {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
+            } catch (\Exception $e) {
+                $this->get('session')->getFlashBag()->add('danger', $e->getMessage());
+            }
+
+            $userRegisteredEvent = new RegisteredUserEvent($user);
+            $eventDispatcher->dispatch(RegisteredUserEvent::USER_REGISTER, $userRegisteredEvent);
+
+            return $this->redirectToRoute('security_success');
         }
+
+        return [
+            'form' => $form->createView(),
+            'formCompany' => $form->createView()
+        ];
     }
 
     /**

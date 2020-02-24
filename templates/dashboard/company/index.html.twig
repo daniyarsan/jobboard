@@ -1,4 +1,4 @@
-{% extends 'base-dashboard.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}{% endblock %}
 
@@ -113,7 +113,8 @@
                                 </div>
                             </div>
                         </div>
-                        {% include "my-company/_side-menu.html.twig" %}
+
+                        {% include "dashboard/_parts/menu-side-company.html.twig" %}
                     </div>
                 </div>
             </div>
