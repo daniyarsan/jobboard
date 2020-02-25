@@ -193,11 +193,10 @@ class FeedController extends AbstractController
     {
         /* TODO:  Make an opportunity to load file and import from local file */
 //        file_exists($this->getParameter('import.xml.dir') . '/file.xml');
-        $em = $this->getDoctrine()->getManager();
 
+        $em = $this->getDoctrine()->getManager();
         $xmlParser = new XmlParser($em, $feed);
         $xmlParser->parse($feed->getUrl());
-
 
         return $this->redirectToRoute('admin_feeds_index');
     }

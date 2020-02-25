@@ -81,6 +81,11 @@ class Job
     private $extraFields = [];
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $feedId;
+
+    /**
      * @ORM\Column(name="created", type="datetime")
      */
     private $created;
@@ -321,6 +326,22 @@ class Job
         $this->extraFields = $extraFields;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFeedId()
+    {
+        return $this->feedId;
+    }
+
+    /**
+     * @param mixed $feedId
+     */
+    public function setFeedId($feedId): void
+    {
+        $this->feedId = $feedId;
     }
 
 }

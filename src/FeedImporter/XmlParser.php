@@ -43,7 +43,7 @@ class XmlParser
                 }
             }
 
-
+            $job->setFeedId($this->feed->getId());
             $this->em->persist($job);
             $this->em->flush($job);
 
