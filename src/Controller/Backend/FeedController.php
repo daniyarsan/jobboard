@@ -70,6 +70,7 @@ class FeedController extends AbstractController
     public function new(Request $request, TranslatorInterface $translator)
     {
         $feed = new Feed();
+
         $form = $this->createForm(FeedType::class, $feed);
         $form->handleRequest($request);
 
@@ -128,7 +129,7 @@ class FeedController extends AbstractController
     public function edit(Request $request, Feed $feed, TranslatorInterface $translator)
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(FeedType::class, $feed);
+        $form = $this->createForm(FeedType::class, $feed, ['feedId' => $feed->getId()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

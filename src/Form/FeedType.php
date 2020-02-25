@@ -14,6 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FeedType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -32,8 +33,12 @@ class FeedType extends AbstractType
                 ]
             ]);
 
-        $builder
-            ->add('mapper', MappingType::class);
+
+        if ($options['feedId']) {
+            $builder
+                ->add('mapper', MappingType::class, ['feedId' => $options['feedId']]);
+        }
+
 
         $builder
             ->add('save', SubmitType::class)
@@ -44,6 +49,7 @@ class FeedType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Feed::class,
+            'feedId' => null,
         ]);
     }
 }

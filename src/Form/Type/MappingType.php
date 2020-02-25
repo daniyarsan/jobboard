@@ -2,11 +2,13 @@
 
 namespace App\Form\Type;
 
+use App\Entity\Feed;
 use App\Repository\FieldRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MappingType extends AbstractType
 {
@@ -23,18 +25,25 @@ class MappingType extends AbstractType
     {
         $builder->setRequired(false);
 
-        $feedRepo = $this->em->getRepository('App:Feed');
-        $importFields = $feedRepo->findDefaultMappingFields();
-
+        $feedRepo = $this->em->getRepository('App:Feed')->find($options['feedId']);
+        $importFields = $feedRepo->getMapperDefault();
 
         if (!empty($importFields)) {
-            foreach (array_keys(unserialize($importFields[0])) as $field) {
+            foreach (array_keys($importFields) as $field) {
                 $builder
                     ->add($field, TextType::class);
             }
         }
     }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'feedId' => null
+        ]);
+    }
 }
+
 
 //[
 //    'choices' => array_combine(
