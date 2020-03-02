@@ -191,7 +191,7 @@ class FeedController extends AbstractController
      */
     public function import(Feed $feed)
     {
-        /* TODO:  Make an opportunity to load file and import from local file */
+        /* TODO: OPTIMIZATION Make an opportunity to load file and import from local file */
 //        file_exists($this->getParameter('import.xml.dir') . '/file.xml');
 
         $em = $this->getDoctrine()->getManager();

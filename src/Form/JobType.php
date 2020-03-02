@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Field;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -15,12 +16,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class JobType extends AbstractType
 {
+    protected $em;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->em = $entityManager;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /** @var \Doctrine\ORM\EntityManager $entityManager */
-        $entityManager = $options[ 'entity_manager' ];
 
-        $fieldRepository = $entityManager->getRepository('App:Field');
+        $fieldRepository = $this->em->getRepository('App:Field');
         $jobFields = $fieldRepository->findAll();
 
         $builder
@@ -53,9 +59,6 @@ class JobType extends AbstractType
                 'mapped' => false
             ]);
         }
-
-        $builder->add('save', SubmitType::class)
-            ->add('saveAndExit', SubmitType::class, ['label' => 'Save and Exit']);
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -63,6 +66,5 @@ class JobType extends AbstractType
         $resolver->setDefaults([
             'data_class' => 'App\Entity\Job'
         ]);
-        $resolver->setRequired('entity_manager');
     }
 }

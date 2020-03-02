@@ -48,9 +48,7 @@ class CompanyType extends AbstractType
             ->add('longitude', TextType::class)
             ->add('description', TextareaType::class, [
                 'attr' => ['class' => 'wysiwyg']
-            ])
-            ->add('save', SubmitType::class)
-            ->add('saveAndExit', SubmitType::class, ['label' => 'Save and Exit']);
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

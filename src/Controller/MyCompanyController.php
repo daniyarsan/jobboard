@@ -96,7 +96,7 @@ class MyCompanyController extends AbstractController
         }
         $job = new Job();
 
-        $form = $this->createForm(JobType::class, $job, ['user' => $this->getUser()]);
+        $form = $this->createForm(JobType::class, $job);
 
         $form->handleRequest($request);
 

@@ -16,11 +16,6 @@ class MenuGenerator
     public function profileSideMenu()
     {
         $menus = [
-            ['title' => 'My Profile', 'url' => 'my_profile_index', 'icon' => 'fe-airplay', 'sub' => []],
-            ['title' => 'Companies', 'url' => '', 'icon' => 'fe-pocket', 'sub' => [
-                ['title' => 'Companies', 'url' => 'admin_companies_index'],
-                ['title' => 'Jobs', 'url' => 'admin_jobs_index']
-            ]]
         ];
 
         return $this->view->render('dashboard/_parts/menu-side-profile.html.twig', ['menus' => $menus]);
@@ -29,9 +24,12 @@ class MenuGenerator
     public function companySideMenu()
     {
         $menus = [
-            'my_profile_index' => 'Dashboard',
-            'my_profile_settings' => 'My Profile'
+            ['title' => 'Dashboard', 'url' => 'my_company_index', 'icon' => '', 'sub' => []],
+            ['title' => 'Edit Profile', 'url' => 'my_company_settings', 'icon' => '', 'sub' => []],
+            ['title' => 'My Jobs', 'url' => 'my_company_jobs', 'icon' => '', 'sub' => []],
+            ['title' => 'Post New Job', 'url' => 'my_company_job_new', 'icon' => '', 'sub' => []]
         ];
+
         return $this->view->render('dashboard/_parts/menu-side-company.html.twig', ['menus' => $menus]);
     }
 

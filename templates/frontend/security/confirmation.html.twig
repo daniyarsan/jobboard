@@ -1,17 +1,16 @@
 {% extends 'base-index.html.twig' %}
 {% block body %}
-    <div class="padding-top-90 padding-bottom-90 access-page-bg">
+    <section class="clearfix job-bg delete-page">
         <div class="container">
-            <div class="row">
-                <div class="col-xl-4 col-md-6">
-                    <div class="access-form">
-                        <div class="form-header">
-                            <h5><i data-feather="edit"></i>Success</h5>
-                        </div>
-                    </div>
+            <div class="close-account text-center">
+                <div class="delete-account section">
+                    <h2>Delete Your Account</h2>
+                    <h4>Are you sure, you want to delete your account?</h4>
+                    <a href="#" class="btn">Delete Account</a>
+                    <a href="#" class="btn cancle">Cancle</a>
                 </div>
             </div>
-        </div>
-    </div>
+        </div><!-- container -->
+    </section>
 {% endblock %}
 

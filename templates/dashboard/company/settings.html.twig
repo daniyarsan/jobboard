@@ -1,4 +1,5 @@
-{% extends 'dashboard/base.html.twig' %}
+{% extends 'dashboard/base-company.html.twig' %}
+
 {% form_theme form _self %}
 
 {% block title %}{% endblock %}
@@ -10,75 +11,81 @@
     {% endspaceless %}
 {% endblock %}
 
-{% block body %}
-    <!-- Breadcrumb -->
-    <div class="alice-bg padding-top-70 padding-bottom-70">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="breadcrumb-area">
-                        <h1>Employer Dashboard</h1>
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Employer Dashboard</li>
-                            </ol>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Breadcrumb End -->
+{% block profile_content %}
 
-    <div class="alice-bg section-padding-bottom">
-        <div class="container no-gliters">
-            <div class="row no-gliters">
-                <div class="col">
-                    <div class="dashboard-container">
-                        <div class="dashboard-content-wrapper">
-                            {% include '_parts/messages.html.twig' %}
-
-                            <form action="{{ path('my_company_settings') }}" class="dashboard-form" method="POST" enctype="multipart/form-data">
-                                <div class="dashboard-section upload-profile-photo">
-                                    {{ form_widget(form.logo) }}
-                                </div>
-
-                                <div class="dashboard-section basic-info-input">
-                                    <h4><i data-feather="user-check"></i>Basic Info</h4>
-                                    {{ form(form) }}
-
-                                    <div class="form-group row">
-                                        <label class="col-sm-3 col-form-label"></label>
-                                        <div class="col-sm-9">
-                                            <button class="button">Save Change</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-
-                            <div class="dashboard-section basic-info-input">
-                                <h4><i data-feather="lock"></i>Change Password</h4>
-                                <form action="{{ path('my_company_password') }}" class="dashboard-form" method="POST">
-                                    {{ form_row(userForm.email) }}
-                                    {{ form_row(userForm.plainPassword) }}
-                                    <div class="form-group row">
-                                        <label class="col-sm-3 col-form-label"></label>
-                                        <div class="col-sm-9">
-                                            <button class="button">Save Change</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        {{ menuGenerator.adminSideMenu()|raw }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
+    {% include '_parts/messages.html.twig' %}
 
     {{ form_start(form) }}
+
+    <div class="profile section clearfix">
+        {{ form_row(form.logo) }}
+
+        <div class="profile-logo">
+            <img class="img-fluid" src="images/job/resume.jpg" alt="Image">
+        </div>
+        <div class="profile-info">
+            <h1>Jhon Doe</h1>
+            <address>
+                <p>Address: 123 West 12th Street, Suite 456 New York, NY 123456 <br> Phone: +012 345 678 910 <br> Email:<a href="#"> <span class="__cf_email__" data-cfemail="c4adb0b7a9a184b7b1b6beada8a1a3a1a1afeaa7aba9">[email&nbsp;protected]</span></a></p>
+            </address>
+        </div>
+    </div>
+
+    <div class="profile job-profile">
+        <div class="user-pro-section">
+            <!-- profile-details -->
+            <div class="profile-details section">
+                <h2>Profile Details</h2>
+                {{ form(form) }}
+            </div><!-- profile-details -->
+
+            <!-- change-password -->
+            <div class="change-password section">
+                <h2>Change password</h2>
+                <!-- form -->
+                {{ form_row(userForm.plainPassword) }}
+
+                <div class="buttons">
+                    <button type="submit" class="btn">Save</button>
+                </div>
+            </div><!-- change-password -->
+        </div><!-- user-pro-edit -->
+    </div>
+
     {{ form_end(form) }}
+
+{#    <form action="{{ path('my_company_settings') }}" class="dashboard-form" method="POST" enctype="multipart/form-data">
+        <div class="dashboard-section upload-profile-photo">
+            {{ form_widget(form.logo) }}
+        </div>
+
+        <div class="dashboard-section basic-info-input">
+            <h4><i data-feather="user-check"></i>Basic Info</h4>
+
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9">
+                    <button class="button">Save Change</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="dashboard-section basic-info-input">
+        <h4><i data-feather="lock"></i>Change Password</h4>
+        <form action="{{ path('my_company_password') }}" class="dashboard-form" method="POST">
+            {{ form_row(userForm.email) }}
+            {{ form_row(userForm.plainPassword) }}
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9">
+                    <button class="button">Save Change</button>
+                </div>
+            </div>
+        </form>
+    </div>#}
+
+
+
+
 {% endblock %}

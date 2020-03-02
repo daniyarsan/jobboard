@@ -1857,7 +1857,9 @@ a.verified i {
 }
 
 .profile a.btn,
-.buttons a.btn {
+.buttons a.btn,
+.buttons button.btn
+{
     background-color: #00a651;
     color: #fff;
     padding: 6px 26px 7px;
@@ -1878,7 +1880,9 @@ a.verified i {
 }
 
 .profile a.btn:hover,
-.buttons a.btn:hover {
+.buttons a.btn:hover,
+.buttons button.btn:hover
+{
 	background-color: transparent;
 	color: #00a651;
 	border: 1px solid #00a651;

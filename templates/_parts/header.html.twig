@@ -10,25 +10,21 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="nav navbar-nav">
+                    <li><a href="">Apply</a></li>
                     <li><a href="{{ path('jobs_index') }}">Jobs</a></li>
-                    <li><a href="{{ path('companies_index') }}">Companies</a></li>
-                    <li><a href="{{ path('profiles_index') }}">Profiles</a></li>
+                    <li><a href="{{ path('companies_index') }}">Agencies</a></li>
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Resources<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="profile.html">FAQ</a></li>
+                            <li><a href="profile.html">Articles</a></li>
+                            <li><a href="profile.html">ETC</a></li>
+                        </ul>
+                    </li>
+
                     <li><a href="{{ path('blog') }}">Blog</a></li>
 
-                    {#<li class="dropdown"><a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Pages<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="profile.html">Profile</a></li>
-                            <li><a href="post-resume.html">Post Resume</a></li>
-                            <li><a href="post.html">Job Post</a></li>
-                            <li><a href="edit-resume.html">Edit Resume</a></li>
-                            <li><a href="profile-details.html">profile Details</a></li>
-                            <li><a href="bookmark.html">Bookmark</a></li>
-                            <li><a href="applied-job.html">Applied Job</a></li>
-                            <li><a href="delete-account.html">Close Account</a></li>
-                            <li><a href="signup.html">Job Signup</a></li>
-                            <li><a href="signin.html">Job Signin</a></li>
-                        </ul>
-                    </li>#}
+
                 </ul>
             </div>
 

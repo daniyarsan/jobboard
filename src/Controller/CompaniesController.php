@@ -17,17 +17,17 @@ class CompaniesController extends AbstractController
      */
     public function index(Request $request, PaginatorInterface $pagination)
     {
-        $filter = $this->createForm(FilterType::class, [], ['router' => $this->get('router')]);
-        $filter->handleRequest($request);
+//        $filter = $this->createForm(FilterType::class, [], ['router' => $this->get('router')]);
+//        $filter->handleRequest($request);
 
         $companies = $this->getDoctrine()->getRepository('App:Company')->findByFilterQuery($request);
         $companies = $pagination->paginate($companies, $request->query->getInt('page', 1), 10);
 
         return $this->render(
-            'companies/index.html.twig',
+            'frontend/companies/index.html.twig',
             [
                 'companies' => $companies,
-                'filter' => $filter->createView(),
+//                'filter' => $filter->createView(),
                 'jobRepository' => $this->getDoctrine()->getRepository('App:Job')
             ]
         );
