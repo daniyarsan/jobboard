@@ -1,4 +1,3 @@
-###> symfony/framework-bundle ###
 /.env
 /.env.local
 /public/bundles/
@@ -7,3 +6,4 @@
 /.idea/
 /public/uploads/
 /templ/
+/.htaccess
