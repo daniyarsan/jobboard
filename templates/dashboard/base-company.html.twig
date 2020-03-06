@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
     <section class="clearfix job-bg  ad-profile-page">
         <div class="container">
             <div class="breadcrumb-section">
@@ -15,7 +14,11 @@
             <div class="job-profile section">
                 <div class="user-profile">
                     <div class="user-images">
-                        <img src="images/user.jpg" alt="User Images" class="img-fluid">
+                        {% if app.user.company.logoName %}
+                            <img src="{{ app.user.company.logoName }}" alt="{{ app.user.company.name }}" class="img-fluid">
+                        {% else %}
+                            <img src="{{ asset('frontend/images/no-company.png') }}" alt="{{ app.user.company.name }}" class="img-fluid">
+                        {% endif %}
                     </div>
                     <div class="user">
                         <h2>Hello, <a href="#">{{ app.user.company.name }}</a></h2>

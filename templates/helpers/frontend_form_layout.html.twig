@@ -1,1 +1,9 @@
 {% use "bootstrap_4_layout.html.twig" %}
+
+
+{% block file_widget %}
+    {% spaceless %}
+        {% set type = type|default('file') %}
+        <input type="{{ type }}" {{ block('widget_attributes') }} class="file-input"/>
+    {% endspaceless %}
+{% endblock %}

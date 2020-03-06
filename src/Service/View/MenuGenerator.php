@@ -27,7 +27,8 @@ class MenuGenerator
             ['title' => 'Dashboard', 'url' => 'my_company_index', 'icon' => '', 'sub' => []],
             ['title' => 'Edit Profile', 'url' => 'my_company_settings', 'icon' => '', 'sub' => []],
             ['title' => 'My Jobs', 'url' => 'my_company_jobs', 'icon' => '', 'sub' => []],
-            ['title' => 'Post New Job', 'url' => 'my_company_job_new', 'icon' => '', 'sub' => []]
+            ['title' => 'Post New Job', 'url' => 'my_company_job_new', 'icon' => '', 'sub' => []],
+            ['title' => 'Logout', 'url' => 'security_logout', 'icon' => '', 'sub' => []]
         ];
 
         return $this->view->render('dashboard/_parts/menu-side-company.html.twig', ['menus' => $menus]);

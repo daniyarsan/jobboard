@@ -22,7 +22,6 @@ class CompanyType extends AbstractType
     {
         $builder
             ->setRequired(false)
-            ->add('name', TextType::class)
             ->add('logo', FileType::class, [
                 'mapped' => false,
                 'required' => false,
@@ -38,6 +37,8 @@ class CompanyType extends AbstractType
                     ])
                 ]
             ])
+            ->add('name', TextType::class)
+
             ->add('email', EmailType::class)
             ->add('website', TextType::class)
             ->add('phone', TextType::class)

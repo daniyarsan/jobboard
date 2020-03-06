@@ -2,7 +2,11 @@
     <div class="item-info">
         <div class="item-image-box">
             <div class="item-image">
-                <a href="job-details.html"><img src="images/job/3.png" alt="Image" class="img-fluid"></a>
+                {% if job.company.logoName %}
+                    <img src="{{ job.company.logoName }}" alt="{{ app.user.company.name }}" class="img-fluid">
+                {% else %}
+                    <img src="{{ asset('frontend/images/no-company.png') }}" alt="{{ app.user.company.name }}" class="img-fluid">
+                {% endif %}
             </div><!-- item-image -->
         </div>
 
@@ -16,9 +20,9 @@
                 </ul>
             </div><!-- ad-meta -->
         </div><!-- ad-info -->
-        <div class="close-icon">
+        <div class="action-icon">
             <a href="{{ path('job_details', {'id' : job.id}) }}" title="Preview"><i class="fa fa-eye" aria-hidden="true"></i></a>
-            <a href="{{ path('my_company_job_edit', {'id': job.id}) }}" title="Edit"><i class="fa fa-pen" aria-hidden="true"></i></a>
+            <a href="{{ path('my_company_job_edit', {'id': job.id}) }}" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>
             <a href="#" data-toggle="modal" data-target="#modal-delete-job" title="Delete"><i class="fa fa-window-close" aria-hidden="true"></i></a>
         </div>
     </div><!-- item-info -->

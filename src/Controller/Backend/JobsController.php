@@ -4,7 +4,7 @@ namespace App\Controller\Backend;
 
 use App\Entity\Job;
 use App\Form\AdminFilterType;
-use App\Form\JobType;
+use App\Form\AdminJobType;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -100,7 +100,7 @@ class JobsController extends AbstractController
     public function create(Request $request, TranslatorInterface $translator)
     {
         $job = new Job();
-        $form = $this->createForm(JobType::class, $job);
+        $form = $this->createForm(AdminJobType::class, $job);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -191,7 +191,7 @@ class JobsController extends AbstractController
     private function createJobTypeForm($entity) {
         $entityManager = $this->getDoctrine()->getManager();
 
-        return $this->createForm(JobType::class, $entity, [
+        return $this->createForm(AdminJobType::class, $entity, [
             'entity_manager' => $entityManager
         ]);
     }
