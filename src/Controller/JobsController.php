@@ -46,7 +46,7 @@ class JobsController extends AbstractController
             'method' => 'POST',
         ));
 
-        return $this->render('jobs/job-details.html.twig',
+        return $this->render('frontend/jobs/job-details.html.twig',
             [
                 'job' => $job,
                 'applyForm' => $form->createView()

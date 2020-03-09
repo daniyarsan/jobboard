@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/my-company", name="my_company")
@@ -50,7 +50,7 @@ class MyCompanyController extends AbstractController
                 $em->persist($company);
                 $em->flush();
                 $this->addFlash('success', $translator->trans('Company details has been successfully saved.'));
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 $this->addFlash('danger', $translator->trans('An error occured when saving object.'));
             }
 
@@ -155,7 +155,7 @@ class MyCompanyController extends AbstractController
             JobType::class,
             $job,
             [
-                'user' => $this->getUser(),
+                'user' => $this->getUser()
             ]
         );
 
@@ -214,11 +214,11 @@ class MyCompanyController extends AbstractController
     {
         $payments = $this->getParameter('app.payments');
 
-        if ($payments['pay_for_publish']['enabled']) {
+        if ($payments[ 'pay_for_publish' ][ 'enabled' ]) {
             $session = $request->getSession();
             if ($session->get('products')) {
                 foreach ($session->get('products') as $product) {
-                    if ($product['type'] == 'pay_for_publish' && $product['job_id'] == $job->getId()) {
+                    if ($product[ 'type' ] == 'pay_for_publish' && $product[ 'job_id' ] == $job->getId()) {
                         $this->addFlash('danger', $this->get('translator')->trans('Product is already in cart.'));
 
                         return $this->redirectToRoute('job_my');
@@ -229,8 +229,8 @@ class MyCompanyController extends AbstractController
             $product = [
                 'type' => 'pay_for_publish',
                 'job_id' => $job->getId(),
-                'price' => $payments['pay_for_publish']['price'],
-                'duration' => $payments['pay_for_publish']['duration'],
+                'price' => $payments[ 'pay_for_publish' ][ 'price' ],
+                'duration' => $payments[ 'pay_for_publish' ][ 'duration' ],
             ];
 
             if ($session->has('products')) {
@@ -289,12 +289,12 @@ class MyCompanyController extends AbstractController
     {
         $payments = $this->getParameter('app.payments');
 
-        if ($payments['pay_for_featured']['enabled']) {
+        if ($payments[ 'pay_for_featured' ][ 'enabled' ]) {
             $session = $request->getSession();
 
             if ($session->get('products')) {
                 foreach ($session->get('products') as $product) {
-                    if ($product['type'] == 'pay_for_featured' && $product['job_id'] == $job->getId()) {
+                    if ($product[ 'type' ] == 'pay_for_featured' && $product[ 'job_id' ] == $job->getId()) {
                         $this->addFlash('danger', $this->get('translator')->trans('Product is already in cart.'));
 
                         return $this->redirectToRoute('my_company_jobs');
@@ -305,8 +305,8 @@ class MyCompanyController extends AbstractController
             $product = [
                 'type' => 'pay_for_featured',
                 'job_id' => $job->getId(),
-                'price' => $payments['pay_for_featured']['price'],
-                'duration' => $payments['pay_for_featured']['duration'],
+                'price' => $payments[ 'pay_for_featured' ][ 'price' ],
+                'duration' => $payments[ 'pay_for_featured' ][ 'duration' ],
             ];
 
             if ($session->has('products')) {

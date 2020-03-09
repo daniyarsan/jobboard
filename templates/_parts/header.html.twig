@@ -21,10 +21,7 @@
                             <li><a href="profile.html">ETC</a></li>
                         </ul>
                     </li>
-
                     <li><a href="{{ path('blog') }}">Blog</a></li>
-
-
                 </ul>
             </div>
 
@@ -43,9 +40,11 @@
                         {% endif %}
                     {% endif %}
                 </ul><!-- sign-in -->
-
-                <a href="#" class="btn">Apply Now</a>
-
+                {% if is_granted('IS_AUTHENTICATED_FULLY') and app.user.hasRole('ROLE_PROFILE') %}
+                    <a href="#" class="btn">Apply Now</a>
+                {% else %}
+                    <a href="{{ path('my_company_job_new') }}" class="btn">Post Job</a>
+                {% endif %}
             </div>
             <!-- nav-right -->
         </div><!-- container -->

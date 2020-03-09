@@ -3,149 +3,103 @@
 {% block title %}{% endblock %}
 
 {% block body %}
-    <!-- Candidates Details -->
-    <div class="alice-bg padding-top-60 section-padding-bottom">
+    <section class="job-bg page job-details-page">
         <div class="container">
-            {% include "_parts/messages.html.twig" %}
-            <div class="row">
-                <div class="col">
-                    <div class="job-listing-details">
-                        <div class="job-title-and-info">
-                            <div class="title">
-                                <div class="thumb">
-                                    {% if job.company.logoImage %}
-                                        <a href="{{ path('company_details', {id: job.company.getId() }) }}">
-                                            <img src="{{ vich_uploader_asset(company, 'logoImage') }}" class="img-fluid" alt="">
-                                        </a>
-                                    {% else %}
-                                        <img src="{{ asset('images/no-company.png') }}" class="img-fluid" alt="">
-                                    {% endif %}
-                                </div>
-                                <div class="title-body">
-                                    <h4>{{ job.title }}</h4>
-                                    <div class="info">
-                                        <span class="company"><a href="{{ path('company_details', {id : job.company.id}) }}"><i data-feather="briefcase"></i>{{ job.company }}</a></span>
-                                        <span class="office-location"><a href="#"><i data-feather="map-pin"></i>{{ job.getCountry() }}</a></span>
-                                        <span class="job-type full-time"><a href="#"><i data-feather="clock"></i>{{ job.contract }}</a></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="buttons">
-                                <a class="save" href="#"><i data-feather="heart"></i>Save Job</a>
-                                <a href="#" class="apply" data-url="{{ path('application_job', {'id' : job.id}) }}" data-toggle="modal" data-target="#apply-popup-id">Apply Now</a>
-                            </div>
-                        </div>
-                        <div class="details-information section-padding-60">
-                            <div class="row">
-                                <div class="col-xl-7 col-lg-8">
-                                    <div class="description details-section">
-                                        <h4><i data-feather="align-left"></i>Job Description</h4>
-                                        {{ job.description|raw }}
-                                    </div>
+            <div class="breadcrumb-section">
+                <ol class="breadcrumb">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="job-list.html">Engineer/Architects</a></li>
+                    <li>UI & UX Designer</li>
+                </ol><!-- breadcrumb -->
+                <h2 class="title">Creative & Design</h2>
+            </div><!-- breadcrumb -->
 
-                                    <div class="responsibilities details-section">
-                                        <h4><i data-feather="zap"></i>Responsibilities</h4>
-                                        <ul>
-                                            <li>The applicants should have experience in the following areas</li>
-                                            <li>Skills on M.S Word, Excel, and Integrated Accounting package i.e.
-                                                Software
-                                            </li>
-                                            <li>Have sound knowledge of commercial activities.</li>
-                                            <li>Should have vast knowledge in IAS/ IFRS, Company Act, Income Tax, VAT.
-                                            </li>
-                                            <li>Good verbal and written communication skills.</li>
-                                            <li>Leadership, analytical, and problem-solving abilities.</li>
-                                        </ul>
-                                    </div>
-                                    <div class="edication-and-experience details-section">
-                                        <h4><i data-feather="book"></i>Education + Experience</h4>
-                                        <ul>
-                                            <li>M.Com (Accounting) / M.B.S / M.B.A under National University with CA
-                                                course complete.
-                                            </li>
-                                            <li>M.S (Statistics) any Public University / National University.</li>
-                                            <li>Masters of library science any Public University.</li>
-                                            <li>2 to 3 year(s) Experiance</li>
-                                            <li>Females candidate are discourage to apply.</li>
-                                        </ul>
-                                    </div>
-                                    <div class="other-benifit details-section">
-                                        <h4><i data-feather="gift"></i>Other Benefits</h4>
-                                        <ul>
-                                            <li>Health and life insurance</li>
-                                            <li>2 days of weekend</li>
-                                            <li>2 annual performanc Bonuses</li>
-                                            <li>Lunch &amp; Snacks</li>
-                                        </ul>
-                                    </div>
-                                    <div class="job-apply-buttons">
-                                        <a href="#" class="apply" data-toggle="modal" data-target="#apply-popup-id">Apply
-                                            Online</a>
-                                        <a href="#" class="email"><i data-feather="mail"></i>Email Job</a>
-                                    </div>
-                                </div>
-                                <div class="col-xl-4 offset-xl-1 col-lg-4">
-                                    <div class="information-and-share">
-                                        <div class="job-summary">
-                                            <h4>Job Summary</h4>
-                                            <ul>
-                                                <li><span>Published on:</span> {{ job.getCreated()|date("F jS") }}</li>
-                                                <li><span>Vacancy:</span> 08</li>
-                                                <li><span>Employment Status:</span> Full-time</li>
-                                                <li><span>Experience:</span> 2 to 3 year(s)</li>
-                                                <li><span>Job Location:</span> {{ job.country }}</li>
-                                                <li><span>Salary:</span> $32k - $36k</li>
-                                                <li><span>Gender:</span> Any</li>
-                                                <li><span>Application Deadline:</span> Oct 15, 2018</li>
-                                            </ul>
-                                        </div>
-                                        <div class="share-job-post">
-                                            <span class="share"><i class="fas fa-share-alt"></i>Share:</span>
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-twitter"></i></a>
-                                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                            <a href="#"><i class="fab fa-google-plus-g"></i></a>
-                                            <a href="#"><i class="fab fa-pinterest-p"></i></a>
-                                            <a href="#" class="add-more"><span class="ti-plus"></span></a>
-                                        </div>
-                                        <div class="buttons">
-                                            <a href="#" class="button print"><i data-feather="printer"></i>Print Job</a>
-                                            <a href="#" class="button report"><i data-feather="flag"></i>Report Job</a>
-                                        </div>
-                                        <div class="job-location">
-                                            <h4>Job Location</h4>
-                                            <div id="map-area">
-                                                <div class="cp-map" id="location" data-lat="40.713355" data-lng="-74.005535" data-zoom="10"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="job-details">
+                {% include "_parts/messages.html.twig" %}
+
+
+                <div class="section job-ad-item">
+                    <div class="item-info">
+                        <div class="item-image-box">
+                            <div class="item-image">
+                                {% if job.company.logoName %}
+                                    <a href="{{ path('company_details', {id: job.company.getId() }) }}">
+                                        <img src="{{ assetFinder.logoPath(job.company.logoName) }}" class="img-fluid" alt="">
+                                    </a>
+                                {% else %}
+                                    <img src="{{ asset('images/no-company.png') }}" class="img-fluid" alt="">
+                                {% endif %}
+                            </div><!-- item-image -->
                         </div>
-                        <div class="row">
-                            <div class="col-xl-7 col-lg-8">
-                                <div class="company-information details-section">
-                                    <h4><i data-feather="briefcase"></i>About the Company</h4>
-                                    <ul>
-                                        <li><span>Company Name:</span> The Oreo Company Ltd.</li>
-                                        <li><span>Address:</span> Queens, NY 11375 USA</li>
-                                        <li><span>Website:</span> <a href="#">www.theoreoltd.com</a></li>
-                                        <li><span>Company Profile:</span></li>
-                                        <li>It was popularised in the 1960s with the release of Letraset sheets
-                                            containing Lorem Ipsum passages, and more recently with desktop publishing
-                                            software like Aldus PageMaker including versions of Lorem Ipsum looked up
-                                            one of the more obscure Latin words, consectetur.
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+
+                        <div class="ad-info">
+                            <span><span><a href="#" class="title">{{ job.title }}</a></span> @ <a href="{{ path('company_details', {id : job.company.id}) }}"> {{ job.company.name }}</a></span>
+                            <div class="ad-meta">
+                                <ul>
+                                    <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ job.country }}</a></li>
+                                    <li><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i>Full Time</a></li>
+                                    <li><i class="fa fa-money" aria-hidden="true"></i>{{ job.salary }}</li>
+                                    <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>HR/Org. Development</a></li>
+                                    <li><i class="fa fa-hourglass-start" aria-hidden="true"></i>Application Deadline : Jan 10, 2017</li>
+                                </ul>
+                            </div><!-- ad-meta -->
+                        </div><!-- ad-info -->
+                    </div><!-- item-info -->
+                    <div class="social-media">
+                        <div class="button">
+                            <a href="#" class="btn btn-primary" data-url="{{ path('application_job', {'id' : job.id}) }}" data-toggle="modal" data-target="#apply-popup-id"><i class="fa fa-briefcase" aria-hidden="true"></i> Apply Now</a>
+                            <a href="#" class="btn btn-primary bookmark"><i class="fa fa-bookmark-o" aria-hidden="true"></i>Bookmark</a>
                         </div>
+
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Candidates Details End -->
+                </div><!-- job-ad-item -->
+
+                <div class="job-details-info">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="section job-description">
+                                <div class="description-info">
+                                    <h1>Description</h1>
+                                    {{ job.description|raw }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="section job-short-info">
+                                <h1>Short Info</h1>
+                                <ul>
+                                    <li><span class="icon"><i class="fa fa-bolt" aria-hidden="true"></i></span>Posted: 1 day ago</li>
+                                    <li><span class="icon"><i class="fa fa-user-plus" aria-hidden="true"></i></span> Job poster: <a href="#">Lance Ladaga</a></li>
+                                    <li><span class="icon"><i class="fa fa-industry" aria-hidden="true"></i></span>Industry: <a href="#">Marketing and Advertising</a></li>
+                                    <li><span class="icon"><i class="fa fa-line-chart" aria-hidden="true"></i></span>Experience: <a href="#">Entry level</a></li>
+                                    <li><span class="icon"><i class="fa fa-key" aria-hidden="true"></i></span>Job function: Advertising,Design, Art/Creative</li>
+                                </ul>
+                            </div>
+                            <div class="section company-info">
+                                <h1>Company Info</h1>
+                                <ul>
+                                    <li>Compnay Name: <a href="#">{{ job.company.name }}c</a></li>
+                                    <li>Address: {{ job.company.state }}</li>
+                                    <li>Compnay SIze:  2k Employee</li>
+                                    <li>Industry: <a href="#">Technology</a></li>
+                                    <li>Phone: +1234 567 8910</li>
+                                    <li>Email: <a href="#"><span class="__cf_email__" data-cfemail="422b2c242d0226302d32202d3a6c212d2f">[email&#160;protected]</span></a></li>
+                                    <li>Website: <a href="#">www.dropbox.com</a></li>
+                                </ul>
+                                <ul class="share-social">
+                                    <li><a href="#"><i class="fa fa-facebook-official" aria-hidden="true"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-twitter-square" aria-hidden="true"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div><!-- row -->
+                </div><!-- job-details-info -->
+            </div><!-- job-details -->
+        </div><!-- container -->
+    </section><!-- job-details-page -->
 
     {{ render(controller(
         'App\\Controller\\ApplicationController:index',

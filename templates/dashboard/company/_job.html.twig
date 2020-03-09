@@ -3,7 +3,7 @@
         <div class="item-image-box">
             <div class="item-image">
                 {% if job.company.logoName %}
-                    <img src="{{ job.company.logoName }}" alt="{{ app.user.company.name }}" class="img-fluid">
+                    <img src="{{ assetFinder.logoPath(job.company.logoName) }}" alt="{{ app.user.company.name }}" class="img-fluid">
                 {% else %}
                     <img src="{{ asset('frontend/images/no-company.png') }}" alt="{{ app.user.company.name }}" class="img-fluid">
                 {% endif %}

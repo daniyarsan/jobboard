@@ -8,10 +8,10 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AssetFinder
 {
-    public const UPLOADS_DIR = 'uploads';
-    public const RESUMES_DIR = 'resume';
-    public const LOGOS_DIR = 'logo';
-    public const AVATARS_DIR = 'avatar';
+    public const UPLOADS_DIR = '/uploads';
+    public const RESUMES_DIR = '/resume';
+    public const LOGOS_DIR = '/logo';
+    public const AVATARS_DIR = '/avatar';
 
     public function getAvatarPath(string $fileName): string
     {

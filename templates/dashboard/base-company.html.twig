@@ -15,7 +15,7 @@
                 <div class="user-profile">
                     <div class="user-images">
                         {% if app.user.company.logoName %}
-                            <img src="{{ app.user.company.logoName }}" alt="{{ app.user.company.name }}" class="img-fluid">
+                            <img src="{{ assetFinder.logoPath(app.user.company.logoName) }}" alt="{{ app.user.company.name }}" class="img-fluid">
                         {% else %}
                             <img src="{{ asset('frontend/images/no-company.png') }}" alt="{{ app.user.company.name }}" class="img-fluid">
                         {% endif %}
@@ -27,10 +27,10 @@
 
                     <div class="favorites-user">
                         <div class="my-ads">
-                            <a href="applied-job.html">29<small>Apply Job</small></a>
+                            <a href="applied-job.html">{{ app.user.company.jobs|length }}<small>Jobs Posted</small></a>
                         </div>
                         <div class="favorites">
-                            <a href="bookmark.html">18<small>Favorites</small></a>
+                            <a href="bookmark.html">0<small>Applicants</small></a>
                         </div>
                     </div>
                 </div><!-- user-profile -->

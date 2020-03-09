@@ -2,6 +2,10 @@
 
 <ul class="user-menu">
     {% for menu in menus %}
-        <li {{ route == menu.url ? 'class="active"' }}><a href="{% if menu.url is not empty %}{{ path(menu.url) }}{% else %}javascript: void(0);{% endif %}"> {% if menu.icon %}<i class="{{ menu.icon }}"></i>{% endif %} {{ menu.title }}</a></li>
+        <li {{ route == menu.url ? 'class="active"' }}>
+            <a href="{% if menu.url is not empty %}{{ path(menu.url) }}{% else %}javascript: void(0);{% endif %}">
+                {% if menu.icon %}<i class="{{ menu.icon }}"></i>{% endif %} {{ menu.title }}
+            </a>
+        </li>
     {% endfor %}
 </ul>

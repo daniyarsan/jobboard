@@ -2,9 +2,6 @@ security:
     encoders:
         App\Entity\User: bcrypt
 
-    role_hierarchy:
-        ROLE_ADMIN: [ROLE_PROFILE, ROLE_COMPANY]
-        ROLE_SUPER_ADMIN: [ROLE_ADMIN]
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         # used to reload user from session & other features (e.g. switch_user)
