@@ -51,7 +51,6 @@ class JobType extends AbstractType
         /* Adding custom fields to form */
         foreach ($jobFields as $jobField) {
             $builder->add($jobField->getFieldId(), Field::FIELD_TYPE[ $jobField->getType() ], [
-                'mapped' => false
             ]);
         }
     }

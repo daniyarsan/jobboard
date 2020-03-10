@@ -95,9 +95,23 @@ class Job
      */
     private $modified;
 
-    public function __construct()
+    public function __construct($val)
     {
+        var_dump($val);
+        exit;
     }
+
+    public function __get($name)
+    {
+        return isset($this->extraFields[$name]) ? $this->extraFields[$name] : false;
+    }
+
+    public function __set($name, $value)
+    {
+        $this->extraFields[$name] = $value;
+    }
+
+
 
     /**
      * @ORM\PrePersist
@@ -119,6 +133,7 @@ class Job
     {
         return $this->id;
     }
+
 
     public function getTitle(): ?string
     {
