@@ -164,4 +164,15 @@ class JobRepository extends ServiceEntityRepository
             ->getQuery()
             ->execute();
     }
+
+    public function deleteByFeedId($feedId)
+    {
+        $query = $this->createQueryBuilder('job')
+            ->delete()
+            ->where('job.feedId = :feedId')
+            ->setParameter('feedId', $feedId)
+            ->getQuery();
+
+        return $query->execute();
+    }
 }

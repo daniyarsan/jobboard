@@ -81,7 +81,7 @@ class Job
     private $extraFields = [];
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=190, nullable=true)
      */
     private $feedId;
 

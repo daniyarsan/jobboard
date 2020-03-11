@@ -6,6 +6,9 @@ use App\Entity\Feed;
 use App\Form\AdminFilterType;
 use App\Form\FeedType;
 use App\FeedImporter\XmlParser;
+use App\Repository\FeedRepository;
+use App\Repository\JobRepository;
+use App\Service\View\DataTransformer;
 use App\Service\XmlProcessor;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -89,7 +92,7 @@ class FeedController extends AbstractController
                 $em->persist($feed);
                 $em->flush();
                 $this->addFlash('success', $translator->trans('Feed has been successfully updated.'));
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 $this->addFlash('danger', $translator->trans('An error occurred when saving object.'));
             }
 
@@ -127,7 +130,7 @@ class FeedController extends AbstractController
      * @ParamConverter("feed", class="App\Entity\Feed")
      * @Template("admin/feeds/edit.html.twig")
      */
-    public function edit(Request $request, Feed $feed, TranslatorInterface $translator)
+    public function edit(Request $request, Feed $feed, TranslatorInterface $translator, DataTransformer $transformer)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(FeedType::class, $feed, ['feedId' => $feed->getId()]);
@@ -142,10 +145,12 @@ class FeedController extends AbstractController
                 $feed->setMapperDefault($defaultMapper);
                 /* Feed xml with field values */
 
+                /* Add Slug */
+                $feed->setSlug($transformer->slugify($feed->getName()));
                 $em->persist($feed);
                 $em->flush();
                 $this->addFlash('success', $translator->trans('Feed has been successfully updated.'));
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 $this->addFlash('danger', $translator->trans('An error occurred when saving object.'));
             }
 
@@ -190,12 +195,14 @@ class FeedController extends AbstractController
      * @Route("/import/{id}", name="_import", requirements={"id": "\d+"})
      * @ParamConverter("feed", class="App\Entity\Feed")
      */
-    public function import(Feed $feed)
+    public function import(Feed $feed, JobRepository $jobRepository)
     {
         /* TODO: OPTIMIZATION Make an opportunity to load file and import from local file */
 //        file_exists($this->getParameter('import.xml.dir') . '/file.xml');
 
         $em = $this->getDoctrine()->getManager();
+
+        $jobRepository->deleteByFeedId($feed->getSlug());
         $xmlParser = new XmlParser($em, $feed);
         $xmlParser->parse($feed->getUrl());
 

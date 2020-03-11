@@ -21,6 +21,10 @@ class XmlParser
         $this->xmlReader = new \XMLReader();
     }
 
+
+    /**
+     * Parse row by row for performance improvement
+     */
     public function parse()
     {
         $this->xmlReader->open($this->feed->getUrl());
@@ -43,7 +47,8 @@ class XmlParser
                 }
             }
 
-            $job->setFeedId($this->feed->getId());
+            /* For identification purposes */
+            $job->setFeedId($this->feed->getSlug());
             $this->em->persist($job);
             $this->em->flush($job);
 

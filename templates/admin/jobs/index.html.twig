@@ -34,11 +34,14 @@
                 <div class="card-body">
                     <div class="row mb-2">
                         <div class="col-md-2">
-                            <select name="itemsPerPage" id="itemsPerPage" class="form-control select2">
-                                <option value="50">50</option>
-                                <option value="50">300</option>
-                                <option value="50">1000</option>
-                            </select>
+                            <form action="" method="GET" name="itemFilter">
+                                <select name="itemsPerPage" id="itemsPerPage" class="form-control select2" onchange="itemFilter.submit();">
+                                    <option value="50">50</option>
+                                    <option value="300">300</option>
+                                    <option value="1000">1000</option>
+                                </select>
+                            </form>
+
                         </div>
 
                         <div class="col-md-3">
@@ -89,6 +92,7 @@
     {{ parent() }}
 
     <script type="text/javascript">
+
         function itemsBulkAction(action) {
             var form = jQuery("#bulk-table-form");
             form.find("input[name='action']").val(action);
