@@ -31,18 +31,15 @@ class JobType extends AbstractType
 
         $builder
             ->add('title', TextType::class)
-            ->add('country', CountryType::class, [
-                'empty_data' => 'Choose Country',
-            ])
-            ->add('state', TextType::class)
             ->add('salary', IntegerType::class, [
                 'required' => false,
             ])
+            ->add('location', TextType::class)
             ->add('categories', EntityType::class, [
                 'placeholder' => 'Choose Category',
                 'class' => 'App\Entity\Category',
                 'multiple' => true,
-                'required' => false,
+                'required' => false
             ])
             ->add('description', TextareaType::class, [
                 'required' => false

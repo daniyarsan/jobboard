@@ -96,6 +96,11 @@ class Job
     private $modified;
 
     /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Location", cascade={"persist", "remove"})
+     */
+    private $location;
+
+    /**
      * @ORM\PrePersist
      */
     public function onPrePersist()
@@ -313,18 +318,6 @@ class Job
         $this->state = $state;
     }
 
-    public function getExtraFields(): ?array
-    {
-        return $this->extraFields;
-    }
-
-    public function setExtraFields(array $extraFields): self
-    {
-        $this->extraFields = $extraFields;
-
-        return $this;
-    }
-
     /**
      * @return mixed
      */
@@ -351,5 +344,17 @@ class Job
     public function __set($name, $value)
     {
         $this->extraFields[$name] = $value;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?Location $location): self
+    {
+        $this->location = $location;
+
+        return $this;
     }
 }
