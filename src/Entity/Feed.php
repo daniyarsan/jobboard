@@ -64,6 +64,11 @@ class Feed
     private $modified;
 
     /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $slug;
+
+    /**
      * @ORM\PrePersist
      */
     public function onPrePersist()
@@ -202,5 +207,17 @@ class Feed
     public function setCompany($company): void
     {
         $this->company = $company;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 }

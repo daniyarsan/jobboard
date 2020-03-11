@@ -95,24 +95,6 @@ class Job
      */
     private $modified;
 
-    public function __construct($val)
-    {
-        var_dump($val);
-        exit;
-    }
-
-    public function __get($name)
-    {
-        return isset($this->extraFields[$name]) ? $this->extraFields[$name] : false;
-    }
-
-    public function __set($name, $value)
-    {
-        $this->extraFields[$name] = $value;
-    }
-
-
-
     /**
      * @ORM\PrePersist
      */
@@ -359,4 +341,15 @@ class Job
         $this->feedId = $feedId;
     }
 
+    /**
+     * __set and __get is for dynamically create fields and add values to Job Entity
+     */
+    public function __get($name)
+    {
+        return isset($this->extraFields[$name]) ? $this->extraFields[$name] : false;
+    }
+    public function __set($name, $value)
+    {
+        $this->extraFields[$name] = $value;
+    }
 }

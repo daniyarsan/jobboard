@@ -85,6 +85,7 @@ class FeedController extends AbstractController
                 $feed->setMapperDefault($defaultMapper);
                 /* Feed xml with field values */
 
+                $feed->setSlug();
                 $em->persist($feed);
                 $em->flush();
                 $this->addFlash('success', $translator->trans('Feed has been successfully updated.'));
