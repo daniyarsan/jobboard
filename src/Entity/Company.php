@@ -158,7 +158,7 @@ class Company
 
     public function getName(): ?string
     {
-        return $this->name ?? 'Company';
+        return $this->name ?? '';
     }
 
     public function setName(?string $name): self
