@@ -17,6 +17,7 @@ class User implements UserInterface
 {
     public const ROLE_PROFILE = 'ROLE_PROFILE';
     public const ROLE_COMPANY = 'ROLE_COMPANY';
+    public const DEMO_PASSWORD = '121212';
 
     /**
      * @ORM\Id()
@@ -26,12 +27,12 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Profile", mappedBy="user", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Profile", mappedBy="user", cascade={"persist", "remove"})
      **/
     private $profile;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Company", mappedBy="user", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Company", mappedBy="user", cascade={"persist", "remove"})
      */
     private $company;
 

@@ -14,10 +14,10 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserFixtures extends Fixture
 {
-    public const JS_NUM = 20;
+    public const JS_NUM = 3;
 
-    public const EMP_NUM = 20;
-    public const JOBS_NUM = 5;
+    public const EMP_NUM = 3;
+    public const JOBS_NUM = 3;
 
     public const USER_PASS = '121212';
     public const USER_ROLE = 'ROLE_PROFILE';

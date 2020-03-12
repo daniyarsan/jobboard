@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -22,7 +23,7 @@ class Company
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="company", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="company", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
@@ -149,6 +150,15 @@ class Company
     public function setUser($user)
     {
         $this->user = $user;
+    }
+
+    public function initUser(User $user, UserPasswordEncoderInterface $passwordEncoder): void
+    {
+        $user->setEmail($this->getEmail())
+            ->setRoles([User::ROLE_COMPANY]);
+        $password = $passwordEncoder->encodePassword($user, User::DEMO_PASSWORD);
+        $user->setPassword($password);
+        $this->setUser($user);
     }
 
     public function getId(): ?int

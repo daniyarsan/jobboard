@@ -3,6 +3,8 @@
 namespace App\Controller\Backend;
 
 use App\Entity\Company;
+use App\Entity\User;
+use App\Form\AdminCompanyType;
 use App\Form\AdminFilterType;
 use App\Form\CompanyType;
 use App\Service\FileManager;
@@ -13,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -107,21 +110,24 @@ class CompaniesController extends AbstractController
      * @Template("admin/companies/create.html.twig")
      */
 
-    public function create(Request $request, TranslatorInterface $translator)
+    public function create(Request $request, TranslatorInterface $translator, UserPasswordEncoderInterface $passwordEncoder)
     {
         $company = new Company();
-        $form = $this->createForm(CompanyType::class, $company, ['selfsubmit' => true]);
+        $form = $this->createForm(AdminCompanyType::class, $company);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $company = $form->getData();
+            $newUser = new User();
+            $company->initUser($newUser, $passwordEncoder);
+
             try {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($company);
                 $em->flush();
                 $this->addFlash('success', $translator->trans('Company has been successfully updated.'));
             } catch(\Exception $e) {
-                $this->addFlash('danger', $translator->trans('An error occurred when saving object.'));
+                $this->addFlash('danger', $translator->trans('An error occurred when saving object.' . $e->getMessage()));
             }
 
             if ($form->get('saveAndExit')->isClicked()) {

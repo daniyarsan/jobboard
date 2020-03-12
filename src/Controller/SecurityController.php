@@ -64,12 +64,13 @@ class SecurityController extends AbstractController
             switch ($group) {
                 case 'company':
                     $user->setRoles([User::ROLE_COMPANY]);
-                    $user->setCompany(new Company());
+                    /* Set Company email automatically */
+                    $user->setCompany((new Company())->setEmail($user->getUsername()));
                     break;
 
                 case 'profile':
                     $user->setRoles([User::ROLE_PROFILE]);
-                    $user->setProfile(new Profile());
+                    $user->setProfile((new Profile())->setEmail($user->getUsername()));
                     break;
             }
 
