@@ -38,7 +38,6 @@ class CompanyType extends AbstractType
                 ]
             ])
             ->add('name', TextType::class)
-
             ->add('email', EmailType::class)
             ->add('website', TextType::class)
             ->add('phone', TextType::class)
@@ -50,12 +49,18 @@ class CompanyType extends AbstractType
             ->add('description', TextareaType::class, [
                 'attr' => ['class' => 'wysiwyg']
             ]);
+        if ($options['selfsubmit']) {
+            $builder
+                ->add('save', SubmitType::class)
+                ->add('saveAndExit', SubmitType::class, ['label' => 'Save and Exit']);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-          'data_class' => Company::class,
+            'data_class' => Company::class,
+            'selfsubmit' => false
         ]);
     }
 }

@@ -110,7 +110,7 @@ class CompaniesController extends AbstractController
     public function create(Request $request, TranslatorInterface $translator)
     {
         $company = new Company();
-        $form = $this->createForm(CompanyType::class, $company);
+        $form = $this->createForm(CompanyType::class, $company, ['selfsubmit' => true]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
