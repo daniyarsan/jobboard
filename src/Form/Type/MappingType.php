@@ -2,11 +2,11 @@
 
 namespace App\Form\Type;
 
-use App\Entity\Feed;
+use App\Repository\FeedRepository;
 use App\Repository\FieldRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,24 +14,41 @@ class MappingType extends AbstractType
 {
     protected $em;
     protected $fieldRepository;
+    protected $feedRepository;
 
-    public function __construct(EntityManagerInterface $entityManager, FieldRepository $fieldRepository)
+    public function __construct(EntityManagerInterface $entityManager,
+                                FieldRepository $fieldRepository,
+                                FeedRepository $feedRepository)
     {
         $this->em = $entityManager;
+        $this->feedRepository = $feedRepository;
         $this->fieldRepository = $fieldRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        /* Make it not required */
         $builder->setRequired(false);
 
-        $feedRepo = $this->em->getRepository('App:Feed')->find($options['feedId']);
-        $importFields = $feedRepo->getMapperDefault();
+        /* Get fields for values */
+        $fields = $this->em->getClassMetadata('App:Job')->getColumnNames();
+        $dynamicFields = $this->fieldRepository->findAllFieldIds();
+        $fieldsCollection = array_merge($fields, $dynamicFields);
+
+        /* Get fields to display on page */
+        $feed = $this->feedRepository->find($options[ 'feedId' ]);
+        $importFields = $feed->getMapperDefault();
 
         if (!empty($importFields)) {
             foreach (array_keys($importFields) as $field) {
                 $builder
-                    ->add($field, TextType::class);
+                    ->add($field, ChoiceType::class, [
+                        'choices' => $fieldsCollection,
+                        'placeholder' => 'Select Field to Bind',
+                        'choice_label' => function ($choice, $key, $value) {
+                            return ucfirst($choice);
+                        }
+                    ]);
             }
         }
     }
@@ -43,10 +60,3 @@ class MappingType extends AbstractType
         ]);
     }
 }
-
-
-//[
-//    'choices' => array_combine(
-//        $this->fieldRepository->findAllFieldNames(),
-//        $this->fieldRepository->findAllFieldIds())
-//]

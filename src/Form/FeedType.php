@@ -33,10 +33,12 @@ class FeedType extends AbstractType
                 ]
             ]);
 
-
         if ($options['feedId']) {
             $builder
-                ->add('mapper', MappingType::class, ['feedId' => $options['feedId']]);
+                ->add('mapper', MappingType::class, [
+                    'feedId' => $options['feedId'],
+                    'label' => 'Map import fields with System fields'])
+            ;
         }
 
 
