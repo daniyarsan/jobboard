@@ -1,0 +1,11 @@
+{% macro itemsPerPage(itemsNumber) %}
+    <div class="btn-group mb-2">
+        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">{{ app.request.get('itemsPerPage') ?? "Show More" }}<i class="mdi mdi-chevron-down"></i></button>
+        <div class="dropdown-menu">
+            {% for number in itemsNumber %}
+                <a class="dropdown-item" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'itemsPerPage': number})) }}">{{ number }}</a>
+            {% endfor %}
+        </div>
+    </div>
+{% endmacro %}
+

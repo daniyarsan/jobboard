@@ -4,6 +4,7 @@
 {% block title %}{{ 'Jobs List'|trans }}{% endblock %}
 
 {% import 'admin/form/dialog.html.twig' as dialogs %}
+{% import 'admin/form/parts.html.twig' as parts %}
 
 {% block content %}
     {{ breadcrumbs.add({'url' : 'admin_index', 'title' : 'Dashboard'|trans}) }}
@@ -33,17 +34,6 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row mb-2">
-                        <div class="col-md-2">
-                            <form action="" method="GET" name="itemFilter">
-                                <select name="itemsPerPage" id="itemsPerPage" class="form-control select2" onchange="itemFilter.submit();">
-                                    <option value="50">50</option>
-                                    <option value="300">300</option>
-                                    <option value="1000">1000</option>
-                                </select>
-                            </form>
-
-                        </div>
-
                         <div class="col-md-3">
                             <form class="form-inline">
                                 <div class="form-group mb-2">
@@ -73,6 +63,9 @@
                                 <a href="{{ path('admin_jobs_create') }}" class="btn btn-success waves-effect waves-light mb-2 mr-2"><i class="mdi mdi-plus-circle mr-1"></i> {{ 'Add Job'|trans }}</a>
                             </div>
                         </div><!-- end col-->
+                        <div class="col-md-2">
+                            {{ parts.itemsPerPage([200, 500, 1000]) }}
+                        </div>
                     </div>
 
                     {# Main items table #}
@@ -92,22 +85,15 @@
     {{ parent() }}
 
     <script type="text/javascript">
-
-        function itemsBulkAction(action) {
-            var form = jQuery("#bulk-table-form");
-            form.find("input[name='action']").val(action);
-            form.submit();
-        }
-
         /* Check all */
-        $(".bulk-item-check").click(function(){
+        $(".bulk-item-check").click(function () {
             if (this.checked) {
                 $('#bulk-action-button').show();
             } else {
                 $('#bulk-action-button').hide();
             }
         });
-        $("#checkAll").click(function(){
+        $("#checkAll").click(function () {
             $('input:checkbox.bulk-item-check').not(this).prop('checked', this.checked);
         });
     </script>
