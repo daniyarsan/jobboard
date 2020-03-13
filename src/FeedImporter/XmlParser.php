@@ -29,15 +29,17 @@ class XmlParser
     {
         $this->xmlReader->open($this->feed->getUrl());
 
-        while ($this->xmlReader->read() && $this->xmlReader->name != 'job') {
+        $xmlRootElement = self::getXmlRootElement($this->feed->getXmlText());
+        while ($this->xmlReader->read() && $this->xmlReader->name != $xmlRootElement) {
             ;
         }
 
-        while ($this->xmlReader->name == 'job') {
+        while ($this->xmlReader->name == $xmlRootElement) {
             $xmlItem = self::getArrayFromXmlString($this->xmlReader->readOuterXML());
 
             $job = new Job();
             $job->setCompany($this->feed->getCompany());
+
             foreach ($this->feed->getMapper() as $mapKey => $mapItem) {
                 if ($mapItem) {
                     $method = 'set' . ucfirst($mapItem);
@@ -62,19 +64,18 @@ class XmlParser
         }
     }
 
-    public static function xmlToArray($xmlObject, $out = array())
-    {
-        foreach ((array)$xmlObject as $index => $node)
-            $out[ $index ] = (is_object($node)) ? self::xmlToArray($node) : $node;
-
-        return $out;
-    }
-
     public static function getArrayFromXmlString($xmlString)
     {
         $xml = simplexml_load_string($xmlString, 'SimpleXMLElement', LIBXML_NOCDATA);
 
         return json_decode(json_encode($xml), TRUE);
+    }
+
+    public static function getXmlRootElement($xmlString)
+    {
+        $xml = simplexml_load_string($xmlString, 'SimpleXMLElement', LIBXML_NOCDATA);
+
+        return $xml->getName();
     }
 
     public static function getXmlFieldNames($xmlString): ?array
