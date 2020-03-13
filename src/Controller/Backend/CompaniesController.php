@@ -73,7 +73,7 @@ class CompaniesController extends AbstractController
      */
     public function edit(Request $request, Company $company, TranslatorInterface $translator, FileManager $fileManager)
     {
-        $form = $this->createForm(CompanyType::class, $company);
+        $form = $this->createForm(AdminCompanyType::class, $company);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
