@@ -70,7 +70,7 @@ class FeedController extends AbstractController
      * @Template("admin/feeds/new.html.twig")
      */
 
-    public function new(Request $request, TranslatorInterface $translator)
+    public function new(Request $request, TranslatorInterface $translator, DataTransformer $transformer)
     {
         $feed = new Feed();
 
@@ -87,8 +87,7 @@ class FeedController extends AbstractController
                 $defaultMapper = XmlParser::getXmlFieldNames($xmlTextSample);
                 $feed->setMapperDefault($defaultMapper);
                 /* Feed xml with field values */
-
-                $feed->setSlug();
+                $feed->setSlug($transformer->slugify($feed->getName()));
                 $em->persist($feed);
                 $em->flush();
                 $this->addFlash('success', $translator->trans('Feed has been successfully updated.'));
