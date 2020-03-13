@@ -244,29 +244,12 @@
                                 {{ knp_pagination_render(companies, '_parts/paginator.html.twig') }}
                             {% endif %}
 
-
-
                         </div>
                     </div><!-- recommended-ads -->
                 </div>
             </div>
         </div><!-- container -->
     </section><!-- main -->
-
-
-    {% set count = companies.getTotalItemCount %}
-            Showing
-            {% transchoice count %}
-                {0} %count% of companies |{1} %count% of companies|]1,Inf[%count% of companies
-            {% endtranschoice %}
-
-
-
-    {% set count = companies.getTotalItemCount %}
-    Showing
-    {% transchoice count %}
-        {0} %count% of companies |{1} %count% of companies|]1,Inf[%count% of companies
-    {% endtranschoice %}
 
 {#    {{ form_start(filter, {'name': 'filter-companies-form'}) }}#}
 {#    {{ form_widget(filter.country) }}#}
