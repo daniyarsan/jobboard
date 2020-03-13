@@ -69,6 +69,11 @@ class Feed
     private $slug;
 
     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $activate;
+
+    /**
      * @ORM\PrePersist
      */
     public function onPrePersist()
@@ -217,6 +222,18 @@ class Feed
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getActivate(): ?bool
+    {
+        return $this->activate;
+    }
+
+    public function setActivate(bool $activate): self
+    {
+        $this->activate = $activate;
 
         return $this;
     }

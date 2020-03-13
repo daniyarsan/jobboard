@@ -90,6 +90,7 @@ class FeedController extends AbstractController
                 $feed->setSlug($transformer->slugify($feed->getName()));
                 $em->persist($feed);
                 $em->flush();
+
                 $this->addFlash('success', $translator->trans('Feed has been successfully updated.'));
             } catch (\Exception $e) {
                 $this->addFlash('danger', $translator->trans('An error occurred when saving object.'));
@@ -100,6 +101,7 @@ class FeedController extends AbstractController
             }
             return $this->redirect($this->generateUrl('admin_feeds_edit', ['id' => $feed->getId()]));
         }
+
         return [
             'form' => $form->createView(),
             'feed' => $feed

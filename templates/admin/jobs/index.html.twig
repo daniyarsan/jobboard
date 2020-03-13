@@ -85,6 +85,12 @@
     {{ parent() }}
 
     <script type="text/javascript">
+        function itemsBulkAction(action) {
+            var form = jQuery("#bulk-table-form");
+            form.find("input[name='action']").val(action);
+            form.submit();
+        }
+
         /* Check all */
         $(".bulk-item-check").click(function () {
             if (this.checked) {

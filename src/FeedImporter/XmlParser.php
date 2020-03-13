@@ -47,6 +47,11 @@ class XmlParser
                 }
             }
 
+            /* Auto activation */
+            if ($this->feed->getActivate()) {
+                $job->activateJob();
+            }
+
             /* For identification purposes */
             $job->setFeedId($this->feed->getSlug());
             $this->em->persist($job);

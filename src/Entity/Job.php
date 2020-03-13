@@ -357,4 +357,11 @@ class Job
 
         return $this;
     }
+
+    public function activateJob(): self
+    {
+        $this->setIsPublished(true);
+
+        return $this;
+    }
 }
