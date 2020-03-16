@@ -25,4 +25,24 @@ class CategoryRepository extends ServiceEntityRepository
 
         return $qb->orderBy('category.name', 'ASC');
     }
+
+    public function findAllFieldNames()
+    {
+        $result = $this->createQueryBuilder('c')
+            ->select('c.name')
+            ->getQuery()
+            ->getScalarResult();
+
+        return array_map('current', $result);
+    }
+
+    public function findAllFieldSlug()
+    {
+        $result = $this->createQueryBuilder('c')
+            ->select('c.slug')
+            ->getQuery()
+            ->getScalarResult();
+
+        return array_map('current', $result);
+    }
 }

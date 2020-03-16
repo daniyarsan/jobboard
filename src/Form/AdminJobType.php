@@ -4,8 +4,10 @@ namespace App\Form;
 
 use App\Entity\Field;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -27,13 +29,13 @@ class AdminJobType extends AbstractType
     {
 
         $fieldRepository = $this->em->getRepository('App:Field');
+        $categories = $this->em->getRepository('App:Category');
         $jobFields = $fieldRepository->findAll();
 
         $builder
             ->add('company', EntityType::class, [
                 'placeholder' => 'Choose Company',
                 'class' => 'App\Entity\Company',
-                'required' => false,
             ])
             ->add('title', TextType::class)
             ->add('country', CountryType::class, [
@@ -41,24 +43,28 @@ class AdminJobType extends AbstractType
             ])
             ->add('state', TextType::class)
             ->add('salary', IntegerType::class, [
-                'required' => false,
             ])
-            ->add('categories', EntityType::class, [
+            ->add('categories', ChoiceType::class, [
+                'choices' => $categories->findAllFieldNames(),
+                'choice_label' => function ($choice) {
+                    return ucfirst($choice);
+                },
                 'placeholder' => 'Choose Category',
-                'class' => 'App\Entity\Category',
                 'multiple' => true,
-                'required' => false,
             ])
-            ->add('description', TextareaType::class, [
-                'required' => false
-            ]);
+            ->add('description', TextareaType::class);
 
         /* Adding custom fields to form */
         foreach ($jobFields as $jobField) {
             $builder->add($jobField->getFieldId(), Field::FIELD_TYPE[ $jobField->getType() ], [
-                'mapped' => false
+                'mapped' => false,
+                'required' => false
             ]);
         }
+
+        $builder
+            ->add('save', SubmitType::class)
+            ->add('saveAndExit', SubmitType::class, ['label' => 'Save and Exit']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

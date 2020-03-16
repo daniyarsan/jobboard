@@ -40,7 +40,7 @@ class CompaniesController extends AbstractController
     public function companyDetails(Request $request, Company $company)
     {
         return $this->render(
-            'companies/company-details.html.twig',
+            'frontend/companies/company-details.html.twig',
             [
                 'company' => $company
             ]

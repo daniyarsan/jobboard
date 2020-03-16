@@ -44,8 +44,7 @@ class FeedType extends AbstractType
                     'feedId' => $options[ 'feedId' ],
                     'label' => 'Map import fields with System fields']);
         }
-
-
+        
         $builder
             ->add('save', SubmitType::class)
             ->add('saveAndExit', SubmitType::class, ['label' => 'Save and Exit']);

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,11 +18,6 @@ class Category
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Job", mappedBy="categories")
-     */
-    private $jobs;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -43,25 +39,10 @@ class Category
      */
     private $modified;
 
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getJobs()
-    {
-        return $this->jobs;
-    }
-
-    /**
-     * @param mixed $jobs
-     */
-    public function setJobs(ArrayCollection $jobs)
-    {
-        $this->jobs = $jobs;
     }
 
     public function getName(): ?string
@@ -102,11 +83,6 @@ class Category
     public function onPreUpdate()
     {
         $this->modified = new \DateTime('now');
-    }
-
-    public function __construct()
-    {
-        $this->jobs = new ArrayCollection();
     }
 
     public function __toString()

@@ -21,7 +21,6 @@ class XmlParser
         $this->xmlReader = new \XMLReader();
     }
 
-
     /**
      * Parse row by row for performance improvement
      */
@@ -30,21 +29,23 @@ class XmlParser
         $this->xmlReader->open($this->feed->getUrl());
 
         $xmlRootElement = self::getXmlRootElement($this->feed->getXmlText());
+
         while ($this->xmlReader->read() && $this->xmlReader->name != $xmlRootElement) {
             ;
         }
 
         while ($this->xmlReader->name == $xmlRootElement) {
             $xmlItem = self::getArrayFromXmlString($this->xmlReader->readOuterXML());
+            $xmlItemsToLoop = array_filter($this->feed->getMapper());
 
             $job = new Job();
             $job->setCompany($this->feed->getCompany());
 
-            foreach ($this->feed->getMapper() as $mapKey => $mapItem) {
-                if ($mapItem) {
-                    $method = 'set' . ucfirst($mapItem);
+            foreach ($xmlItemsToLoop as $mapKey => $mapItem) {
+                if (!empty($xmlItemsToLoop[$mapKey])) {
+                    $method = 'set' . ucfirst($mapKey);
                     if (method_exists($job, $method)) {
-                        $job->$method($xmlItem[ $mapKey ]);
+                        $job->$method($xmlItem[$mapItem]);
                     }
                 }
             }
@@ -59,7 +60,7 @@ class XmlParser
             $this->em->persist($job);
             $this->em->flush($job);
 
-            $this->xmlReader->next('job');
+            $this->xmlReader->next($xmlRootElement);
             unset($element);
         }
     }
@@ -82,14 +83,13 @@ class XmlParser
     {
         $xml = self::getArrayFromXmlString($xmlString);
 
-        $keys = [];
+        return  array_map(create_function('$n', 'return null;'), $xml);
+    }
 
-        foreach ($xml as $key => $value) {
-            $keys[] = $key;
-        }
+    public static function getXmlFields($xmlString): ?array
+    {
+        $xml = self::getArrayFromXmlString($xmlString);
 
-        return array_map(function ($v) {
-            return (!is_null($v)) ? "" : $v;
-        }, array_flip($keys));
+        return  array_keys($xml);
     }
 }

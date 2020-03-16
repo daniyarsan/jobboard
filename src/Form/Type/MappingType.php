@@ -39,13 +39,13 @@ class MappingType extends AbstractType
         $feed = $this->feedRepository->find($options[ 'feedId' ]);
         $importFields = $feed->getMapperDefault();
 
-        if (!empty($importFields)) {
-            foreach (array_keys($importFields) as $field) {
+        if (!empty($fieldsCollection)) {
+            foreach ($fieldsCollection as $field) {
                 $builder
                     ->add($field, ChoiceType::class, [
-                        'choices' => $fieldsCollection,
+                        'choices' => $importFields,
                         'placeholder' => 'Select Field to Bind',
-                        'choice_label' => function ($choice, $key, $value) {
+                        'choice_label' => function ($choice) {
                             return ucfirst($choice);
                         }
                     ]);

@@ -5,6 +5,7 @@
 {% block body %}
     <section class="job-bg page job-details-page">
         <div class="container">
+
             <div class="breadcrumb-section">
                 <ol class="breadcrumb">
                     <li><a href="index.html">Home</a></li>
@@ -16,7 +17,6 @@
 
             <div class="job-details">
                 {% include "_parts/messages.html.twig" %}
-
 
                 <div class="section job-ad-item">
                     <div class="item-info">
@@ -33,14 +33,14 @@
                         </div>
 
                         <div class="ad-info">
-                            <span><span><a href="#" class="title">{{ job.title }}</a></span> @ <a href="{{ path('company_details', {id : job.company.id}) }}"> {{ job.company.name }}</a></span>
+                            <span><span><a href="#" class="title">{{ job.title }}</a></span></span>
                             <div class="ad-meta">
                                 <ul>
                                     <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ job.country }}</a></li>
-                                    <li><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i>Full Time</a></li>
-                                    <li><i class="fa fa-money" aria-hidden="true"></i>{{ job.salary }}</li>
-                                    <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>HR/Org. Development</a></li>
-                                    <li><i class="fa fa-hourglass-start" aria-hidden="true"></i>Application Deadline : Jan 10, 2017</li>
+{#                                    <li><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i>Full Time</a></li>#}
+                                    <li><i class="fa fa-building-o" aria-hidden="true"></i><a href="{{ path('company_details', {id : job.company.id}) }}"> {{ job.company.name }}</a></li>
+{#                                    <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>HR/Org. Development</a></li>#}
+                                    <li><i class="fa fa-hourglass-start" aria-hidden="true"></i>  {{ job.created|date('D m Y') }}</li>
                                 </ul>
                             </div><!-- ad-meta -->
                         </div><!-- ad-info -->
@@ -50,7 +50,6 @@
                             <a href="#" class="btn btn-primary" data-url="{{ path('application_job', {'id' : job.id}) }}" data-toggle="modal" data-target="#apply-popup-id"><i class="fa fa-briefcase" aria-hidden="true"></i> Apply Now</a>
                             <a href="#" class="btn btn-primary bookmark"><i class="fa fa-bookmark-o" aria-hidden="true"></i>Bookmark</a>
                         </div>
-
                     </div>
                 </div><!-- job-ad-item -->
 

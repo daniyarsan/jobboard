@@ -43,6 +43,7 @@ class FieldRepository extends ServiceEntityRepository
 
         return array_map('current', $result);
     }
+
     public function findAllFieldNames()
     {
         $result = $this->createQueryBuilder('f')
@@ -52,5 +53,4 @@ class FieldRepository extends ServiceEntityRepository
 
         return array_map('current', $result);
     }
-
 }

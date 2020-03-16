@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use App\Service\View\DataTransformer;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -24,11 +26,6 @@ class Job
      */
     private $company;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="jobs")
-     * @ORM\JoinTable(name="job_category")
-     */
-    private $categories;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -99,6 +96,12 @@ class Job
      * @ORM\OneToOne(targetEntity="App\Entity\Location", cascade={"persist", "remove"})
      */
     private $location;
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $categories = [];
+
 
     /**
      * @ORM\PrePersist
@@ -270,21 +273,7 @@ class Job
         $this->modified = $modified;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCategories()
-    {
-        return $this->categories;
-    }
 
-    /**
-     * @param mixed $categories
-     */
-    public function setCategories($categories)
-    {
-        $this->categories = $categories;
-    }
 
     /**
      * @return mixed
@@ -364,4 +353,24 @@ class Job
 
         return $this;
     }
+
+    public function getCategories(): ?array
+    {
+        return $this->categories;
+    }
+
+    public function setCategories(?array $categories): self
+    {
+        $this->categories = $categories;
+
+        return $this;
+    }
+
+    public function setCategory(string $category): self
+    {
+        array_push($this->categories, $category);
+
+        return $this;
+    }
+
 }

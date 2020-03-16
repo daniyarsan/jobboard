@@ -43,7 +43,7 @@
                         </div>
                     </td>
                     <td class="table-user">
-                        <a href="javascript:void(0);" class="text-body font-weight-semibold">{{ job.title }}</a>
+                        <a href="{{ path('admin_jobs_edit', {'id': job.id, 'return_url': path('admin_jobs_index') ~ query_string()}) }}" class="text-body font-weight-semibold">{{ job.title }}</a>
                     </td>
                     <td>{{ job.company }}</td>
                     <td>{{ job.country }}</td>
@@ -56,14 +56,14 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{{ path('admin_jobs_edit', {'id': job.id, 'return_url': path('admin_jobs_index') ~ query_string()}) }}" class="action-icon">
-                            <i class="mdi mdi-square-edit-outline"></i></a>
+                        <a href="{{ path('job_details', {'id': job.id}) }}" class="action-icon">
+                            <i class="mdi mdi-eye"></i></a>
                         {% if job.isPublished == 1 %}
                             <a href="{{ path('admin_jobs_set', {'action': 'disable', 'id': job.id, 'return_url': path('admin_jobs_index') ~ query_string()}) }}" class="action-icon">
-                                <i class="mdi mdi-eye-off"></i></a>
+                                <i class="mdi mdi-pause"></i></a>
                         {% else %}
                             <a href="{{ path('admin_jobs_set', {'action': 'activate', 'id': job.id, 'return_url': path('admin_jobs_index') ~ query_string()}) }}" class="action-icon">
-                                <i class="mdi mdi-eye"></i></a>
+                                <i class="mdi mdi-play"></i></a>
                         {% endif %}
                         <a data-toggle="modal" href="#delete-{{ job.id }}" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                     </td>

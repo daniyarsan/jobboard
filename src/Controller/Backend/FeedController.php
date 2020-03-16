@@ -69,7 +69,6 @@ class FeedController extends AbstractController
      * @Route("/feeds/new", name="_new")
      * @Template("admin/feeds/new.html.twig")
      */
-
     public function new(Request $request, TranslatorInterface $translator, DataTransformer $transformer)
     {
         $feed = new Feed();
@@ -84,7 +83,7 @@ class FeedController extends AbstractController
 
                 /* Feed xml with field values */
                 $xmlTextSample = $feed->getXmlText();
-                $defaultMapper = XmlParser::getXmlFieldNames($xmlTextSample);
+                $defaultMapper = XmlParser::getXmlFields($xmlTextSample);
                 $feed->setMapperDefault($defaultMapper);
                 /* Feed xml with field values */
                 $feed->setSlug($transformer->slugify($feed->getName()));
@@ -142,7 +141,7 @@ class FeedController extends AbstractController
             try {
                 /* Feed xml with field values */
                 $xmlTextSample = $feed->getXmlText();
-                $defaultMapper = XmlParser::getXmlFieldNames($xmlTextSample);
+                $defaultMapper = XmlParser::getXmlFields($xmlTextSample);
                 $feed->setMapperDefault($defaultMapper);
                 /* Feed xml with field values */
 
@@ -204,6 +203,7 @@ class FeedController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         $jobRepository->deleteByFeedId($feed->getSlug());
+
         $xmlParser = new XmlParser($em, $feed);
         $xmlParser->parse($feed->getUrl());
 

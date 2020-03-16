@@ -66,7 +66,7 @@ class JobsController extends AbstractController
      */
     public function edit(Request $request, Job $job, TranslatorInterface $translator)
     {
-        $form = $this->createJobTypeForm($job);
+        $form = $this->createForm(AdminJobType::class, $job);
 
         $form->handleRequest($request);
 
@@ -188,11 +188,4 @@ class JobsController extends AbstractController
             ->getForm();
     }
 
-    private function createJobTypeForm($entity) {
-        $entityManager = $this->getDoctrine()->getManager();
-
-        return $this->createForm(AdminJobType::class, $entity, [
-            'entity_manager' => $entityManager
-        ]);
-    }
 }

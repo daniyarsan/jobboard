@@ -21,6 +21,11 @@ class DataTransformer
 
     public function slugify(string $text): string
     {
+        return self::makeSlug($text);
+    }
+
+    public static function makeSlug(string $text): string
+    {
         // replace non letter or digits by -
         $text = preg_replace('~[^\pL\d]+~u', '-', $text);
 
@@ -45,6 +50,5 @@ class DataTransformer
 
         return $text;
     }
-
 
 }
