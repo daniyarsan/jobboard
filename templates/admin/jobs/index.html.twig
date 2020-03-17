@@ -1,10 +1,9 @@
 {% extends 'admin/base.html.twig' %}
 {#{% import 'admin/_parts/helper.html.twig' as helper %}#}
-
-{% block title %}{{ 'Jobs List'|trans }}{% endblock %}
-
 {% import 'admin/form/dialog.html.twig' as dialogs %}
 {% import 'admin/form/parts.html.twig' as parts %}
+
+{% block title %}{{ 'Jobs List'|trans }}{% endblock %}
 
 {% block content %}
     {{ breadcrumbs.add({'url' : 'admin_index', 'title' : 'Dashboard'|trans}) }}

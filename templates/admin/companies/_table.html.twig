@@ -22,7 +22,7 @@
                     {% endif %}
                 </th>
                 <th>{{ 'Email'|trans }}</th>
-                <th style="width: 15%">Location</th>
+                <th style="width: 15%">{{ 'Location' | trans }}</th>
                 <th>{{ 'Created'|trans }}</th>
                 <th>
                     {{ knp_pagination_sortable(entities, 'Status', 'isVerified') }}
@@ -45,8 +45,7 @@
                     <td class="table-user">
                         {# TODO: create image for admin display  #}
                         {#  <img src="assets/images/users/user-4.jpg" alt="table-user" class="mr-2 rounded-circle"> #}
-
-                        <a href="javascript:void(0);" class="text-body font-weight-semibold">{{ company.name }}</a>
+                        <a href="{{ path('admin_companies_edit', {'id': company.id, 'return_url': path('admin_companies_index') ~ query_string()}) }}" class="text-body font-weight-semibold">{{ company.name }}</a>
                     </td>
                     <td>{{ company.email }}</td>
                     <td>{{ company.country }}</td>
@@ -59,14 +58,14 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{{ path('admin_companies_edit', {'id': company.id, 'return_url': path('admin_companies_index') ~ query_string()}) }}" class="action-icon">
-                            <i class="mdi mdi-square-edit-outline"></i></a>
+                        <a href="{{ path('company_details', {'id': company.id}) }}" class="action-icon">
+                            <i class="mdi mdi-eye"></i></a>
                         {% if company.isVerified == 1 %}
                             <a href="{{ path('admin_companies_set', {'action': 'disable', 'id': company.id, 'return_url': path('admin_companies_index') ~ query_string()}) }}" class="action-icon">
-                                <i class="mdi mdi-eye-off"></i></a>
+                                <i class="mdi mdi-pause"></i></a>
                         {% else %}
                             <a href="{{ path('admin_companies_set', {'action': 'activate', 'id': company.id, 'return_url': path('admin_companies_index') ~ query_string()}) }}" class="action-icon">
-                                <i class="mdi mdi-eye"></i></a>
+                                <i class="mdi mdi-play"></i></a>
                         {% endif %}
                         <a data-toggle="modal" href="#delete-{{ company.id }}" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                     </td>

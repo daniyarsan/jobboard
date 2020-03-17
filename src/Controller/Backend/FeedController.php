@@ -207,6 +207,8 @@ class FeedController extends AbstractController
         $xmlParser = new XmlParser($em, $feed);
         $xmlParser->parse($feed->getUrl());
 
+        $this->addFlash('success', $xmlParser->getImportedNum() . ' Jobs have been imported from the feed');
+
         return $this->redirectToRoute('admin_feeds_index');
     }
 

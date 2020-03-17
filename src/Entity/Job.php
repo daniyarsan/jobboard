@@ -359,9 +359,13 @@ class Job
         return $this->categories;
     }
 
-    public function setCategories(?array $categories): self
+    public function setCategories($categories): self
     {
-        $this->categories = $categories;
+        if(is_array($categories)) {
+            $this->categories = $categories;
+        } else {
+            $this->setCategory($categories);
+        }
 
         return $this;
     }

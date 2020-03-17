@@ -1,0 +1,52 @@
+<!-- header -->
+<header id="header" class="clearfix">
+    <!-- navbar -->
+    <nav class="navbar navbar-default navbar-expand-lg">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"><i class="fa fa-align-justify"></i></span>
+            </button>
+            <a class="navbar-brand" href="{{ path('main_index') }}"><img class="img-fluid" src="{{ asset('frontend/images/logo.png') }}" alt="Logo"></a>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="nav navbar-nav">
+                    <li><a href="">Apply</a></li>
+                    <li><a href="{{ path('jobs_index') }}">Jobs</a></li>
+                    <li><a href="{{ path('companies_index') }}">Agencies</a></li>
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Resources<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="profile.html">FAQ</a></li>
+                            <li><a href="profile.html">Articles</a></li>
+                            <li><a href="profile.html">ETC</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{{ path('blog') }}">Blog</a></li>
+                </ul>
+            </div>
+
+            <!-- nav-right -->
+            <div class="nav-right">
+                <ul class="sign-in">
+                    <li><i class="fa fa-user"></i></li>
+                    {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <li><a href="{{ path('security_login') }}">Sign In</a></li>
+                        <li><a href="{{ path('security_registration') }}">Register</a></li>
+                    {% else %}
+                        {% if is_granted('ROLE_COMPANY') %}
+                            <li><a href="{{ path('my_company_settings') }}">My Account</a></li>
+                        {% else %}
+                            <li><a href="{{ path('my_profile_settings') }}">My Account</a></li>
+                        {% endif %}
+                    {% endif %}
+                </ul><!-- sign-in -->
+                {% if is_granted('IS_AUTHENTICATED_FULLY') and app.user.hasRole('ROLE_PROFILE') %}
+                    <a href="#" class="btn">Apply Now</a>
+                {% else %}
+                    <a href="{{ path('my_company_job_new') }}" class="btn">Post Job</a>
+                {% endif %}
+            </div>
+            <!-- nav-right -->
+        </div><!-- container -->
+    </nav><!-- navbar -->
+</header><!-- header -->

@@ -39,7 +39,7 @@ class AdminJobType extends AbstractType
             ])
             ->add('title', TextType::class)
             ->add('country', CountryType::class, [
-                'empty_data' => 'Choose Country',
+                'placeholder' => 'Choose Country',
             ])
             ->add('state', TextType::class)
             ->add('salary', IntegerType::class, [

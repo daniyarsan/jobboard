@@ -3,22 +3,26 @@
 namespace App\DataFixtures;
 
 use App\Entity\Category;
-use App\Service\Helper;
+use App\Service\Data\Categories;
+use App\Service\View\DataTransformer;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class CategoriesFixtures extends Fixture
+class CategoriesFixtures extends Fixture implements FixtureGroupInterface
 {
     protected $container;
+    protected $transformer;
 
     /**
      * CategoriesFixtures constructor.
      * @param $container
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, DataTransformer $dataTransformer)
     {
         $this->container = $container;
+        $this->transformer = $dataTransformer;
     }
 
     public function load(ObjectManager $manager)
@@ -27,7 +31,7 @@ class CategoriesFixtures extends Fixture
         foreach ($this->getCategoriesList() as $categoryItem) {
             $category = new Category();
             $category->setName($categoryItem);
-            $category->setSlug($this->slougify($categoryItem));
+            $category->setSlug($this->transformer->slugify($categoryItem));
             $manager->persist($category);
         }
 
@@ -36,89 +40,14 @@ class CategoriesFixtures extends Fixture
 
     public function getCategoriesList()
     {
-        return [
-            'Accounting',
-            'Admin-Clerical',
-            'Automotive',
-            'Banking',
-            'Biotech',
-            'Business Development',
-            'Construction',
-            'Consultant',
-            'Customer Service',
-            'Design',
-            'Distribution-Shipping',
-            'Education',
-            'Engineering',
-            'Entry Level',
-            'Executive',
-            'Facilities',
-            'Finance',
-            'Franchise',
-            'General Business',
-            'General Labor',
-            'Government',
-            'Grocery',
-            'Health Care',
-            'Hospitality-Hotel',
-            'Human Resources',
-            'Information Technology',
-            'Installation-Maint-Repair',
-            'Insurance',
-            'Inventory',
-            'Legal',
-            'Management',
-            'Manufacturing',
-            'Marketing',
-            'Media-Journalism',
-            'Nonprofit-Social Services',
-            'Nurse',
-            'Other',
-            'Pharmaceutical',
-            'Professional Services',
-            'Purchasing-Procurement',
-            'QA-Quality Control',
-            'Real Estate',
-            'Research',
-            'Restaurant-Food Service',
-            'Retail',
-            'Sales',
-            'Science',
-            'Skilled Labor',
-            'Strategy-Planning',
-            'Supply Chain',
-            'Telecommunications',
-            'Training',
-            'Transportation',
-            'Veterinary Services',
-            'Warehouse'
-        ];
+        return Categories::list();
     }
 
-    public function slougify($text)
+    /**
+     * @inheritDoc
+     */
+    public static function getGroups(): array
     {
-        // replace non letter or digits by -
-        $text = preg_replace('~[^\pL\d]+~u', '-', $text);
-
-        // transliterate
-        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-
-        // remove unwanted characters
-        $text = preg_replace('~[^-\w]+~', '', $text);
-
-        // trim
-        $text = trim($text, '-');
-
-        // remove duplicate -
-        $text = preg_replace('~-+~', '-', $text);
-
-        // lowercase
-        $text = strtolower($text);
-
-        if (empty($text)) {
-            return 'n-a';
-        }
-
-        return $text;
+        return ['routine'];
     }
 }

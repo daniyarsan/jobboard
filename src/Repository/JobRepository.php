@@ -147,16 +147,9 @@ class JobRepository extends ServiceEntityRepository
         }
 
         // Country
-        if (!empty($request->query->get('country'))) {
-            $qb->andWhere('job.country = :country')
-                ->setParameter('country', $request->query->get('country'));
-        }
-
-        // Contracts
-        if (!empty($request->query->get('contracts'))) {
-            $qb->leftJoin('job.contract', 'contract')
-                ->andWhere('contract.id IN(:contracts)')
-                ->setParameter('contracts', $request->query->get('contracts'));
+        if (!empty($request->query->get('state'))) {
+            $qb->andWhere('job.state = :state')
+                ->setParameter('state', $request->query->get('state'));
         }
 
         return $qb->addOrderBy('job.isFeatured', 'DESC')

@@ -16,11 +16,11 @@
             <span><a href="{{ path('job_details', {'id' : job.id}) }}" class="title">{{ job.title|capitalize|truncate(60)}}</a></span>
             <div class="ad-meta">
                 <ul>
-                    <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ job.getCountry() }} </a></li>
-                    <li><a href="#"><i class="fa fa-braille" aria-hidden="true"></i>{{ job.categories|join(', ') }} </a></li>
-                    <li><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i>Full Time</a></li>
-                    <li><a href="{{ path('company_details', {id: job.company.getId() }) }}">
-                            <i class="fa fa-building" aria-hidden="true"></i>
+                    <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ job.country }}, {{ job.state }} </a></li>
+                    <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>{{ job.categories|join(', ') }} </a></li>
+                    <li>
+                        <a href="{{ path('company_details', {id: job.company.getId() }) }}">
+                            <i class="fa fa-university" aria-hidden="true"></i>
                             {{ job.company }}
                         </a>
                     </li>

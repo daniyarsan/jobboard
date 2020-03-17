@@ -1,0 +1,29 @@
+<form action="{{ path('jobs_index') }}" class="clearfix">
+    <!-- category-change -->
+    <div class="dropdown category-dropdown">
+        <a data-toggle="dropdown" href="#"><span class="change-text">{{ request.query.get('category') ? request.query.get('category') : "Job Category" }}</span> <i class="fa fa-angle-down"></i></a>
+        <ul id="categorySearch" class="dropdown-menu category-change">
+            {% for category in categories %}
+                <li><a href="#">{{ category }}</a></li>
+            {% endfor %}
+        </ul>
+    </div><!-- category-change -->
+
+    <!-- language-dropdown -->
+    <div class="dropdown category-dropdown language-dropdown">
+        <a data-toggle="dropdown" href="#"><span class="change-text">{{ request.query.get('location') ? request.query.get('location') : "State" }}</span> <i class="fa fa-angle-down"></i></a>
+        <ul id="locationSearch" class="dropdown-menu category-change language-change">
+            {% for state in states %}
+                <li><a href="#">{{ state }}</a></li>
+            {% endfor %}
+        </ul>
+    </div><!-- language-dropdown -->
+
+    <input type="hidden" name="categories" />
+    <input type="hidden" name="location" />
+
+    <input type="text" name="keyword" class="form-control" placeholder="Type your keyword" value="{{ request.query.get('keyword') ? request.query.get('keyword') : "" }}">
+    <button type="submit" class="btn btn-primary" value="Search">Search</button>
+</form>
+
+

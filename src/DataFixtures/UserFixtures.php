@@ -14,13 +14,9 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserFixtures extends Fixture
 {
-    public const JS_NUM = 3;
-
-    public const EMP_NUM = 3;
+    public const PROFILES_NUM = 3;
+    public const COMPANIES_NUM = 3;
     public const JOBS_NUM = 3;
-
-    public const USER_PASS = '121212';
-    public const USER_ROLE = 'ROLE_PROFILE';
     public const COMPANY_ROLE = 'ROLE_COMPANY';
 
     private $encoder;
@@ -35,21 +31,21 @@ class UserFixtures extends Fixture
     {
         /* Load super User */
         $superUser = new User();
-        $superUser->setEmail('daniyar.san@gmail.com');
-        $superUser->setPassword($this->encoder->encodePassword($superUser, '121212'));
-        $superUser->setRoles(['ROLE_ADMIN']);
+        $superUser->setEmail(User::DEMO_EMAIL);
+        $superUser->setPassword($this->encoder->encodePassword($superUser, USER::DEMO_PASSWORD));
+        $superUser->setRoles([User::ROLE_ADMIN]);
         $manager->persist($superUser);
         /* Load super User */
 
         /* Load Job Seekers */
-        for ($i = 0; $i <= self::JS_NUM; $i++) {
+        for ($i = 0; $i <= self::PROFILES_NUM; $i++) {
             $name = $this->faker->firstName;
             $lastName = $this->faker->lastName;
 
             $user = new User();
-            $user->setPassword($this->encoder->encodePassword($user, self::USER_PASS));
+            $user->setPassword($this->encoder->encodePassword($user, USER::DEMO_PASSWORD));
             $user->setEmail($this->faker->email);
-            $user->setRoles([self::USER_ROLE]);
+            $user->setRoles([User::ROLE_PROFILE]);
 
             $profile = new Profile();
             $profile->setFirstName($name);
@@ -64,11 +60,11 @@ class UserFixtures extends Fixture
         /* Load Job Seekers */
 
         /* Load Employers */
-        for ($i = 0; $i <= self::EMP_NUM; $i++) {
+        for ($i = 0; $i <= self::COMPANIES_NUM; $i++) {
             $user = new User();
-            $user->setPassword($this->encoder->encodePassword($user, self::USER_PASS));
+            $user->setPassword($this->encoder->encodePassword($user, USER::DEMO_PASSWORD));
             $user->setEmail($this->faker->companyEmail);
-            $user->setRoles([self::COMPANY_ROLE]);
+            $user->setRoles([User::ROLE_COMPANY]);
 
             $company = new Company();
             $company->setName($this->faker->company);

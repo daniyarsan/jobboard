@@ -16,10 +16,9 @@
             <span><a href="{{ path('company_details', {id: company.getId() }) }}" class="title">{{ company.name }}</a></span>
             <div class="ad-meta">
                 <ul>
-                    <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ company.getCountry() }} </a></li>
-                    <li><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i>Full Time</a></li>
+                    <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ company.getCountry() }}, {{ company.state }} </a></li>
                     {% set count_jobs = jobRepository.getCompanyCount(company) %}
-                    <li><a href="#"><i class="fa fa-file" aria-hidden="true"></i>{{ count_jobs }}</a></li>
+                    <li><a href="{{ path('company_details', {id: company.getId() }) }}"><i class="fa fa-briefcase" aria-hidden="true"></i>{{ count_jobs }}</a></li>
                 </ul>
             </div><!-- ad-meta -->
         </div><!-- ad-info -->

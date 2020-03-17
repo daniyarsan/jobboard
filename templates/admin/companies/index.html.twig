@@ -1,9 +1,8 @@
 {% extends 'admin/base.html.twig' %}
-{#{% import 'admin/_parts/helper.html.twig' as helper %}#}
+{% import 'admin/form/dialog.html.twig' as dialogs %}
+{% import 'admin/form/parts.html.twig' as parts %}
 
 {% block title %}{{ 'Companies List'|trans }}{% endblock %}
-
-{% import 'admin/form/dialog.html.twig' as dialogs %}
 
 {% block content %}
     {{ breadcrumbs.add({'url' : 'admin_index', 'title' : 'Dashboard'|trans}) }}
@@ -52,11 +51,14 @@
                                 </div>
                             </div><!-- /btn-group -->
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="text-md-right">
                                 <a href="{{ path('admin_companies_create') }}" class="btn btn-success waves-effect waves-light mb-2 mr-2"><i class="mdi mdi-plus-circle mr-1"></i> {{ 'Add Company'|trans }}</a>
                             </div>
                         </div><!-- end col-->
+                        <div class="col-md-2">
+                            {{ parts.itemsPerPage([200, 500, 1000]) }}
+                        </div>
                     </div>
 
                     {# Main items table #}

@@ -22,14 +22,17 @@ class JobsController extends AbstractController
      */
     public function index(Request $request, PaginatorInterface $paginator)
     {
+        $limit = 10;
+
         $applicationForm = $this->createForm(ApplicationType::class, null, [
             'method' => 'POST']
         );
 
         $jobs = $this->getDoctrine()->getRepository('App:Job')->findByFilterQuery($request);
-        $jobs = $paginator->paginate($jobs, $request->query->getInt('page', 1), 10);
+        $jobs = $paginator->paginate($jobs, $request->query->getInt('page', 1), $limit);
 
         return [
+            'limit' => $limit,
             'jobs' => $jobs,
             'applicationForm' => $applicationForm->createView()
         ];
