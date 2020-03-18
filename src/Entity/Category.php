@@ -39,6 +39,11 @@ class Category
      */
     private $modified;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $onMainPage;
+
 
     public function getId(): ?int
     {
@@ -88,5 +93,17 @@ class Category
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getOnMainPage(): ?bool
+    {
+        return $this->onMainPage;
+    }
+
+    public function setOnMainPage(?bool $onMainPage): self
+    {
+        $this->onMainPage = $onMainPage;
+
+        return $this;
     }
 }

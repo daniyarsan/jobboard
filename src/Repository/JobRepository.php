@@ -23,9 +23,11 @@ class JobRepository extends ServiceEntityRepository
     public function findByFilterQuery($request)
     {
         $qb = $this->createQueryBuilder('job');
+        /* Job should be active */
         if (!strstr($request->getPathInfo(), 'admin')) {
             $qb->andWhere('job.active = 1');
         }
+
         // Keyword
         if (!empty($request->query->get('keyword'))) {
             $qb->andWhere('job.title LIKE :filterKeyword OR job.description LIKE :filterKeyword')
@@ -34,9 +36,8 @@ class JobRepository extends ServiceEntityRepository
 
         // Categories
         if (!empty($request->query->get('categories'))) {
-            $qb->leftJoin('job.categories', 'categories')
-                ->andWhere('categories.id IN(:categories)')
-                ->setParameter('categories', $request->query->get('categories'));
+            $qb->andWhere('job.categories LIKE :categories')
+                ->setParameter('categories', '%"'. $request->query->get('categories') .'"%');
         }
 
         // Country

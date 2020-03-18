@@ -19,14 +19,7 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
-    public function findAllOrderedByName()
-    {
-        $qb = $this->createQueryBuilder('category');
-
-        return $qb->orderBy('category.name', 'ASC');
-    }
-
-    public function findAllFieldNames()
+    public function findAllNames()
     {
         $result = $this->createQueryBuilder('c')
             ->select('c.name')
@@ -36,7 +29,7 @@ class CategoryRepository extends ServiceEntityRepository
         return array_map('current', $result);
     }
 
-    public function findAllFieldSlug()
+    public function findAllSlugs()
     {
         $result = $this->createQueryBuilder('c')
             ->select('c.slug')
@@ -44,5 +37,15 @@ class CategoryRepository extends ServiceEntityRepository
             ->getScalarResult();
 
         return array_map('current', $result);
+    }
+
+    public function findForHomepage($limit)
+    {
+        $result = $this->createQueryBuilder('c')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+
+        return $result;
     }
 }

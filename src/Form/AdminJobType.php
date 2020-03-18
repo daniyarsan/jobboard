@@ -43,7 +43,7 @@ class AdminJobType extends AbstractType
             ])
             ->add('state', TextType::class)
             ->add('categories', ChoiceType::class, [
-                'choices' => $categories->findAllFieldNames(),
+                'choices' => $categories->findAllNames(),
                 'choice_label' => function ($choice) {
                     return ucfirst($choice);
                 },

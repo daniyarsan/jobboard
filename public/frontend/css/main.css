@@ -525,6 +525,7 @@ textarea {
 .category-title {
     display: block;
     font-size: 16px;
+    padding: 0 20px;
 }
 
 .category-item:hover .category-quantity,
@@ -2202,6 +2203,10 @@ input:-moz-placeholder {
     float: left;
     min-height: 90px;
     margin-bottom: 25px;
+}
+
+.category-item .category-icon img {
+    width: 70px;
 }
 
 .latest-jobs-ads .section-title {

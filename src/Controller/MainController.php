@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\CategoryRepository;
 use HttpResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -18,9 +19,14 @@ class MainController extends AbstractController
      * @Route("/", name="_index")
      * @Template("frontend/main/index.html.twig")
     */
-    public function index()
+
+    public function index(CategoryRepository $categoryRepository)
     {
-        return [];
+        $categories = $categoryRepository->findForHomepage(12);
+
+        return [
+            'categories' => $categories
+        ];
     }
 
     /**

@@ -17,7 +17,7 @@ class SearchProvider extends AbstractController
     }
     public function searchBar($request)
     {
-        $categories = $this->categoryRepository->findAllFieldNames();
+        $categories = $this->categoryRepository->findAllNames();
         $states = States::list();
 
         return $this->render('frontend/_parts/search.html.twig', [
