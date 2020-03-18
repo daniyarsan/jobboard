@@ -42,8 +42,6 @@ class AdminJobType extends AbstractType
                 'placeholder' => 'Choose Country',
             ])
             ->add('state', TextType::class)
-            ->add('salary', IntegerType::class, [
-            ])
             ->add('categories', ChoiceType::class, [
                 'choices' => $categories->findAllFieldNames(),
                 'choice_label' => function ($choice) {

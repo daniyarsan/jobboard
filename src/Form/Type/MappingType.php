@@ -31,16 +31,14 @@ class MappingType extends AbstractType
         $builder->setRequired(false);
 
         /* Get fields for values */
-        $fields = $this->em->getClassMetadata('App:Job')->getColumnNames();
-        $dynamicFields = $this->fieldRepository->findAllFieldIds();
-        $fieldsCollection = array_merge($fields, $dynamicFields);
+        $fields = $this->fieldRepository->findAllFieldIds();
 
         /* Get fields to display on page */
         $feed = $this->feedRepository->find($options[ 'feedId' ]);
         $importFields = $feed->getMapperDefault();
 
-        if (!empty($fieldsCollection)) {
-            foreach ($fieldsCollection as $field) {
+        if (!empty($fields)) {
+            foreach ($fields as $field) {
                 $builder
                     ->add($field, ChoiceType::class, [
                         'choices' => $importFields,

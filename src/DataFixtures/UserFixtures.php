@@ -97,7 +97,7 @@ class UserFixtures extends Fixture
             $jobEntity->setTitle($this->faker->jobTitle);
             $jobEntity->setDescription($this->faker->realText(rand(10,20)));
             $jobEntity->setCompany($company);
-            $jobEntity->setIsPublished(true);
+            $jobEntity->setActive(true);
             $jobEntity->setCountry($this->faker->country);
             $jobEntity->setSalary($this->faker->numberBetween(0, 100000));
 

@@ -247,8 +247,7 @@ class MyCompanyController extends AbstractController
                 $this->get('translator')->trans('Request for publishing job has been added into cart.')
             );
         } else {
-            $job->setIsPublished(true);
-
+            $job->setActive(true);
             try {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($job);
@@ -267,7 +266,7 @@ class MyCompanyController extends AbstractController
      */
     public function unpublish(Request $request, Job $job)
     {
-        $job->setIsPublished(false);
+        $job->setActive(false);
 
         try {
             $em = $this->getDoctrine()->getManager();
@@ -323,7 +322,7 @@ class MyCompanyController extends AbstractController
                 $this->get('translator')->trans('Request for featuring job has been added into cart.')
             );
         } else {
-            $job->setIsFeatured(true);
+            $job->setFeatured(true);
 
             try {
                 $em = $this->getDoctrine()->getManager();
@@ -348,7 +347,7 @@ class MyCompanyController extends AbstractController
      */
     public function unfeature(Request $request, Job $job)
     {
-        $job->setIsFeatured(false);
+        $job->setFeatured(false);
 
         try {
             $em = $this->getDoctrine()->getManager();

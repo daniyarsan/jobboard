@@ -50,8 +50,8 @@ class MenuGenerator
                 ['title' => 'Blog', 'url' => 'admin_blog_index'],
                 ['title' => 'Fields', 'url' => 'admin_field_index'],
             ]],
-            ['title' => 'BackFill', 'url' => '', 'icon' => 'fe-file-text', 'sub' => [
-                ['title' => 'Feeds', 'url' => 'admin_feeds_index'],
+            ['title' => 'Feeds', 'url' => '', 'icon' => 'fe-file-text', 'sub' => [
+                ['title' => 'Xml', 'url' => 'admin_feeds_index'],
             ]],
             ['title' => 'Settings', 'url' => '', 'icon' => 'fe-settings', 'sub' => [
                 ['title' => 'Categories', 'url' => 'admin_category_index'],

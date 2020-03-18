@@ -1,5 +1,7 @@
 {% import 'admin/form/dialog.html.twig' as dialogs %}
 
+{{ knp_pagination_render(entities, 'admin/_parts/paginator.html.twig') }}
+
 <form method="post" action="{{ path('admin_jobs_bulk') }}" id="bulk-table-form">
     <input type="hidden" name="return_url" value="{{ path('admin_jobs_index') }}{{ query_string() }}"/>
     {{ form_widget(bulk_action_form._token) }}
@@ -25,8 +27,8 @@
                 <th style="width: 15%">{{ 'Location'|trans }}</th>
                 <th>{{ 'Created'|trans }}</th>
                 <th>
-                    {{ knp_pagination_sortable(entities, 'Status', 'isPublished') }}
-                    {% if entities.isSorted('isPublished') %}
+                    {{ knp_pagination_sortable(entities, 'Status', 'active') }}
+                    {% if entities.isSorted('active') %}
                         <span class="fas fa-sort-alpha-{% if entities.getParams.direction == 'desc' %}down{% else %}up{% endif %}"></span>
                     {% endif %}
                 </th>
@@ -49,7 +51,7 @@
                     <td>{{ job.country }}</td>
                     <td>{{ job.created|date("d/m/Y") }} </td>
                     <td>
-                        {% if job.isPublished %}
+                        {% if job.active %}
                             <span class="badge bg-soft-success text-success">{{ 'Published'|trans }}</span>
                         {% else %}
                             <span class="badge bg-soft-danger text-danger">{{ 'On Hold'|trans }}</span>
@@ -58,7 +60,7 @@
                     <td>
                         <a href="{{ path('job_details', {'id': job.id}) }}" class="action-icon">
                             <i class="mdi mdi-eye"></i></a>
-                        {% if job.isPublished == 1 %}
+                        {% if job.active == 1 %}
                             <a href="{{ path('admin_jobs_set', {'action': 'disable', 'id': job.id, 'return_url': path('admin_jobs_index') ~ query_string()}) }}" class="action-icon">
                                 <i class="mdi mdi-pause"></i></a>
                         {% else %}

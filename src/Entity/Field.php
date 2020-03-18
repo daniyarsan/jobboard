@@ -5,7 +5,9 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -18,6 +20,8 @@ class Field
         'text' => TextType::class,
         'select' => ChoiceType::class,
         'textarea' => TextareaType::class,
+        'checkbox' => CheckboxType::class,
+        'country' => CountryType::class,
     ];
 
     /**
@@ -46,6 +50,17 @@ class Field
      * @ORM\OneToMany(targetEntity="App\Entity\FieldItems", mappedBy="field_id", orphanRemoval=true)
      */
     private $fieldItems;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $system;
+
+    /**
+     * @ORM\Column(type="string", length=190, nullable=true)
+     */
+    private $listingType;
+
 
     public function __construct()
     {
@@ -127,5 +142,29 @@ class Field
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getSystem(): ?bool
+    {
+        return $this->system;
+    }
+
+    public function setSystem(?bool $system): self
+    {
+        $this->system = $system;
+
+        return $this;
+    }
+
+    public function getListingType(): ?string
+    {
+        return $this->listingType;
+    }
+
+    public function setListingType(?string $listingType): self
+    {
+        $this->listingType = $listingType;
+
+        return $this;
     }
 }

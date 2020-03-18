@@ -48,29 +48,14 @@ class Job
     private $state;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=0, nullable=true)
+     * @ORM\Column(type="boolean", nullable=true, name="featured")
      */
-    private $salary;
+    private $featured;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true, name="is_featured")
+     * @ORM\Column(type="boolean", nullable=true, name="active")
      */
-    private $isFeatured;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true, name="featured_until")
-     */
-    private $featuredUntil;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true, name="is_published")
-     */
-    private $isPublished;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true, name="published_until")
-     */
-    private $publishedUntil;
+    private $active;
 
     /**
      * @ORM\Column(type="array", nullable=true)
@@ -165,80 +150,37 @@ class Job
         $this->country = $country;
     }
 
-    public function getSalary()
+
+    /**
+     * @return mixed
+     */
+    public function getFeatured()
     {
-        return $this->salary;
+        return $this->featured;
     }
 
-    public function setSalary($salary): self
+    /**
+     * @param mixed $featured
+     */
+    public function setFeatured($featured): void
     {
-        $this->salary = $salary;
-
-        return $this;
+        $this->featured = $featured;
     }
 
     /**
      * @return mixed
      */
-    public function getIsFeatured()
+    public function getActive()
     {
-        return $this->isFeatured;
+        return $this->active;
     }
 
     /**
-     * @param mixed $isFeatured
+     * @param mixed $active
      */
-    public function setIsFeatured($isFeatured): void
+    public function setActive($active): void
     {
-        $this->isFeatured = $isFeatured;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFeaturedUntil()
-    {
-        return $this->featuredUntil;
-    }
-
-    /**
-     * @param mixed $featuredUntil
-     */
-    public function setFeaturedUntil($featuredUntil): void
-    {
-        $this->featuredUntil = $featuredUntil;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getIsPublished()
-    {
-        return $this->isPublished;
-    }
-
-    /**
-     * @param mixed $isPublished
-     */
-    public function setIsPublished($isPublished): void
-    {
-        $this->isPublished = $isPublished;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPublishedUntil()
-    {
-        return $this->publishedUntil;
-    }
-
-    /**
-     * @param mixed $publishedUntil
-     */
-    public function setPublishedUntil($publishedUntil): void
-    {
-        $this->publishedUntil = $publishedUntil;
+        $this->active = $active;
     }
 
     /**
@@ -349,7 +291,7 @@ class Job
 
     public function activateJob(): self
     {
-        $this->setIsPublished(true);
+        $this->setActive(true);
 
         return $this;
     }

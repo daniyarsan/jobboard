@@ -144,11 +144,11 @@ class JobsController extends AbstractController
                     $em->remove($entity);
                     break;
                 case 'disable':
-                    $entity->setIsPublished(false);
+                    $entity->setActive(false);
                     $em->persist($entity);
                     break;
                 case 'activate':
-                    $entity->setIsPublished(true);
+                    $entity->setActive(true);
                     $em->persist($entity);
                     break;
             };

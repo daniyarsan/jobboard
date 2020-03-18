@@ -20,49 +20,35 @@ class JobRepository extends ServiceEntityRepository
         parent::__construct($registry, Job::class);
     }
 
-    public function unfeature()
+    public function findByFilterQuery($request)
     {
         $qb = $this->createQueryBuilder('job');
+        if (!strstr($request->getPathInfo(), 'admin')) {
+            $qb->andWhere('job.active = 1');
+        }
+        // Keyword
+        if (!empty($request->query->get('keyword'))) {
+            $qb->andWhere('job.title LIKE :filterKeyword OR job.description LIKE :filterKeyword')
+                ->setParameter('filterKeyword', '%' . $request->query->get('keyword') . '%');
+        }
 
-        return $qb->update()
-            ->set('job.isFeatured', '0')
-            ->andWhere('job.featuredUntil > CURRENT_TIMESTAMP()')
+        // Categories
+        if (!empty($request->query->get('categories'))) {
+            $qb->leftJoin('job.categories', 'categories')
+                ->andWhere('categories.id IN(:categories)')
+                ->setParameter('categories', $request->query->get('categories'));
+        }
+
+        // Country
+        if (!empty($request->query->get('state'))) {
+            $qb->andWhere('job.state = :state')
+                ->setParameter('state', $request->query->get('state'));
+        }
+
+        return $qb->addOrderBy('job.featured', 'DESC')
+            ->addOrderBy('job.created', 'DESC')
             ->getQuery()
             ->execute();
-    }
-
-    public function unpublish()
-    {
-        $qb = $this->createQueryBuilder('job');
-
-        return $qb->update()
-            ->set('job.isPublished', '0')
-            ->andWhere('job.publishedUntil > CURRENT_TIMESTAMP()')
-            ->getQuery()
-            ->execute();
-    }
-
-    public function activate()
-    {
-        $qb = $this->createQueryBuilder('job');
-
-        return $qb->update()
-            ->set('job.isPublished', '1')
-            ->andWhere('job.publishedUntil > CURRENT_TIMESTAMP()')
-            ->getQuery()
-            ->execute();
-    }
-
-    public function getCompanyCount($company)
-    {
-        $qb = $this->createQueryBuilder('job');
-        $results = $qb->andWhere('job.company = :company')
-            ->andWhere('job.isPublished = 1')
-            ->setParameter('company', $company)
-            ->getQuery()
-            ->execute();
-
-        return count($results);
     }
 
     /**
@@ -93,7 +79,7 @@ class JobRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('job');
 
-        return $qb->andWhere('job.isPublished = 1')
+        return $qb->andWhere('job.active = 1')
             ->orderBy('job.created', 'DESC')
             ->setMaxResults($count)
             ->getQuery()
@@ -106,8 +92,8 @@ class JobRepository extends ServiceEntityRepository
         return $qb->innerJoin('job.categories', 'category')
             ->andWhere('category.slug = :slug')
             ->setParameter('slug', $slug)
-            ->andWhere('job.isPublished = 1')
-            ->addOrderBy('job.isFeatured', 'DESC')
+            ->andWhere('job.active = 1')
+            ->addOrderBy('job.featured', 'DESC')
             ->addOrderBy('job.created', 'DESC')
             ->getQuery()
             ->execute();
@@ -127,37 +113,6 @@ class JobRepository extends ServiceEntityRepository
             ->execute();
     }
 
-    public function findByFilterQuery($request)
-    {
-        $qb = $this->createQueryBuilder('job');
-        if (!strstr($request->getPathInfo(), 'admin')) {
-            $qb->andWhere('job.isPublished = 1');
-        }
-        // Keyword
-        if (!empty($request->query->get('keyword'))) {
-            $qb->andWhere('job.title LIKE :filterKeyword OR job.description LIKE :filterKeyword')
-                ->setParameter('filterKeyword', '%' . $request->query->get('keyword') . '%');
-        }
-
-        // Categories
-        if (!empty($request->query->get('categories'))) {
-            $qb->leftJoin('job.categories', 'categories')
-                ->andWhere('categories.id IN(:categories)')
-                ->setParameter('categories', $request->query->get('categories'));
-        }
-
-        // Country
-        if (!empty($request->query->get('state'))) {
-            $qb->andWhere('job.state = :state')
-                ->setParameter('state', $request->query->get('state'));
-        }
-
-        return $qb->addOrderBy('job.isFeatured', 'DESC')
-            ->addOrderBy('job.created', 'DESC')
-            ->getQuery()
-            ->execute();
-    }
-
     public function deleteByFeedId($feedId)
     {
         $query = $this->createQueryBuilder('job')
@@ -167,5 +122,37 @@ class JobRepository extends ServiceEntityRepository
             ->getQuery();
 
         return $query->execute();
+    }
+    public function unfeature()
+    {
+        $qb = $this->createQueryBuilder('job');
+
+        return $qb->update()
+            ->set('job.featured', '0')
+            ->andWhere('job.featuredUntil > CURRENT_TIMESTAMP()')
+            ->getQuery()
+            ->execute();
+    }
+
+    public function unpublish()
+    {
+        $qb = $this->createQueryBuilder('job');
+
+        return $qb->update()
+            ->set('job.active', '0')
+            ->andWhere('job.publishedUntil > CURRENT_TIMESTAMP()')
+            ->getQuery()
+            ->execute();
+    }
+
+    public function activate()
+    {
+        $qb = $this->createQueryBuilder('job');
+
+        return $qb->update()
+            ->set('job.active', '1')
+            ->andWhere('job.publishedUntil > CURRENT_TIMESTAMP()')
+            ->getQuery()
+            ->execute();
     }
 }

@@ -31,19 +31,13 @@ class JobType extends AbstractType
 
         $builder
             ->add('title', TextType::class)
-            ->add('salary', IntegerType::class, [
-                'required' => false,
-            ])
             ->add('location', TextType::class)
             ->add('categories', EntityType::class, [
                 'placeholder' => 'Choose Category',
                 'class' => 'App\Entity\Category',
-                'multiple' => true,
-                'required' => false
+                'multiple' => true
             ])
-            ->add('description', TextareaType::class, [
-                'required' => false
-            ]);
+            ->add('description', TextareaType::class);
 
         /* Adding custom fields to form */
         foreach ($jobFields as $jobField) {
