@@ -67,7 +67,6 @@ class JobsController extends AbstractController
     public function edit(Request $request, Job $job, TranslatorInterface $translator)
     {
         $form = $this->createForm(AdminJobType::class, $job);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

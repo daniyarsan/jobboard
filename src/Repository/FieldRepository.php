@@ -53,4 +53,15 @@ class FieldRepository extends ServiceEntityRepository
 
         return array_map('current', $result);
     }
+
+    public function findNotSystemFields()
+    {
+        $result = $this->createQueryBuilder('f')
+            ->where('f.system is null')
+            ->getQuery()
+            ->getResult();
+
+        return $result;
+    }
+
 }

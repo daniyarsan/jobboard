@@ -30,7 +30,7 @@ class AdminJobType extends AbstractType
 
         $fieldRepository = $this->em->getRepository('App:Field');
         $categories = $this->em->getRepository('App:Category');
-        $jobFields = $fieldRepository->findAll();
+        $jobFields = $fieldRepository->findNotSystemFields();
 
         $builder
             ->add('company', EntityType::class, [

@@ -156,4 +156,22 @@ class JobRepository extends ServiceEntityRepository
             ->getQuery()
             ->execute();
     }
+
+    public function findWithCount($field)
+    {
+        $displayName = 'title';
+        $data = $this->createQueryBuilder('job')
+            ->select("DISTINCT job.{$field} as {$displayName}")
+            ->addSelect("COUNT(job.{$field}) as count")
+            ->groupBy("job.{$field}")
+            ->getQuery()->getResult();
+
+
+//        $result = array();
+//        array_walk_recursive($data, function($a) use (&$result) { $result[] = $a; });
+
+        return $data;
+    }
+
+
 }

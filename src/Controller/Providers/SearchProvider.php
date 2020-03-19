@@ -3,6 +3,8 @@
 namespace App\Controller\Providers;
 
 use App\Repository\CategoryRepository;
+use App\Repository\FieldRepository;
+use App\Repository\JobRepository;
 use App\Service\Data\States;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +17,7 @@ class SearchProvider extends AbstractController
     {
         $this->categoryRepository = $categoryRepository;
     }
+
     public function searchBar($request)
     {
         $categories = $this->categoryRepository->findAllNames();
@@ -27,8 +30,21 @@ class SearchProvider extends AbstractController
         ]);
     }
 
-    public function filterBar()
+    public function filterBar($request, FieldRepository $fieldRepository, JobRepository $jobRepository)
     {
-        var_dump('filterbar');
+        $filters = [];
+
+        $fields = $fieldRepository->findBy(['inFilter' => true]);
+
+        foreach ($fields as $key => $field) {
+            $filters[$key]['field'] = $field;
+            $filters[$key]['options'] = $jobRepository->findWithCount($field->getFieldId());
+        }
+
+        return $this->render('frontend/_parts/filter.html.twig', [
+            'filters' => $filters
+        ]);
     }
+
+
 }

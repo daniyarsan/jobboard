@@ -61,6 +61,11 @@ class Field
      */
     private $listingType;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $inFilter;
+
 
     public function __construct()
     {
@@ -164,6 +169,18 @@ class Field
     public function setListingType(?string $listingType): self
     {
         $this->listingType = $listingType;
+
+        return $this;
+    }
+
+    public function getInFilter(): ?bool
+    {
+        return $this->inFilter;
+    }
+
+    public function setInFilter(bool $inFilter): self
+    {
+        $this->inFilter = $inFilter;
 
         return $this;
     }

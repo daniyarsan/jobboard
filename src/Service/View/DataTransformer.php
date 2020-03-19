@@ -51,4 +51,10 @@ class DataTransformer
         return $text;
     }
 
+    public static function flatArray(array $array) {
+        $return = array();
+        array_walk_recursive($array, function($a) use (&$return) { $return[] = $a; });
+        return $return;
+    }
+
 }
