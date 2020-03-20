@@ -37,11 +37,22 @@ class SearchProvider extends AbstractController
         $fields = $fieldRepository->findBy(['inFilter' => true]);
 
         foreach ($fields as $key => $field) {
+
+            $return = array();
+            $optionsFromDb = $jobRepository->findWithCount($request, $field->getFieldId());
+            array_walk_recursive($optionsFromDb, function($a) use (&$return) { $return[] = $a; });
+
             $filters[$key]['field'] = $field;
-            $filters[$key]['options'] = $jobRepository->findWithCount($field->getFieldId());
+            foreach (array_count_values($return) as $item => $count) {
+                $filters[$key]['options'][] = [
+                    'title' => $item,
+                    'count' => $count
+                ];
+            }
         }
 
         return $this->render('frontend/_parts/filter.html.twig', [
+            'request' => $request,
             'filters' => $filters
         ]);
     }

@@ -1,37 +1,38 @@
 <div class="accordion">
     <div class="panel-group" id="filter-accordion">
-
         {% for filter in filters %}
-            <div class="card panel-faq">
+            {% if request.get(filter.field.fieldId) is null %}
+                <div class="card panel-faq">
                 <div class="card-header">
                     <button data-toggle="collapse" data-target="#{{ filter.field.fieldId }}" aria-expanded="true" aria-controls="{{ filter.field.fieldId }}">{{ filter.field.name }}</button>
                 </div><!-- card-header -->
-
                 <div id="{{ filter.field.fieldId }}" class="collapse show" data-parent="#filter-accordion">
                     <!-- panel-body -->
                     <div class="panel-body">
                         <h5><a href="#"><i class="fa fa-caret-down"></i> All {{ filter.field.name }}</a></h5>
                         <ul>
                             {% for param in filter.options %}
-                                <li><a href="{{ path('jobs_index',  {'categories' : filter.field.fieldId}) }}"> {{ param.title|join('') }} <span>({{ param.count }})</span></a></li>
+                                {% set link = request.query.all | merge({(filter.field.fieldId) : param.title}) %}
+
+                                <li><a href="{{ path('jobs_index', link )}}"> {{ param.title }} <span>({{ param.count }})</span></a></li>
                             {% endfor %}
                         </ul>
 
-                        <div class="see-more">
-                            <button type="button" class="show-more one"><i class="fa fa-plus-square-o" aria-hidden="true"></i>See More</button>
-                            <ul class="more-category one">
-                                <li><a href="#">Fron end developer<span>(289)</span></a></li>
-                                <li><a href="#">Back end developer<span>(5402)</span></a></li>
-                                <li><a href="#">IT Department Manager<span>(3829)</span></a></li>
-                                <li><a href="#">QA Department Manager<span>(352)</span></a></li>
-                            </ul>
-                        </div>
+{#                        <div class="see-more">#}
+{#                            <button type="button" class="show-more one"><i class="fa fa-plus-square-o" aria-hidden="true"></i>See More</button>#}
+{#                            <ul class="more-category one">#}
+{#                                <li><a href="#">Fron end developer<span>(289)</span></a></li>#}
+{#                                <li><a href="#">Back end developer<span>(5402)</span></a></li>#}
+{#                                <li><a href="#">IT Department Manager<span>(3829)</span></a></li>#}
+{#                                <li><a href="#">QA Department Manager<span>(352)</span></a></li>#}
+{#                            </ul>#}
+{#                        </div>#}
 
                     </div><!-- panel-body -->
                 </div>
             </div><!-- card -->
+            {% endif %}
         {% endfor %}
-
 
 {#        <div class="card  panel-faq">
             <div class="card-header">

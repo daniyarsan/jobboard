@@ -157,18 +157,35 @@ class JobRepository extends ServiceEntityRepository
             ->execute();
     }
 
-    public function findWithCount($field)
+    public function findWithCount($request, $field)
     {
+
         $displayName = 'title';
-        $data = $this->createQueryBuilder('job')
-            ->select("DISTINCT job.{$field} as {$displayName}")
-            ->addSelect("COUNT(job.{$field}) as count")
-            ->groupBy("job.{$field}")
+        $qb = $this->createQueryBuilder('job')
+            ->select("DISTINCT job.{$field} as {$displayName}");
+
+//            ->addSelect("COUNT(job.{$field}) as count")
+
+        // Keyword
+        if (!empty($request->query->get('keyword'))) {
+            $qb->andWhere('job.title LIKE :filterKeyword OR job.description LIKE :filterKeyword')
+                ->setParameter('filterKeyword', '%' . $request->query->get('keyword') . '%');
+        }
+
+        // Categories
+        if (!empty($request->query->get('categories'))) {
+            $qb->andWhere('job.categories LIKE :categories')
+                ->setParameter('categories', '%"'. $request->query->get('categories') .'"%');
+        }
+
+        // Country
+        if (!empty($request->query->get('state'))) {
+            $qb->andWhere('job.state = :state')
+                ->setParameter('state', $request->query->get('state'));
+        }
+
+        $data = $qb->groupBy("job.{$field}")
             ->getQuery()->getResult();
-
-
-//        $result = array();
-//        array_walk_recursive($data, function($a) use (&$result) { $result[] = $a; });
 
         return $data;
     }
