@@ -62,7 +62,7 @@ class Field
     private $listingType;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $inFilter;
 
