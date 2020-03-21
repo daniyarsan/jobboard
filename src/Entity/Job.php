@@ -83,9 +83,15 @@ class Job
     private $location;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="jobs")
      */
-    private $categories = [];
+    private $categories;
+
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+    }
 
 
     /**
@@ -296,27 +302,36 @@ class Job
         return $this;
     }
 
-    public function getCategories(): ?array
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
     {
         return $this->categories;
     }
 
-    public function setCategories($categories): self
+    public function addCategory(Category $category): self
     {
-        if(is_array($categories)) {
-            $this->categories = $categories;
-        } else {
-            $this->setCategory($categories);
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
         }
 
         return $this;
     }
 
-    public function setCategory(string $category): self
+    public function removeCategory(Category $category): self
     {
-        array_push($this->categories, $category);
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
+        }
 
         return $this;
+    }
+
+
+    public function setCategory(string $category): self
+    {
+        return $this->addCategory($category);
     }
 
 }

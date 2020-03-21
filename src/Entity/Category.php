@@ -40,10 +40,19 @@ class Category
     private $modified;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\ManyToMany(targetEntity="App\Entity\Job", mappedBy="categories")
      */
-    private $onMainPage;
+    private $jobs;
 
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $synonyms = [];
+
+    public function __construct()
+    {
+        $this->jobs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -95,15 +104,60 @@ class Category
         return $this->name;
     }
 
-    public function getOnMainPage(): ?bool
+    /**
+     * @return Collection|Job[]
+     */
+    public function getJobs(): Collection
     {
-        return $this->onMainPage;
+        return $this->jobs;
     }
 
-    public function setOnMainPage(?bool $onMainPage): self
+    public function addJob(Job $job): self
     {
-        $this->onMainPage = $onMainPage;
+        if (!$this->jobs->contains($job)) {
+            $this->jobs[] = $job;
+            $job->addCategory($this);
+        }
 
         return $this;
     }
+
+    public function removeJob(Job $job): self
+    {
+        if ($this->jobs->contains($job)) {
+            $this->jobs->removeElement($job);
+            $job->removeCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function getSynonyms(): ?array
+    {
+        return $this->synonyms;
+    }
+
+    public function setSynonyms(?array $synonyms): self
+    {
+        $this->synonyms = $synonyms;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * @param mixed $created
+     */
+    public function setCreated($created): void
+    {
+        $this->created = $created;
+    }
+
 }

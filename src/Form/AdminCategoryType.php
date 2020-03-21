@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Form\Type\TagType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -25,6 +26,12 @@ class AdminCategoryType extends AbstractType
                 'label' => 'Name',
                 'constraints' => [new NotBlank(['message' => 'Page Name is a required field'])]
             ])
+            ->add('synonyms', TagType::class, [
+                'attr' => [
+                    'placeholder' => 'Input comma separated synonyms'
+                ]
+            ])
+
             ->add('save', SubmitType::class)
             ->add('saveAndExit', SubmitType::class, ['label' => 'Save and Exit']);
     }

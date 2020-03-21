@@ -4,13 +4,13 @@ namespace App\Controller\Backend;
 
 use App\Entity\Category;
 use App\Form\AdminCategoryType;
+use App\Form\AdminFilterType;
 use App\Service\View\DataTransformer;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -26,11 +26,13 @@ class CategoriesController extends AbstractController
      * Lists all Category entities.
      *
      * @Route("/categories", name="category_index")
-     * @Method("GET")
      * @Template("admin/categories/index.html.twig")
      */
     public function index(Request $request, Session $session, PaginatorInterface $paginator)
     {
+        $filterForm = $this->createForm(AdminFilterType::class);
+        $filterForm->handleRequest($request);
+
         $em = $this->getDoctrine()->getManager();
         $queryBuilder = $em->getRepository('App:Category')->createQueryBuilder('c');
 
@@ -50,10 +52,12 @@ class CategoriesController extends AbstractController
             'defaultSortFieldName' => 'c.name',
             'defaultSortDirection' => 'asc'
         ];
-        $categories = $paginator->paginate($queryBuilder, $page, $itemsPerPage, $paginatorOptions);
+
+        $entities = $paginator->paginate($queryBuilder, $page, $itemsPerPage, $paginatorOptions);
 
         return [
-            'categories' => $categories,
+            'entities' => $entities,
+            'filter_form' => $filterForm->createView(),
             'bulk_action_form' => $this->createBulkActionForm()->createView()
         ];
     }
@@ -101,6 +105,7 @@ class CategoriesController extends AbstractController
     {
         $form = $this->createForm(AdminCategoryType::class, $category);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $category = $form->getData();
             try {

@@ -1,0 +1,62 @@
+{% import 'admin/form/dialog.html.twig' as dialogs %}
+
+{{ knp_pagination_render(entities, 'admin/_parts/paginator.html.twig') }}
+
+<form method="post" action="{{ path('admin_category_bulk') }}" id="bulk-table-form">
+    <input type="hidden" name="return_url" value="{{ path('admin_category_index') }}{{ query_string() }}"/>
+    {{ form_widget(bulk_action_form._token) }}
+    <input type="hidden" name="action" value=""/>
+
+    <div class="table-responsive">
+        <table class="table table-centered table-striped">
+            <thead>
+            <tr>
+                <th style="width: 20px;">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input bulk-item-check" id="checkAll">
+                        <label class="custom-control-label" for="checkAll">&nbsp;</label>
+                    </div>
+                </th>
+                <th>
+                    {{ knp_pagination_sortable(entities, 'Category Name', 'name') }}
+                    {% if entities.isSorted('name') %}
+                        <span class="fas fa-sort-alpha-{% if entities.getParams.direction == 'desc' %}down{% else %}up{% endif %}"></span>
+                    {% endif %}
+                </th>
+                <th>{{ 'Slug'|trans }}</th>
+                <th>
+                    {{ 'Synonyms' | trans }}
+                </th>
+                <th style="width: 15%">{{ 'Action'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for category in entities %}
+                <tr>
+                    <td>
+                        <div class="custom-control custom-checkbox">
+                            <input id="bulk-item-{{ category.id }}" type="checkbox" name="categories[{{ category.id }}]" class="custom-control-input bulk-item-check">
+                            <label class="custom-control-label" for="bulk-item-{{ category.id }}">&nbsp;</label>
+                        </div>
+                    </td>
+                    <td class="table-user">
+                        <a href="{{ path('admin_category_edit', {'id': category.id, 'return_url': path('admin_category_index') ~ query_string()}) }}" class="text-body font-weight-semibold">{{ category.name }}</a>
+                    </td>
+                    <td>{{ category.slug }}</td>
+                    <td>{{ category.synonyms|join(', ') }}</td>
+                    <td>
+                        <a href="{{ path('admin_category_edit', {'id': category.id, 'return_url': path('admin_category_index') ~ query_string()}) }}" class="action-icon"><i class="mdi mdi-pencil"></i></a>
+                        <a data-toggle="modal" href="#delete-{{ category.id }}" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                    </td>
+                </tr>
+
+                {{ dialogs.confirm('delete-' ~ category.id, 'Confirmation', 'The selected item will be removed permanently. Are you sure?', '', path('admin_category_set', {id: category.id, action: 'remove'})) }}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</form>
+
+{{ knp_pagination_render(entities, 'admin/_parts/paginator.html.twig') }}
+

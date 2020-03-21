@@ -39,17 +39,21 @@ class XmlParser
         }
 
         while ($this->xmlReader->name == $xmlRootElement) {
+            /* Get xml item (job) to import */
             $xmlItem = self::getArrayFromXmlString($this->xmlReader->readOuterXML());
+
+            /* Get fields to set values for job */
             $xmlItemsToLoop = array_filter($this->feed->getMapper());
 
             $job = new Job();
             $job->setCompany($this->feed->getCompany());
 
+            /* Loop through part of xml and call Job methods for hydration */
             foreach ($xmlItemsToLoop as $mapKey => $mapItem) {
                 if (!empty($xmlItemsToLoop[$mapKey])) {
                     $method = 'set' . ucfirst($mapKey);
                     if (method_exists($job, $method)) {
-                        $job->$method($xmlItem[$mapItem]);
+                        call_user_func([$job, $method], $xmlItem[$mapItem]);
                     }
                 }
             }
@@ -81,6 +85,8 @@ class XmlParser
 
         return  array_keys($xml);
     }
+
+
 
     protected static function getArrayFromXmlString($xmlString)
     {

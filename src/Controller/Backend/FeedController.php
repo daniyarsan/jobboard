@@ -205,6 +205,7 @@ class FeedController extends AbstractController
         $jobRepository->deleteByFeedId($feed->getSlug());
 
         $xmlParser = new XmlParser($em, $feed);
+
         $xmlParser->parse($feed->getUrl());
 
         $this->addFlash('success', $xmlParser->getImportedNum() . ' Jobs have been imported from the feed');
