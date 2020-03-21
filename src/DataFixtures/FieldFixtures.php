@@ -36,6 +36,7 @@ class FieldFixtures extends Fixture implements FixtureGroupInterface
             $field->setType($item['type']);
             $field->setListingType($item['listingType']);
             $field->setSystem(true);
+            $field->setInFilter($item['inFilter']);
 
             $manager->persist($field);
         }
@@ -50,25 +51,36 @@ class FieldFixtures extends Fixture implements FixtureGroupInterface
                 'name' => 'Title',
                 'fieldId' => 'title',
                 'listingType' => 'job',
-                'type' => 'text'
+                'type' => 'text',
+                'inFilter' => false,
             ],
             [
                 'name' => 'Description',
                 'fieldId' => 'description',
                 'listingType' => 'job',
-                'type' => 'textarea'
+                'type' => 'textarea',
+                'inFilter' => false
             ],
             [
                 'name' => 'Country',
                 'fieldId' => 'country',
                 'listingType' => 'job',
-                'type' => 'text'
+                'type' => 'text',
+                'inFilter' => false
             ],
             [
                 'name' => 'State',
                 'fieldId' => 'state',
                 'listingType' => 'job',
-                'type' => 'text'
+                'type' => 'text',
+                'inFilter' => true
+            ],
+            [
+                'name' => 'Categories',
+                'fieldId' => 'categories',
+                'listingType' => 'job',
+                'type' => 'text',
+                'inFilter' => true
             ]
         ];
     }

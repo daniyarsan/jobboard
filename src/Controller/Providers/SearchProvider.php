@@ -7,7 +7,6 @@ use App\Repository\FieldRepository;
 use App\Repository\JobRepository;
 use App\Service\Data\States;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 
 class SearchProvider extends AbstractController
 {
