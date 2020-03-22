@@ -87,6 +87,8 @@ class Job
      */
     private $categories;
 
+    private $categoryString;
+
 
     public function __construct()
     {
@@ -310,6 +312,13 @@ class Job
         return $this->categories;
     }
 
+    public function setCategories(Collection $categories): self
+    {
+        $this->categories = $categories;
+
+        return $this;
+    }
+
     public function addCategory(Category $category): self
     {
         if (!$this->categories->contains($category)) {
@@ -331,7 +340,25 @@ class Job
 
     public function setCategory(string $category): self
     {
-        return $this->addCategory($category);
+        $this->setCategoryString($category);
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCategoryString()
+    {
+        return $this->categoryString;
+    }
+
+    /**
+     * @param mixed $categoryString
+     */
+    public function setCategoryString($categoryString): void
+    {
+        $this->categoryString = $categoryString;
     }
 
 }

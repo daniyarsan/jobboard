@@ -59,7 +59,7 @@
 
                         <div class="col-md-4">
                             <div class="text-md-right">
-                                <a href="{{ path('admin_category_create') }}" class="btn btn-success waves-effect waves-light mb-2 mr-2"><i class="mdi mdi-plus-circle mr-1"></i> {{ 'Add Category'|trans }}</a>
+                                <a href="{{ path('admin_jobs_create') }}" class="btn btn-success waves-effect waves-light mb-2 mr-2"><i class="mdi mdi-plus-circle mr-1"></i> {{ 'Add Category'|trans }}</a>
                             </div>
                         </div><!-- end col-->
                         <div class="col-md-2">
@@ -68,7 +68,7 @@
                     </div>
 
                     {# Main items table #}
-                    {% include 'admin/categories/_table.html.twig' with entities %}
+                    {% include 'admin/jobs/_table.html.twig' with entities %}
 
                 </div> <!-- end card-body-->
             </div> <!-- end card-->

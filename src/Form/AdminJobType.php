@@ -42,11 +42,8 @@ class AdminJobType extends AbstractType
                 'placeholder' => 'Choose Country',
             ])
             ->add('state', TextType::class)
-            ->add('categories', ChoiceType::class, [
-                'choices' => $categories->findAllNames(),
-                'choice_label' => function ($choice) {
-                    return ucfirst($choice);
-                },
+            ->add('categories', EntityType::class, [
+                'class' => 'App\Entity\Category',
                 'placeholder' => 'Choose Category',
                 'multiple' => true,
             ])

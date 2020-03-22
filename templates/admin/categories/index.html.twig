@@ -8,7 +8,7 @@
 
 {% block content %}
     {{ breadcrumbs.add({'url' : 'admin_index', 'title' : 'Dashboard'|trans}) }}
-    {{ breadcrumbs.add({'url' : '', 'title' : 'Jobs'|trans}) }}
+    {{ breadcrumbs.add({'url' : '', 'title' : 'Categories'|trans}) }}
 
     <!-- start page title -->
     <div class="row">
@@ -23,7 +23,7 @@
                         {% endfor %}
                     </ol>
                 </div>
-                <h4 class="page-title">{{ 'Jobs'|trans }} - {{ entities.getTotalItemCount }} found</h4>
+                <h4 class="page-title">{{ 'Categories'|trans }} - {{ entities.getTotalItemCount }} found</h4>
             </div>
         </div>
     </div>
@@ -60,7 +60,7 @@
 
                         <div class="col-md-4">
                             <div class="text-md-right">
-                                <a href="{{ path('admin_jobs_create') }}" class="btn btn-success waves-effect waves-light mb-2 mr-2"><i class="mdi mdi-plus-circle mr-1"></i> {{ 'Add Job'|trans }}</a>
+                                <a href="{{ path('admin_category_create') }}" class="btn btn-success waves-effect waves-light mb-2 mr-2"><i class="mdi mdi-plus-circle mr-1"></i> {{ 'Add Category'|trans }}</a>
                             </div>
                         </div><!-- end col-->
                         <div class="col-md-2">

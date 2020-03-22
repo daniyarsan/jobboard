@@ -30,7 +30,7 @@ class JobRepository extends ServiceEntityRepository
 
         // Keyword
         if (!empty($request->query->get('keyword'))) {
-            $qb->andWhere('job.title LIKE :filterKeyword OR job.description LIKE :filterKeyword')
+            $qb->andWhere('job.title LIKE :filterKeyword') /*OR job.description LIKE :filterKeyword*/
                 ->setParameter('filterKeyword', '%' . $request->query->get('keyword') . '%');
         }
 
@@ -163,8 +163,6 @@ class JobRepository extends ServiceEntityRepository
         $displayName = 'title';
         $qb = $this->createQueryBuilder('job')
             ->select("DISTINCT job.{$field} as {$displayName}");
-
-//            ->addSelect("COUNT(job.{$field}) as count")
 
         // Keyword
         if (!empty($request->query->get('keyword'))) {

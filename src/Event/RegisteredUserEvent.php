@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Event;
 
 use App\Entity\User;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class RegisteredUserEvent extends Event
 {
