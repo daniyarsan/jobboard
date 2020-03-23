@@ -3,116 +3,117 @@
         {% for filter in filterFields %}
             {% if request.get(filter.field.fieldId) is null %}
                 <div class="card panel-faq">
-                <div class="card-header">
-                    <button data-toggle="collapse" data-target="#{{ filter.field.fieldId }}" aria-expanded="true" aria-controls="{{ filter.field.fieldId }}">{{ filter.field.name }}</button>
-                </div><!-- card-header -->
-                <div id="{{ filter.field.fieldId }}" class="collapse show" data-parent="#filter-accordion">
-                    <!-- panel-body -->
-                    <div class="panel-body">
-                        <h5><a href="#"><i class="fa fa-caret-down"></i> All {{ filter.field.name }}</a></h5>
-                        <ul>
-                            {% for opt in filter.options %}
-                                {% set link = request.query.all | merge({(filter.field.fieldId) : opt.title}) %}
+                    <div class="card-header">
+                        <button data-toggle="collapse" data-target="#{{ filter.field.fieldId }}" aria-expanded="true" aria-controls="{{ filter.field.fieldId }}">{{ filter.field.name }}</button>
+                    </div><!-- card-header -->
+                    <div id="{{ filter.field.fieldId }}" class="collapse show" data-parent="#filter-accordion">
+                        <!-- panel-body -->
+                        <div class="panel-body">
+                            <h5><a href="#"><i class="fa fa-caret-down"></i> All {{ filter.field.name }}</a></h5>
+                            <ul>
+                                {% for opt in filter.options | slice(0, 10) %}
+                                    {% set link = request.query.all | merge({(filter.field.fieldId) : opt.title}) %}
+                                    <li><a href="{{ path('jobs_index', link ) }}"> {{ opt.title|truncate(25) }} <span>({{ opt.count }})</span></a></li>
+                                {% endfor %}
+                            </ul>
 
-                                <li><a href="{{ path('jobs_index', link )}}"> {{ opt.title }} <span>({{ opt.count }})</span></a></li>
-                            {% endfor %}
-                        </ul>
+                            <div class="see-more">
+                                <ul class="more-category">
+                                    {% for key, opt in filter.options %}
+                                        {% if key > 10 %}
+                                            {% set link = request.query.all | merge({(filter.field.fieldId) : opt.title}) %}
+                                            <li><a href="{{ path('jobs_index', link ) }}"> {{ opt.title|truncate(25) }} <span>({{ opt.count }})</span></a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                                <button type="button" class="show-more"><i class="fa fa-plus-square-o" aria-hidden="true"></i>{{ 'See More' | trans }}</button>
+                            </div>
 
-{#                        <div class="see-more">#}
-{#                            <button type="button" class="show-more one"><i class="fa fa-plus-square-o" aria-hidden="true"></i>See More</button>#}
-{#                            <ul class="more-category one">#}
-{#                                <li><a href="#">Fron end developer<span>(289)</span></a></li>#}
-{#                                <li><a href="#">Back end developer<span>(5402)</span></a></li>#}
-{#                                <li><a href="#">IT Department Manager<span>(3829)</span></a></li>#}
-{#                                <li><a href="#">QA Department Manager<span>(352)</span></a></li>#}
-{#                            </ul>#}
-{#                        </div>#}
-
-                    </div><!-- panel-body -->
-                </div>
-            </div><!-- card -->
+                        </div><!-- panel-body -->
+                    </div>
+                </div><!-- card -->
             {% endif %}
         {% endfor %}
 
-{#        <div class="card  panel-faq">
-            <div class="card-header">
-                <button class="collapsed" data-toggle="collapse" data-target="#accordion-three" aria-expanded="true" aria-controls="accordion-three">Salary Range</button>
-            </div><!-- card-header -->
+        {#        <div class="card  panel-faq">
+                    <div class="card-header">
+                        <button class="collapsed" data-toggle="collapse" data-target="#accordion-three" aria-expanded="true" aria-controls="accordion-three">Salary Range</button>
+                    </div><!-- card-header -->
 
-            <div id="accordion-three"  class="collapse" data-parent="#tr-accordion">
-                <!-- panel-body -->
-                <div class="panel-body">
-                    <div class="price-range"><!--price-range-->
-                        <div class="price">
-                            <span>$100 - <strong>$700</strong></span>
-                            <div class="dropdown category-dropdown pull-right">
-                                <a data-toggle="dropdown" href="#"><span class="change-text">USD</span><i class="fa fa-caret-square-o-down"></i></a>
-                                <ul class="dropdown-menu category-change">
-                                    <li><a href="#">USD</a></li>
-                                    <li><a href="#">AUD</a></li>
-                                    <li><a href="#">EUR</a></li>
-                                    <li><a href="#">GBP</a></li>
-                                    <li><a href="#">JPY</a></li>
-                                </ul>
-                            </div><!-- category-change -->
-                            <input type="text" value="" data-slider-min="0" data-slider-max="700" data-slider-step="5" data-slider-value="[250,450]" id="price" ><br />
-                        </div>
-                    </div><!--/price-range-->
-                </div><!-- panel-body -->
-            </div>
-        </div><!-- panel -->
-        <div class="card panel-faq">
-            <div class="card-header">
-                <button class="collapsed" data-toggle="collapse" data-target="#accordion-six" aria-expanded="true" aria-controls="accordion-six">Company</button>
-            </div><!-- card-header -->
-
-            <div id="accordion-six" class="collapse" data-parent="#tr-accordion">
-                <!-- panel-body -->
-                <div class="panel-body">
-                    <input type="text" placeholder="Search Company" class="form-control">
-                    <label for="apple"><input type="checkbox" name="apple" id="apple"> Apple</label>
-                    <label for="dropbox"><input type="checkbox" name="dropbox" id="dropbox"> Dropbox</label>
-                    <label for="micromax"><input type="checkbox" name="micromax" id="micromax"> Micromax</label>
-                    <label for="nokia"><input type="checkbox" name="nokia" id="nokia"> Nokia</label>
-                    <label for="microsoft"><input type="checkbox" name="microsoft" id="microsoft"> Microsoft</label>
-                    <label for="samsung"><input type="checkbox" name="samsung" id="samsung"> Samsung</label>
-                    <div class="see-more">
-                        <button type="button" class="show-more two"><i class="fa fa-plus-square-o" aria-hidden="true"></i>See More</button>
-                        <div class="more-category two">
-                            <label for="blackBerry"><input type="checkbox" name="blackBerry" id="blackBerry">BlackBerry</label>
-                            <label for="motorola"><input type="checkbox" name="motorola" id="motorola">Motorola</label>
-                            <label for="lenovo"><input type="checkbox" name="lenovo" id="lenovo">Lenovo</label>
-                        </div>
+                    <div id="accordion-three"  class="collapse" data-parent="#tr-accordion">
+                        <!-- panel-body -->
+                        <div class="panel-body">
+                            <div class="price-range"><!--price-range-->
+                                <div class="price">
+                                    <span>$100 - <strong>$700</strong></span>
+                                    <div class="dropdown category-dropdown pull-right">
+                                        <a data-toggle="dropdown" href="#"><span class="change-text">USD</span><i class="fa fa-caret-square-o-down"></i></a>
+                                        <ul class="dropdown-menu category-change">
+                                            <li><a href="#">USD</a></li>
+                                            <li><a href="#">AUD</a></li>
+                                            <li><a href="#">EUR</a></li>
+                                            <li><a href="#">GBP</a></li>
+                                            <li><a href="#">JPY</a></li>
+                                        </ul>
+                                    </div><!-- category-change -->
+                                    <input type="text" value="" data-slider-min="0" data-slider-max="700" data-slider-step="5" data-slider-value="[250,450]" id="price" ><br />
+                                </div>
+                            </div><!--/price-range-->
+                        </div><!-- panel-body -->
                     </div>
-                </div><!-- panel-body -->
-            </div>
-        </div> <!-- panel -->
-        <div class="card panel-faq">
-            <div class="card-header">
-                <button class="collapsed" data-toggle="collapse" data-target="#accordion-seven" aria-expanded="true" aria-controls="accordion-seven">Location</button>
-            </div><!-- card-header -->
+                </div><!-- panel -->
+                <div class="card panel-faq">
+                    <div class="card-header">
+                        <button class="collapsed" data-toggle="collapse" data-target="#accordion-six" aria-expanded="true" aria-controls="accordion-six">Company</button>
+                    </div><!-- card-header -->
 
-            <div id="accordion-seven" class="collapse" data-parent="#tr-accordion">
-                <!-- panel-body -->
-                <div class="panel-body">
-                    <input type="text" placeholder="Search Location" class="form-control">
-                    <label for="angeles"><input type="checkbox" name="angeles" id="angeles"> Los Angeles, CA</label>
-                    <label for="kingdom"><input type="checkbox" name="kingdom" id="kingdom"> United Kingdom</label>
-                    <label for="states"><input type="checkbox" name="states" id="states"> United States</label>
-                    <label for="columbia"><input type="checkbox"asdfasdf name="columbia" id="columbia"> British Columbia</label>
-                    <label for="australia"><input type="checkbox" name="australia" id="australia"> Australia</label>
-                    <label for="germany"><input type="checkbox" name="germany" id="germany"> Germany</label>
-                    <div class="see-more">
-                        <button type="button" class="show-more three"><i class="fa fa-plus-square-o" aria-hidden="true"></i>See More</button>
-                        <div class="more-category three">
-                            <label for="belgium"><input type="checkbox" name="belgium" id="belgium">Belgium</label>
-                            <label for="brazil"><input type="checkbox" name="brazil" id="brazil">Brazil</label>
-                            <label for="denmark"><input type="checkbox" name="denmark" id="denmark">Denmark</label>
-                            <label for="indonesia"><input type="checkbox" name="indonesia" id="indonesia">Indonesia</label>
-                        </div>
+                    <div id="accordion-six" class="collapse" data-parent="#tr-accordion">
+                        <!-- panel-body -->
+                        <div class="panel-body">
+                            <input type="text" placeholder="Search Company" class="form-control">
+                            <label for="apple"><input type="checkbox" name="apple" id="apple"> Apple</label>
+                            <label for="dropbox"><input type="checkbox" name="dropbox" id="dropbox"> Dropbox</label>
+                            <label for="micromax"><input type="checkbox" name="micromax" id="micromax"> Micromax</label>
+                            <label for="nokia"><input type="checkbox" name="nokia" id="nokia"> Nokia</label>
+                            <label for="microsoft"><input type="checkbox" name="microsoft" id="microsoft"> Microsoft</label>
+                            <label for="samsung"><input type="checkbox" name="samsung" id="samsung"> Samsung</label>
+                            <div class="see-more">
+                                <button type="button" class="show-more two"><i class="fa fa-plus-square-o" aria-hidden="true"></i>See More</button>
+                                <div class="more-category two">
+                                    <label for="blackBerry"><input type="checkbox" name="blackBerry" id="blackBerry">BlackBerry</label>
+                                    <label for="motorola"><input type="checkbox" name="motorola" id="motorola">Motorola</label>
+                                    <label for="lenovo"><input type="checkbox" name="lenovo" id="lenovo">Lenovo</label>
+                                </div>
+                            </div>
+                        </div><!-- panel-body -->
                     </div>
-                </div><!-- panel-body -->
-            </div>
-        </div> <!-- panel -->#}
+                </div> <!-- panel -->
+                <div class="card panel-faq">
+                    <div class="card-header">
+                        <button class="collapsed" data-toggle="collapse" data-target="#accordion-seven" aria-expanded="true" aria-controls="accordion-seven">Location</button>
+                    </div><!-- card-header -->
+
+                    <div id="accordion-seven" class="collapse" data-parent="#tr-accordion">
+                        <!-- panel-body -->
+                        <div class="panel-body">
+                            <input type="text" placeholder="Search Location" class="form-control">
+                            <label for="angeles"><input type="checkbox" name="angeles" id="angeles"> Los Angeles, CA</label>
+                            <label for="kingdom"><input type="checkbox" name="kingdom" id="kingdom"> United Kingdom</label>
+                            <label for="states"><input type="checkbox" name="states" id="states"> United States</label>
+                            <label for="columbia"><input type="checkbox"asdfasdf name="columbia" id="columbia"> British Columbia</label>
+                            <label for="australia"><input type="checkbox" name="australia" id="australia"> Australia</label>
+                            <label for="germany"><input type="checkbox" name="germany" id="germany"> Germany</label>
+                            <div class="see-more">
+                                <button type="button" class="show-more three"><i class="fa fa-plus-square-o" aria-hidden="true"></i>See More</button>
+                                <div class="more-category three">
+                                    <label for="belgium"><input type="checkbox" name="belgium" id="belgium">Belgium</label>
+                                    <label for="brazil"><input type="checkbox" name="brazil" id="brazil">Brazil</label>
+                                    <label for="denmark"><input type="checkbox" name="denmark" id="denmark">Denmark</label>
+                                    <label for="indonesia"><input type="checkbox" name="indonesia" id="indonesia">Indonesia</label>
+                                </div>
+                            </div>
+                        </div><!-- panel-body -->
+                    </div>
+                </div> <!-- panel -->#}
     </div><!-- panel-group -->
 </div>

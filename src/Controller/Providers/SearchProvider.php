@@ -33,6 +33,7 @@ class SearchProvider extends AbstractController
     public function filterBar($request, JobRepository $jobRepository, FieldRepository $fieldRepository)
     {
         $filterFields = [];
+        $size = 10;
 
         $fields = $fieldRepository->findBy([
             'isSystem' => true,
@@ -42,12 +43,13 @@ class SearchProvider extends AbstractController
         foreach ($fields as $key => $field) {
             $method = 'getFilterItems' . ucfirst($field->getFieldId());
             $filterFields[$key]['field'] = $field;
-            $filterFields[$key]['options'] = $jobRepository->$method();
+            $filterFields[$key]['options'] = $jobRepository->$method($request);
         }
 
         return $this->render('frontend/_searchProvider/filter.html.twig', [
             'request' => $request,
-            'filterFields' => $filterFields
+            'filterFields' => $filterFields,
+            'size' => $size
         ]);
     }
 

@@ -6,6 +6,7 @@ use App\Entity\Job;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * @method Job|null find($id, $lockMode = null, $lockVersion = null)
@@ -15,14 +16,25 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class JobRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+
+    /**
+     * @var RequestStack
+     */
+    protected $requestStack;
+
+    public function __construct(RequestStack $requestStack, ManagerRegistry $registry)
     {
         parent::__construct($registry, Job::class);
+        $this->requestStack = $requestStack;
     }
 
-    public function findByFilterQuery($request)
+
+    public function findByFilterQuery()
     {
         $qb = $this->createQueryBuilder('job');
+
+        $request = $this->requestStack->getCurrentRequest();
+
         /* Job should be active */
         if (!strstr($request->getPathInfo(), 'admin')) {
             $qb->andWhere('job.active = 1');
@@ -46,6 +58,7 @@ class JobRepository extends ServiceEntityRepository
             $qb->andWhere('job.state = :state')
                 ->setParameter('state', $request->query->get('state'));
         }
+
 
         return $qb->addOrderBy('job.featured', 'DESC')
             ->addOrderBy('job.created', 'DESC')
@@ -159,9 +172,34 @@ class JobRepository extends ServiceEntityRepository
             ->execute();
     }
 
-    public function getFilterItemsCategories()
+    public function getFilterItemsCategories($request)
     {
-        return $this->createQueryBuilder('job')
+        $qb = $this->createQueryBuilder('job');
+
+        /* Job should be active */
+        if (!strstr($request->getPathInfo(), 'admin')) {
+            $qb->andWhere('job.active = 1');
+        }
+
+        // Keyword
+        if (!empty($request->query->get('keyword'))) {
+            $qb->andWhere('job.title LIKE :filterKeyword')/*OR job.description LIKE :filterKeyword*/
+            ->setParameter('filterKeyword', '%' . $request->query->get('keyword') . '%');
+        }
+
+        // Categories
+        if (!empty($request->query->get('categories'))) {
+            $qb->andWhere('categories.name IN (:categories)')
+                ->setParameter('categories', $request->query->get('categories'));
+        }
+
+        // Country
+        if (!empty($request->query->get('state'))) {
+            $qb->andWhere('job.state = :state')
+                ->setParameter('state', $request->query->get('state'));
+        }
+
+        return $qb
             ->select('COUNT(job.id) as count, categories.name as title')
             ->leftJoin('job.categories', 'categories')
             ->groupBy('categories')
@@ -169,14 +207,39 @@ class JobRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function getFilterItemsState()
+    public function getFilterItemsState($request)
     {
-        return $this->createQueryBuilder('job')
+        $qb = $this->createQueryBuilder('job');
+
+        /* Job should be active */
+        if (!strstr($request->getPathInfo(), 'admin')) {
+            $qb->andWhere('job.active = 1');
+        }
+
+        // Keyword
+        if (!empty($request->query->get('keyword'))) {
+            $qb->andWhere('job.title LIKE :filterKeyword')/*OR job.description LIKE :filterKeyword*/
+            ->setParameter('filterKeyword', '%' . $request->query->get('keyword') . '%');
+        }
+
+        // Categories
+        if (!empty($request->query->get('categories'))) {
+            $qb->leftJoin('job.categories', 'categories');
+            $qb->andWhere('categories.name IN (:categories)')
+                ->setParameter('categories', $request->query->get('categories'));
+        }
+
+        // Country
+        if (!empty($request->query->get('state'))) {
+            $qb->andWhere('job.state = :state')
+                ->setParameter('state', $request->query->get('state'));
+        }
+
+        return $qb
             ->select('COUNT(job.id) as count, job.state as title')
             ->groupBy('job.state')
             ->getQuery()
             ->getResult();
     }
-
 
 }
