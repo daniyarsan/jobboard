@@ -30,17 +30,19 @@ class SearchProvider extends AbstractController
         ]);
     }
 
-    public function filterBar($request, FieldRepository $fieldRepository, JobRepository $jobRepository)
+    public function filterBar($request, JobRepository $jobRepository, FieldRepository $fieldRepository)
     {
         $filterFields = [];
+
         $fields = $fieldRepository->findBy([
             'isSystem' => true,
             'inFilter' => true
         ]);
 
         foreach ($fields as $key => $field) {
+            $method = 'getFilterItems' . ucfirst($field->getFieldId());
             $filterFields[$key]['field'] = $field;
-            $filterFields[$key]['options'] = $jobRepository->getFilterItems($field->getFieldId());
+            $filterFields[$key]['options'] = $jobRepository->$method();
         }
 
         return $this->render('frontend/_searchProvider/filter.html.twig', [

@@ -57,7 +57,7 @@ class FieldRepository extends ServiceEntityRepository
     public function findNotSystemFields()
     {
         $result = $this->createQueryBuilder('f')
-            ->where('f.system is null')
+            ->where('f.isSystem is null')
             ->getQuery()
             ->getResult();
 

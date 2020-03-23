@@ -159,19 +159,23 @@ class JobRepository extends ServiceEntityRepository
             ->execute();
     }
 
-    public function getFilterItems($field)
+    public function getFilterItemsCategories()
     {
-        $result = [];
-        if ($field == 'categories') {
-            $result = $this->createQueryBuilder('job')
-                ->select('COUNT(job.id) as count, categories.name as title, categories.slug as slug')
-                ->leftJoin('job.categories', 'categories')
-                ->groupBy('categories')
-                ->getQuery()
-                ->getResult();
-        }
+        return $this->createQueryBuilder('job')
+            ->select('COUNT(job.id) as count, categories.name as title')
+            ->leftJoin('job.categories', 'categories')
+            ->groupBy('categories')
+            ->getQuery()
+            ->getResult();
+    }
 
-        return $result;
+    public function getFilterItemsState()
+    {
+        return $this->createQueryBuilder('job')
+            ->select('COUNT(job.id) as count, job.state as title')
+            ->groupBy('job.state')
+            ->getQuery()
+            ->getResult();
     }
 
 

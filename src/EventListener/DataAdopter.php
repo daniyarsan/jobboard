@@ -35,7 +35,7 @@ class DataAdopter
                 $categories = $this->manager->getRepository('App:Category')->findCategoryByKeyword($categoryName);
 
                 if ($categories) {
-                    $job->setCategories(new ArrayCollection($categories));
+                    $job->setCategoriesCollection(new ArrayCollection($categories));
                 } else {
                     $category = new Category();
                     $category->setName($categoryName);

@@ -314,7 +314,14 @@ class Job
         return $this->categories;
     }
 
-    public function setCategories(Collection $categories): self
+    public function setCategories(string $categories): self
+    {
+        $this->setCategoryString($categories);
+
+        return $this;
+    }
+
+    public function setCategoriesCollection(Collection $categories): self
     {
         $this->categories = $categories;
 
@@ -335,14 +342,6 @@ class Job
         if ($this->categories->contains($category)) {
             $this->categories->removeElement($category);
         }
-
-        return $this;
-    }
-
-
-    public function setCategory(string $category): self
-    {
-        $this->setCategoryString($category);
 
         return $this;
     }
