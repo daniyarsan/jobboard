@@ -6,6 +6,7 @@ namespace App\EventListener;
 
 use App\Entity\Category;
 use App\Entity\Job;
+use App\Service\Data\States;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,13 +25,13 @@ class DataAdopter
     {
         $entity = $args->getObject();
 
-        // if this listener only applies to certain entity types,
-        // add some code to check the entity type as early as possible
+
+        /* Job Data Adoption */
         if ($entity instanceof Job) {
             $job = $args->getObject();
             $categoryName = $job->getCategoryString();
 
-            /* Store Category if exist or Create new Category if doesnt exist */
+            /** Store Category if exist or Create new Category if doesnt exist */
             if (!empty($categoryName)) {
                 $categories = $this->manager->getRepository('App:Category')->findCategoryByKeyword($categoryName);
 
@@ -44,9 +45,15 @@ class DataAdopter
                     $this->manager->flush();
                 }
             }
+            /** Store Category if exist or Create new Category if doesnt exist */
+
+            /** Transform short State into Long State during import */
+            if (preg_match('/^[A-Z]{2}$/', $job->getState())) {
+                $job->setState((States::list())[$job->getState()]);
+            }
+            /** Transform short State into Long State during import */
 
 
-            /* Store Category if exist or Create new Category if doesnt exist */
         }
 
         return;

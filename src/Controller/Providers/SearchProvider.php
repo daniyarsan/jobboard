@@ -11,17 +11,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SearchProvider extends AbstractController
 {
-    public $categoryRepository;
 
-    public function __construct(CategoryRepository $categoryRepository)
-    {
-        $this->categoryRepository = $categoryRepository;
-    }
 
-    public function searchBar($request)
+    public function searchBar(JobRepository $jobRepository, $request)
     {
-        $categories = $this->categoryRepository->findAllNames();
-        $states = States::list();
+
+        $categories = $jobRepository->getCategories($request);
+        $states = $jobRepository->getStates($request);
 
         return $this->render('frontend/_searchProvider/search.html.twig', [
             'categories' => $categories,

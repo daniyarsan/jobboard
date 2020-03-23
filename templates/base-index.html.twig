@@ -59,13 +59,13 @@
 
 <script>
     $('#categorySearch li').click(function(el) {
-        var htmlString = $( this ).find('a').html();
+        var htmlString = $( this ).find('a').attr('href');
         $('input[name="categories"]').val(htmlString);
     });
 
     $('#locationSearch li').click(function(el) {
-        var htmlString = $( this ).find('a').html();
-        $('input[name="location"]').val(htmlString);
+        var htmlString = $( this ).find('a').attr('href');
+        $('input[name="state"]').val(htmlString);
     });
 </script>
 </body>

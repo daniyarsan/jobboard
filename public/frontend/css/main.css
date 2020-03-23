@@ -3311,6 +3311,8 @@ input, select, a, .transition,
 
 .dropdown.category-dropdown .dropdown-menu {
     left: -20px !important;
+    height: 200px;
+    overflow: scroll;
 }
 
 .dropdown.category-dropdown .dropdown-menu a {

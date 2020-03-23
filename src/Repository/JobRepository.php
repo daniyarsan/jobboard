@@ -242,4 +242,35 @@ class JobRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function getStates($request)
+    {
+        $qb = $this->createQueryBuilder('job');
+        /* Job should be active */
+        if (!strstr($request->getPathInfo(), 'admin')) {
+            $qb->andWhere('job.active = 1');
+        }
+
+        return $qb
+            ->select('job.state as name')
+            ->distinct()
+            ->getQuery()
+            ->getResult();
+
+    }
+
+    public function getCategories($request)
+    {
+        $qb = $this->createQueryBuilder('job');
+        /* Job should be active */
+        if (!strstr($request->getPathInfo(), 'admin')) {
+            $qb->andWhere('job.active = 1');
+        }
+
+        return $qb
+            ->select('categories.name')
+            ->leftJoin('job.categories', 'categories')
+            ->distinct()
+            ->getQuery()
+            ->getResult();
+    }
 }
