@@ -30,14 +30,15 @@ class JobRepository extends ServiceEntityRepository
 
         // Keyword
         if (!empty($request->query->get('keyword'))) {
-            $qb->andWhere('job.title LIKE :filterKeyword') /*OR job.description LIKE :filterKeyword*/
-                ->setParameter('filterKeyword', '%' . $request->query->get('keyword') . '%');
+            $qb->andWhere('job.title LIKE :filterKeyword')/*OR job.description LIKE :filterKeyword*/
+            ->setParameter('filterKeyword', '%' . $request->query->get('keyword') . '%');
         }
 
         // Categories
         if (!empty($request->query->get('categories'))) {
-            $qb->andWhere('job.categories LIKE :categories')
-                ->setParameter('categories', '%"'. $request->query->get('categories') .'"%');
+            $qb->leftJoin('job.categories', 'categories');
+            $qb->andWhere('categories.name IN (:categories)')
+                ->setParameter('categories', $request->query->get('categories'));
         }
 
         // Country
@@ -124,6 +125,7 @@ class JobRepository extends ServiceEntityRepository
 
         return $query->execute();
     }
+
     public function unfeature()
     {
         $qb = $this->createQueryBuilder('job');
@@ -157,35 +159,19 @@ class JobRepository extends ServiceEntityRepository
             ->execute();
     }
 
-    public function findWithCount($request, $field)
+    public function getFilterItems($field)
     {
-
-        $displayName = 'title';
-        $qb = $this->createQueryBuilder('job')
-            ->select("DISTINCT job.{$field} as {$displayName}");
-
-        // Keyword
-        if (!empty($request->query->get('keyword'))) {
-            $qb->andWhere('job.title LIKE :filterKeyword OR job.description LIKE :filterKeyword')
-                ->setParameter('filterKeyword', '%' . $request->query->get('keyword') . '%');
+        $result = [];
+        if ($field == 'categories') {
+            $result = $this->createQueryBuilder('job')
+                ->select('COUNT(job.id) as count, categories.name as title, categories.slug as slug')
+                ->leftJoin('job.categories', 'categories')
+                ->groupBy('categories')
+                ->getQuery()
+                ->getResult();
         }
 
-        // Categories
-        if (!empty($request->query->get('categories'))) {
-            $qb->andWhere('job.categories LIKE :categories')
-                ->setParameter('categories', '%"'. $request->query->get('categories') .'"%');
-        }
-
-        // Country
-        if (!empty($request->query->get('state'))) {
-            $qb->andWhere('job.state = :state')
-                ->setParameter('state', $request->query->get('state'));
-        }
-
-        $data = $qb->groupBy("job.{$field}")
-            ->getQuery()->getResult();
-
-        return $data;
+        return $result;
     }
 
 

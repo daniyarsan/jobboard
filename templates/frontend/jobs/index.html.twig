@@ -1,6 +1,7 @@
 {% extends 'base-index.html.twig' %}
+{% set pageTitle = 'Search Jobs' %}
 
-{% block title %}{% endblock %}
+{% block title %}{{ pageTitle }}{% endblock %}
 
 {% block file_widget %}
     {% spaceless %}
@@ -21,7 +22,8 @@
                     <li><a href="index.html">Home</a></li>
                     <li>Engineer/Architects</li>
                 </ol><!-- breadcrumb -->
-                <h2 class="title">Software Engineer</h2>
+
+                <h2 class="title">{{ pageTitle }}</h2>
             </div>
 
             <div class="banner-form banner-form-full job-list-form">
@@ -39,11 +41,11 @@
                         <div class="section job-list-item">
                             <div class="featured-top clearfix">
 
-                                <h4>Found {{ jobs.getTotalItemCount }} jobs</h4>
+                                <h4>{{ 'Found' | trans }} {{ jobs.getTotalItemCount }} jobs</h4>
 
                                 <div class="dropdown pull-right">
                                     <div class="dropdown category-dropdown">
-                                        <h5>Sort by:</h5>
+                                        <h5>{{ 'Sort by' | trans }}:</h5>
                                         <a data-toggle="dropdown" href="#"><span class="change-text">Most Relevant</span><i class="fa fa-caret-square-o-down"></i></a>
                                         <ul class="dropdown-menu category-change">
                                             <li><a href="#">Most Relevant</a></li>

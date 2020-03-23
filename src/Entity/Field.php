@@ -54,7 +54,7 @@ class Field
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $system;
+    private $isSystem;
 
     /**
      * @ORM\Column(type="string", length=190, nullable=true)
@@ -149,14 +149,14 @@ class Field
         return $this->name;
     }
 
-    public function getSystem(): ?bool
+    public function getIsSystem(): ?bool
     {
-        return $this->system;
+        return $this->isSystem;
     }
 
-    public function setSystem(?bool $system): self
+    public function setIsSystem(?bool $isSystem): self
     {
-        $this->system = $system;
+        $this->isSystem = $isSystem;
 
         return $this;
     }

@@ -62,13 +62,19 @@ class XmlParser
             if ($this->feed->getActivate()) {
                 $job->activateJob();
             }
-
             /* For identification purposes */
             $job->setFeedId($this->feed->getSlug());
+            /* Set Country Default Value */
+            if (empty($job->getCountry()) && $this->feed->getDefaultCountry()) {
+                $job->setCountry($this->feed->getDefaultCountry());
+            }
+
             $this->em->persist($job);
-            $this->em->flush($job);
+            $this->em->flush();
 
             $this->xmlReader->next($xmlRootElement);
+
+            /* Clean Memory and iterate counter */
             unset($element);
             $this->importCounter++;
         }

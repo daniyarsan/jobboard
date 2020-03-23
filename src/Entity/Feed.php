@@ -74,6 +74,11 @@ class Feed
     private $activate;
 
     /**
+     * @ORM\Column(type="string", length=190, nullable=true)
+     */
+    private $defaultCountry;
+
+    /**
      * @ORM\PrePersist
      */
     public function onPrePersist()
@@ -234,6 +239,18 @@ class Feed
     public function setActivate(bool $activate): self
     {
         $this->activate = $activate;
+
+        return $this;
+    }
+
+    public function getDefaultCountry(): ?string
+    {
+        return $this->defaultCountry;
+    }
+
+    public function setDefaultCountry(?string $defaultCountry): self
+    {
+        $this->defaultCountry = $defaultCountry;
 
         return $this;
     }

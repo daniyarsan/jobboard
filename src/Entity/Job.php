@@ -102,6 +102,8 @@ class Job
     public function onPrePersist()
     {
         $this->created = new \DateTime('now');
+
+
     }
 
     /**

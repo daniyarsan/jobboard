@@ -35,7 +35,7 @@ class FieldFixtures extends Fixture implements FixtureGroupInterface
             $field->setFieldId($item['fieldId']);
             $field->setType($item['type']);
             $field->setListingType($item['listingType']);
-            $field->setSystem(true);
+            $field->setIsSystem(true);
             $field->setInFilter($item['inFilter']);
 
             $manager->persist($field);

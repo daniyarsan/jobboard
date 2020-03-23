@@ -7,6 +7,7 @@ use App\Repository\FieldRepository;
 use App\Repository\JobRepository;
 use App\Service\Data\States;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 
 class SearchProvider extends AbstractController
 {
@@ -22,7 +23,7 @@ class SearchProvider extends AbstractController
         $categories = $this->categoryRepository->findAllNames();
         $states = States::list();
 
-        return $this->render('frontend/_parts/search.html.twig', [
+        return $this->render('frontend/_searchProvider/search.html.twig', [
             'categories' => $categories,
             'states' => $states,
             'request' => $request
@@ -31,28 +32,20 @@ class SearchProvider extends AbstractController
 
     public function filterBar($request, FieldRepository $fieldRepository, JobRepository $jobRepository)
     {
-        $filters = [];
-
-        $fields = $fieldRepository->findBy(['inFilter' => true]);
+        $filterFields = [];
+        $fields = $fieldRepository->findBy([
+            'isSystem' => true,
+            'inFilter' => true
+        ]);
 
         foreach ($fields as $key => $field) {
-
-            $return = array();
-            $optionsFromDb = $jobRepository->findWithCount($request, $field->getFieldId());
-            array_walk_recursive($optionsFromDb, function($a) use (&$return) { $return[] = $a; });
-
-            $filters[$key]['field'] = $field;
-            foreach (array_count_values($return) as $item => $count) {
-                $filters[$key]['options'][] = [
-                    'title' => $item,
-                    'count' => $count
-                ];
-            }
+            $filterFields[$key]['field'] = $field;
+            $filterFields[$key]['options'] = $jobRepository->getFilterItems($field->getFieldId());
         }
 
-        return $this->render('frontend/_parts/filter.html.twig', [
+        return $this->render('frontend/_searchProvider/filter.html.twig', [
             'request' => $request,
-            'filters' => $filters
+            'filterFields' => $filterFields
         ]);
     }
 

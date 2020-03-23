@@ -26,29 +26,30 @@ class DataAdopter
 
         // if this listener only applies to certain entity types,
         // add some code to check the entity type as early as possible
-        if (!$entity instanceof Job) {
-            return;
-        }
+        if ($entity instanceof Job) {
+            $job = $args->getObject();
+            $categoryName = $job->getCategoryString();
 
-        $job = $args->getObject();
-        $categoryName = $job->getCategoryString();
+            /* Store Category if exist or Create new Category if doesnt exist */
+            if (!empty($categoryName)) {
+                $categories = $this->manager->getRepository('App:Category')->findCategoryByKeyword($categoryName);
 
-        /* Store Category if exist or Create new Category if doesnt exist */
-        if (!empty($categoryName)) {
-            $categories = $this->manager->getRepository('App:Category')->findCategoryByKeyword($categoryName);
-
-            if ($categories) {
-                $job->setCategories(new ArrayCollection($categories));
-            } else {
-                $category = new Category();
-                $category->setName($categoryName);
-                $job->addCategory($category);
-                $this->manager->persist($category);
-                $this->manager->flush();
+                if ($categories) {
+                    $job->setCategories(new ArrayCollection($categories));
+                } else {
+                    $category = new Category();
+                    $category->setName($categoryName);
+                    $job->addCategory($category);
+                    $this->manager->persist($category);
+                    $this->manager->flush();
+                }
             }
+
+
+            /* Store Category if exist or Create new Category if doesnt exist */
         }
 
-        /* Store Category if exist or Create new Category if doesnt exist */
+        return;
 
     }
 }

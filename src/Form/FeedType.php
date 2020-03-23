@@ -7,6 +7,7 @@ use App\Form\Type\MappingType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -29,14 +30,13 @@ class FeedType extends AbstractType
             ->add('activate', CheckboxType::class, [
                 'label' => "Activate job after import",
                 'data' => true
-            ]);
-
-        $builder
+            ])
             ->add('xml_text', TextareaType::class, [
                 'attr' => [
                     'raw' => true
                 ]
-            ]);
+            ])
+            ->add('defaultCountry', CountryType::class);
 
         if ($options[ 'feedId' ]) {
             $builder

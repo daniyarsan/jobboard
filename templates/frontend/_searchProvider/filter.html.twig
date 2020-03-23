@@ -1,6 +1,6 @@
 <div class="accordion">
     <div class="panel-group" id="filter-accordion">
-        {% for filter in filters %}
+        {% for filter in filterFields %}
             {% if request.get(filter.field.fieldId) is null %}
                 <div class="card panel-faq">
                 <div class="card-header">
@@ -11,10 +11,10 @@
                     <div class="panel-body">
                         <h5><a href="#"><i class="fa fa-caret-down"></i> All {{ filter.field.name }}</a></h5>
                         <ul>
-                            {% for param in filter.options %}
-                                {% set link = request.query.all | merge({(filter.field.fieldId) : param.title}) %}
+                            {% for opt in filter.options %}
+                                {% set link = request.query.all | merge({(filter.field.fieldId) : opt.title}) %}
 
-                                <li><a href="{{ path('jobs_index', link )}}"> {{ param.title }} <span>({{ param.count }})</span></a></li>
+                                <li><a href="{{ path('jobs_index', link )}}"> {{ opt.title }} <span>({{ opt.count }})</span></a></li>
                             {% endfor %}
                         </ul>
 
