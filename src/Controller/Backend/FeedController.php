@@ -186,6 +186,7 @@ class FeedController extends AbstractController
         } catch (\Exception $ex) {
             $this->addFlash('danger', $ex->getMessage());
         }
+
         return $this->redirect($request->get('return_url', $this->generateUrl('admin_feeds_index')));
     }
 

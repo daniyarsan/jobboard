@@ -79,6 +79,11 @@ class Feed
     private $defaultCountry;
 
     /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $lastImport;
+
+    /**
      * @ORM\PrePersist
      */
     public function onPrePersist()
@@ -251,6 +256,18 @@ class Feed
     public function setDefaultCountry(?string $defaultCountry): self
     {
         $this->defaultCountry = $defaultCountry;
+
+        return $this;
+    }
+
+    public function getLastImport(): ?\DateTimeInterface
+    {
+        return $this->lastImport;
+    }
+
+    public function setLastImport(?\DateTimeInterface $lastImport): self
+    {
+        $this->lastImport = $lastImport;
 
         return $this;
     }

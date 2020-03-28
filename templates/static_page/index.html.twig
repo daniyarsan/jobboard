@@ -1,0 +1,40 @@
+{% extends 'base-index.html.twig' %}
+
+{% block title %}{{ page.name }}{% endblock %}
+
+
+{% block body %}
+    <section class=" job-bg page  ad-profile-page">
+        <div class="container">
+            <div class="breadcrumb-section">
+                <ol class="breadcrumb">
+                    <li><a href="index.html">Home</a></li>
+                    <li>Candidate Profile</li>
+                </ol>
+                <h2 class="title">{{ page.name }}</h2>
+            </div><!-- breadcrumb-section -->
+
+            <div class="resume-content">
+                <div class="declaration section">
+                    <div class="icons">
+                        <i class="fa fa-hand-peace-o" aria-hidden="true"></i>
+                    </div>
+                    <div class="declaration-info">
+                        <h3>{{ page.name }}</h3>
+                        {{ page.content|raw }}
+                    </div>
+                </div><!-- career-objective -->
+
+
+
+
+
+
+
+
+            </div><!-- resume-content -->
+        </div><!-- container -->
+    </section><!-- ad-profile-page -->
+
+{% endblock %}
+

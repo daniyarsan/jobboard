@@ -1,4 +1,5 @@
 {% extends 'base-index.html.twig' %}
+
 {% set pageTitle = 'Search Jobs' %}
 
 {% block title %}{{ pageTitle }}{% endblock %}
@@ -11,18 +12,14 @@
 {% endblock %}
 
 {% block body %}
-
-    {% include "_parts/messages.html.twig" %}
-
     <section class="job-bg page job-list-page">
         <div class="container">
             <div class="breadcrumb-section">
                 <!-- breadcrumb -->
-                <ol class="breadcrumb">
-                    <li><a href="index.html">Home</a></li>
-                    <li>Engineer/Architects</li>
-                </ol><!-- breadcrumb -->
-
+                {{ breadcrumbs.display('frontend/_parts/breadcrumbs.html.twig', {
+                    'frontend_main_index' : 'Home' | trans
+                } ) }}
+                <!-- breadcrumb -->
                 <h2 class="title">{{ pageTitle }}</h2>
             </div>
 
@@ -32,6 +29,8 @@
 
             <div class="category-info">
                 <div class="row">
+                    {% include "_parts/messages.html.twig" %}
+
                     <div class="col-lg-3 col-md-4">
                         {{ render(controller('App\\Controller\\Providers\\SearchProvider::filterBar', {'request' : app.request})) }}
                     </div><!-- accordion-->
@@ -57,7 +56,7 @@
 
                             {% if jobs|length %}
                                 {% for job in jobs %}
-                                    {% include 'frontend/jobs/job.html.twig' %}
+                                    {% include 'frontend/jobs/_job.html.twig' %}
                                 {% endfor %}
                             {% else %}
                                 No jobs for this request

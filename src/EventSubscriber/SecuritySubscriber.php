@@ -24,7 +24,7 @@ class SecuritySubscriber implements EventSubscriberInterface
         return ['kernel.controller' => 'onKernelRequest'];
     }
 
-    public function onKernelRequest()
+    public function onKernelRequest($event)
     {
 
     }

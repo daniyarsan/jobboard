@@ -376,4 +376,8 @@ class Company
         $this->logoName = $logoName;
     }
 
+    public function getCountryState()
+    {
+        return $this->getCountry() . ', ' . $this->getState();
+    }
 }

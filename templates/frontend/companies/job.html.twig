@@ -1,7 +1,7 @@
 <div class="job-list">
     <div class="body">
         <div class="content">
-            <h4><a href="{{ path('job_details', {'id' : job.id}) }}">{{ job.title }} </a></h4>
+            <h4><a href="{{ path('frontend_jobs_details', {'id' : job.id}) }}">{{ job.title }} </a></h4>
             <div class="info">
                 <span class="office-location"><a href="#"><i data-feather="map-pin"></i>{{ job.country }}</a></span>
                 <span class="job-type temporary"><a href="#"><i data-feather="clock"></i></a></span>

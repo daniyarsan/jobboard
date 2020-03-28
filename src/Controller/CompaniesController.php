@@ -10,10 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/", name="frontend_companies")
+ */
 class CompaniesController extends AbstractController
 {
     /**
-     * @Route("/companies", name="companies_index")
+     * @Route("/companies", name="_index")
      */
     public function index(Request $request, PaginatorInterface $pagination)
     {
@@ -34,7 +37,7 @@ class CompaniesController extends AbstractController
     }
 
     /**
-     * @Route("/company/{id}", name="company_details", requirements={"id": "\d+"})
+     * @Route("/company/{id}", name="_details", requirements={"id": "\d+"})
      * @ParamConverter("company", class="App\Entity\Company")
      */
     public function companyDetails(Request $request, Company $company)

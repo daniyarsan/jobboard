@@ -23,7 +23,7 @@
                         <div class="item-image-box">
                             <div class="item-image">
                                 {% if job.company.logoName %}
-                                    <a href="{{ path('company_details', {id: job.company.getId() }) }}">
+                                    <a href="{{ path('frontend_companies_details', {id: job.company.getId() }) }}">
                                         <img src="{{ assetFinder.logoPath(job.company.logoName) }}" class="img-fluid" alt="">
                                     </a>
                                 {% else %}
@@ -38,7 +38,7 @@
                                 <ul>
                                     <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ job.country }}</a></li>
 {#                                    <li><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i>Full Time</a></li>#}
-                                    <li><i class="fa fa-building-o" aria-hidden="true"></i><a href="{{ path('company_details', {id : job.company.id}) }}"> {{ job.company.name }}</a></li>
+                                    <li><i class="fa fa-building-o" aria-hidden="true"></i><a href="{{ path('frontend_companies_details', {id : job.company.id}) }}"> {{ job.company.name }}</a></li>
 {#                                    <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>HR/Org. Development</a></li>#}
                                     <li><i class="fa fa-hourglass-start" aria-hidden="true"></i>  {{ job.created|date('D m Y') }}</li>
                                 </ul>

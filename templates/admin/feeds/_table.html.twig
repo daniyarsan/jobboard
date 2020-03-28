@@ -21,16 +21,8 @@
                         <span class="fas fa-sort-alpha-{% if entities.getParams.direction == 'desc' %}down{% else %}up{% endif %}"></span>
                     {% endif %}
                 </th>
-                <th></th>
-                <th style="width: 15%"></th>
-                <th>{{ 'Created'|trans }}</th>
-                <th>
-{#                    {{ knp_pagination_sortable(entities, 'Status', 'isPublished') }}#}
-{#                    {% if entities.isSorted('isPublished') %}#}
-{#                        <span class="fas fa-sort-alpha-{% if entities.getParams.direction == 'desc' %}down{% else %}up{% endif %}"></span>#}
-{#                    {% endif %}#}
-                </th>
-                <th style="width: 15%">{{ 'Action'|trans }}</th>
+                <th>{{ 'Last Imported'|trans }}</th>
+                <th style="width: 25%">{{ 'Action'|trans }}</th>
             </tr>
             </thead>
             <tbody>
@@ -43,23 +35,19 @@
                         </div>
                     </td>
                     <td class="table-user">
-                        <a href="javascript:void(0);" class="text-body font-weight-semibold">{{ feed.name }}</a>
+                        <a href="{{ path('admin_feeds_edit', {'id': feed.id, 'return_url': path('admin_feeds_index') ~ query_string()}) }}" class="text-body font-weight-semibold">{{ feed.name }}</a>
                     </td>
-                    <td></td>
-                    <td></td>
                     <td>{{ feed.created|date("d/m/Y") }} </td>
                     <td>
-
-                    </td>
-                    <td>
-                        <a href="{{ path('admin_feeds_import', {'id': feed.id}) }}" class="action-icon">
-                            <i class="mdi mdi-import"></i>
-                        </a>
-
-                        <a href="{{ path('admin_feeds_edit', {'id': feed.id, 'return_url': path('admin_feeds_index') ~ query_string()}) }}" class="action-icon">
-                            <i class="mdi mdi-square-edit-outline"></i>
-                        </a>
-                        <a data-toggle="modal" href="#delete-{{ feed.id }}" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                        <div class="btn-group mb-2">
+                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ 'Action' | trans }} <i class="mdi mdi-chevron-down"></i></button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{{ path('admin_feeds_edit', {'id': feed.id, 'return_url': path('admin_feeds_index') ~ query_string()}) }}"><i class="mdi mdi-pencil"></i> {{ 'Edit' | trans }}</a>
+                                <a class="dropdown-item" href="{{ path('admin_feeds_import', {'id': feed.id}) }}"><i class="mdi mdi-import"></i> {{ 'Run' | trans }}</a>
+                                <div class="dropdown-divider"></div>
+                                <a data-toggle="modal" href="#delete-{{ feed.id }}" class="dropdown-item"><i class="mdi mdi-delete"></i> {{ 'Delete' | trans }}</a>
+                            </div>
+                        </div><!-- /btn-group -->
                     </td>
                 </tr>
                 {{ dialogs.confirm('delete-' ~ feed.id, 'Confirmation', 'The selected item will be removed permanently. Are you sure?', '', path('admin_feeds_set', {id: feed.id, action: 'remove'})) }}

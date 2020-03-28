@@ -58,7 +58,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{{ path('job_details', {'id': job.id}) }}" class="action-icon">
+                        <a href="{{ path('frontend_jobs_details', {'id': job.id}) }}" class="action-icon">
                             <i class="mdi mdi-eye"></i></a>
                         {% if job.active == 1 %}
                             <a href="{{ path('admin_jobs_set', {'action': 'disable', 'id': job.id, 'return_url': path('admin_jobs_index') ~ query_string()}) }}" class="action-icon">

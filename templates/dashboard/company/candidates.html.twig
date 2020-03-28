@@ -46,7 +46,7 @@
 {#                                        <tr class="job-items">#}
 {#                                            <td class="title">#}
 {#                                                <h5>#}
-{#                                                    <a href="{{ path('job_details', {'id' : job.id}) }}">{{ job.title }}</a>#}
+{#                                                    <a href="{{ path('frontend_jobs_details', {'id' : job.id}) }}">{{ job.title }}</a>#}
 {#                                                </h5>#}
 {#                                                <div class="info">#}
 {#                                                    <span class="office-location"><a href="#"><i data-feather="map-pin"></i>{{ job.country }}</a></span>#}
@@ -62,7 +62,7 @@
 {#                                                <td class="status pending">Pending</td>#}
 {#                                            {% endif %}#}
 {#                                            <td class="action">#}
-{#                                                <a href="{{ path('job_details', {'id' : job.id}) }}" class="preview" title="Preview"><i data-feather="eye"></i></a>#}
+{#                                                <a href="{{ path('frontend_jobs_details', {'id' : job.id}) }}" class="preview" title="Preview"><i data-feather="eye"></i></a>#}
 {#                                                <a href="{{ path('my_company_job_edit', {'id': job.id}) }}" class="edit" title="Edit"><i data-feather="edit"></i></a>#}
 {#                                                <a href="#" data-toggle="modal" data-target="#modal-delete-job" class="remove" title="Delete"><i data-feather="trash-2"></i></a>#}
 {#                                            </td>#}

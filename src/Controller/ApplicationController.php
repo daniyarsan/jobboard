@@ -68,6 +68,6 @@ class ApplicationController extends AbstractController
             }
         }
 
-        return $this->redirectToRoute('job_details', ['id' => $job->getId()]);
+        return $this->redirectToRoute('frontend_jobs_details', ['id' => $job->getId()]);
     }
 }

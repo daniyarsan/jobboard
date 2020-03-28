@@ -255,7 +255,6 @@ class JobRepository extends ServiceEntityRepository
             ->distinct()
             ->getQuery()
             ->getResult();
-
     }
 
     public function getCategories($request)

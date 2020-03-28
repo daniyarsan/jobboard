@@ -96,7 +96,7 @@ class CategoriesController extends AbstractController
     /**
      * Edit an existing Category entity.
      *
-     * @Route("/page/{id}", name="category_edit", requirements={"id": "\d+"})
+     * @Route("/category/{id}", name="category_edit", requirements={"id": "\d+"})
      * @ParamConverter("category", class="App\Entity\Category")
      *
      * @Template("admin/categories/edit.html.twig")

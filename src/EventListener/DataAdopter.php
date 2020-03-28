@@ -52,8 +52,6 @@ class DataAdopter
                 $job->setState((States::list())[$job->getState()]);
             }
             /** Transform short State into Long State during import */
-
-
         }
 
         return;

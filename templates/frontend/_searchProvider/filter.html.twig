@@ -13,7 +13,7 @@
                             <ul>
                                 {% for opt in filter.options | slice(0, 10) %}
                                     {% set link = request.query.all | merge({(filter.field.fieldId) : opt.title}) %}
-                                    <li><a href="{{ path('jobs_index', link ) }}"> {{ opt.title|truncate(25) }} <span>({{ opt.count }})</span></a></li>
+                                    <li><a href="{{ path('frontend_jobs_index', link ) }}"> {{ opt.title|truncate(25) }} <span>({{ opt.count }})</span></a></li>
                                 {% endfor %}
                             </ul>
 
@@ -22,7 +22,7 @@
                                     {% for key, opt in filter.options %}
                                         {% if key > 10 %}
                                             {% set link = request.query.all | merge({(filter.field.fieldId) : opt.title}) %}
-                                            <li><a href="{{ path('jobs_index', link ) }}"> {{ opt.title|truncate(25) }} <span>({{ opt.count }})</span></a></li>
+                                            <li><a href="{{ path('frontend_jobs_index', link ) }}"> {{ opt.title|truncate(25) }} <span>({{ opt.count }})</span></a></li>
                                         {% endif %}
                                     {% endfor %}
                                 </ul>

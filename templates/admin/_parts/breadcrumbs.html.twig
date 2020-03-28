@@ -1,0 +1,5 @@
+<ol class="breadcrumb m-0">
+    {% for url, title in breadcrumbs %}
+        <li class="breadcrumb-item"><a href="{{ path(url) }}">{{ title }}</a></li>
+    {% endfor %}
+</ol>

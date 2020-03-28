@@ -28,7 +28,7 @@
                 <ul class="category-list">
                     {% for category in categories %}
                         <li class="category-item">
-                            <a href="{{ path('jobs_index', {'category' : category.name}) }}">
+                            <a href="{{ path('frontend_jobs_index', {'category' : category.name}) }}">
                                 <div class="category-icon"><img src="{{ asset('frontend/images/icon/chemist.png') }}" alt="images" class="img-fluid"></div>
                                 <span class="category-title">{{ category.name }}</span>
                                 <span class="category-quantity">(1298)</span>

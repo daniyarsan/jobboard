@@ -10,15 +10,15 @@ use Twig\Environment;
 
 class Breadcrumbs
 {
-    protected  $breadcrumbs = [];
+    protected $view;
 
-    public function add($breadcrumbs)
+    public function __construct(Environment $environment)
     {
-        $this->breadcrumbs[] = $breadcrumbs;
+        $this->view = $environment;
     }
 
-    public function getBreadcrumbs()
+    public function display($template, array $items)
     {
-        return $this->breadcrumbs;
+        return $this->view->display($template, ['breadcrumbs' => $items]);
     }
 }

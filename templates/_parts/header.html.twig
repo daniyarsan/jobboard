@@ -6,13 +6,13 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"><i class="fa fa-align-justify"></i></span>
             </button>
-            <a class="navbar-brand" href="{{ path('main_index') }}"><img class="img-fluid" src="{{ asset('frontend/images/logo.png') }}" alt="Logo"></a>
+            <a class="navbar-brand" href="{{ path('frontend_main_index') }}"><img class="img-fluid" src="{{ asset('frontend/images/logo.png') }}" alt="Logo"></a>
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="nav navbar-nav">
                     <li><a href="">Apply</a></li>
-                    <li><a href="{{ path('jobs_index') }}">Jobs</a></li>
-                    <li><a href="{{ path('companies_index') }}">Agencies</a></li>
+                    <li><a href="{{ path('frontend_jobs_index') }}">Jobs</a></li>
+                    <li><a href="{{ path('frontend_companies_index') }}">Agencies</a></li>
                     <li class="dropdown">
                         <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Resources<span class="caret"></span></a>
                         <ul class="dropdown-menu">
