@@ -1,0 +1,19 @@
+<div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="nav navbar-nav">
+        {% for menu in menus %}
+            <li {{ menu.sub != null ? 'class="dropdown"' : '' }}>
+                {% if menu.sub != null %}
+                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"><span class="caret"></span> {{ menu.title }}</a>
+                    <ul class="dropdown-menu">
+                        {% for sub in menu.sub %}
+                            <li><a href="{{ sub.url }}">{{ sub.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <a href="{{ menu.url }}">{{ menu.title }}</a>
+                {% endif %}
+
+            </li>
+        {% endfor %}
+    </ul>
+</div>

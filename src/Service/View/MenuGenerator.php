@@ -2,15 +2,35 @@
 
 namespace App\Service\View;
 
+use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 
 class MenuGenerator
 {
     protected $view;
+    protected $router;
 
-    public function __construct(Environment $environment)
+    public function __construct(Environment $environment, RouterInterface $router)
     {
         $this->view = $environment;
+        $this->router = $router;
+    }
+
+    public function mainHeaderMenu()
+    {
+        $menus = [
+            ['title' => 'Apply', 'url' => '#', 'icon' => '', 'sub' => []],
+            ['title' => 'Jobs', 'url' =>  $this->router->generate('frontend_jobs_index'), 'icon' => '', 'sub' => []],
+            ['title' => 'Agencies', 'url' => $this->router->generate('frontend_companies_index'), 'icon' => '', 'sub' => []],
+            ['title' => 'Info', 'url' => '#', 'icon' => '', 'sub' => [
+                ['title' => 'What is Healthcare', 'url' => $this->router->generate('frontend_staticpage_index', ['url' => 'about'])],
+                ['title' => 'FAQ', 'url' => '#'],
+            ]],
+
+            ['title' => 'Blog', 'url' => 'blog', 'icon' => '', 'sub' => []]
+        ];
+
+        return $this->view->render('frontend/_parts/main-header-menu.html.twig', ['menus' => $menus]);
     }
 
     public function profileSideMenu()

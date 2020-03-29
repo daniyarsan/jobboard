@@ -1537,13 +1537,13 @@ a.verified i {
     font-weight: 400;
 }
 
-.quick-rules li {
+.quick-rules li, .static-page ul li {
     position: relative;
     padding-left: 25px;
     margin-bottom: 20px;
 }
 
-.quick-rules li:before {
+.quick-rules li:before, .static-page ul li:before {
     position: absolute;
     color: #00a651;
     font-size: 16px;

@@ -34,7 +34,7 @@ class AdminStaticPageType extends AbstractType
             ])
             ->add('content', TextareaType::class)
             ->add('metaTitle', TextType::class, [
-                'label' => 'Page Title',
+                'label' => 'Meta Title',
             ])
             ->add('metaDescription', TextType::class, [
                 'label' => 'Meta Description',
