@@ -76,16 +76,6 @@ class Company
     /**
      * @ORM\Column(type="string", length=190, nullable=true)
      */
-    private $latitude;
-
-    /**
-     * @ORM\Column(type="string", length=190, nullable=true)
-     */
-    private $longitude;
-
-    /**
-     * @ORM\Column(type="string", length=190, nullable=true)
-     */
     private $website;
 
     /**
@@ -214,6 +204,10 @@ class Company
         return $this;
     }
 
+    public function getLocation()
+    {
+        return $this->getCountry() . ', ' . $this->getState();
+    }
     public function getWebsite(): ?string
     {
         return $this->website;
@@ -234,30 +228,6 @@ class Company
     public function setPhone(?string $phone): self
     {
         $this->phone = $phone;
-
-        return $this;
-    }
-
-    public function getLatitude(): ?string
-    {
-        return $this->latitude;
-    }
-
-    public function setLatitude(?string $latitude): self
-    {
-        $this->latitude = $latitude;
-
-        return $this;
-    }
-
-    public function getLongitude(): ?string
-    {
-        return $this->longitude;
-    }
-
-    public function setLongitude(?string $longitude): self
-    {
-        $this->longitude = $longitude;
 
         return $this;
     }
@@ -374,10 +344,5 @@ class Company
     public function setLogoName($logoName): void
     {
         $this->logoName = $logoName;
-    }
-
-    public function getCountryState()
-    {
-        return $this->getCountry() . ', ' . $this->getState();
     }
 }

@@ -16,8 +16,9 @@
             <span><a href="{{ path('frontend_companies_details', {id: company.getId() }) }}" class="{{ company.name }}">{{ company.name }}</a></span>
             <div class="ad-meta">
                 <ul>
-                    <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ company.countryState }} </a></li>
-                    <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>HR/Org. Development</a></li>
+                    <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ company.location }} </a></li>
+                    {# TODO: Make a category for companies #}
+{#                    <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>HR/Org. Development</a></li>#}
                     <li><a href="#"><i class="fa fa-briefcase" aria-hidden="true"></i> {{ company.jobs|length }}</a></li>
                 </ul>
             </div><!-- ad-meta -->

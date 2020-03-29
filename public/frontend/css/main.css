@@ -306,18 +306,6 @@ textarea {
     padding-left: 10px;
 }
 
-.sign-in li:last-child:before {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    background-image: url("../images/1.png");
-    background-repeat: no-repeat;
-    width: 7px;
-    height: 14px;
-    content: "";
-    margin-top: -7px;
-}
-
 .nav-right .dropdown-menu {
     margin: 18px 0 20px;
 }

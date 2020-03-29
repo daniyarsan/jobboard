@@ -14,9 +14,7 @@ use Symfony\Component\HttpFoundation\File\File;
 class Profile
 {
     const VISIBILITY_PUBLIC = 'PUBLIC';
-
     const VISIBILITY_AUTHENTICATED = 'AUTHENTICATED';
-
     const VISIBILITY_PRIVATE = 'PRIVATE';
 
     /**
@@ -57,20 +55,6 @@ class Profile
      */
     private $email;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $description;
-
-    /**
-     * @ORM\Column(type="string", length=190, nullable=true)
-     */
-    private $country;
-
-    /**
-     * @ORM\Column(type="string", length=190, nullable=true)
-     */
-    private $address;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
@@ -96,6 +80,36 @@ class Profile
      * @ORM\Column(name="modified", type="datetime", nullable=true)
      */
     private $modified;
+
+    /**
+     * @ORM\Column(type="string", length=190)
+     */
+    private $licenseState;
+
+    /**
+     * @ORM\Column(type="string", length=190)
+     */
+    private $license;
+
+    /**
+     * @ORM\Column(type="string", length=190)
+     */
+    private $specialty;
+
+    /**
+     * @ORM\Column(type="string", length=190)
+     */
+    private $specialtySecond;
+
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $experienceYears;
+
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $zipcode;
 
     public function __construct()
     {
@@ -162,51 +176,6 @@ class Profile
         $this->lastName = $lastName;
 
         return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    public function getCountry(): ?string
-    {
-        return $this->country;
-    }
-
-    public function setCountry(?string $country): self
-    {
-        $this->country = $country;
-
-        return $this;
-    }
-
-    public function __toString()
-    {
-        return self::class;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAddress()
-    {
-        return $this->address;
-    }
-
-    /**
-     * @param mixed $address
-     */
-    public function setAddress($address): void
-    {
-        $this->address = $address;
     }
 
     /**
@@ -367,8 +336,83 @@ class Profile
         $this->avatarName = $avatarName;
     }
 
-    public function getLocation()
+
+    public function __toString()
     {
-        return $this->getCountry();
+        return self::class;
     }
+
+    public function getLicenseState(): ?string
+    {
+        return $this->licenseState;
+    }
+
+    public function setLicenseState(string $licenseState): self
+    {
+        $this->licenseState = $licenseState;
+
+        return $this;
+    }
+
+    public function getLicense(): ?string
+    {
+        return $this->license;
+    }
+
+    public function setLicense(string $license): self
+    {
+        $this->license = $license;
+
+        return $this;
+    }
+
+    public function getSpecialty(): ?string
+    {
+        return $this->specialty;
+    }
+
+    public function setSpecialty(string $specialty): self
+    {
+        $this->specialty = $specialty;
+
+        return $this;
+    }
+
+    public function getSpecialtySecond(): ?string
+    {
+        return $this->specialtySecond;
+    }
+
+    public function setSpecialtySecond(string $specialtySecond): self
+    {
+        $this->specialtySecond = $specialtySecond;
+
+        return $this;
+    }
+
+    public function getExperienceYears(): ?string
+    {
+        return $this->experienceYears;
+    }
+
+    public function setExperienceYears(?string $experienceYears): self
+    {
+        $this->experienceYears = $experienceYears;
+
+        return $this;
+    }
+
+    public function getZipcode(): ?string
+    {
+        return $this->zipcode;
+    }
+
+    public function setZipcode(?string $zipcode): self
+    {
+        $this->zipcode = $zipcode;
+
+        return $this;
+    }
+
+
 }

@@ -18,6 +18,7 @@ class User implements UserInterface
     public const ROLE_PROFILE = 'ROLE_PROFILE';
     public const ROLE_COMPANY = 'ROLE_COMPANY';
     public const ROLE_ADMIN = 'ROLE_ADMIN';
+
     public const DEMO_PASSWORD = '121212';
     public const DEMO_EMAIL = 'admin@gmail.com';
 
@@ -74,8 +75,6 @@ class User implements UserInterface
 
     public function __construct()
     {
-        $this->roles = [self::ROLE_PROFILE];
-        $this->enabled = false;
         $this->companies = new ArrayCollection();
     }
 
