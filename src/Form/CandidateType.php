@@ -47,27 +47,42 @@ class CandidateType extends AbstractType
                     'RN' => 'rn',
                     'LPN' => 'lpn',
                     'CNA' => 'cna',
-                ]
+                ],
+                'placeholder' => 'Choose License'
             ])
+
             ->add('licenseState', StateType::class, [
                 'choice_label' => function ($choice, $key, $value) {
                     return ucfirst($choice);
                 },
                 'multiple' => true,
-                'placeholder' => 'Choose License State'
+                'attr' => ['data-placeholder' => 'States Licensed']
             ])
+
             ->add('specialty', EntityType::class, [
                 'class' => 'App\Entity\Category',
-                'placeholder' => 'Choose License'
+                'placeholder' => 'Choose Specialty'
             ])
             ->add('specialtySecond', EntityType::class, [
                 'class' => 'App\Entity\Category',
-                'placeholder' => 'Choose License'
+                'placeholder' => 'Choose Specialty Secondary'
             ])
-            ->add('experienceYears', EntityType::class, [
-                'class' => 'App\Entity\Category',
-                'placeholder' => 'Choose Second License'
+            ->add('experienceYears', ChoiceType::class, [
+                'choices' => [
+                    'New grad',
+                    '0-1',
+                    '1-3',
+                    '3-5',
+                    '5-10',
+                    '10-15',
+                    '15+',
+                ],
+                'placeholder' => 'Choose Experience Years',
+                'choice_label' => function ($option, $key, $value) {
+                    return ucfirst($option);
+                }
             ]);
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

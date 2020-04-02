@@ -51,14 +51,13 @@ class FrontendController extends AbstractController
             $user->setRoles([User::ROLE_PROFILE]);
             $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($password);
-
             $user->setProfile($candidate);
             $candidate->setUser($user);
 
             $em->persist($candidate);
             $em->flush();
 
-            $this->redirectToRoute();
+            return $this->redirectToRoute('frontend_jobs_index');
         }
         return [
             'form' => $form->createView()
