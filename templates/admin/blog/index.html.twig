@@ -6,21 +6,15 @@
 {% import 'admin/form/dialog.html.twig' as dialogs %}
 
 {% block content %}
-    {{ breadcrumbs.add({'url' : 'admin_index', 'title' : 'Dashboard'|trans}) }}
-    {{ breadcrumbs.add({'url' : '', 'title' : 'Blogs'|trans}) }}
-
     <!-- start page title -->
     <div class="row">
         <div class="col-12">
             <div class="page-title-box">
                 <div class="page-title-right">
-                    <ol class="breadcrumb m-0">
-                        {% for breadcrumb in breadcrumbs.getBreadcrumbs() %}
-                            <li class="breadcrumb-item">
-                                <a href="{% if breadcrumb.url is not empty %}{{ path(breadcrumb.url) }}{% else %}javascript: void(0);{% endif %}">{{ breadcrumb.title }}</a>
-                            </li>
-                        {% endfor %}
-                    </ol>
+                    {{ breadcrumbs.display('admin/_parts/breadcrumbs.html.twig', {
+                        'admin_index' : 'Dashboard' | trans,
+                        '' : 'Blogs' | trans
+                    } )}}
                 </div>
                 <h4 class="page-title">{{ 'Blogs'|trans }} - {{ entities.getTotalItemCount }} {{ 'found'|trans }}</h4>
             </div>

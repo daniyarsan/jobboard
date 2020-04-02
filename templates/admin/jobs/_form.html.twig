@@ -3,20 +3,16 @@
 {% block title %}{{ pageTitle }}{% endblock %}
 
 {% block content %}
-    {{ breadcrumbs.add({'url' : 'admin_index', 'title' : 'Dashboard'|trans}) }}
-    {{ breadcrumbs.add({'url' : 'admin_jobs_index', 'title' : 'Jobs'|trans}) }}
-    {{ breadcrumbs.add({'url' : '', 'title' : pageTitle|trans}) }}
-
     <!-- start page title -->
     <div class="row">
         <div class="col-12">
             <div class="page-title-box">
                 <div class="page-title-right">
-                    <ol class="breadcrumb m-0">
-                        {% for breadcrumb in breadcrumbs.getBreadcrumbs() %}
-                            <li class="breadcrumb-item"><a href="{% if breadcrumb.url is not empty %}{{ path(breadcrumb.url) }}{% else %}javascript: void(0);{% endif %}">{{ breadcrumb.title }}</a></li>
-                        {% endfor %}
-                    </ol>
+                    {{ breadcrumbs.display('admin/_parts/breadcrumbs.html.twig', {
+                        'admin_index' : 'Dashboard' | trans,
+                        'admin_jobs_index' : 'Jobs' | trans,
+                        '' : pageTitle|trans,
+                    } )}}
                 </div>
                 <h4 class="page-title">{{ pageTitle|trans }}</h4>
             </div>

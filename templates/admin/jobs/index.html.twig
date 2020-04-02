@@ -6,22 +6,20 @@
 {% block title %}{{ 'Jobs List'|trans }}{% endblock %}
 
 {% block content %}
-    {{ breadcrumbs.add({'url' : 'admin_index', 'title' : 'Dashboard'|trans}) }}
-    {{ breadcrumbs.add({'url' : '', 'title' : 'Jobs'|trans}) }}
 
     <!-- start page title -->
     <div class="row">
         <div class="col-12">
             <div class="page-title-box">
                 <div class="page-title-right">
-                    <ol class="breadcrumb m-0">
-                        {% for breadcrumb in breadcrumbs.getBreadcrumbs() %}
-                            <li class="breadcrumb-item">
-                                <a href="{% if breadcrumb.url is not empty %}{{ path(breadcrumb.url) }}{% else %}javascript: void(0);{% endif %}">{{ breadcrumb.title }}</a>
-                            </li>
-                        {% endfor %}
-                    </ol>
+                    <!-- breadcrumb -->
+                    {{ breadcrumbs.display('admin/_parts/breadcrumbs.html.twig', {
+                        'admin_index' : 'Dashboard' | trans,
+                        '' : 'Jobs' | trans
+                    } )}}
+                    <!-- breadcrumb -->
                 </div>
+
                 <h4 class="page-title">{{ 'Jobs'|trans }} - {{ entities.getTotalItemCount }} found</h4>
             </div>
         </div>

@@ -22,14 +22,7 @@
                     {% endif %}
                 </th>
                 <th>{{ 'Email'|trans }}</th>
-                <th style="width: 15%">{{ 'Location'|trans }}</th>
                 <th>{{ 'Created'|trans }}</th>
-                <th>
-                    {{ knp_pagination_sortable(entities, 'Status', 'visibility') }}
-                    {% if entities.isSorted('visibility') %}
-                        <span class="fas fa-sort-alpha-{% if entities.getParams.direction == 'desc' %}down{% else %}up{% endif %}"></span>
-                    {% endif %}
-                </th>
                 <th style="width: 15%">{{ 'Action'|trans }}</th>
             </tr>
             </thead>
@@ -46,15 +39,7 @@
                         <a href="{{ path('admin_profiles_edit', {id : profile.id}) }}" class="text-body font-weight-semibold">{{ profile.firstName }} {{ profile.lastName }}</a>
                     </td>
                     <td>{{ profile.user.email }}</td>
-                    <td>{{ profile.country }}</td>
                     <td>{{ profile.created|date("d/m/Y") }}</td>
-                    <td>
-                        {% if profile.visibility %}
-                            <span class="badge bg-soft-success text-success">{{ 'Published'|trans }}</span>
-                        {% else %}
-                            <span class="badge bg-soft-danger text-danger">{{ 'On Hold'|trans }}</span>
-                        {% endif %}
-                    </td>
                     <td>
                         <a href="{{ path('admin_profiles_edit', {'id': profile.id, 'return_url': path('admin_profiles_index') ~ query_string()}) }}" class="action-icon">
                             <i class="mdi mdi-square-edit-outline"></i>

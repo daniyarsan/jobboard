@@ -13,9 +13,6 @@ use Symfony\Component\HttpFoundation\File\File;
  */
 class Profile
 {
-    const VISIBILITY_PUBLIC = 'PUBLIC';
-    const VISIBILITY_AUTHENTICATED = 'AUTHENTICATED';
-    const VISIBILITY_PRIVATE = 'PRIVATE';
 
     /**
      * @ORM\Id()
@@ -30,10 +27,6 @@ class Profile
      */
     private $user;
 
-    /**
-     * @ORM\Column(name="type", type="string")
-     */
-    private $visibility = self::VISIBILITY_PUBLIC;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -51,10 +44,9 @@ class Profile
     private $lastName;
 
     /**
-     * @ORM\Column(type="string", name="email", length=190, nullable=true)
+     * @ORM\Column(type="string", name="email", length=190)
      */
     private $email;
-
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
@@ -81,23 +73,19 @@ class Profile
      */
     private $modified;
 
-    /**
-     * @ORM\Column(type="string", length=190)
-     */
-    private $licenseState;
 
     /**
-     * @ORM\Column(type="string", length=190)
+     * @ORM\Column(type="string", length=190, nullable=true)
      */
     private $license;
 
     /**
-     * @ORM\Column(type="string", length=190)
+     * @ORM\Column(type="string", length=190, nullable=true)
      */
     private $specialty;
 
     /**
-     * @ORM\Column(type="string", length=190)
+     * @ORM\Column(type="string", length=190, nullable=true)
      */
     private $specialtySecond;
 
@@ -110,6 +98,11 @@ class Profile
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $zipcode;
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $licenseState = [];
 
     public function __construct()
     {
@@ -238,11 +231,6 @@ class Profile
         $this->experiences = $experiences;
     }
 
-    public function setDefaultRole()
-    {
-        $this->getUser()->setRoles(['ROLE_USER']);
-    }
-
     /**
      * @return mixed
      */
@@ -257,22 +245,6 @@ class Profile
     public function setCreated($created): void
     {
         $this->created = $created;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getVisibility()
-    {
-        return $this->visibility;
-    }
-
-    /**
-     * @param mixed $visibility
-     */
-    public function setVisibility($visibility): void
-    {
-        $this->visibility = $visibility;
     }
 
 
@@ -342,17 +314,6 @@ class Profile
         return self::class;
     }
 
-    public function getLicenseState(): ?string
-    {
-        return $this->licenseState;
-    }
-
-    public function setLicenseState(string $licenseState): self
-    {
-        $this->licenseState = $licenseState;
-
-        return $this;
-    }
 
     public function getLicense(): ?string
     {
@@ -414,5 +375,15 @@ class Profile
         return $this;
     }
 
+    public function getLicenseState(): ?array
+    {
+        return $this->licenseState;
+    }
 
+    public function setLicenseState(?array $licenseState): self
+    {
+        $this->licenseState = $licenseState;
+
+        return $this;
+    }
 }

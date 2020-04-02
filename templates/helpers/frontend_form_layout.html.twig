@@ -8,8 +8,7 @@
 {% endblock %}
 
 {% block choice_widget_collapsed -%}
-    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) -%}
-    {%- set attr = attr|merge({'data-toggle': 'select2'}) -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' select2')|trim}) -%}
     {{- parent() -}}
 {%- endblock choice_widget_collapsed %}
 

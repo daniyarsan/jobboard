@@ -3,10 +3,8 @@
 {% block title %}{{ pageTitle }}{% endblock %}
 
 {% block stylesheets %}
-    <link href="{{ asset('frontend/wizard/css/smart_wizard.css') }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset('frontend/wizard/css/smart_wizard_theme_circles.css') }}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset('frontend/ionicons/css/ionicons.min.css') }}">
 {% endblock %}
-
 
 {% block body %}
     <section class=" job-bg ad-details-page">
@@ -15,58 +13,80 @@
                 {{ breadcrumbs.display('frontend/_parts/breadcrumbs.html.twig', {
                     'frontend_main_index' : 'Home' | trans
                 } ) }}
+
                 <h2 class="title">{{ pageTitle }}</h2>
-            </div><!-- banner -->
+            </div>
 
             <div class="job-postdetails">
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="section postdetails">
-                            {{ form(form) }}
-                            <form action="#" id="myForm" role="form" data-toggle="validator" method="post" accept-charset="utf-8">
-                                <div id="smartwizard">
-                                    <ul>
-                                        <li><a href="#step-1">Step 1<br/><small>{{ 'Personal' | trans }}</small></a></li>
-                                        <li><a href="#step-2">Step 2<br/><small>{{ 'Profissional' | trans }}</small></a></li>
-                                        <li><a href="#step-3">Step 3<br/><small>{{ 'Get Ready' | trans }}</small></a></li>
-                                    </ul>
-                                    <div>
-                                        <div id="step-1">
-                                            <div id="form-step-0" role="form" data-toggle="validator">
-                                                <div class="form-group">
-                                                    <label for="email">Email address:</label>
-                                                    <input type="email" class="form-control" name="email" id="email" placeholder="Write your email address" required>
-                                                    <div class="help-block with-errors"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="step-2">
-                                            <h2>Your Name</h2>
-                                            <div id="form-step-1" role="form" data-toggle="validator">
-                                                <div class="form-group">
-                                                    <label for="name">Name:</label>
-                                                    <input type="text" class="form-control" name="name" id="email" placeholder="Write your name" required>
-                                                    <div class="help-block with-errors"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="step-3">
-                                            <h2>Your Address</h2>
-                                            <div id="form-step-2" role="form" data-toggle="validator">
-                                                <div class="form-group">
-                                                    <label for="address">Address</label>
-                                                    <textarea class="form-control" name="address" id="address" rows="3" placeholder="Write your address..." required></textarea>
-                                                    <div class="help-block with-errors"></div>
-                                                </div>
-                                            </div>
-                                        </div>
+                            {{ form_start(form, {'attr' : {'id' : 'apply-form'}}) }}
+
+                            <h3>{{ 'Personal' | trans }}</h3>
+
+                            <section class="form-step-section">
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+{#                                        data-parsley-errors-container="#parsley_multi_select_error_container_licensed_states"#}
+{#                                        data-parsley-error-message="Please choose a licensed state."#}
+                                        {{ form_widget(form.firstName, {'attr' : {'placeholder' : 'First Name'|trans}}) }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{ form_widget(form.lastName, {'attr' : {'placeholder' : 'Last Name'|trans}}) }}
                                     </div>
                                 </div>
-                            </form>
-                        </div><!-- postdetails -->
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        {{ form_widget(form.phone, {'attr' : {'class' : 'mask-phone'}}) }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{ form_widget(form.email, {'attr' : {'placeholder' : 'Email'|trans}}) }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        {{ form_widget(form.zipcode, {'attr' : {'placeholder' : 'Zip Code'|trans}}) }}
+                                    </div>
+                                </div>
+                            </section>
+
+                            <h3>{{ 'Professional' | trans }}</h3>
+
+                            <section class="form-step-section">
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        {{ form_widget(form.license, {'attr' : {'placeholder' : 'License'|trans}}) }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{ form_widget(form.licenseState, {'attr' : {'placeholder' : 'License State'|trans}}) }}
+                                    </div>
+                                </div>
+
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        {{ form_widget(form.specialty, {'attr' : {'placeholder' : 'Specialty'|trans}}) }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{ form_widget(form.specialtySecond, {'attr' : {'placeholder' : 'Second Specialty'|trans}}) }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        {{ form_widget(form.experienceYears, {'attr' : {'placeholder' : 'Experience Years'|trans}}) }}
+                                    </div>
+                                </div>
+                            </section>
+
+{#                            <h3>{{ 'Workflow' | trans }}</h3>#}
+
+{#                            <section class="form-step-section">#}
+{#                            </section>#}
+
+                            {{ form_end(form) }}
+                        </div>
                     </div>
 
-                    <!-- quick-rules -->
                     <div class="col-lg-4">
                         <div class="section quick-rules">
                             <h4>Quick rules</h4>
@@ -84,83 +104,53 @@
                                 <li>Do not post ads containing multiple items unless it's a package deal.</li>
                             </ul>
                         </div>
-                    </div><!-- quick-rules -->
-                </div><!-- photos-ad -->
+                    </div>
+
+                </div>
             </div>
-        </div><!-- container -->
+        </div>
     </section>
 {% endblock %}
 
 {% block javascripts %}
-    <!-- Include jQuery Validator plugin -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
-    <script type="text/javascript" src="{{ asset('frontend/wizard/js/jquery.smartWizard.min.js') }}"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-
-            // Toolbar extra buttons
-            var btnFinish = $('<button></button>').text('Finish')
-                .addClass('btn btn-info')
-                .on('click', function () {
-                    if (!$(this).hasClass('disabled')) {
-                        var elmForm = $("#myForm");
-                        if (elmForm) {
-                            elmForm.validator('validate');
-                            var elmErr = elmForm.find('.has-error');
-                            if (elmErr && elmErr.length > 0) {
-                                alert('Oops we still have error in the form');
-                                return false;
-                            } else {
-                                alert('Great! we are ready to submit form');
-                                elmForm.submit();
-                                return false;
-                            }
-                        }
-                    }
-                });
+    <script src="{{ asset('frontend/libs/parsleyjs/parsley.min.js') }}"></script>
+    <script src="{{ asset('frontend/libs/jquery-mask/jquery.inputmask.min.js') }}"></script>
+    <script src="{{ asset('frontend/libs/jquery-steps/jquery.steps.min.js') }}"></script>
 
 
-            // Smart Wizard
-            $('#smartwizard').smartWizard({
-                selected: 0,
-                theme: 'circles',
-                transitionEffect: 'fade',
-                toolbarSettings: {
-                    toolbarPosition: 'bottom',
-                    toolbarExtraButtons: [btnFinish]
-                },
-                anchorSettings: {
-                    markDoneStep: true, // add done css
-                    markAllPreviousStepsAsDone: true, // When a step selected by url hash, all previous steps are marked done
-                    removeDoneStepOnNavigateBack: true, // While navigate back done step after active step will be cleared
-                    enableAnchorOnDoneStep: true // Enable/Disable the done steps navigation
+    <script>
+        $(document).ready(function(){
+            $('.mask-phone').inputmask({"mask": "(999) 999-9999"}); //specifying options
+        });
+
+        // Next button goes forward iff current block validates
+        var $sections = $('.form-step-section');
+        $sections.each(function(index, section) {
+            $(section).find(':input').attr('data-parsley-group', 'block-' + index);
+        });
+
+        $('#apply-form').steps({
+            headerTag: 'h3',
+            bodyTag: 'section',
+            autoFocus: true,
+            titleTemplate: '<span class="number">#index#</span> <span class="title">#title#</span>',
+
+            onStepChanging: function (event, currentIndex, newIndex) {
+                console.log('stepchanging');
+
+                if (currentIndex > newIndex) {
+                    return true;
                 }
-            });
-
-            $("#smartwizard").on("leaveStep", function (e, anchorObject, stepNumber, stepDirection) {
-                var elmForm = $("#form-step-" + stepNumber);
-                // stepDirection === 'forward' :- this condition allows to do the form validation
-                // only on forward navigation, that makes easy navigation on backwards still do the validation when going next
-                if (stepDirection === 'forward' && elmForm) {
-                    elmForm.validator('validate');
-                    var elmErr = elmForm.children('.has-error');
-                    if (elmErr && elmErr.length > 0) {
-                        // Form validation failed
-                        return false;
-                    }
-                }
-                return true;
-            });
-
-            $("#smartwizard").on("showStep", function (e, anchorObject, stepNumber, stepDirection) {
-                // Enable finish button only on last step
-                if (stepNumber == 3) {
-                    $('.btn-finish').removeClass('disabled');
-                } else {
-                    $('.btn-finish').addClass('disabled');
-                }
-            });
+                return  $(this).parsley().validate({group: 'block-' + currentIndex});
+            },
+            onStepChanged: function (event, currentIndex, priorIndex) {
+                console.log('changed');
+            },
+            onFinishing: function (event, currentIndex, newIndex) {
+                $(this).submit();
+            },
+            onFinished: function () {
+            }
         });
     </script>
 {% endblock %}

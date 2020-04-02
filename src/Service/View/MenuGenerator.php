@@ -19,7 +19,7 @@ class MenuGenerator
     public function mainHeaderMenu()
     {
         $menus = [
-            ['title' => 'Apply', 'url' => '#', 'icon' => '', 'sub' => []],
+            ['title' => 'Apply', 'url' => $this->router->generate('frontend_main_apply'), 'icon' => '', 'sub' => []],
             ['title' => 'Jobs', 'url' =>  $this->router->generate('frontend_jobs_index'), 'icon' => '', 'sub' => []],
             ['title' => 'Agencies', 'url' => $this->router->generate('frontend_companies_index'), 'icon' => '', 'sub' => []],
             ['title' => 'Info', 'url' => '#', 'icon' => '', 'sub' => [

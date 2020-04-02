@@ -42,17 +42,16 @@ class UserFixtures extends Fixture
             $name = $this->faker->firstName;
             $lastName = $this->faker->lastName;
 
+            $email = $this->faker->email;
             $user = new User();
             $user->setPassword($this->encoder->encodePassword($user, USER::DEMO_PASSWORD));
-            $user->setEmail($this->faker->email);
+            $user->setEmail($email);
             $user->setRoles([User::ROLE_PROFILE]);
 
             $profile = new Profile();
             $profile->setFirstName($name);
+            $profile->setEmail($email);
             $profile->setLastName($lastName);
-            $profile->setCountry($this->faker->country);
-            $profile->setDescription($this->faker->text);
-            $profile->setAddress($this->faker->address);
             $user->setProfile($profile);
             $manager->persist($user);
         }
@@ -73,8 +72,6 @@ class UserFixtures extends Fixture
             $company->setAddress($this->faker->address);
             $company->setDescription($this->faker->text);
             $company->setEmail($this->faker->companyEmail);
-            $company->setLongitude($this->faker->longitude);
-            $company->setLatitude($this->faker->latitude);
             $company->getWebsite($this->faker->domainName);
             $company->setState($this->faker->state);
             $company->getPhone($this->faker->phoneNumber);
@@ -99,7 +96,6 @@ class UserFixtures extends Fixture
             $jobEntity->setCompany($company);
             $jobEntity->setActive(true);
             $jobEntity->setCountry($this->faker->country);
-            $jobEntity->setSalary($this->faker->numberBetween(0, 100000));
 
             $jobs->add($jobEntity);
         }
