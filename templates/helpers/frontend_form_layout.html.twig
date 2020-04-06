@@ -7,8 +7,17 @@
     {% endspaceless %}
 {% endblock %}
 
+{% block checkbox_widget %}
+    {% spaceless %}
+        <input type="checkbox" data-toggle="switchbutton" data-width="" data-height="43" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+    {% endspaceless %}
+{% endblock %}
+
 {% block choice_widget_collapsed -%}
     {%- set attr = attr|merge({class: (attr.class|default('') ~ ' select2')|trim}) -%}
+    {%- set attr = attr|merge({'data-parsley-errors-container': '#parsley' ~ unique_block_prefix|trim}) -%}
+    {%- set attr = attr|merge({'data-parsley-error-message': 'Please choose ' ~ label |trim}) -%}
     {{- parent() -}}
-{%- endblock choice_widget_collapsed %}
+    <div id="{{ 'parsley' ~ unique_block_prefix|trim }}"></div>
 
+{%- endblock choice_widget_collapsed %}

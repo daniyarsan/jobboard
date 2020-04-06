@@ -6,6 +6,7 @@ use App\Entity\Profile;
 use App\Entity\User;
 use App\Form\CandidateType;
 use App\Repository\CategoryRepository;
+use App\Service\FileManager;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +38,9 @@ class FrontendController extends AbstractController
      * @Route("/apply", name="_apply")
      * @Template("frontend/main/apply.html.twig")
      */
-    public function apply(Request $request, ManagerRegistry $managerRegistry, UserPasswordEncoderInterface $passwordEncoder)
+    public function apply(Request $request,
+                          ManagerRegistry $managerRegistry,
+                          UserPasswordEncoderInterface $passwordEncoder, FileManager $fileManager)
     {
         $em = $managerRegistry->getManager();
 
@@ -53,6 +56,10 @@ class FrontendController extends AbstractController
             $user->setPassword($password);
             $user->setProfile($candidate);
             $candidate->setUser($user);
+
+            if ($resume = $form['resume']->getData()) {
+                $candidate->setResumeFile($fileManager->uploadResume($resume));
+            }
 
             $em->persist($candidate);
             $em->flush();

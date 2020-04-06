@@ -97,12 +97,48 @@ class Profile
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      */
-    private $zipcode;
+    private $experienceYearsSecond;
 
     /**
      * @ORM\Column(type="array", nullable=true)
      */
     private $licenseState = [];
+
+    /**
+     * @ORM\Column(type="string", length=190, nullable=true)
+     */
+    private $homeState;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $hasExperience;
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $destinationStates = [];
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $onAssignment;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $assignmentEndDate;
+
+    /**
+     * @ORM\Column(type="string", length=190, nullable=true)
+     */
+    private $availability;
+
+    /**
+     * @ORM\Column(type="string", length=190, nullable=true)
+     */
+    private $resumeFile;
+
 
     public function __construct()
     {
@@ -363,17 +399,6 @@ class Profile
         return $this;
     }
 
-    public function getZipcode(): ?string
-    {
-        return $this->zipcode;
-    }
-
-    public function setZipcode(?string $zipcode): self
-    {
-        $this->zipcode = $zipcode;
-
-        return $this;
-    }
 
     public function getLicenseState(): ?array
     {
@@ -386,4 +411,105 @@ class Profile
 
         return $this;
     }
+
+    public function getHomeState(): ?string
+    {
+        return $this->homeState;
+    }
+
+    public function setHomeState(?string $homeState): self
+    {
+        $this->homeState = $homeState;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExperienceYearsSecond()
+    {
+        return $this->experienceYearsSecond;
+    }
+
+    /**
+     * @param mixed $experienceYearsSecond
+     */
+    public function setExperienceYearsSecond($experienceYearsSecond): void
+    {
+        $this->experienceYearsSecond = $experienceYearsSecond;
+    }
+
+    public function getHasExperience(): ?bool
+    {
+        return $this->hasExperience;
+    }
+
+    public function setHasExperience(?bool $hasExperience): self
+    {
+        $this->hasExperience = $hasExperience;
+
+        return $this;
+    }
+
+    public function getDestinationStates(): ?array
+    {
+        return $this->destinationStates;
+    }
+
+    public function setDestinationStates(?array $destinationStates): self
+    {
+        $this->destinationStates = $destinationStates;
+
+        return $this;
+    }
+
+    public function getOnAssignment(): ?bool
+    {
+        return $this->onAssignment;
+    }
+
+    public function setOnAssignment(?bool $onAssignment): self
+    {
+        $this->onAssignment = $onAssignment;
+
+        return $this;
+    }
+
+    public function getAssignmentEndDate(): ?\DateTimeInterface
+    {
+        return $this->assignmentEndDate;
+    }
+
+    public function setAssignmentEndDate(?\DateTimeInterface $assignmentEndDate): self
+    {
+        $this->assignmentEndDate = $assignmentEndDate;
+
+        return $this;
+    }
+
+    public function getAvailability(): ?string
+    {
+        return $this->availability;
+    }
+
+    public function setAvailability(?string $availability): self
+    {
+        $this->availability = $availability;
+
+        return $this;
+    }
+
+    public function getResumeFile(): ?string
+    {
+        return $this->resumeFile;
+    }
+
+    public function setResumeFile(?string $resumeFile): self
+    {
+        $this->resumeFile = $resumeFile;
+
+        return $this;
+    }
+
 }

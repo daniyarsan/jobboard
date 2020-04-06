@@ -3,7 +3,9 @@
 {% block title %}{{ pageTitle }}{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('frontend/ionicons/css/ionicons.min.css') }}">
+{#    <link rel="stylesheet" href="{{ asset('frontend/ionicons/css/ionicons.min.css') }}">#}
+    <link rel="stylesheet" href="{{ asset('frontend/libs/jquery-steps/jquery-steps.css') }}">
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap-switch-button@1.1.0/css/bootstrap-switch-button.min.css" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
@@ -21,69 +23,145 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="section postdetails">
-                            {{ form_start(form, {'attr' : {'id' : 'apply-form'}}) }}
+                            <div id="apply-form-wrapper">
+                                {{ form_start(form, {'attr' : {'id' : 'apply-form'}}) }}
 
-                            <h3>{{ 'Personal' | trans }}</h3>
+                                <div class="step-app">
+                                    <ul class="step-steps">
+                                        <li><a href="#step1"><i class="fa fa-user"></i> <span>{{ 'Personal' | trans }}</span></a></li>
+                                        <li><a href="#step2"><i class="fa fa-briefcase"></i> <span>{{ 'Professional' | trans }}</span></a></li>
+                                        <li><a href="#step3"><i class="fa fa-medkit"></i> <span>{{ 'Workflow' | trans }}</span></a></li>
+                                    </ul>
 
-                            <section class="form-step-section">
-                                <div class="row mb-4">
-                                    <div class="col-md-6">
-{#                                        data-parsley-errors-container="#parsley_multi_select_error_container_licensed_states"#}
-{#                                        data-parsley-error-message="Please choose a licensed state."#}
-                                        {{ form_widget(form.firstName, {'attr' : {'placeholder' : 'First Name'|trans}}) }}
+                                    <div class="step-content mt-4">
+
+                                        <div class="step-tab-panel" id="step1">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        {{ form_widget(form.firstName) }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        {{ form_widget(form.lastName) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        {{ form_widget(form.phone, {'attr' : {'class' : 'mask-phone'}}) }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        {{ form_widget(form.email) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        {{ form_widget(form.homeState) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="step-tab-panel" id="step2">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        {{ form_widget(form.license) }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        {{ form_widget(form.licenseState) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        {{ form_widget(form.specialty) }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        {{ form_widget(form.experienceYears) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        {{ form_widget(form.specialtySecond) }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        {{ form_widget(form.experienceYearsSecond) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="step-tab-panel" id="step3">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group text-center">
+                                                        {{ form_widget(form.hasExperience) }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        {{ form_widget(form.destinationStates) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group text-center">
+                                                        {{ form_widget(form.onAssignment) }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        {{ form_widget(form.assignmentEndDate) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        {{ form_widget(form.resume) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        {{ form_widget(form.lastName, {'attr' : {'placeholder' : 'Last Name'|trans}}) }}
+
+                                    <div class="step-footer">
+                                        <button class="btn btn-default" data-direction="prev">{{ 'Previous' | trans }}</button>
+                                        <button class="btn btn-info" data-direction="next">{{ 'Next' | trans }}</button>
+                                        <button class="btn btn-primary" data-direction="finish">{{ 'Apply' | trans }}</button>
                                     </div>
                                 </div>
-                                <div class="row mb-4">
-                                    <div class="col-md-6">
-                                        {{ form_widget(form.phone, {'attr' : {'class' : 'mask-phone'}}) }}
-                                    </div>
-                                    <div class="col-md-6">
-                                        {{ form_widget(form.email, {'attr' : {'placeholder' : 'Email'|trans}}) }}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        {{ form_widget(form.zipcode, {'attr' : {'placeholder' : 'Zip Code'|trans}}) }}
-                                    </div>
-                                </div>
-                            </section>
 
-                            <h3>{{ 'Professional' | trans }}</h3>
-
-                            <section class="form-step-section">
-                                <div class="row mb-4">
-                                    <div class="col-md-6">
-                                        {{ form_widget(form.license, {'attr' : {'placeholder' : 'License'|trans}}) }}
-                                    </div>
-                                    <div class="col-md-6">
-                                        {{ form_widget(form.licenseState, {'attr' : {'placeholder' : 'License State'|trans}}) }}
-                                    </div>
-                                </div>
-
-                                <div class="row mb-4">
-                                    <div class="col-md-6">
-                                        {{ form_widget(form.specialty, {'attr' : {'placeholder' : 'Specialty'|trans}}) }}
-                                    </div>
-                                    <div class="col-md-6">
-                                        {{ form_widget(form.specialtySecond, {'attr' : {'placeholder' : 'Second Specialty'|trans}}) }}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        {{ form_widget(form.experienceYears, {'attr' : {'placeholder' : 'Experience Years'|trans}}) }}
-                                    </div>
-                                </div>
-                            </section>
-
-{#                            <h3>{{ 'Workflow' | trans }}</h3>#}
-
-{#                            <section class="form-step-section">#}
-{#                            </section>#}
-
-                            {{ form_end(form) }}
+                                {{ form_end(form) }}
+                            </div>
                         </div>
                     </div>
 
@@ -115,43 +193,35 @@
 {% block javascripts %}
     <script src="{{ asset('frontend/libs/parsleyjs/parsley.min.js') }}"></script>
     <script src="{{ asset('frontend/libs/jquery-mask/jquery.inputmask.min.js') }}"></script>
-    <script src="{{ asset('frontend/libs/jquery-steps/jquery.steps.min.js') }}"></script>
+    <script src="{{ asset('frontend/libs/jquery-steps/jquery-steps.js') }}"></script>
 
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap-switch-button@1.1.0/dist/bootstrap-switch-button.min.js"></script>
 
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('.mask-phone').inputmask({"mask": "(999) 999-9999"}); //specifying options
+            $('.mask-date').inputmask({"mask": "99/99/9999"}); //specifying options
         });
 
-        // Next button goes forward iff current block validates
-        var $sections = $('.form-step-section');
-        $sections.each(function(index, section) {
+        var $sections = $('.step-tab-panel');
+        $sections.each(function (index, section) {
             $(section).find(':input').attr('data-parsley-group', 'block-' + index);
         });
 
-        $('#apply-form').steps({
-            headerTag: 'h3',
-            bodyTag: 'section',
-            autoFocus: true,
-            titleTemplate: '<span class="number">#index#</span> <span class="title">#title#</span>',
-
-            onStepChanging: function (event, currentIndex, newIndex) {
-                console.log('stepchanging');
-
-                if (currentIndex > newIndex) {
-                    return true;
+        $('#apply-form-wrapper').steps({
+            onChange: function (currentIndex, newIndex, stepDirection) {
+                if (stepDirection == 'forward') {
+                    return $('#apply-form').parsley().validate({group: 'block-' + currentIndex});
                 }
-                return  $(this).parsley().validate({group: 'block-' + currentIndex});
+                return true;
             },
-            onStepChanged: function (event, currentIndex, priorIndex) {
-                console.log('changed');
-            },
-            onFinishing: function (event, currentIndex, newIndex) {
-                $(this).submit();
-            },
-            onFinished: function () {
+
+            onFinish: function () {
+                $('#apply-form').submit();
             }
         });
+
+
     </script>
 {% endblock %}
 

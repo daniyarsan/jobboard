@@ -38,8 +38,6 @@ class ProfileType extends AbstractType
             ])
             ->add('firstName', TextType::class)
             ->add('lastName', TextType::class)
-            ->add('description', TextareaType::class)
-            ->add('country', CountryType::class)
             ->add('save', SubmitType::class)
             ->add('saveAndExit', SubmitType::class, ['label' => 'Save and Exit']);
     }

@@ -10,13 +10,12 @@
     <title>{% block title %}{% endblock %}</title>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="{{ asset('frontend/css/bootstrap.min.css') }}" >
+    <link rel="stylesheet" href="{{ asset('frontend/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/icofont.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/slidr.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/css/presets/preset1.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/responsive.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/libs/select2/select2.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('frontend/libs/select2/select2.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('frontend/css/main.css') }}">
 
     {% block stylesheets %}
@@ -62,10 +61,15 @@
 <script src="{{ asset('frontend/libs/select2/select2.min.js') }}"></script>
 
 <script>
-    $(document).ready(function() {
-        $('.select2').select2({
-            width: '100%',
-            placeholder: 'Choose option'
+    $(document).ready(function () {
+        $(".select2").each(function (i, v) {
+            var that = $(this);
+            var placeholder = $(that).attr("data-placeholder");
+            $(that).select2({
+                minimumResultsForSearch: -1,
+                width: '100%',
+                placeholder: placeholder
+            });
         });
     });
 

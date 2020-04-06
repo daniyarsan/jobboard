@@ -45,6 +45,11 @@
                             <i class="mdi mdi-square-edit-outline"></i>
                         </a>
                         <a data-toggle="modal" href="#delete-{{ profile.id }}" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                        {% if profile.resumeFile %}
+                            <a href="{{ assetFinder.resumesPath(profile.resumeFile) }}" class="action-icon">
+                                <i class="mdi mdi-file-document"></i>
+                            </a>
+                        {% endif %}
                     </td>
                 </tr>
                 {{ dialogs.confirm('delete-' ~ profile.id, 'Confirmation', 'The selected item will be removed permanently. Are you sure?', '', path('admin_profiles_set', {id: profile.id, action: 'remove'})) }}
