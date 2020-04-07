@@ -8,10 +8,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\DisciplineRepository")
  * @ORM\HasLifecycleCallbacks()
+
  */
-class Category
+class Discipline
 {
     /**
      * @ORM\Id()
@@ -21,12 +22,12 @@ class Category
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=190)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=190, unique=true)
+     * @ORM\Column(type="string", length=190)
      */
     private $slug;
 
@@ -41,24 +42,46 @@ class Category
     private $modified;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Job", mappedBy="categories")
-     */
-    private $jobs;
-
-    /**
      * @ORM\Column(type="array", nullable=true)
      */
     private $synonyms = [];
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Discipline", inversedBy="specialties")
+     * @ORM\OneToMany(targetEntity="App\Entity\Category", mappedBy="discipline")
      */
-    private $discipline;
+    private $specialties;
 
     public function __construct()
     {
-        $this->jobs = new ArrayCollection();
+        $this->specialties = new ArrayCollection();
     }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->created = new \DateTime('now');
+
+        /* Set Slug by default */
+        if (!$this->getSlug()) {
+            $this->setSlug(DataTransformer::makeSlug($this->getName()));
+        }
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate()
+    {
+        $this->modified = new \DateTime('now');
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
+
 
     public function getId(): ?int
     {
@@ -85,59 +108,6 @@ class Category
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
-
-        return $this;
-    }
-
-    /**
-     * @ORM\PrePersist
-     */
-    public function onPrePersist()
-    {
-        $this->created = new \DateTime('now');
-        /* Set Slug by default */
-        if (!$this->getSlug()) {
-            $this->setSlug(DataTransformer::makeSlug($this->getName()));
-        }
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function onPreUpdate()
-    {
-        $this->modified = new \DateTime('now');
-    }
-
-    public function __toString()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return Collection|Job[]
-     */
-    public function getJobs(): Collection
-    {
-        return $this->jobs;
-    }
-
-    public function addJob(Job $job): self
-    {
-        if (!$this->jobs->contains($job)) {
-            $this->jobs[] = $job;
-            $job->addCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeJob(Job $job): self
-    {
-        if ($this->jobs->contains($job)) {
-            $this->jobs->removeElement($job);
-            $job->removeCategory($this);
-        }
 
         return $this;
     }
@@ -170,16 +140,34 @@ class Category
         $this->created = $created;
     }
 
-    public function getDiscipline(): ?Discipline
+    /**
+     * @return Collection|Category[]
+     */
+    public function getSpecialties(): Collection
     {
-        return $this->discipline;
+        return $this->specialties;
     }
 
-    public function setDiscipline(?Discipline $discipline): self
+    public function addSpecialty(Category $specialty): self
     {
-        $this->discipline = $discipline;
+        if (!$this->specialties->contains($specialty)) {
+            $this->specialties[] = $specialty;
+            $specialty->setDiscipline($this);
+        }
 
         return $this;
     }
 
+    public function removeSpecialty(Category $specialty): self
+    {
+        if ($this->specialties->contains($specialty)) {
+            $this->specialties->removeElement($specialty);
+            // set the owning side to null (unless already changed)
+            if ($specialty->getDiscipline() === $this) {
+                $specialty->setDiscipline(null);
+            }
+        }
+
+        return $this;
+    }
 }

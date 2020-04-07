@@ -74,7 +74,8 @@ class MenuGenerator
                 ['title' => 'Xml', 'url' => 'admin_feeds_index'],
             ]],
             ['title' => 'Settings', 'url' => '', 'icon' => 'fe-settings', 'sub' => [
-                ['title' => 'Categories', 'url' => 'admin_category_index'],
+                ['title' => 'Disciplines', 'url' => 'admin_discipline_index'],
+                ['title' => 'Specialties', 'url' => 'admin_category_index'],
             ]]
         ];
 
