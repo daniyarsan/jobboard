@@ -75,7 +75,7 @@ class XmlParser
             $this->xmlReader->next($xmlRootElement);
 
             /* Clean Memory and iterate counter */
-            unset($element);
+            unset($xmlItem);
             $this->importCounter++;
         }
     }
@@ -106,5 +106,11 @@ class XmlParser
         $xml = simplexml_load_string($xmlString, 'SimpleXMLElement', LIBXML_NOCDATA);
 
         return $xml->getName();
+
+       /* preg_match('/<(.*?)>/i', $xml, $mathc);
+        if (isset($mathc[ 1 ]) && strlen($mathc[ 1 ]) > 0)
+            return $mathc[ 1 ];
+        return false;
+        */
     }
 }

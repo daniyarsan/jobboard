@@ -19,6 +19,10 @@ class DisciplineRepository extends ServiceEntityRepository
         parent::__construct($registry, Discipline::class);
     }
 
+    public function getAvailablePositions()
+    {
+
+    }
     // /**
     //  * @return Discipline[] Returns an array of Discipline objects
     //  */

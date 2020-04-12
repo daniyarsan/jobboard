@@ -2,35 +2,42 @@
 
 namespace App\Form;
 
-use App\Entity\Education;
 use App\Entity\Profile;
 use App\Form\Type\StateType;
-use Svg\Tag\Text;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\File;
 
 class CandidateType extends AbstractType
 {
+    private $em;
+
+    /**
+     * The Type requires the EntityManager as argument in the constructor. It is autowired
+     * in Symfony 3.
+     *
+     * @param ManagerRegistry $em
+     */
+    public function __construct(ManagerRegistry $em)
+    {
+        $this->em = $em;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->setRequired(true)
+        $builder
             ->add('firstName', TextType::class, [
                 'label' => 'First Name',
                 'attr' => [
@@ -65,13 +72,9 @@ class CandidateType extends AbstractType
                 },
                 'placeholder' => 'Choose State'
             ])
-            ->add('license', ChoiceType::class, [
+            ->add('license', EntityType::class, [
+                'class' => 'App\Entity\Discipline',
                 'label' => 'License',
-                'choices' => [
-                    'RN' => 'rn',
-                    'LPN' => 'lpn',
-                    'CNA' => 'cna',
-                ],
                 'placeholder' => 'Choose License'
             ])
             ->add('licenseState', StateType::class, [
@@ -95,16 +98,6 @@ class CandidateType extends AbstractType
                     'data-placeholder' => 'Destination States',
                     'placeholder' => 'Choose Destination States'
                 ]
-            ])
-            ->add('specialty', EntityType::class, [
-                'label' => 'Specialty',
-                'class' => 'App\Entity\Category',
-                'placeholder' => 'Choose Specialty'
-            ])
-            ->add('specialtySecond', EntityType::class, [
-                'label' => 'Secondary Specialty',
-                'class' => 'App\Entity\Category',
-                'placeholder' => 'Choose Specialty Secondary'
             ])
             ->add('experienceYears', ChoiceType::class, [
                 'label' => 'Primary Specialty Experience',
@@ -139,12 +132,14 @@ class CandidateType extends AbstractType
                 }
             ])
             ->add('hasExperience', CheckboxType::class, [
+                'required' => false,
                 'attr' => [
                     'data-onlabel' => 'Experienced',
                     'data-offlabel' => 'Not Experienced'
                 ]
             ])
             ->add('onAssignment', CheckboxType::class, [
+                'required' => false,
                 'attr' => [
                     'data-onlabel' => 'On Assignment',
                     'data-offlabel' => 'Not On Assignment'
@@ -163,6 +158,7 @@ class CandidateType extends AbstractType
             ])
             ->add('resume', FileType::class, [
                 'mapped' => false,
+                'required' => false,
                 'constraints' => [
                     new File([
                         'maxSize' => '1024k',
@@ -172,26 +168,51 @@ class CandidateType extends AbstractType
                     ])
                 ]
             ]);
-        $formModifier = function (FormInterface $form, Sport $sport = null) {
-            $positions = null === $sport ? [] : $sport->getAvailablePositions();
 
-            $form->add('position', EntityType::class, [
-                'class' => 'App\Entity\Position',
-                'placeholder' => '',
-                'choices' => $positions,
-            ]);
-        };
+        // 3. Add 2 event listeners for the form
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
+    }
 
+    function onPreSubmit(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $data = $event->getData();
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) use ($formModifier) {
-            // It's important here to fetch $event->getForm()->getData(), as
-            // $event->getData() will get you the client data (that is, the ID)
-            $sport = $event->getForm()->getData();
+        $categories = $this->em->getRepository('App:Category')->findBy(['discipline' => $data[ 'license' ]]);
 
-            // since we've added the listener to the child, we'll have to pass on
-            // the parent to the callback functions!
-            $formModifier($event->getForm()->getParent(), $sport);
-        });
+        $this->addElements($form, $categories);
+    }
+
+    function onPreSetData(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $data = $event->getData();
+
+        $this->addElements($form, []);
+    }
+
+    protected function addElements(FormInterface $form, $categories = [])
+    {
+
+        $form->add('specialty', EntityType::class, [
+            'label' => 'Specialty',
+            'class' => 'App\Entity\Category',
+            'choices' => $categories,
+            'placeholder' => 'Choose Specialty',
+            'attr' => [
+                'class' => 'dynamicCategory'
+            ]
+        ]);
+        $form->add('specialtySecond', EntityType::class, [
+            'label' => 'Secondary Specialty',
+            'class' => 'App\Entity\Category',
+            'choices' => $categories,
+            'placeholder' => 'Choose Specialty',
+            'attr' => [
+                'class' => 'dynamicCategory'
+            ]
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -61,4 +61,15 @@ class CategoryRepository extends ServiceEntityRepository
 
         return $result;
     }
+
+    public function getCategoriesByDisciplineId($disciplineId)
+    {
+        $result = $this->createQueryBuilder('c')
+            ->where('c.discipline = :discipline')
+            ->setParameter('discipline', $disciplineId)
+            ->getQuery()
+            ->getResult();
+
+        return $result;
+    }
 }

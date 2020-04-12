@@ -47,13 +47,18 @@ class Discipline
     private $synonyms = [];
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Category", mappedBy="discipline")
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\Category",
+     *     mappedBy="discipline",
+     *     fetch="EXTRA_LAZY",
+     *     orphanRemoval=true,
+     *     cascade={"persist"})
      */
-    private $specialties;
+    private $categories;
 
     public function __construct()
     {
-        $this->specialties = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     /**
@@ -143,28 +148,28 @@ class Discipline
     /**
      * @return Collection|Category[]
      */
-    public function getSpecialties(): Collection
+    public function getCategories(): Collection
     {
-        return $this->specialties;
+        return $this->categories;
     }
 
-    public function addSpecialty(Category $specialty): self
+    public function addCategory(Category $category): self
     {
-        if (!$this->specialties->contains($specialty)) {
-            $this->specialties[] = $specialty;
-            $specialty->setDiscipline($this);
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->setDiscipline($this);
         }
 
         return $this;
     }
 
-    public function removeSpecialty(Category $specialty): self
+    public function removeCategory(Category $category): self
     {
-        if ($this->specialties->contains($specialty)) {
-            $this->specialties->removeElement($specialty);
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
             // set the owning side to null (unless already changed)
-            if ($specialty->getDiscipline() === $this) {
-                $specialty->setDiscipline(null);
+            if ($category->getDiscipline() === $this) {
+                $category->setDiscipline(null);
             }
         }
 

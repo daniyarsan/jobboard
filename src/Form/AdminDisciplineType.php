@@ -32,9 +32,11 @@ class AdminDisciplineType extends AbstractType
                     'placeholder' => 'Input comma separated synonyms'
                 ]
             ])
-            ->add('specialties', EntityType::class, [
+            ->add('categories', EntityType::class, [
                 'class' => 'App\Entity\Category',
-                'multiple' => true
+                'multiple' => true,
+                'choice_label' => 'name',
+                'by_reference' => false,
             ])
 
             ->add('save', SubmitType::class)

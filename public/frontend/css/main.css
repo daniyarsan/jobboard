@@ -97,7 +97,10 @@ input:focus, textarea:focus, select:focus, .form-control:focus {
 .form-control:focus {
     border-color: #00a651;
 }
-
+.btn-info, .btn-primary {
+    background-color: #002056;
+    border-color: #002056;
+}
 .title {
     line-height: 34px;
     color: #ffffff;
@@ -156,7 +159,7 @@ textarea {
 /*}*/
 
 .btn.btn-primary:hover {
-    background-color: #0072bc;
+    background-color: #002056;
     color: #fff;
 }
 
@@ -338,7 +341,7 @@ textarea {
 #header a.btn,
 .download-button a.btn {
     padding: 5px 25px 7px;
-    background-color: #0072bc;
+    background-color: #002056;
     font-weight: 400;
     font-size: 14px;
     color: #fff;
@@ -443,8 +446,8 @@ textarea {
 }
 
 .banner-form button:hover {
-    background-color: #0072bc;
-    border-color: #0072bc;
+    background-color: #002056;
+    border-color: #002056;
 }
 
 .banner-socail li {
@@ -594,7 +597,7 @@ textarea {
 }
 
 .ad-meta .user-option a.edit-item:hover {
-    color: #0072bc;
+    color: #002056;
 }
 
 .ad-meta .user-option a.delete-item {
@@ -1301,7 +1304,7 @@ a.verified i {
 }
 
 .selected-product .edit {
-    color: #0072bc;
+    color: #002056;
     position: absolute;
     right: 0;
     top: 14px;
@@ -1612,7 +1615,7 @@ a.verified i {
     font-size: 18px;
     border-radius: 4px;
     margin-top: 25px;
-    background-color: #0072bc;
+    background-color: #002056;
 }
 
 .user-page .btn-primary:hover {
@@ -2489,7 +2492,7 @@ input:-moz-placeholder {
 }
 
 .share-social li a .fa-facebook-official {
-    color: #0072bc;
+    color: #002056;
 }
 
 .share-social li a .fa-twitter-square {
@@ -2999,7 +3002,7 @@ input:-moz-placeholder {
 
 .upload-image {
     float: right;
-    background-color: #0072bc;
+    background-color: #002056;
     color: #fff;
     width: 29%;
     text-align: center;
@@ -3031,8 +3034,8 @@ input:-moz-placeholder {
 }
 
 .post-resume form .buttons a.btn {
-    background-color: #0072bc;
-    border-color: #0072bc;
+    background-color: #002056;
+    border-color: #002056;
     margin-bottom: 0;
     padding: 10px 20px;
 }
@@ -3277,7 +3280,7 @@ input.parsley-error, input.parsley-error:focus,
 textarea.parsley-error,
 textarea.parsley-error:focus {
     box-shadow: none !important;
-    border-color: #dc3545;
+    border-color: #ff727f;
 }
 
 input.parsley-success, input.parsley-success:focus,
@@ -3294,7 +3297,7 @@ textarea.parsley-success:focus {
 }
 
 .parsley-checkbox.parsley-error {
-    border: 1px solid #dc3545;
+    border: 1px solid #ff727f;
 }
 
 .parsley-checkbox.parsley-success {
@@ -3306,7 +3309,7 @@ textarea.parsley-success:focus {
 }
 
 .custom-select.parsley-error {
-    border-color: #dc3545;
+    border-color: #ff727f;
 }
 
 .custom-select.parsley-success {
@@ -3314,7 +3317,7 @@ textarea.parsley-success:focus {
 }
 
 .parsley-errors-list {
-    color: #dc3545;
+    color: #ff727f;
     list-style: none;
     font-size: 12px;
     padding: 0;
@@ -3328,7 +3331,7 @@ textarea.parsley-success:focus {
 /***** CUSTOM STYLED ERROR MESSAGE *****/
 .parsley-style-1 .parsley-input.parsley-error .form-control {
     background-color: #fef9f9;
-    border-color: #dc3545;
+    border-color: #ff727f;
     border-bottom-width: 0;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
@@ -3340,7 +3343,7 @@ textarea.parsley-success:focus {
 
 .parsley-style-1 .parsley-checkbox.parsley-error {
     padding-bottom: 35px;
-    border: 1px solid #dc3545;
+    border: 1px solid #ff727f;
     background-color: #fef9f9;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
@@ -3358,7 +3361,7 @@ textarea.parsley-success:focus {
 }
 
 .parsley-style-1 .parsley-errors-list.filled {
-    background-color: #dc3545;
+    background-color: #ff727f;
     color: #fff;
     padding: 3px 10px;
     font-size: 11px;
@@ -3429,7 +3432,7 @@ textarea.parsley-success:focus {
 }
 
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
-    background-color: #6658dd
+    background-color: #002056
 }
 
 .select2-container--default .select2-results__option[aria-selected=true] {
@@ -3438,7 +3441,7 @@ textarea.parsley-success:focus {
 }
 
 .select2-container--default .select2-results__option[aria-selected=true]:hover {
-    background-color: #6658dd;
+    background-color: #002056;
     color: #fff
 }
 
@@ -3456,7 +3459,7 @@ textarea.parsley-success:focus {
 }
 
 .select2-container .select2-selection--multiple .select2-selection__choice {
-    background-color: #6658dd;
+    background-color: #002056;
     border: none;
     color: #fff;
     border-radius: 3px;

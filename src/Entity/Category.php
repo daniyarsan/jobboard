@@ -51,7 +51,7 @@ class Category
     private $synonyms = [];
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Discipline", inversedBy="specialties")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Discipline", inversedBy="specialties", cascade={"persist", "remove"})
      */
     private $discipline;
 

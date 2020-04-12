@@ -111,6 +111,7 @@ class DisciplinesController extends AbstractController
             try {
                 $em = $this->getDoctrine()->getManager();
                 $discipline->setSlug($dataTransformer->slugify($discipline->getName()));
+
                 $em->persist($discipline);
                 $em->flush();
                 $this->addFlash('success', $translator->trans('Discipline has been successfully updated.'));

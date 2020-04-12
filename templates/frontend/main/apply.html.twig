@@ -220,8 +220,43 @@
                 $('#apply-form').submit();
             }
         });
+    </script>
 
+    <script>
+        $('#candidate_license').on('select2:select', function (e) {
+            var specialtiesSelect = $(".dynamicCategory");
 
+            specialtiesSelect.prop('disabled', true);
+            var data = e.params.data;
+            $.ajax({
+                url: "{{ path('api_specialties') }}",
+                type: "GET",
+                dataType: "JSON",
+                data: {
+                    disciplineId: data.id
+                },
+
+                success: function (categories) {
+                    specialtiesSelect.prop('disabled', false);
+
+                    specialtiesSelect.each(function () {
+                        var currentSelect = $(this);
+                        currentSelect.children('option:not(:first)').remove();
+
+                        if (categories) {
+                            $.each(categories, function (key, category) {
+                                currentSelect.append('<option value="' + category.id + '">' + category.name + '</option>');
+                            });
+                        }
+
+                    });
+
+                },
+                error: function (err) {
+                    alert("An error ocurred while loading data ...");
+                }
+            });
+        });
     </script>
 {% endblock %}
 
