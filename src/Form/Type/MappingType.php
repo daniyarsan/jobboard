@@ -27,10 +27,8 @@ class MappingType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /* Make it not required */
         $builder->setRequired(false);
 
-        /* Get fields for values */
         $fields = $this->fieldRepository->findAllFieldIds();
 
         /* Get fields to display on page */

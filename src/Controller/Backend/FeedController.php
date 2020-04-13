@@ -5,9 +5,10 @@ namespace App\Controller\Backend;
 use App\Entity\Feed;
 use App\Form\AdminFilterType;
 use App\Form\FeedType;
-use App\FeedImporter\XmlParser;
+use App\Parsers\XmlParser;
 use App\Repository\JobRepository;
 use App\Service\View\DataTransformer;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -67,22 +68,25 @@ class FeedController extends AbstractController
      * @Route("/feeds/new", name="_new")
      * @Template("admin/feeds/new.html.twig")
      */
-    public function new(Request $request, TranslatorInterface $translator, DataTransformer $transformer)
+    public function new(Request $request,
+                        TranslatorInterface $translator,
+                        DataTransformer $transformer,
+                        EntityManagerInterface $em)
     {
-        $feed = new Feed();
 
+        $feed = new Feed();
         $form = $this->createForm(FeedType::class, $feed);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $feed = $form->getData();
-            try {
-                $em = $this->getDoctrine()->getManager();
 
+            try {
                 /* Feed xml with field values */
-                $xmlTextSample = $feed->getXmlText();
-                $defaultMapper = XmlParser::getXmlFields($xmlTextSample);
+                $xmlSampleText = $feed->getXmlText();
+                $defaultMapper = XmlParser::getXmlAsArray($xmlSampleText);
                 $feed->setMapperDefault($defaultMapper);
+
                 /* Feed xml with field values */
                 $feed->setSlug($transformer->slugify($feed->getName()));
                 $em->persist($feed);
@@ -139,7 +143,7 @@ class FeedController extends AbstractController
             try {
                 /* Feed xml with field values */
                 $xmlTextSample = $feed->getXmlText();
-                $defaultMapper = XmlParser::getXmlFields($xmlTextSample);
+                $defaultMapper = XmlParser::getXmlAsArray($xmlTextSample);
                 $feed->setMapperDefault($defaultMapper);
                 /* Feed xml with field values */
 
@@ -194,20 +198,16 @@ class FeedController extends AbstractController
      * @Route("/import/{id}", name="_import", requirements={"id": "\d+"})
      * @ParamConverter("feed", class="App\Entity\Feed")
      */
-    public function import(Feed $feed, JobRepository $jobRepository)
+    public function import(Feed $feed, JobRepository $jobRepository, XmlParser $xmlParser)
     {
         /* TODO: OPTIMIZATION Make an opportunity to load file and import from local file */
-//        file_exists($this->getParameter('import.xml.dir') . '/file.xml');
+        /*file_exists($this->getParameter('import.xml.dir') . '/file.xml');*/
 
-        $em = $this->getDoctrine()->getManager();
-
+        /* Remove previously imported jobs */
         $jobRepository->deleteByFeedId($feed->getSlug());
 
-        $xmlParser = new XmlParser($em, $feed);
-
-        $xmlParser->parse($feed->getUrl());
-
-        $this->addFlash('success', $xmlParser->getImportedNum() . ' Jobs have been imported from the feed');
+        $xmlParser->parse($feed);
+        $this->addFlash('success', $xmlParser->getCounter() . ' Jobs have been imported from the feed');
 
         return $this->redirectToRoute('admin_feeds_index');
     }

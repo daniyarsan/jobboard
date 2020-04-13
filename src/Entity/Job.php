@@ -299,13 +299,6 @@ class Job
         return $this;
     }
 
-    public function activateJob(): self
-    {
-        $this->setActive(true);
-
-        return $this;
-    }
-
     /**
      * @return Collection|Category[]
      */

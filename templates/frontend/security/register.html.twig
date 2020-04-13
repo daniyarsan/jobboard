@@ -27,7 +27,7 @@
                         <div role="tabpanel" class="tab-pane" id="post-job">
                             {{ form_start(formCompany) }}
                             <input type="hidden" name="group" value="company">
-                            {{ form_widget(formCompany.email````, {'attr' : {'placeholder' : 'Email'}}````) }}
+                            {{ form_widget(formCompany.email, {'attr' : {'placeholder' : 'Email'}}) }}
                             {{ form_errors(formCompany.email, {'attr' : {'placeholder' : 'Email'}}) }}
                             {{ form_widget(formCompany.plainPassword.first, {'attr' : {'placeholder' : 'Password'}}) }}
                             {{ form_errors(formCompany.plainPassword.first, {'attr' : {'placeholder' : 'Password'}}) }}
