@@ -46,6 +46,7 @@ class XmlParser
 
             /* Get xml item (job) to import */
             $xmlItem = self::getArrayFromXmlString($this->xmlReader->readOuterXML());
+
             /* Get fields to set values for job */
             $mapperFields = array_filter($feed->getMapper());
 
@@ -92,7 +93,14 @@ class XmlParser
     {
         $xml = simplexml_load_string($xmlString, 'SimpleXMLElement', LIBXML_NOCDATA);
 
-        return json_decode(json_encode($xml), TRUE);
+        $fieldSet = json_decode(json_encode($xml), TRUE);
+
+        foreach ($fieldSet as &$elem) {
+            if (is_array($elem) && empty($elem)) {
+                $elem = '';
+            }
+        }
+        return $fieldSet;
     }
 
     protected static function getXmlRootElement($xmlString)
