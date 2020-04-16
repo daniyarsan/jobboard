@@ -20,12 +20,12 @@ class AssetFinder
 
     public function getLogoPath(string $fileName): string
     {
-        return self::UPLOADS_DIR  . '/' . self::LOGOS_DIR . '/' . $fileName;
+        return self::UPLOADS_DIR  . self::LOGOS_DIR . '/' . $fileName;
     }
 
     public function getImagePath(string $fileName): string
     {
-        return self::UPLOADS_DIR  . '/' . self::AVATARS_DIR . '/' . $fileName;
+        return self::UPLOADS_DIR  . self::AVATARS_DIR . '/' . $fileName;
     }
 
     public function getResumesPath(string $fileName)

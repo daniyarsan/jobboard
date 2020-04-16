@@ -41,7 +41,7 @@ class XmlParser
             $job = new Job();
             $job->setCompany($feed->getCompany());
 
-            $job->activateJob($feed->getActivate()); // Job Auto activation by Feed setting
+            $job->setActive($feed->getActivate()); // Job Auto activation by Feed setting
             $job->setFeedId($feed->getSlug()); // For identification purposes
 
             /* Get xml item (job) to import */

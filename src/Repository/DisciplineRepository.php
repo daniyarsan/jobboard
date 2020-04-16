@@ -19,36 +19,16 @@ class DisciplineRepository extends ServiceEntityRepository
         parent::__construct($registry, Discipline::class);
     }
 
-    public function getAvailablePositions()
+    public function findDisciplineByKeyword($keyword)
     {
-
-    }
-    // /**
-    //  * @return Discipline[] Returns an array of Discipline objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
+        $result = $this->createQueryBuilder('d')
+            ->where('d.name = :keyword')
+            ->setParameter('keyword', $keyword)
+            ->orWhere('d.synonyms LIKE :disciplineLike')
+            ->setParameter('disciplineLike', '%' . $keyword . '%')
             ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+            ->getOneOrNullResult();
 
-    /*
-    public function findOneBySomeField($value): ?Discipline
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $result;
     }
-    */
 }

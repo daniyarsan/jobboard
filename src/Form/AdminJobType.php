@@ -42,6 +42,7 @@ class AdminJobType extends AbstractType
                 'placeholder' => 'Choose Country',
             ])
             ->add('state', TextType::class)
+            ->add('discipline')
             ->add('categories', EntityType::class, [
                 'class' => 'App\Entity\Category',
                 'placeholder' => 'Choose Category',

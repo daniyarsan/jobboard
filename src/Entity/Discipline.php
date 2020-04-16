@@ -56,6 +56,7 @@ class Discipline
      */
     private $categories;
 
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();

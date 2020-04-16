@@ -87,6 +87,12 @@ class Job
      */
     private $categories;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Discipline", inversedBy="jobs")
+     */
+    private $discipline;
+
+
     private $categoryString;
 
 
@@ -353,6 +359,18 @@ class Job
     public function setCategoryString($categoryString): void
     {
         $this->categoryString = $categoryString;
+    }
+
+    public function getDiscipline()
+    {
+        return $this->discipline;
+    }
+
+    public function setDiscipline($discipline): self
+    {
+        $this->discipline = $discipline;
+
+        return $this;
     }
 
 }
