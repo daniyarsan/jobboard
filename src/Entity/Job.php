@@ -313,7 +313,7 @@ class Job
         return $this->categories;
     }
 
-    public function setCategories(string $categories): self
+    public function setCategories($categories): self
     {
         $this->setCategoryString($categories);
 

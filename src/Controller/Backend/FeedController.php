@@ -100,6 +100,7 @@ class FeedController extends AbstractController
             if ($form->get('saveAndExit')->isClicked()) {
                 return $this->redirectToRoute('admin_feeds_index');
             }
+
             return $this->redirect($this->generateUrl('admin_feeds_edit', ['id' => $feed->getId()]));
         }
 
