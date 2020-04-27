@@ -1,0 +1,31 @@
+{% extends 'dashboard/base-company.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block profile_content %}
+
+    <div class="section trending-ads latest-jobs-ads">
+        <h4>My Jobs</h4>
+        {% for job in jobs %}
+            {% include 'dashboard/company/_job.html.twig' %}
+        {% endfor %}
+        {{ knp_pagination_render(jobs) }}
+    </div><!-- latest-jobs-ads -->
+
+
+    <!-- Modal -->
+    <div class="modal fade modal-delete" id="modal-delete-job" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h4><i data-feather="trash-2"></i>Delete Job</h4>
+                    <p>Are you sure! You want to delete this job listing...</p>
+                    <div class="buttons">
+                        <button class="delete-button">Save Update</button>
+                        <button class="">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

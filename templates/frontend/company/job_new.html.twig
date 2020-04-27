@@ -1,0 +1,65 @@
+{% extends 'base-index.html.twig' %}
+
+{% form_theme form _self %}
+
+{% block form_row %}
+    {% spaceless %}
+        <div class="row form-group add-title">
+            {%- set label_attr = label_attr|merge({class: (attr.class|default('') ~ ' col-sm-3 label-title')|trim}) -%}
+            {{- block('form_label') -}}
+            <div class="col-sm-9">
+                {{ form_widget(form) }}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+
+    <div class="job-postdetails">
+        <div class="row">
+            <div class="col-lg-8">
+                {{ form_start(form) }}
+                    <fieldset>
+                        <div class="section postdetails">
+                            <h4>Post Your Job<span class="pull-right">* Mandatory Fields</span></h4>
+
+                            {{ form(form) }}
+                        </div><!-- postdetails -->
+
+                        <div class="checkbox section agreement">
+                            <label for="send">
+                                <input type="checkbox" name="send" id="send">
+                                You agree to our <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a> and acknowledge that you are the rightful owner of this item and using Jobs to find a genuine buyer.
+                            </label>
+                            <button type="submit" class="btn btn-primary">Post Your Job</button>
+                        </div><!-- section -->
+
+                    </fieldset>
+                {{ form_end(form) }}
+            </div>
+
+            <!-- quick-rules -->
+            <div class="col-lg-4">
+                <div class="section quick-rules">
+                    <h4>Quick rules</h4>
+                    <p class="lead">Posting an ad on <a href="#">jobs.com</a> is free! However, all ads must follow our rules:</p>
+
+                    <ul>
+                        <li>Make sure you post in the correct category.</li>
+                        <li>Do not post the same ad more than once or repost an ad within 48 hours.</li>
+                        <li>Do not upload pictures with watermarks.</li>
+                        <li>Do not post ads containing multiple items unless it's a package deal.</li>
+                        <li>Do not put your email or phone numbers in the title or description.</li>
+                        <li>Make sure you post in the correct category.</li>
+                        <li>Do not post the same ad more than once or repost an ad within 48 hours.</li>
+                        <li>Do not upload pictures with watermarks.</li>
+                        <li>Do not post ads containing multiple items unless it's a package deal.</li>
+                    </ul>
+                </div>
+            </div><!-- quick-rules -->
+        </div><!-- photos-ad -->
+    </div>
+{% endblock %}

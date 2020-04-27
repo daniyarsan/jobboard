@@ -1,30 +1,29 @@
-<form action="{{ path(request.attributes.get('_route'), request.query.all) }}" class="clearfix">
-
+<form action="{{ path('frontend_jobs_index') }}" class=" clearfix">
     <!-- category-change -->
-    <div class="dropdown category-dropdown">
-        <a data-toggle="dropdown" href="#"><span class="change-text">{{ request.query.get('categories') ? request.query.get('categories') : "Job Category" }}</span> <i class="fa fa-angle-down"></i></a>
-        <ul id="categorySearch" class="dropdown-menu category-change">
-            {% for category in categories %}
-                <li><a href="{{ path(request.attributes.get('_route'), request.query.all | merge({'categories':  category.name})) }}">{{ category.name }}</a></li>
+    <div class="dropdown category-dropdown selectdiv">
+        <select name="discipline">
+            <option value="">{{ 'Discipline' | trans }}</option>
+            {% for discipline in disciplines %}
+                <option value="{{ discipline.name }}">{{ discipline.name }}</option>
             {% endfor %}
-        </ul>
+        </select>
     </div><!-- category-change -->
 
     <!-- language-dropdown -->
-    <div class="dropdown category-dropdown language-dropdown">
-        <a data-toggle="dropdown" href="#"><span class="change-text">{{ request.query.get('state') ? request.query.get('state') : "State" }}</span> <i class="fa fa-angle-down"></i></a>
-        <ul id="locationSearch" class="dropdown-menu category-change language-change">
+    <div class="dropdown category-dropdown selectdiv">
+        <select name="state">
+            <option value="">{{ 'State' | trans }}</option>
             {% for state in states %}
-                <li><a href="{{ path(request.attributes.get('_route'), request.query.all | merge({'state': state.name})) }}">{{ state.name }}</a></li>
+                <option value="{{ state.name }}">{{ state.name }}</option>
             {% endfor %}
-        </ul>
+        </select>
     </div><!-- language-dropdown -->
-
-    <input type="hidden" name="categories" value="{{ request.query.get('categories') ?? request.query.get('categories') }}" />
-    <input type="hidden" name="state" value="{{ request.query.get('state') ?? request.query.get('state') }}" />
-
     <input type="text" name="keyword" class="form-control" placeholder="Type your keyword" value="{{ request.query.get('keyword') ? request.query.get('keyword') : "" }}">
-    <button type="submit" class="btn btn-primary" value="Search">Search</button>
+    <button type="submit" class="btn btn-primary" value="Search">{{ 'Search' | trans }}</button>
+
+    {#    <input type="hidden" name="categories" value="{{ request.query.get('categories') ?? request.query.get('categories') }}" />#}
+    {#    <input type="hidden" name="state" value="{{ request.query.get('state') ?? request.query.get('state') }}" />#}
+
 </form>
 
 

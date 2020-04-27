@@ -373,4 +373,9 @@ class Job
         return $this;
     }
 
+    public function getLocationString()
+    {
+        return sprintf('%s, %s', $this->country, $this->state);
+    }
+
 }

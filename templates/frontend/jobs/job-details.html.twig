@@ -36,11 +36,11 @@
                             <span><span><a href="#" class="title">{{ job.title }}</a></span></span>
                             <div class="ad-meta">
                                 <ul>
-                                    <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ job.country }}</a></li>
+                                    <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ job.location }}</a></li>
 {#                                    <li><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i>Full Time</a></li>#}
                                     <li><i class="fa fa-building-o" aria-hidden="true"></i><a href="{{ path('frontend_companies_details', {id : job.company.id}) }}"> {{ job.company.name }}</a></li>
 {#                                    <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>HR/Org. Development</a></li>#}
-                                    <li><i class="fa fa-hourglass-start" aria-hidden="true"></i>  {{ job.created|date('D m Y') }}</li>
+                                    <li><i class="fa fa-clock-o" aria-hidden="true"></i>  {{ job.created|date('D m Y') }}</li>
                                 </ul>
                             </div><!-- ad-meta -->
                         </div><!-- ad-info -->

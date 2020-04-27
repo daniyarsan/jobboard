@@ -31,4 +31,58 @@ class DisciplineRepository extends ServiceEntityRepository
 
         return $result;
     }
+
+    public function findForHomepage()
+    {
+        $result = $this->createQueryBuilder('d')
+            ->getQuery()
+            ->getArrayResult();
+
+        return $result;
+    }
+
+    public function findAllNames()
+    {
+        $result = $this->createQueryBuilder('d')
+            ->select('d.name')
+            ->getQuery()
+            ->getScalarResult();
+
+        return array_map('current', $result);
+    }
+
+    public function findAllSlugs()
+    {
+        $result = $this->createQueryBuilder('d')
+            ->select('d.slug')
+            ->getQuery()
+            ->getScalarResult();
+
+        return array_map('current', $result);
+    }
+
+    public function findCategoryByKeyword($discipline)
+    {
+        $result = $this->createQueryBuilder('d')
+            ->where('c.name = :discipline')
+            ->setParameter('discipline', $discipline)
+            ->orWhere('d.synonyms LIKE :disciplineLike')
+            ->setParameter('disciplineLike', '%' . $discipline . '%')
+            ->getQuery()
+            ->getResult();
+
+        return $result;
+    }
+
+    public function getCategoriesByDisciplineId($disciplineId)
+    {
+        $result = $this->createQueryBuilder('d')
+            ->where('c.discipline = :discipline')
+            ->setParameter('discipline', $disciplineId)
+            ->getQuery()
+            ->getResult();
+
+        return $result;
+    }
+
 }

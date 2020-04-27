@@ -16,11 +16,11 @@ class SearchProvider extends AbstractController
     public function searchBar(JobRepository $jobRepository, $request)
     {
 
-        $categories = $jobRepository->getCategories($request);
+        $disciplines = $jobRepository->getDisciplines($request);
         $states = $jobRepository->getStates($request);
 
         return $this->render('frontend/_searchProvider/search.html.twig', [
-            'categories' => $categories,
+            'disciplines' => $disciplines,
             'states' => $states,
             'request' => $request
         ]);

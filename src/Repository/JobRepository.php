@@ -53,6 +53,13 @@ class JobRepository extends ServiceEntityRepository
                 ->setParameter('categories', $request->query->get('categories'));
         }
 
+        // Categories
+        if (!empty($request->query->get('discipline'))) {
+            $qb->leftJoin('job.discipline', 'discipline');
+            $qb->andWhere('discipline.name IN (:discipline)')
+                ->setParameter('discipline', $request->query->get('discipline'));
+        }
+
         // Country
         if (!empty($request->query->get('state'))) {
             $qb->andWhere('job.state = :state')
@@ -252,6 +259,7 @@ class JobRepository extends ServiceEntityRepository
 
         return $qb
             ->select('job.state as name')
+            ->orderBy('job.state')
             ->distinct()
             ->getQuery()
             ->getResult();
@@ -272,4 +280,74 @@ class JobRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function getDisciplines($request)
+    {
+        $qb = $this->createQueryBuilder('job');
+        /* Job should be active */
+        if (!strstr($request->getPathInfo(), 'admin')) {
+            $qb->andWhere('job.active = 1');
+        }
+
+        return $qb
+            ->select('discipline.name')
+            ->leftJoin('job.discipline', 'discipline')
+            ->distinct()
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getFilterItemsDiscipline($request)
+    {
+        $qb = $this->createQueryBuilder('job');
+
+        /* Job should be active */
+        if (!strstr($request->getPathInfo(), 'admin')) {
+            $qb->andWhere('job.active = 1');
+        }
+
+        // Keyword
+        if (!empty($request->query->get('keyword'))) {
+            $qb->andWhere('job.title LIKE :filterKeyword')/*OR job.description LIKE :filterKeyword*/
+            ->setParameter('filterKeyword', '%' . $request->query->get('keyword') . '%');
+        }
+
+        // Categories
+        if (!empty($request->query->get('discipline'))) {
+            $qb->andWhere('discipline.name = :discipline')
+                ->setParameter('discipline', $request->query->get('discipline'));
+        }
+
+        // Country
+        if (!empty($request->query->get('state'))) {
+            $qb->andWhere('job.state = :state')
+                ->setParameter('state', $request->query->get('state'));
+        }
+
+        return $qb
+            ->select('COUNT(job.id) as count, discipline.name as title')
+            ->leftJoin('job.discipline', 'discipline')
+            ->groupBy('discipline')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getTotal()
+    {
+        return $this->createQueryBuilder('j')
+            ->select('count(j)')
+            ->getQuery()->getSingleScalarResult();
+    }
+
+    public function findForHomepage()
+    {
+        return $this->createQueryBuilder('job')
+            ->select('COUNT(job.id) as count, discipline.name as name, discipline.slug as slug')
+            ->leftJoin('job.discipline', 'discipline')
+            ->where('discipline.name is not null')
+            ->groupBy('discipline')
+            ->getQuery()
+            ->getResult();
+    }
+
 }

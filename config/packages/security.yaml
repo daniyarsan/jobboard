@@ -41,3 +41,5 @@ security:
     - { path: ^/reset-password, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/admin/, role: ROLE_ADMIN }
     - { path: ^/my-account, role: IS_AUTHENTICATED_FULLY }
+    - { path: ^/my-company, role: ROLE_COMPANY }
+    - { path: ^/my-profile, role: ROLE_PROFILE }

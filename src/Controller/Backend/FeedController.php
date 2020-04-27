@@ -94,7 +94,7 @@ class FeedController extends AbstractController
 
                 $this->addFlash('success', $translator->trans('Feed has been successfully updated.'));
             } catch (\Exception $e) {
-                $this->addFlash('danger', $translator->trans('An error occurred when saving object.'));
+                $this->addFlash('danger', 'An error occurred : ' . $e->getMessage());
             }
 
             if ($form->get('saveAndExit')->isClicked()) {
@@ -154,7 +154,7 @@ class FeedController extends AbstractController
                 $em->flush();
                 $this->addFlash('success', $translator->trans('Feed has been successfully updated.'));
             } catch (\Exception $e) {
-                $this->addFlash('danger', $translator->trans('An error occurred when saving object.'));
+                $this->addFlash('danger', 'An error occurred : ' . $e->getMessage());
             }
 
             if ($form->get('saveAndExit')->isClicked()) {
@@ -208,6 +208,7 @@ class FeedController extends AbstractController
         $jobRepository->deleteByFeedId($feed->getSlug());
 
         $xmlParser->parse($feed);
+
         $this->addFlash('success', $xmlParser->getCounter() . ' Jobs have been imported from the feed');
 
         return $this->redirectToRoute('admin_feeds_index');

@@ -15,8 +15,8 @@
                 <ul class="sign-in">
                     <li><i class="fa fa-user"></i></li>
                     {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
-                        <li><a href="{{ path('security_login') }}">Sign In</a></li>
-                        <li><a href="{{ path('security_registration') }}">Register</a></li>
+                        <li><a href="{{ path('security_login') }}">{{ 'Sign In' | trans }}</a></li>
+                        <li><a href="{{ path('security_registration') }}">{{ 'Employers' | trans }}</a></li>
                     {% else %}
                         {% if is_granted('ROLE_COMPANY') %}
                             <li><a href="{{ path('my_company_settings') }}">My Account</a></li>
@@ -25,11 +25,8 @@
                         {% endif %}
                     {% endif %}
                 </ul><!-- sign-in -->
-                {% if is_granted('IS_AUTHENTICATED_FULLY') and app.user.hasRole('ROLE_PROFILE') %}
-                    <a href="#" class="btn">Apply Now</a>
-                {% else %}
-                    <a href="{{ path('my_company_job_new') }}" class="btn">Post Job</a>
-                {% endif %}
+
+                <a href="{{ path('frontend_main_apply') }}" class="btn">{{ 'Apply' | trans }}</a>
             </div>
             <!-- nav-right -->
         </div><!-- container -->

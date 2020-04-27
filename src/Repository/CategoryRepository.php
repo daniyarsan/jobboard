@@ -39,12 +39,11 @@ class CategoryRepository extends ServiceEntityRepository
         return array_map('current', $result);
     }
 
-    public function findForHomepage($limit)
+    public function findForHomepage()
     {
         $result = $this->createQueryBuilder('c')
-            ->setMaxResults($limit)
             ->getQuery()
-            ->getResult();
+            ->getArrayResult();
 
         return $result;
     }
@@ -62,11 +61,11 @@ class CategoryRepository extends ServiceEntityRepository
         return $result;
     }
 
-    public function getCategoriesByDisciplineId($disciplineId)
+    public function getCategoriesByDisciplineId($categoryId)
     {
         $result = $this->createQueryBuilder('c')
-            ->where('c.discipline = :discipline')
-            ->setParameter('discipline', $disciplineId)
+            ->where('c.category = :category')
+            ->setParameter('category', $categoryId)
             ->getQuery()
             ->getResult();
 

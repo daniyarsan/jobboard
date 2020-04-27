@@ -6,6 +6,8 @@ use App\Entity\Profile;
 use App\Entity\User;
 use App\Form\CandidateType;
 use App\Repository\CategoryRepository;
+use App\Repository\DisciplineRepository;
+use App\Repository\JobRepository;
 use App\Service\FileManager;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -25,12 +27,20 @@ class FrontendController extends AbstractController
      * @Route("/", name="_index")
      * @Template("frontend/main/index.html.twig")
      */
-    public function index(CategoryRepository $categoryRepository)
+    public function index(
+        DisciplineRepository $disciplineRepository,
+        JobRepository $jobRepository)
     {
-        $categories = $categoryRepository->findForHomepage(12);
+        $recentJobs = $jobRepository->findBy([],['id'=>'DESC'],10,0);
+        $totalJobsCount = $jobRepository->getTotal();
+
+        $disciplines = $jobRepository->findForHomepage();
+//        shuffle($disciplines);
 
         return [
-            'categories' => $categories
+            'disciplines' => array_slice($disciplines, 0, 12),
+            'recentJobs' => $recentJobs,
+            'totalJobsCount' => $totalJobsCount
         ];
     }
 
@@ -57,7 +67,7 @@ class FrontendController extends AbstractController
             $user->setProfile($candidate);
             $candidate->setUser($user);
 
-            if ($resume = $form['resume']->getData()) {
+            if ($resume = $form[ 'resume' ]->getData()) {
                 $candidate->setResumeFile($fileManager->uploadResume($resume));
             }
 

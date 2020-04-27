@@ -388,7 +388,7 @@ textarea {
     min-width: 200px;
     line-height: 45px;
     text-align: left;
-    padding: 0 20px;
+    /*padding: 0 20px;*/
 }
 
 .category-dropdown a i {
@@ -441,7 +441,7 @@ textarea {
     -ms-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
-    height: 100%;
+    /*height: 100%;*/
     padding: 10px 20px;
 }
 
@@ -1172,7 +1172,7 @@ a.verified i {
 }
 
 .banner-form-full.banner-form input {
-    min-width: 448px;
+    /*min-width: 448px;*/
 }
 
 .banner-form-full.banner-form input::-webkit-input-placeholder {
@@ -2140,7 +2140,7 @@ input:-moz-placeholder {
 ========================================================================== */
 
 .banner-job {
-    background-image: url("../images/bg/job-bg.jpg");
+    background-image: url("../images/bg/bg.png");
     background-repeat: no-repeat;
     background-size: cover;
     color: #fff;
@@ -2178,8 +2178,8 @@ input:-moz-placeholder {
     border-left: 1px solid #e6e6e6;
     border-right: 0;
     border-radius: 0;
-    width: 20%;
-    padding: 0 35px;
+    /*width: 20%;*/
+    /*padding: 0 35px;*/
 }
 
 .banner-job .dropdown-menu {
@@ -2194,6 +2194,7 @@ input:-moz-placeholder {
 .job-category-items {
     margin-top: 55px;
     padding: 50px 25px 20px;
+    width: 100%;
 }
 
 .job-category-items .category-list .category-icon {
@@ -2201,7 +2202,7 @@ input:-moz-placeholder {
 }
 
 .job-category-items .category-list li {
-    width: 16.6%;
+    width: 20%;
     float: left;
     min-height: 90px;
     margin-bottom: 25px;
@@ -2217,6 +2218,8 @@ input:-moz-placeholder {
 
 .job-ad-item img {
     width: inherit;
+    position: relative;
+    top: 20%;
 }
 
 .job-ad-item {
@@ -2265,9 +2268,8 @@ input:-moz-placeholder {
 }
 
 .job-ad-item .ad-info a.title {
-    font-weight: 300;
     color: #000;
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .job-ad-item .ad-meta li:last-child {
@@ -3243,7 +3245,7 @@ input, select, a, .transition,
 }
 
 .dropdown-menu {
-    min-width: 160px;
+    min-width: 260px;
 }
 
 .user-account-content {
@@ -3496,4 +3498,78 @@ input.select2-search__field {
 
 .switch.btn {
     width: 75% !important;
+}
+
+.quicksearch select {
+    margin: 0 25px 0 0;
+    /* width: 150px; */
+    padding: 0 10px;
+    font-size: 16px;
+    border: none;
+    /* height: 46px; */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+     background: url(http://www.stackoverflow.com/favicon.ico) 96% / 15% no-repeat #fff;
+}
+
+/* CAUTION: Internet Explorer hackery ahead */
+
+
+.quicksearch select::-ms-expand {
+    display: none; /* Remove default arrow in Internet Explorer 10 and 11 */
+}
+
+/* Target Internet Explorer 9 to undo the custom arrow */
+@media screen and (min-width:0\0) {
+    .quicksearch  select {
+        background: none\9;
+        padding: 5px\9;
+    }
+}
+
+
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+    display: none;
+}
+
+.selectdiv:after {
+    content: '<>';
+    font: 17px "Consolas", monospace;
+    color: #333;
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+    right: 11px;
+    /*Adjust for position however you want*/
+    top: 11px;
+    padding: 0 0 2px;
+    border-bottom: 1px solid #999;
+    /*left line */
+    position: absolute;
+    pointer-events: none;
+}
+
+.selectdiv select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* Add some styling */
+    display: block;
+    width: 100%;
+    max-width: 320px;
+    float: right;
+    margin: 7px 0px;
+    padding: 0px 24px;
+    font-size: 16px;
+    line-height: 1.75;
+    color: #333;
+    background-color: #ffffff;
+    background-image: none;
+    border: none;
+    -ms-word-break: normal;
+    word-break: normal;
 }

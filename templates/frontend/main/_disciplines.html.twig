@@ -1,0 +1,11 @@
+<ul class="category-list">
+    {% for discipline in disciplines %}
+        <li class="category-item">
+            <a href="{{ path('frontend_jobs_index', {'category' : discipline.name}) }}">
+                <div class="category-icon"><img src="{{ asset('frontend/images/icon/'~ discipline.slug ~'.svg') }}" alt="images" class="img-fluid"></div>
+                <span class="category-title">{{ discipline.name }}</span>
+                <span class="category-quantity">{{ discipline.count }}</span>
+            </a>
+        </li>
+    {% endfor %}
+</ul>

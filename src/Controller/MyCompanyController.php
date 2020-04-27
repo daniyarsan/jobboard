@@ -25,7 +25,7 @@ class MyCompanyController extends AbstractController
      */
     public function index()
     {
-        return $this->render('dashboard/company/index.html.twig', []);
+        return $this->render('frontend/company/index.html.twig', []);
     }
 
     /**
@@ -58,7 +58,7 @@ class MyCompanyController extends AbstractController
         }
 
         return $this->render(
-            'dashboard/company/settings.html.twig',
+            'frontend/company/settings.html.twig',
             [
                 'form' => $form->createView(),
                 'userForm' => $userForm->createView()
@@ -79,7 +79,7 @@ class MyCompanyController extends AbstractController
         $jobs = $paginator->paginate($jobs, $request->query->getInt('page', 1), 10);
 
         return $this->render(
-            'dashboard/company/my-jobs.html.twig',
+            'frontend/company/jobs.html.twig',
             [
                 'jobs' => $jobs
             ]
@@ -91,9 +91,6 @@ class MyCompanyController extends AbstractController
      */
     public function createJob(Request $request, TranslatorInterface $translator)
     {
-        if (!in_array('ROLE_COMPANY', $this->getUser()->getRoles())) {
-            throw $this->createAccessDeniedException('You are not allowed to access this page.');
-        }
         $job = new Job();
 
         $form = $this->createForm(JobType::class, $job);
@@ -117,7 +114,7 @@ class MyCompanyController extends AbstractController
         }
 
         return $this->render(
-            'dashboard/company/new-job.html.twig',
+            'frontend/company/job_new.html.twig',
             [
                 'form' => $form->createView()
             ]
@@ -176,7 +173,7 @@ class MyCompanyController extends AbstractController
         }
 
         return $this->render(
-            'dashboard/company/edit-job.html.twig',
+            'frontend/company/job_edit.html.twig',
             [
                 'form' => $form->createView()
             ]
@@ -378,7 +375,7 @@ class MyCompanyController extends AbstractController
 
         $applicants = $paginator->paginate($applicants, $request->query->getInt('page', 1), 10);
 
-        return $this->render('dashboard/company/candidates.html.twig', [
+        return $this->render('frontend/company/candidates.html.twig', [
             'applicants' => $applicants
         ]);
     }
