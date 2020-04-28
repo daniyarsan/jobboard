@@ -34,16 +34,18 @@ class JobRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('job');
 
         $request = $this->requestStack->getCurrentRequest();
-
-        /* Job should be active */
-        if (!strstr($request->getPathInfo(), 'admin')) {
-            $qb->andWhere('job.active = 1');
-        }
+        $qb->andWhere('job.active = 1');
 
         // Keyword
         if (!empty($request->query->get('keyword'))) {
             $qb->andWhere('job.title LIKE :filterKeyword')/*OR job.description LIKE :filterKeyword*/
             ->setParameter('filterKeyword', '%' . $request->query->get('keyword') . '%');
+        }
+
+        // By Company
+        if (!empty($request->query->get('company'))) {
+            $qb->andWhere('job.company = :companyId')/*OR job.description LIKE :filterKeyword*/
+            ->setParameter('companyId',   $request->query->get('company'));
         }
 
         // Categories
@@ -66,6 +68,55 @@ class JobRepository extends ServiceEntityRepository
                 ->setParameter('state', $request->query->get('state'));
         }
 
+        return $qb->addOrderBy('job.featured', 'DESC')
+            ->addOrderBy('job.created', 'DESC')
+            ->getQuery()
+            ->execute();
+    }
+
+    public function findByFilterQueryAdmin()
+    {
+        $qb = $this->createQueryBuilder('job');
+
+        $request = $this->requestStack->getCurrentRequest();
+
+        /* Check status */
+        $status = $request->query->get('status');
+        if (isset($status)) {
+            $qb->andWhere('job.active = :status')->setParameter('status', $status);
+        }
+
+        // Keyword
+        if (!empty($request->query->get('keyword'))) {
+            $qb->andWhere('job.title LIKE :filterKeyword')/*OR job.description LIKE :filterKeyword*/
+            ->setParameter('filterKeyword', '%' . $request->query->get('keyword') . '%');
+        }
+
+        // By Company
+        if (!empty($request->query->get('company'))) {
+            $qb->andWhere('job.company = :companyId')/*OR job.description LIKE :filterKeyword*/
+            ->setParameter('companyId',   $request->query->get('company'));
+        }
+
+        // Categories
+        if (!empty($request->query->get('categories'))) {
+            $qb->leftJoin('job.categories', 'categories');
+            $qb->andWhere('categories.name IN (:categories)')
+                ->setParameter('categories', $request->query->get('categories'));
+        }
+
+        // Categories
+        if (!empty($request->query->get('discipline'))) {
+            $qb->leftJoin('job.discipline', 'discipline');
+            $qb->andWhere('discipline.name IN (:discipline)')
+                ->setParameter('discipline', $request->query->get('discipline'));
+        }
+
+        // Country
+        if (!empty($request->query->get('state'))) {
+            $qb->andWhere('job.state = :state')
+                ->setParameter('state', $request->query->get('state'));
+        }
 
         return $qb->addOrderBy('job.featured', 'DESC')
             ->addOrderBy('job.created', 'DESC')

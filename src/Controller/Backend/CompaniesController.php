@@ -23,7 +23,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  *
  * @Route("/admin", name="admin_companies")
  */
-
 class CompaniesController extends AbstractController
 {
     /**
@@ -67,6 +66,52 @@ class CompaniesController extends AbstractController
     }
 
     /**
+     * Create a new Company entity.
+     *
+     * @Route("/company/create", name="_create")
+     * @Template("admin/companies/create.html.twig")
+     */
+
+    public function create(Request $request,
+                           TranslatorInterface $translator,
+                           UserPasswordEncoderInterface $passwordEncoder,
+                           FileManager $fileManager)
+    {
+        $company = new Company();
+        $form = $this->createForm(AdminCompanyType::class, $company);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $company = $form->getData();
+            $newUser = new User();
+            $company->initUser($newUser, $passwordEncoder);
+
+            /* Logo Upload */
+            if ($logoFile = $form[ 'logo' ]->getData()) {
+                $company->setLogoName($fileManager->uploadLogo($logoFile));
+            }
+
+            try {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($company);
+                $em->flush();
+                $this->addFlash('success', $translator->trans('Company has been successfully updated.'));
+            } catch (\Exception $e) {
+                $this->addFlash('danger', $translator->trans('An error occurred when saving object.' . $e->getMessage()));
+            }
+
+            if ($form->get('saveAndExit')->isClicked()) {
+                return $this->redirectToRoute('admin_companies_index');
+            }
+            return $this->redirect($this->generateUrl('admin_companies_edit', ['id' => $company->getId()]));
+        }
+        return [
+            'form' => $form->createView(),
+            'company' => $company
+        ];
+    }
+
+    /**
      * @Route("/company/{id}", name="_edit", requirements={"id": "\d+"})
      * @ParamConverter("company", class="App\Entity\Company")
      * @Template("admin/companies/edit.html.twig")
@@ -81,7 +126,7 @@ class CompaniesController extends AbstractController
                 $company = $form->getData();
 
                 /* Logo Upload */
-                if ($logoFile = $form['logo']->getData()) {
+                if ($logoFile = $form[ 'logo' ]->getData()) {
                     $company->setLogoName($fileManager->uploadLogo($logoFile));
                 }
 
@@ -90,7 +135,7 @@ class CompaniesController extends AbstractController
                 $em->flush();
 
                 $this->addFlash('success', $translator->trans('Company has been successfully updated.'));
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 $this->addFlash('danger', $translator->trans('An error occurred when saving object.'));
             }
 
@@ -101,44 +146,6 @@ class CompaniesController extends AbstractController
         }
 
         return ['form' => $form->createView()];
-    }
-
-    /**
-     * Create a new Company entity.
-     *
-     * @Route("/company/create", name="_create")
-     * @Template("admin/companies/create.html.twig")
-     */
-
-    public function create(Request $request, TranslatorInterface $translator, UserPasswordEncoderInterface $passwordEncoder)
-    {
-        $company = new Company();
-        $form = $this->createForm(AdminCompanyType::class, $company);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $company = $form->getData();
-            $newUser = new User();
-            $company->initUser($newUser, $passwordEncoder);
-
-            try {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($company);
-                $em->flush();
-                $this->addFlash('success', $translator->trans('Company has been successfully updated.'));
-            } catch(\Exception $e) {
-                $this->addFlash('danger', $translator->trans('An error occurred when saving object.' . $e->getMessage()));
-            }
-
-            if ($form->get('saveAndExit')->isClicked()) {
-                return $this->redirectToRoute('admin_companies_index');
-            }
-            return $this->redirect($this->generateUrl('admin_companies_edit', ['id' => $company->getId()]));
-        }
-        return [
-            'form' => $form->createView(),
-            'company' => $company
-        ];
     }
 
 

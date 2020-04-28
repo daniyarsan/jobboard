@@ -49,12 +49,12 @@ class JobsController extends AbstractController
             'defaultSortDirection' => 'desc'
         ];
 
-        $entities = $this->getDoctrine()->getRepository('App:Job')->findByFilterQuery($request);
+        $entities = $this->getDoctrine()->getRepository('App:Job')->findByFilterQueryAdmin($request);
         $entities = $pagination->paginate($entities, $page, $itemsPerPage, $paginatorOptions);
 
         return [
             'entities' => $entities,
-            'filter_form' => $filterForm->createView(),
+            'form' => $filterForm->createView(),
             'bulk_action_form' => $this->createBulkActionForm()->createView()
         ];
     }

@@ -16,32 +16,104 @@
                     {{ breadcrumbs.display('admin/_parts/breadcrumbs.html.twig', {
                         'admin_index' : 'Dashboard' | trans,
                         '' : 'Jobs' | trans
-                    } )}}
+                    } ) }}
                     <!-- breadcrumb -->
                 </div>
 
-                <h4 class="page-title">{{ 'Jobs'|trans }} - {{ entities.getTotalItemCount }} found</h4>
+                <h4 class="page-title">{{ 'Jobs'|trans }}</h4>
             </div>
         </div>
     </div>
     <!-- end page title -->
 
     <div class="row">
+        <div class="col-md-4">
+            <div class="card-box bg-pattern">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="avatar-md bg-blue rounded">
+                            <i class="fe-layers avatar-title font-22 text-white"></i>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-right">
+                            <h3 class="text-dark my-1"><span data-plugin="counterup">{{ entities.getTotalItemCount }}</span></h3>
+                            <p class="text-muted mb-0 text-truncate">{{ 'Total Jobs' | trans }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- end card-box-->
+        </div> <!-- end col -->
+
+        <div class="col-md-4">
+            <div class="card-box bg-pattern">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="avatar-md bg-success rounded">
+                            <i class="fe-award avatar-title font-22 text-white"></i>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-right">
+                            <h3 class="text-dark my-1"><span data-plugin="counterup">741</span></h3>
+                            <p class="text-muted mb-0 text-truncate">{{ 'Active Jobs' | trans }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- end card-box-->
+        </div> <!-- end col -->
+        <div class="col-md-4">
+            <div class="card-box bg-pattern">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="avatar-md bg-danger rounded">
+                            <i class="fe-delete avatar-title font-22 text-white"></i>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-right">
+                            <h3 class="text-dark my-1"><span data-plugin="counterup">256</span></h3>
+                            <p class="text-muted mb-0 text-truncate">{{ 'Imported jobs' | trans }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- end card-box-->
+        </div> <!-- end col -->
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card-box">
+                <div class="row">
+                    <div class="col-lg-9">
+                        {{ form_start(form, {'attr' : {'class' : 'form-inline'}}) }}
+                            {{ form_widget(form.keyword) }}
+                            {{ form_widget(form.company) }}
+                            {{ form_widget(form.status) }}
+
+                            <button type="submit" class="btn btn-primary">{{ 'Filter' | trans }}</button>
+                        {{ form_end(form) }}
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="text-lg-right mt-3 mt-lg-0">
+                            <a href="{{ path('admin_jobs_create') }}" class="btn btn-success waves-effect waves-light"><i class="mdi mdi-plus-circle mr-1"></i> {{ 'Add Category'|trans }}</a>
+                        </div>
+                    </div><!-- end col-->
+                </div> <!-- end row -->
+            </div> <!-- end card-box -->
+        </div><!-- end col-->
+    </div>
+
+
+    <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
                     <div class="row mb-2">
-                        <div class="col-md-3">
-                            <form class="form-inline">
-                                <div class="form-group mb-2">
-                                    {{ form_start(filter_form) }}
-                                    {{ form_widget(filter_form.keyword, {attr : {placeholder : 'Search...'|trans}}) }}
-                                    {{ form_end(filter_form) }}
-                                </div>
-                            </form>
-                        </div>
+                        <div class="col-md-6">
+                            {{ parts.itemsPerPage([200, 500, 1000]) }}
 
-                        <div class="col-md-3">
                             <div class="btn-group">
                                 <button id="bulk-action-button" type="button" class="btn btn-warning waves-effect waves-light mb-2 mr-1 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: none;">
                                     <i class="mdi mdi-settings"></i>
@@ -54,19 +126,14 @@
                                 </div>
                             </div><!-- /btn-group -->
                         </div>
-
-                        <div class="col-md-4">
-                            <div class="text-md-right">
-                                <a href="{{ path('admin_jobs_create') }}" class="btn btn-success waves-effect waves-light mb-2 mr-2"><i class="mdi mdi-plus-circle mr-1"></i> {{ 'Add Category'|trans }}</a>
-                            </div>
-                        </div><!-- end col-->
-                        <div class="col-md-2">
-                            {{ parts.itemsPerPage([200, 500, 1000]) }}
+                        <div class="col-md-6">
+                            {{ knp_pagination_render(entities, 'admin/_parts/paginator.html.twig') }}
                         </div>
                     </div>
 
-                    {# Main items table #}
                     {% include 'admin/jobs/_table.html.twig' with entities %}
+
+                    {{ knp_pagination_render(entities, 'admin/_parts/paginator.html.twig') }}
 
                 </div> <!-- end card-body-->
             </div> <!-- end card-->
