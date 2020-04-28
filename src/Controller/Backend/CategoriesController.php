@@ -4,7 +4,7 @@ namespace App\Controller\Backend;
 
 use App\Entity\Category;
 use App\Form\AdminCategoryType;
-use App\Form\AdminFilterType;
+use App\Form\AdminJobFilterType;
 use App\Service\View\DataTransformer;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -30,7 +30,7 @@ class CategoriesController extends AbstractController
      */
     public function index(Request $request, Session $session, PaginatorInterface $paginator)
     {
-        $filterForm = $this->createForm(AdminFilterType::class);
+        $filterForm = $this->createForm(AdminJobFilterType::class);
         $filterForm->handleRequest($request);
 
         $em = $this->getDoctrine()->getManager();

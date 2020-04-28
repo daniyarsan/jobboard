@@ -239,6 +239,10 @@ class Company
 
     public function setIsVerified(?bool $isVerified): self
     {
+        if (!isset($isVerified)) {
+            $isVerified = 0;
+        }
+
         $this->isVerified = $isVerified;
 
         return $this;

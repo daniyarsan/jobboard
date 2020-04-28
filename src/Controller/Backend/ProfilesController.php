@@ -3,18 +3,17 @@
 namespace App\Controller\Backend;
 
 use App\Entity\Profile;
-use App\Form\AdminFilterType;
+use App\Form\AdminProfileFilterType;
 use App\Form\ProfileType;
 use App\Service\FileManager;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/admin", name="admin_profiles")
@@ -26,12 +25,11 @@ class ProfilesController extends AbstractController
      * Lists all Proifles
      *
      * @Route("/profiles", name="_index")
-     * @Method("GET")
      * @Template("admin/profiles/index.html.twig")
      */
     public function index(Request $request, Session $session, PaginatorInterface $pagination)
     {
-        $filterForm = $this->createForm(AdminFilterType::class);
+        $filterForm = $this->createForm(AdminProfileFilterType::class);
         $filterForm->handleRequest($request);
 
         $itemsPerPage = $request->query->get('itemsPerPage', 20);
@@ -56,7 +54,7 @@ class ProfilesController extends AbstractController
 
         return [
             'entities' => $entities,
-            'filter_form' => $filterForm->createView(),
+            'form' => $filterForm->createView(),
             'bulk_action_form' => $this->createBulkActionForm()->createView()
         ];
     }

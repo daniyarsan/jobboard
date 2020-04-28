@@ -4,7 +4,7 @@ namespace App\Controller\Backend;
 
 use App\Entity\Blog;
 use App\Form\AdminBlogType;
-use App\Form\AdminFilterType;
+use App\Form\AdminJobFilterType;
 use App\Service\View\DataTransformer;
 use App\Service\FileManager;
 use Knp\Component\Pager\PaginatorInterface;
@@ -31,7 +31,7 @@ class BlogController extends AbstractController
      */
     public function index(Request $request, Session $session, PaginatorInterface $pagination)
     {
-        $filterForm = $this->createForm(AdminFilterType::class);
+        $filterForm = $this->createForm(AdminJobFilterType::class);
         $filterForm->handleRequest($request);
 
         $itemsPerPage = $request->query->get('itemsPerPage', 20);

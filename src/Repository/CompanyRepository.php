@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Company;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * @method Company|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,9 +15,51 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CompanyRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    protected $requestStack;
+
+    public function __construct(RequestStack $requestStack, ManagerRegistry $registry)
     {
         parent::__construct($registry, Company::class);
+        $this->requestStack = $requestStack;
+    }
+
+    public function findByFilterQuery()
+    {
+        $qb = $this->createQueryBuilder('company');
+        $request = $this->requestStack->getCurrentRequest();
+
+        $qb->andWhere('company.isVerified = 1');
+
+        // Keyword
+        if (!empty($request->query->get('keyword'))) {
+            $qb->andWhere('company.name LIKE :filterKeyword OR company.description LIKE :filterKeyword OR company.email LIKE :filterKeyword')
+                ->setParameter('filterKeyword', '%'.$request->query->get('keyword').'%');
+        }
+
+        return $qb->addOrderBy('company.created', 'DESC')
+            ->getQuery()
+            ->execute();
+    }
+
+    public function findByFilterQueryAdmin()
+    {
+        $qb = $this->createQueryBuilder('company');
+        $request = $this->requestStack->getCurrentRequest();
+
+        /* Check status */
+        $status = $request->query->get('status');
+        if (isset($status)) {
+            $qb->andWhere('company.isVerified = :status')->setParameter('status', $status);
+        }
+        // Keyword
+        if (!empty($request->query->get('keyword'))) {
+            $qb->andWhere('company.name LIKE :filterKeyword OR company.description LIKE :filterKeyword OR company.email LIKE :filterKeyword')
+                ->setParameter('filterKeyword', '%'.$request->query->get('keyword').'%');
+        }
+
+        return $qb->addOrderBy('company.created', 'DESC')
+            ->getQuery()
+            ->execute();
     }
 
     public function findUserCompanies($user)
@@ -62,24 +105,5 @@ class CompanyRepository extends ServiceEntityRepository
         }
 
         return false;
-    }
-
-    public function findByFilterQuery($request)
-    {
-        $qb = $this->createQueryBuilder('company');
-
-        if (!strstr($request->getPathInfo(), 'admin')) {
-            $qb->andWhere('company.isVerified = 1');
-        }
-
-        // Keyword
-        if (!empty($request->query->get('keyword'))) {
-            $qb->andWhere('company.name LIKE :filterKeyword OR company.description LIKE :filterKeyword OR company.email LIKE :filterKeyword')
-                ->setParameter('filterKeyword', '%'.$request->query->get('keyword').'%');
-        }
-
-        return $qb->addOrderBy('company.created', 'DESC')
-            ->getQuery()
-            ->execute();
     }
 }

@@ -4,9 +4,8 @@ namespace App\Controller\Backend;
 
 use App\Entity\Company;
 use App\Entity\User;
+use App\Form\AdminCompanyFilterType;
 use App\Form\AdminCompanyType;
-use App\Form\AdminFilterType;
-use App\Form\CompanyType;
 use App\Service\FileManager;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -33,7 +32,7 @@ class CompaniesController extends AbstractController
      */
     public function index(Request $request, Session $session, PaginatorInterface $pagination)
     {
-        $filterForm = $this->createForm(AdminFilterType::class);
+        $filterForm = $this->createForm(AdminCompanyFilterType::class);
         $filterForm->handleRequest($request);
 
         $itemsPerPage = $request->query->get('itemsPerPage', 20);
@@ -54,13 +53,12 @@ class CompaniesController extends AbstractController
         ];
 
         /* Find entities by filter (Keywords and pagination) */
-
-        $entites = $this->getDoctrine()->getRepository('App:Company')->findByFilterQuery($request);
+        $entites = $this->getDoctrine()->getRepository('App:Company')->findByFilterQueryAdmin();
         $entites = $pagination->paginate($entites, $page, $itemsPerPage, $paginatorOptions);
 
         return [
             'entities' => $entites,
-            'filter_form' => $filterForm->createView(),
+            'form' => $filterForm->createView(),
             'bulk_action_form' => $this->createBulkActionForm()->createView()
         ];
     }

@@ -45,7 +45,7 @@ class JobRepository extends ServiceEntityRepository
         // By Company
         if (!empty($request->query->get('company'))) {
             $qb->andWhere('job.company = :companyId')/*OR job.description LIKE :filterKeyword*/
-            ->setParameter('companyId',   $request->query->get('company'));
+            ->setParameter('companyId', $request->query->get('company'));
         }
 
         // Categories
@@ -95,7 +95,7 @@ class JobRepository extends ServiceEntityRepository
         // By Company
         if (!empty($request->query->get('company'))) {
             $qb->andWhere('job.company = :companyId')/*OR job.description LIKE :filterKeyword*/
-            ->setParameter('companyId',   $request->query->get('company'));
+            ->setParameter('companyId', $request->query->get('company'));
         }
 
         // Categories

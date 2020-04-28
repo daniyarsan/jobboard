@@ -4,7 +4,7 @@ namespace App\Controller\Backend;
 
 
 use App\Entity\Field;
-use App\Form\AdminFilterType;
+use App\Form\AdminJobFilterType;
 use App\Form\FieldType;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -28,7 +28,7 @@ class FieldController extends AbstractController
      */
     public function index(Request $request, Session $session, PaginatorInterface $pagination)
     {
-        $filterForm = $this->createForm(AdminFilterType::class);
+        $filterForm = $this->createForm(AdminJobFilterType::class);
         $filterForm->handleRequest($request);
 
         $itemsPerPage = $request->query->get('itemsPerPage', 20);

@@ -3,7 +3,7 @@
 namespace App\Controller\Backend;
 
 use App\Entity\StaticPage;
-use App\Form\AdminFilterType;
+use App\Form\AdminJobFilterType;
 use App\Form\AdminStaticPageType;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -29,7 +29,7 @@ class PageController extends AbstractController
      */
     public function index(Request $request, Session $session, PaginatorInterface $paginator)
     {
-        $filterForm = $this->createForm(AdminFilterType::class);
+        $filterForm = $this->createForm(AdminJobFilterType::class);
         $filterForm->handleRequest($request);
 
         $em = $this->getDoctrine()->getManager();
