@@ -91,7 +91,7 @@ input:focus, textarea:focus, select:focus, .form-control:focus {
     -webkit-box-shadow: none;
     border: 1px solid #e3e3e3;
     height: 44px;
-    color: #000;
+    color: #002056;
 }
 
 .form-control:focus {
@@ -99,7 +99,7 @@ input:focus, textarea:focus, select:focus, .form-control:focus {
 }
 .btn-info, .btn-primary {
     background-color: #002056;
-    border-color: #002056;
+    border-color: inherit;
 }
 .title {
     line-height: 34px;
@@ -134,7 +134,7 @@ input:focus, textarea:focus, select:focus, .form-control:focus {
 }
 
 .section-title h4 {
-    color: #000;
+    color: #002056;
     font-weight: 500;
 }
 
@@ -161,6 +161,7 @@ textarea {
 .btn.btn-primary:hover {
     background-color: #002056;
     color: #fff;
+    border-color: inherit;
 }
 
 .btn.btn-default {
@@ -224,9 +225,9 @@ textarea {
 .navbar-default .navbar-nav > li > a {
     background-color: transparent;
     font-weight: 500;
-    font-size: 14px;
-    color: #0a0a0a;
-    padding: 15px 12px;
+    font-size: 17px;
+    color: #002056;
+    padding: 10px 20px;
     display: block;
     text-transform: uppercase;
 }
@@ -310,7 +311,7 @@ textarea {
 
 .language-dropdown i.fa-globe,
 .sign-in li i {
-    font-size: 14px;
+    font-size: 20px;
     color: #00a651;
     margin-right: 5px;
 }
@@ -331,7 +332,7 @@ textarea {
 
 .sign-in li a {
     color: #000000;
-    font-size: 14px;
+    font-size: 17px;
 }
 
 .sign-in li a:hover {
@@ -340,10 +341,10 @@ textarea {
 
 #header a.btn,
 .download-button a.btn {
-    padding: 5px 25px 7px;
+    padding: 10px 45px;
     background-color: #002056;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 17px;
     color: #fff;
     margin-left: 20px;
 }
@@ -398,7 +399,7 @@ textarea {
 .category-dropdown a {
     font-size: 16px;
     margin: 0;
-    color: #000;
+    color: #002056;
     border: none;
     border-radius: 5px 0 0 5px;
     text-transform: capitalize;
@@ -421,7 +422,7 @@ textarea {
     width: 30%;
     height: 46px;
     font-size: 16px;
-    color: #000;
+    color: #002056;
     float: left;
 }
 
@@ -697,9 +698,8 @@ a.verified i {
 }
 
 .tab-manu .nav-tabs li a {
-    padding: 12px 15px;
-    border-bottom: 0;
-    text-transform: capitalize;
+    padding: 12px 20px;
+    text-transform: uppercase;
     color: #9c9c9c;
     margin-left: 2px;
     border: 1px solid transparent;
@@ -710,11 +710,11 @@ a.verified i {
 .tab-manu .nav-tabs li a:hover,
 .tab-manu .nav-tabs li a:focus,
 .tab-manu .nav-tabs li a.active {
-    border: 1px solid #f2f2f2;
-    background-color: #fcfcfc;
-    border-bottom: #f2f2f2;
+    border: 1px solid #00a651;
+    background-color: #00a651;
+    border-bottom: #00a651;
     border-radius: 0;
-    color: #00a651;
+    color: #f2f2f2;
 }
 
 .my-ads .ad-meta .pending {
@@ -744,7 +744,7 @@ a.verified i {
 }
 
 .cta h4 {
-    color: #000;
+    color: #002056;
     font-weight: 500;
     margin: 28px 0 10px;
 }
@@ -846,10 +846,10 @@ a.verified i {
 
 .job-list-item h4 {
     font-weight: 500;
-    color: #000;
+    color: #002056;
     margin: 10px 0;
     float: left;
-    font-size: 18px;
+    font-size: 24px;
 }
 
 .job-list-item h5 {
@@ -900,7 +900,7 @@ a.verified i {
 }
 
 .recommended-cta .single-cta h5 {
-    color: #000;
+    color: #002056;
     font-weight: 400;
     margin-top: 0;
 }
@@ -958,7 +958,7 @@ a.verified i {
     width: 100%;
     text-align: left;
     font-size: 18px;
-    color: #000;
+    color: #002056;
     font-weight: 500;
     cursor: pointer;
     padding-right: 20px;
@@ -990,7 +990,7 @@ a.verified i {
 
 .accordion .panel-body h5 {
     font-size: 16px;
-    color: #000;
+    color: #002056;
     margin-top: 0;
 }
 
@@ -1245,7 +1245,7 @@ a.verified i {
 
 .job-postdetails h4 {
     border-bottom: 1px solid #f2f2f2;
-    color: #000;
+    color: #002056;
     font-size: 20px;
     padding-bottom: 20px;
     margin-bottom: 20px;
@@ -1317,7 +1317,7 @@ a.verified i {
 .job-postdetails label {
     font-size: 16px;
     font-weight: 400;
-    /*color: #000;*/
+    /*color: #002056;*/
 }
 
 .job-postdetails label.label-title {
@@ -1384,7 +1384,7 @@ a.verified i {
 }
 
 .add-image h5 {
-    color: #000;
+    color: #002056;
     font-size: 16px;
     position: relative;
     padding-left: 50px;
@@ -1494,7 +1494,7 @@ a.verified i {
 
 .job-postdetails .premium-options li {
     margin-bottom: 25px;
-    color: #000;
+    color: #002056;
 }
 
 .job-postdetails .premium-options li span {
@@ -1502,7 +1502,7 @@ a.verified i {
 }
 
 .job-postdetails .premium-options input[type="radio"] + label {
-    color: #000;
+    color: #002056;
 }
 
 
@@ -1519,7 +1519,7 @@ a.verified i {
 .job-postdetails .agreement label a,
 .quick-rules .lead a {
     font-weight: 500;
-    color: #000;
+    color: #002056;
 }
 
 .job-postdetails .agreement label a:hover,
@@ -1589,7 +1589,7 @@ a.verified i {
     height: 44px;
     margin-bottom: 30px;
     font-size: 16px;
-    color: #000;
+    color: #002056;
 }
 
 .user-account .checkbox label, .forgot-password a {
@@ -1784,7 +1784,7 @@ a.verified i {
 .job-profile .favorites-user small {
     display: block;
     font-size: 16px;
-    color: #000;
+    color: #002056;
     line-height: 0;
 }
 
@@ -1839,7 +1839,7 @@ a.verified i {
     float: left;
     width: 25%;
     font-weight: 400;
-    color: #000;
+    color: #002056;
     font-size: 16px;
 }
 
@@ -1859,7 +1859,7 @@ a.verified i {
 .user-pro-section h2 {
     margin-bottom: 30px;
     font-weight: 300;
-    color: #000;
+    color: #002056;
     text-transform: capitalize;
 }
 
@@ -1954,13 +1954,13 @@ a.verified i {
 
 .footer-widget {
     font-size: 16px;
-    color: #000;
+    color: #002056;
     line-height: 30px
 }
 
 .footer-widget h3 {
     font-weight: 300;
-    color: #000;
+    color: #002056;
     line-height: 28px;
     margin-top: 20px;
     margin-bottom: 45px;
@@ -2004,7 +2004,7 @@ a.verified i {
 
 .footer-widget ul li.active a,
 .footer-widget ul li a:hover {
-    color: #000;
+    color: #002056;
 }
 
 .social-widget .fa-twitter-square {
@@ -2084,7 +2084,7 @@ input:-moz-placeholder {
 }
 
 .page .section-title {
-    border-bottom: 1px solid #f2f2f2;
+    border-bottom: 1px solid #00a651;
     padding-bottom: 5px;
     overflow: hidden;
 }
@@ -2096,7 +2096,7 @@ input:-moz-placeholder {
 .category-section .section-title h5 {
     float: right;
     font-size: 14px;
-    color: #000;
+    color: #002056;
     font-weight: 400;
 }
 
@@ -2126,7 +2126,7 @@ input:-moz-placeholder {
 }
 
 .category-menu li a {
-    color: #000;
+    color: #002056;
     font-size: 14px;
 }
 
@@ -2255,21 +2255,21 @@ input:-moz-placeholder {
 }
 
 .job-ad-item .ad-info span {
-    color: #000;
+    color: #002056;
     font-size: 20px;
     display: block;
     margin-bottom: 10px;
 }
 
 .job-ad-item .ad-info span a {
-    color: #000;
-    font-size: 20px;
-    font-weight: 300;
+    color: #002056;
+    font-size: 22px;
+    /*font-weight: 300;*/
 }
 
 .job-ad-item .ad-info a.title {
-    color: #000;
-    font-weight: 400;
+    color: #002056;
+    font-weight: normal;
 }
 
 .job-ad-item .ad-meta li:last-child {
@@ -2302,6 +2302,7 @@ input:-moz-placeholder {
     /*height: 85px;*/
     border: 1px solid #f3f3f3;
     overflow: hidden;
+    padding: 10px;
 }
 
 .job-ad-item .item-info {
@@ -2353,7 +2354,7 @@ input:-moz-placeholder {
 .workshop-traning .workshop h3 a {
     font-size: 20px;
     font-weight: 500;
-    color: #000;
+    color: #002056;
 }
 
 .workshop-traning .workshop h3 a:hover {
@@ -2362,7 +2363,7 @@ input:-moz-placeholder {
 
 .workshop-traning .workshop h4 {
     font-size: 16px;
-    color: #000;
+    color: #002056;
     margin: 0 0 15px;
 }
 
@@ -2409,7 +2410,7 @@ input:-moz-placeholder {
 /* Job List Page */
 
 .job-bg {
-    background-image: url("../images/bg/bg.png");
+    background-image: url("../images/bg/bg-unfocus.jpg");
     background-repeat: no-repeat;
     background-size: contain;
 }
@@ -2554,7 +2555,7 @@ input:-moz-placeholder {
 
 .job-short-info li span.icon {
     font-size: 18px;
-    color: #000;
+    color: #002056;
     position: absolute;
     left: 0;
     top: 0;
@@ -2935,7 +2936,7 @@ input:-moz-placeholder {
 
 .user-account .nav-tabs > li a {
     padding: 10px 35px;
-    color: #0a0a0a;
+    color: #002056;
     text-transform: uppercase;
     font-weight: 500;
     margin-right: 0;

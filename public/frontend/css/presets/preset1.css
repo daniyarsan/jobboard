@@ -159,5 +159,5 @@ a.verified i,
 	background: -moz-linear-gradient(left,  rgba(55,180,78,0.9) 0%, rgba(49,178,91,0.9) 24%, rgba(27,171,137,0.96) 77%, rgba(21,169,151,0.94) 100%); 
 	background: -webkit-linear-gradient(left,  rgba(55,180,78,0.9) 0%,rgba(49,178,91,0.9) 24%,rgba(27,171,137,0.96) 77%,rgba(21,169,151,0.94) 100%);
 	background: linear-gradient(to right,  rgba(55,180,78,0.9) 0%,rgba(49,178,91,0.9) 24%,rgba(27,171,137,0.96) 77%,rgba(21,169,151,0.94) 100%); 
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#37b44e', endColorstr='#f015a997',GradientType=1 ); 
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#37b44e', endColorstr='#f015a997',GradientType=1 );
 }

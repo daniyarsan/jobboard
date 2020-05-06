@@ -13,7 +13,7 @@
         </div>
 
         <div class="ad-info">
-            <span><a href="{{ path('frontend_jobs_details', {'id' : job.id}) }}" class="title">{{ job.title|capitalize|truncate(60)}}</a></span>
+            <span><a href="{{ path('frontend_jobs_details', {'id' : job.id}) }}" class="title">{{ job.title|capitalize|truncate(50)}}</a></span>
             <div class="ad-meta">
                 <ul>
                     <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ job.country }}, {{ job.state }} </a></li>

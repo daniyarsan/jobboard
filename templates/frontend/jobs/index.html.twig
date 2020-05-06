@@ -40,18 +40,8 @@
                         <div class="section job-list-item">
                             <div class="featured-top clearfix">
 
-                                <h4>{{ 'Found' | trans }} {{ jobs.getTotalItemCount }} jobs</h4>
+                                <h4>{{ 'Found' | trans }}: {{ jobs.getTotalItemCount }} jobs</h4>
 
-                                <div class="dropdown pull-right">
-                                    <div class="dropdown category-dropdown">
-                                        <h5>{{ 'Sort by' | trans }}:</h5>
-                                        <a data-toggle="dropdown" href="#"><span class="change-text">Most Relevant</span><i class="fa fa-caret-square-o-down"></i></a>
-                                        <ul class="dropdown-menu category-change">
-                                            <li><a href="#">Most Relevant</a></li>
-                                            <li><a href="#">Most Popular</a></li>
-                                        </ul>
-                                    </div><!-- category-change -->
-                                </div>
                             </div><!-- featured-top -->
 
                             {% if jobs|length %}

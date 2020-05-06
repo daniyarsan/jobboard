@@ -4,12 +4,12 @@
             {% if request.get(filter.field.fieldId) is null %}
                 <div class="card panel-faq">
                     <div class="card-header">
-                        <button data-toggle="collapse" data-target="#{{ filter.field.fieldId }}" aria-expanded="true" aria-controls="{{ filter.field.fieldId }}">{{ filter.field.name }}</button>
+                        <button class="collapsed" data-toggle="collapse" data-target="#{{ filter.field.fieldId }}" aria-expanded="false" aria-controls="{{ filter.field.fieldId }}">{{ filter.field.name }}</button>
                     </div><!-- card-header -->
-                    <div id="{{ filter.field.fieldId }}" class="collapse show" data-parent="#filter-accordion">
+
+                    <div id="{{ filter.field.fieldId }}" class="collapse" data-parent="#filter-accordion">
                         <!-- panel-body -->
                         <div class="panel-body">
-                            <h5><a href="#"><i class="fa fa-caret-down"></i> All {{ filter.field.name }}</a></h5>
                             <ul>
                                 {% for opt in filter.options | slice(0, 10) %}
                                     {% set link = request.query.all | merge({(filter.field.fieldId) : opt.title}) %}
@@ -17,18 +17,14 @@
                                 {% endfor %}
                             </ul>
 
-                            <div class="see-more">
-                                <ul class="more-category">
-                                    {% for key, opt in filter.options %}
-                                        {% if key > 10 %}
-                                            {% set link = request.query.all | merge({(filter.field.fieldId) : opt.title}) %}
-                                            <li><a href="{{ path('frontend_jobs_index', link ) }}"> {{ opt.title|truncate(25) }} <span>({{ opt.count }})</span></a></li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                                <button type="button" class="show-more"><i class="fa fa-plus-square-o" aria-hidden="true"></i>{{ 'See More' | trans }}</button>
-                            </div>
-
+                            <ul>
+                                {% for key, opt in filter.options %}
+                                    {% if key > 10 %}
+                                        {% set link = request.query.all | merge({(filter.field.fieldId) : opt.title}) %}
+                                        <li><a href="{{ path('frontend_jobs_index', link ) }}"> {{ opt.title|truncate(25) }} <span>({{ opt.count }})</span></a></li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
                         </div><!-- panel-body -->
                     </div>
                 </div><!-- card -->
