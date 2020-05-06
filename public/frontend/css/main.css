@@ -2298,8 +2298,8 @@ input:-moz-placeholder {
 }
 
 .job-ad-item .item-image {
-    width: 95px;
-    height: 85px;
+    width: 150px;
+    /*height: 85px;*/
     border: 1px solid #f3f3f3;
     overflow: hidden;
 }
@@ -2314,10 +2314,10 @@ input:-moz-placeholder {
 }
 
 .job-ad-item .btn.btn-primary {
-    padding: 5px 30px 6px;
-    margin-top: 25px;
-    font-size: 14px;
-    margin-right: 25px;
+    margin-top: 15px;
+    width: 150px;
+    height: 50px;
+    font-size: 18px;
 }
 
 .workshop-traning {
@@ -2409,7 +2409,7 @@ input:-moz-placeholder {
 /* Job List Page */
 
 .job-bg {
-    background-image: url("../images/bg/job-list-bg.jpg");
+    background-image: url("../images/bg/bg.png");
     background-repeat: no-repeat;
     background-size: contain;
 }

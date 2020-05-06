@@ -20,7 +20,6 @@ class AdminCompanyType extends AbstractType
     {
         $builder
             ->setRequired(false)
-//            ->add('user', UserType::class)
             ->add('logo', FileType::class, [
                 'mapped' => false,
                 'required' => false,

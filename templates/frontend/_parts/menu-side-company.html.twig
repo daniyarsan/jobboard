@@ -1,0 +1,7 @@
+
+<ul class="user-menu">
+    {% for menu in menus %}
+        <li><a href="{{ menu.url }}">{{ menu.title }} </a></li>
+    {% endfor %}
+{#    class="active"#}
+</ul>

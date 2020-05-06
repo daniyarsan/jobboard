@@ -1,7 +1,6 @@
-{% extends 'base-index.html.twig' %}
+{% extends 'frontend/company/_base.html.twig' %}
 
 {% form_theme form _self %}
-
 {% block form_row %}
     {% spaceless %}
         <div class="row form-group add-title">
@@ -16,7 +15,7 @@
 
 {% block title %}{% endblock %}
 
-{% block body %}
+{% block body_inner %}
 
     <div class="job-postdetails">
         <div class="row">
@@ -24,8 +23,7 @@
                 {{ form_start(form) }}
                     <fieldset>
                         <div class="section postdetails">
-                            <h4>Post Your Job<span class="pull-right">* Mandatory Fields</span></h4>
-
+                            <h4>{{ 'Post Your Job' | trans }}<span class="pull-right">* Mandatory Fields</span></h4>
                             {{ form(form) }}
                         </div><!-- postdetails -->
 

@@ -49,30 +49,18 @@ class SecurityController extends AbstractController
         EventDispatcherInterface $eventDispatcher)
     {
         $user = new User();
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-
-        $formCompany = $this->createForm(UserType::class, $user);
-        $formCompany->handleRequest($request);
-
-        $group = $request->get('group');
 
         if ($form->isSubmitted() && $form->isValid()) {
             $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($password);
             $user->setConfirmationCode(sha1(rand()));
-            switch ($group) {
-                case 'company':
-                    $user->setRoles([User::ROLE_COMPANY]);
-                    /* Set Company email automatically */
-                    $user->setCompany((new Company())->setEmail($user->getUsername()));
-                    break;
 
-                case 'profile':
-                    $user->setRoles([User::ROLE_PROFILE]);
-                    $user->setProfile((new Profile())->setEmail($user->getUsername()));
-                    break;
-            }
+            $user->setRoles([User::ROLE_COMPANY]);
+            /* Set Company email automatically */
+            $user->setCompany((new Company())->setEmail($user->getUsername()));
 
             try {
                 $entityManager = $this->getDoctrine()->getManager();
@@ -90,7 +78,6 @@ class SecurityController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'formCompany' => $form->createView()
         ];
     }
 
@@ -161,5 +148,4 @@ class SecurityController extends AbstractController
 
         return $code;
     }
-
 }

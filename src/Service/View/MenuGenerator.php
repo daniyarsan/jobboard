@@ -33,25 +33,17 @@ class MenuGenerator
         return $this->view->render('frontend/_parts/main-header-menu.html.twig', ['menus' => $menus]);
     }
 
-    public function profileSideMenu()
-    {
-        $menus = [
-        ];
-
-        return $this->view->render('dashboard/_parts/menu-side-profile.html.twig', ['menus' => $menus]);
-    }
-
     public function companySideMenu()
     {
         $menus = [
-            ['title' => 'Dashboard', 'url' => 'my_company_index', 'icon' => '', 'sub' => []],
-            ['title' => 'Edit Profile', 'url' => 'my_company_settings', 'icon' => '', 'sub' => []],
-            ['title' => 'My Jobs', 'url' => 'my_company_jobs', 'icon' => '', 'sub' => []],
-            ['title' => 'Post New Job', 'url' => 'my_company_job_new', 'icon' => '', 'sub' => []],
-            ['title' => 'Logout', 'url' => 'security_logout', 'icon' => '', 'sub' => []]
+            ['title' => 'Dashboard', 'url' => $this->router->generate('my_company_index'), 'icon' => '', 'sub' => []],
+            ['title' => 'Edit Profile', 'url' => $this->router->generate('my_company_settings'), 'icon' => '', 'sub' => []],
+            ['title' => 'My Jobs', 'url' => $this->router->generate('my_company_jobs'), 'icon' => '', 'sub' => []],
+            ['title' => 'Post New Job', 'url' => $this->router->generate('my_company_job_new'), 'icon' => '', 'sub' => []],
+            ['title' => 'Logout', 'url' => $this->router->generate('security_logout'), 'icon' => '', 'sub' => []]
         ];
 
-        return $this->view->render('dashboard/_parts/menu-side-company.html.twig', ['menus' => $menus]);
+        return $this->view->render('frontend/_parts/menu-side-company.html.twig', ['menus' => $menus]);
     }
 
     public function adminSideMenu()
@@ -80,5 +72,13 @@ class MenuGenerator
         ];
 
         return $this->view->render('admin/_parts/menu-side.html.twig', ['menus' => $menus]);
+    }
+
+    public function profileSideMenu()
+    {
+        $menus = [
+        ];
+
+        return $this->view->render('dashboard/_parts/menu-side-profile.html.twig', ['menus' => $menus]);
     }
 }

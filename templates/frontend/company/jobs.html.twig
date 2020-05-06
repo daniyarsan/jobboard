@@ -1,13 +1,14 @@
-{% extends 'dashboard/base-company.html.twig' %}
+{% extends 'frontend/company/_base.html.twig' %}
 
 {% block title %}{% endblock %}
 
-{% block profile_content %}
+{% block body_inner %}
 
     <div class="section trending-ads latest-jobs-ads">
-        <h4>My Jobs</h4>
+        <h4>{{ 'Jobs' | trans }}</h4>
+
         {% for job in jobs %}
-            {% include 'dashboard/company/_job.html.twig' %}
+            {% include 'frontend/company/_job.html.twig' %}
         {% endfor %}
         {{ knp_pagination_render(jobs) }}
     </div><!-- latest-jobs-ads -->

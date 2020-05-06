@@ -43,8 +43,6 @@ class CompanyType extends AbstractType
             ->add('country', CountryType::class)
             ->add('state', TextType::class)
             ->add('address', TextType::class)
-            ->add('latitude', TextType::class)
-            ->add('longitude', TextType::class)
             ->add('description', TextareaType::class, [
                 'attr' => ['class' => 'wysiwyg']
             ]);

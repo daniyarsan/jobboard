@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+    <section class="clearfix job-bg ad-profile-page">
+        <div class="container">
+            <div class="breadcrumb-section">
+                {{ breadcrumbs.display('frontend/_parts/breadcrumbs.html.twig', {
+                    'frontend_main_index' : 'Home' | trans,
+                    'frontend_companies_index' : 'Profile Details' | trans,
+                } ) }}
+                <h2 class="title">{{ 'My Account' | trans }}</h2>
+            </div><!-- breadcrumb-section -->
+
+            <div class="job-profile section">
+                <div class="user-profile">
+                    <div class="user-images">
+                        {% if app.user.company.logoName %}
+                            <img src="{{ assetFinder.logoPath(app.user.company.logoName) }}" alt="User Images" class="img-fluid">
+                        {% else %}
+                            <img src="{{ asset('frontend/images/no-company.png') }}" alt="User Images" class="img-fluid">
+                        {% endif %}
+                    </div>
+
+                    <div class="user">
+                        <h2>{{ app.user.company.name }}</h2>
+                        <h5>{{ app.user.email }}</h5>
+                    </div>
+
+                    <div class="favorites-user">
+                        <div class="my-ads">
+                            <a href="applied-job.html">0<small>{{ 'Posted jobs' | trans }}</small></a>
+                        </div>
+                        <div class="favorites">
+                            <a href="bookmark.html">0<small>{{ 'Applicants' | trans }}</small></a>
+                        </div>
+                    </div>
+                </div><!-- user-profile -->
+
+                {{ menuGenerator.companySideMenu()|raw }}
+            </div><!-- ad-profile -->
+
+            {% block body_inner %}
+                {% include '_parts/messages.html.twig' %}
+
+                {{ form_start(form) }}
+                <div class="profile job-profile">
+                    <div class="user-pro-section">
+                        <!-- profile-details -->
+                        <div class="profile-details section">
+                            <h2>Profile Details</h2>
+                            {{ form(form) }}
+                        </div><!-- profile-details -->
+
+                        <!-- change-password -->
+                        <div class="change-password section">
+                            <h2>Change password</h2>
+                            <!-- form -->
+                            {{ form_row(userForm.plainPassword) }}
+
+                            <div class="buttons">
+                                <button type="submit" class="btn">Save</button>
+                            </div>
+                        </div><!-- change-password -->
+                    </div><!-- user-pro-edit -->
+                </div>
+                {{ form_end(form) }}
+            {% endblock %}
+        </div><!-- container -->
+    </section><!-- ad-profile-page -->
+{% endblock %}

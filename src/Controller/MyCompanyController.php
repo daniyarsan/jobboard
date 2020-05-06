@@ -6,6 +6,7 @@ use App\Entity\Job;
 use App\Form\CompanyType;
 use App\Form\JobType;
 use App\Form\UserType;
+use App\Service\FileManager;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -31,7 +32,7 @@ class MyCompanyController extends AbstractController
     /**
      * @Route("/settings", name="_settings")
      */
-    public function settings(Request $request, TranslatorInterface $translator)
+    public function settings(Request $request, TranslatorInterface $translator, FileManager $fileManager)
     {
         /*if (!in_array('ROLE_COMPANY', $this->getUser()->getRoles())) {
         }*/
@@ -45,6 +46,11 @@ class MyCompanyController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /* Logo Upload */
+            if ($logoFile = $form[ 'logo' ]->getData()) {
+                $company->setLogoName($fileManager->uploadLogo($logoFile));
+            }
+
             try {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($company);
@@ -67,9 +73,9 @@ class MyCompanyController extends AbstractController
     }
 
     /**
-     * @Route("/my-jobs", name="_jobs")
+     * @Route("/jobs", name="_jobs")
      */
-    public function myJobs(Request $request, PaginatorInterface $paginator)
+    public function jobs(Request $request, PaginatorInterface $paginator)
     {
         if (!in_array('ROLE_COMPANY', $this->getUser()->getRoles())) {
             throw $this->createAccessDeniedException('You are not allowed to access this page.');
@@ -89,7 +95,7 @@ class MyCompanyController extends AbstractController
     /**
      * @Route("/job/new", name="_job_new")
      */
-    public function createJob(Request $request, TranslatorInterface $translator)
+    public function newJob(Request $request, TranslatorInterface $translator)
     {
         $job = new Job();
 
@@ -122,31 +128,10 @@ class MyCompanyController extends AbstractController
     }
 
     /**
-     * @Route("/password", name="_password")
-     * @Method("POST")
-     */
-    public function password(Request $request, UserPasswordEncoderInterface $passwordEncoder)
-    {
-        $currentUser = $this->getUser();
-        $userForm = $this->createForm(UserType::class, $currentUser);
-        $userForm->handleRequest($request);
-
-        if ($userForm->isSubmitted() && $userForm->isValid()) {
-            $password = $passwordEncoder->encodePassword($currentUser, $currentUser->getPlainPassword());
-            $currentUser->setPassword($password);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($currentUser);
-            $em->flush();
-            $this->addFlash('success', 'Password has been saved successfully');
-        }
-        return $this->redirectToRoute('my_company_settings');
-    }
-
-    /**
      * @Route("/job/edit/{id}", name="_job_edit", requirements={"id": "\d+"})
      * @ParamConverter("job", class="App\Entity\Job")
      */
-    public function edit(Request $request, Job $job, TranslatorInterface $translator)
+    public function editJob(Request $request, Job $job, TranslatorInterface $translator)
     {
         $form = $this->createForm(
             JobType::class,
@@ -184,7 +169,7 @@ class MyCompanyController extends AbstractController
      * @Route("/account/jobs/delete/{id}", name="job_delete", requirements={"id": "\d+"})
      * @ParamConverter("job", class="JobPlatform\AppBundle\Entity\Job")
      */
-    public function delete(Request $request, Job $job)
+    public function deleteJob(Request $request, Job $job)
     {
 
         if (!$this->getDoctrine()->getRepository('AppBundle:Job')->hasUserJob($this->getUser(), $job)) {
@@ -207,7 +192,7 @@ class MyCompanyController extends AbstractController
      * @Route("/job/publish/{id}", name="_job_publish", requirements={"id": "\d+"})
      * @ParamConverter("job", class="App\Entity\Job")
      */
-    public function publish(Request $request, Job $job)
+    public function publishJob(Request $request, Job $job)
     {
         $payments = $this->getParameter('app.payments');
 
@@ -261,7 +246,7 @@ class MyCompanyController extends AbstractController
      * @Route("/job/unpublish/{id}", name="_job_unpublish", requirements={"id": "\d+"})
      * @ParamConverter("job", class="App\Entity\Job")
      */
-    public function unpublish(Request $request, Job $job)
+    public function unpublishJob(Request $request, Job $job)
     {
         $job->setActive(false);
 
@@ -281,7 +266,7 @@ class MyCompanyController extends AbstractController
      * @Route("/job/feature/{id}", name="_job_feature", requirements={"id": "\d+"})
      * @ParamConverter("job", class="App\Entity\Job")
      */
-    public function feature(Request $request, Job $job)
+    public function featureJob(Request $request, Job $job)
     {
         $payments = $this->getParameter('app.payments');
 
@@ -342,7 +327,7 @@ class MyCompanyController extends AbstractController
      * @Route("/job/unfeature/{id}", name="_job_unfeature", requirements={"id": "\d+"})
      * @ParamConverter("job", class="App\Entity\Job")
      */
-    public function unfeature(Request $request, Job $job)
+    public function unfeatureJob(Request $request, Job $job)
     {
         $job->setFeatured(false);
 
@@ -378,5 +363,25 @@ class MyCompanyController extends AbstractController
         return $this->render('frontend/company/candidates.html.twig', [
             'applicants' => $applicants
         ]);
+    }
+
+    /**
+     * @Route("/password", name="_password")
+     */
+    public function password(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $currentUser = $this->getUser();
+        $userForm = $this->createForm(UserType::class, $currentUser);
+        $userForm->handleRequest($request);
+
+        if ($userForm->isSubmitted() && $userForm->isValid()) {
+            $password = $passwordEncoder->encodePassword($currentUser, $currentUser->getPlainPassword());
+            $currentUser->setPassword($password);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($currentUser);
+            $em->flush();
+            $this->addFlash('success', 'Password has been saved successfully');
+        }
+        return $this->redirectToRoute('my_company_settings');
     }
 }

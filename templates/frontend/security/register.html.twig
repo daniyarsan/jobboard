@@ -5,38 +5,16 @@
             <div class="user-account-content">
                 <div class="user-account job-user-account">
                     <h2>Create An Account</h2>
-                    <ul class="nav nav-tabs text-center" role="tablist">
-                        <li role="presentation"><a class="active" href="#find-job" aria-controls="find-job" role="tab" data-toggle="tab">Find A Job</a></li>
-                        <li role="presentation"><a href="#post-job" aria-controls="post-job" role="tab" data-toggle="tab">Post A Job</a></li>
-                    </ul>
+                    {{ form_start(form) }}
+                    {{ form_widget(form.email, {'attr' : {'placeholder' : 'Email'}}) }}
+                    {{ form_errors(form.email, {'attr' : {'placeholder' : 'Email'}}) }}
+                    {{ form_widget(form.plainPassword.first, {'attr' : {'placeholder' : 'Password'}}) }}
+                    {{ form_errors(form.plainPassword.first, {'attr' : {'placeholder' : 'Password'}}) }}
+                    {{ form_widget(form.plainPassword.second, {'attr' : {'placeholder' : 'Repeat Password'}}) }}
+                    {{ form_errors(form.plainPassword.second, {'attr' : {'placeholder' : 'Repeat Password'}}) }}
 
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active show" id="find-job">
-                            {{ form_start(form) }}
-                            <input type="hidden" name="group" value="profile">
-                            {{ form_widget(form.email, {'attr' : {'placeholder' : 'Email'}}) }}
-                            {{ form_errors(form.email, {'attr' : {'placeholder' : 'Email'}}) }}
-                            {{ form_widget(form.plainPassword.first, {'attr' : {'placeholder' : 'Password'}}) }}
-                            {{ form_errors(form.plainPassword.first, {'attr' : {'placeholder' : 'Password'}}) }}
-                            {{ form_widget(form.plainPassword.second, {'attr' : {'placeholder' : 'Repeat Password'}}) }}
-                            {{ form_errors(form.plainPassword.second, {'attr' : {'placeholder' : 'Repeat Password'}}) }}
-                            <button type="submit" class="btn btn-outline-primary">Register</button>
-                            {{ form_end(form) }}
-                        </div>
-
-                        <div role="tabpanel" class="tab-pane" id="post-job">
-                            {{ form_start(formCompany) }}
-                            <input type="hidden" name="group" value="company">
-                            {{ form_widget(formCompany.email, {'attr' : {'placeholder' : 'Email'}}) }}
-                            {{ form_errors(formCompany.email, {'attr' : {'placeholder' : 'Email'}}) }}
-                            {{ form_widget(formCompany.plainPassword.first, {'attr' : {'placeholder' : 'Password'}}) }}
-                            {{ form_errors(formCompany.plainPassword.first, {'attr' : {'placeholder' : 'Password'}}) }}
-                            {{ form_widget(formCompany.plainPassword.second, {'attr' : {'placeholder' : 'Repeat Password'}}) }}
-                            {{ form_errors(formCompany.plainPassword.second, {'attr' : {'placeholder' : 'Repeat Password'}}) }}
-                            <button type="submit" class="btn btn-outline-primary">Register</button>
-                            {{ form_end(formCompany) }}
-                        </div>
-                    </div>
+                    <button type="submit" class="btn btn-outline-primary">{{ 'Register' | trans }}</button>
+                    {{ form_end(form) }}
                 </div>
             </div><!-- user-login -->
         </div><!-- container -->
