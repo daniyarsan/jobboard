@@ -42,9 +42,15 @@ class Location
     private $lat;
 
     /**
-     * @ORM\Column(type="string", length=190, nullable=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\Company", inversedBy="location", cascade={"persist", "remove"})
      */
-    private $googleLocation;
+    private $company;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $address;
+
 
     public function getId(): ?int
     {
@@ -111,15 +117,35 @@ class Location
         return $this;
     }
 
-    public function getGoogleLocation(): ?string
+    public function getCompany(): ?Company
     {
-        return $this->googleLocation;
+        return $this->company;
     }
 
-    public function setGoogleLocation(?string $googleLocation): self
+    public function setCompany(?Company $company): self
     {
-        $this->googleLocation = $googleLocation;
+        $this->company = $company;
 
         return $this;
     }
+
+    /* Getters for usage */
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getAddressString()
+    {
+        return $this->address;
+    }
+
 }

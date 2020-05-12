@@ -1755,7 +1755,7 @@ a.verified i {
 
 .job-profile .user h2 {
     font-weight: 300;
-    color: #2a2a2a;
+    color: #002056;
     margin-top: 30px;
 }
 
@@ -1809,7 +1809,7 @@ a.verified i {
 }
 
 .job-profile .user-menu li a {
-    color: #9fa4a4;
+    color: #002056;
     font-size: 16px;
 }
 
@@ -2482,7 +2482,7 @@ input:-moz-placeholder {
 .share-social li {
     float: left;
     font-weight: 500;
-    color: #272727;
+    color: #002056;
 }
 
 .share-social li + li {
@@ -2519,7 +2519,7 @@ input:-moz-placeholder {
 }
 
 .job-description {
-    color: #272727;
+    color: #002056;
     font-size: 14px;
     line-height: 22px;
 }
@@ -2528,24 +2528,28 @@ input:-moz-placeholder {
     font-size: 18px;
     font-weight: 500;
     margin: 0 0 20px;
-    color: #272727;
+    color: #002056;
 }
 
 .description-info span {
     margin-bottom: 20px;
     display: block;
 }
+.description-info h2 {
+    border-bottom: 1px solid rgba(0, 32, 86, 0.41);
+    padding: 10px 0;
+}
 
 .job-short-info li,
 .company-info li {
-    color: #707070;
+    color: #002056;
     margin-bottom: 15px;
     font-size: 16px;
 }
 
 .company-info li a,
 .job-short-info li a {
-    color: #707070;
+    color: #002056;
 }
 
 .job-short-info li {
@@ -3574,3 +3578,4 @@ select::-ms-expand {
     -ms-word-break: normal;
     word-break: normal;
 }
+

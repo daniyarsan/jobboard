@@ -48,7 +48,7 @@
                         <a href="{{ path('admin_companies_edit', {'id': company.id, 'return_url': path('admin_companies_index') ~ query_string()}) }}" class="text-body font-weight-semibold">{{ company.name }}</a>
                     </td>
                     <td>{{ company.email }}</td>
-                    <td>{{ company.country }}</td>
+                    <td>location</td>
                     <td>{{ company.created|date("d/m/Y") }} </td>
                     <td>
                         {% if company.isVerified %}

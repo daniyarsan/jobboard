@@ -6,74 +6,77 @@
     <section class="job-bg page job-details-page">
         <div class="container">
             <div class="breadcrumb-section">
-                <!-- breadcrumb -->
                 {{ breadcrumbs.display('frontend/_parts/breadcrumbs.html.twig', {
                     'frontend_main_index' : 'Home' | trans,
                     'frontend_companies_index' : 'Companies' | trans,
                 } ) }}
-                <!-- breadcrumb -->
-            </div>
+                <h2 class="title">{{ company.name }}</h2>
+            </div><!-- breadcrumb-section -->
 
-
-            <div class="job-details">
-                <div class="section job-ad-item">
-                    <div class="item-info">
-                        <div class="item-image-box">
-                            <div class="item-image">
-                                {% if company.logoName %}
-                                    <a href="{{ path('frontend_companies_details', {id: company.getId() }) }}">
-                                        <img src="{{ assetFinder.logoPath(company.logoName) }}" class="img-fluid" alt="">
-                                    </a>
-                                {% else %}
-                                    <img src="{{ asset('frontend/images/no-company.png') }}" class="img-fluid" alt="">
-                                {% endif %}
-                            </div><!-- item-image -->
-                        </div>
-
-                        <div class="ad-info">
-                            <span><span><a href="#" class="title">{{ company.name }}</a></span></span>
-                            <div class="ad-meta">
-                                <ul>
-                                    <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ company.country }}</a></li>
-                                    <li><i class="fa fa-money" aria-hidden="true"></i>$25,000 - $35,000</li>
-                                    <li><i class="fa fa-hourglass-start" aria-hidden="true"></i>{{ company.created|date('d-m-Y') }}</li>
-                                </ul>
-                            </div><!-- ad-meta -->
-                        </div><!-- ad-info -->
+            <div class="job-profile section">
+                <div class="user-profile">
+                    <div class="user-images">
+                        {% if company.logoName %}
+                            <a href="{{ path('frontend_companies_details', {id: company.getId() }) }}">
+                                <img src="{{ assetFinder.logoPath(company.logoName) }}" class="img-fluid" alt="">
+                            </a>
+                        {% else %}
+                            <img src="{{ asset('frontend/images/no-company.png') }}" class="img-fluid" alt="">
+                        {% endif %}
                     </div>
-                    <div class="social-media">
-                        <div class="button">
-                            <a href="#" class="btn btn-primary"><i class="fa fa-briefcase" aria-hidden="true"></i>Contact</a>
-                            <a href="#" class="btn btn-primary bookmark"><i class="fa fa-bookmark-o" aria-hidden="true"></i>Save</a>
+
+                    <div class="user">
+                        <h2>{{ company.name }}</h2>
+{#                        <h5><i class="fa fa-star" aria-hidden="true"></i></h5>#}
+                    </div>
+
+                    <div class="favorites-user">
+                        <div class="my-ads">
+                            <a href="{{ path('frontend_jobs_index') }}">{{ company.jobs|length }}<small>{{ 'jobs' | trans }}</small></a>
+                        </div>
+                        <div class="favorites">
+                            <a href="{{ path('frontend_main_apply') }}">0<small>{{ 'Applied' | trans }}</small></a>
                         </div>
                     </div>
-                </div><!-- job-ad-item -->
+                </div><!-- user-profile -->
 
-                <div class="job-details-info">
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <div class="section job-description">
-                                <div class="description-info">
-                                    <h1>{{ 'Description' | trans }}</h1>
-                                    {{ company.description|raw }}
-                                </div>
+                <ul class="user-menu">
+                    <li><a href="{{ path('frontend_jobs_index') }}">{{ 'Jobs' | trans }}</a></li>
+                    <li><a href="{{ path('frontend_main_apply') }}">{{ 'Apply' | trans }}</a></li>
+                </ul>
+            </div><!-- ad-profile -->
+
+            <div class="job-details-info">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="section job-description">
+                            <div class="description-info">
+                                <h2>{{ 'About' | trans }} {{ company.name }}</h2>
+                                {{ company.description|raw }}
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="section job-short-info">
-                                <h1>Short Info</h1>
-                                <ul>
-                                    <li><span class="icon"><i class="fa fa-bolt" aria-hidden="true"></i></span>Posted: 1 day ago</li>
-                                    <li><span class="icon"><i class="fa fa-user-plus" aria-hidden="true"></i></span> Job poster: <a href="#">Lance Ladaga</a></li>
-                                    <li><span class="icon"><i class="fa fa-industry" aria-hidden="true"></i></span>Industry: <a href="#">Marketing and Advertising</a></li>
-                                    <li><span class="icon"><i class="fa fa-line-chart" aria-hidden="true"></i></span>Experience: <a href="#">Entry level</a></li>
-                                    <li><span class="icon"><i class="fa fa-key" aria-hidden="true"></i></span>Job function: Advertising,Design, Art/Creative</li>
-                                </ul>
+
+                        <div class="section video">
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/qN3OueBm9F4" allowfullscreen></iframe>
                             </div>
                         </div>
-                    </div><!-- row -->
-                </div><!-- job-details-info -->
-            </div><!-- job-details -->
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="section job-short-info">
+                            <ul>
+                                <li><span class="icon"><i class="fa fa-map-marker" aria-hidden="true"></i></span> {{ company.locationString }}</li>
+                                <li><span class="icon"><i class="fa fa-phone" aria-hidden="true"></i></span> <a href="tel:{{ company.phone }}">{{ company.phone }}</a></li>
+                                <li><span class="icon"><i class="fa fa-globe" aria-hidden="true"></i></span> <a href="{{ company.website }}">Website</a></li>
+                                <li><span class="icon"><i class="fa fa-envelope-o" aria-hidden="true"></i></span> <a href="emailto:{{ company.email }}">{{ company.email }}</a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div><!-- row -->
+            </div><!-- job-details-info -->
+        </div><!-- job-details -->
         </div><!-- container -->
     </section><!-- job-details-page -->
 {% endblock %}

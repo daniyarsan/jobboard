@@ -2,6 +2,7 @@
 
 namespace App\Controller\Backend;
 
+use App\Service\GlassDoor;
 use App\Entity\Company;
 use App\Entity\User;
 use App\Form\AdminCompanyFilterType;
@@ -208,5 +209,17 @@ class CompaniesController extends AbstractController
             ->add('pages')
             ->getForm();
     }
+
+    /**
+     * Hydrates company with info from Glassdoor.
+     *
+     * @Route("/companies/glassdoor/{id}", name="_glassdoor")
+     */
+    public function glassdoor(Company $company, GlassDoor $glassDoor)
+    {
+        $cmp = $glassDoor->getCompany($company->getName());
+        dump($cmp); exit;
+    }
+
 
 }

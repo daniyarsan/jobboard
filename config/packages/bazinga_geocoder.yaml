@@ -1,0 +1,14 @@
+# See the docs at https://github.com/geocoder-php/BazingaGeocoderBundle
+bazinga_geocoder:
+    profiling:
+        enabled: ~
+    # The local IP (127.0.0.1) will be replaced by the fake_ip
+    # see https://github.com/geocoder-php/BazingaGeocoderBundle/blob/5.0.0/Resources/doc/index.md#fake-local-ip
+    fake_ip: 123.123.123.123
+    providers:
+        googleMaps:
+            factory: Bazinga\GeocoderBundle\ProviderFactory\GoogleMapsFactory
+            options:
+#                httplug_client: '@httplug.client' # When using HTTPlugBundle
+#                region: 'Sweden'
+                api_key: 'AIzaSyBsJF8ju8cMSgEhi47OYueNd7UzVHHVkSs'

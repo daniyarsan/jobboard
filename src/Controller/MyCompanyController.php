@@ -3,10 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Job;
+use App\Entity\Location;
 use App\Form\CompanyType;
 use App\Form\JobType;
 use App\Form\UserType;
 use App\Service\FileManager;
+use Geocoder\Provider\GoogleMaps\GoogleMaps;
+use Geocoder\ProviderAggregator;
+use Geocoder\Query\GeocodeQuery;
+use GuzzleHttp\Client;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -21,6 +26,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class MyCompanyController extends AbstractController
 {
+
     /**
      * @Route("/", name="_index")
      */
@@ -32,10 +38,14 @@ class MyCompanyController extends AbstractController
     /**
      * @Route("/settings", name="_settings")
      */
-    public function settings(Request $request, TranslatorInterface $translator, FileManager $fileManager)
+    public function settings(Request $request,
+                             TranslatorInterface $translator,
+                             FileManager $fileManager,
+                             ProviderAggregator $aggregator)
     {
         /*if (!in_array('ROLE_COMPANY', $this->getUser()->getRoles())) {
         }*/
+
         $company = $this->getUser()->getCompany();
         $em = $this->getDoctrine()->getManager();
         $company = $em->getRepository('App:Company')->find($company->getId());
@@ -51,13 +61,25 @@ class MyCompanyController extends AbstractController
                 $company->setLogoName($fileManager->uploadLogo($logoFile));
             }
 
+
+            $locationData = $aggregator->geocodeQuery(GeocodeQuery::create($company->getAddress()));
+            $location = $company->getLocation()
+                ->setAddress($locationData->first()->getFormattedAddress())
+                ->setCity($locationData->first()->getLocality())
+                ->setCountry($locationData->first()->getCountry())
+                ->setState($locationData->first()->getAdminLevels()->first()->getName())
+                ->setLat($locationData->first()->getCoordinates()->getLatitude())
+                ->setLon($locationData->first()->getCoordinates()->getLongitude());
+            $company->setLocation($location);
+            $company->setAddress($locationData->first()->getFormattedAddress());
+
             try {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($company);
                 $em->flush();
                 $this->addFlash('success', $translator->trans('Company details has been successfully saved.'));
             } catch (\Exception $e) {
-                $this->addFlash('danger', $translator->trans('An error occured when saving object.'));
+                $this->addFlash('danger', $translator->trans('Error: ' . $e->getMessage()));
             }
 
             return $this->redirectToRoute('my_company_settings');

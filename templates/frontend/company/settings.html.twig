@@ -3,6 +3,7 @@
 {% block title %}{% endblock %}
 
 {% block body %}
+
     <section class="clearfix job-bg ad-profile-page">
         <div class="container">
             <div class="breadcrumb-section">
@@ -41,30 +42,56 @@
                 {{ menuGenerator.companySideMenu()|raw }}
             </div><!-- ad-profile -->
 
-            {% include '_parts/messages.html.twig' %}
+            <div class="adpost-details post-resume">
+                <div class="row">
+                    <div class="col-lg-8 clearfix">
+                        {{ form_start(form) }}
 
-            {{ form_start(form) }}
-            <div class="profile job-profile">
-                <div class="user-pro-section">
-                    <!-- profile-details -->
-                    <div class="profile-details section">
-                        <h2>Profile Details</h2>
-                        {{ form(form) }}
-                    </div><!-- profile-details -->
+                        {% include '_parts/messages.html.twig' %}
 
-                    <!-- change-password -->
-                    <div class="change-password section">
-                        <h2>Change password</h2>
-                        <!-- form -->
-                        {{ form_row(userForm.plainPassword) }}
+                        <fieldset>
+                            <div class="section express-yourself">
+                                <h4>{{ 'Profile Details' | trans }}</h4>
+                                {{ form_row(form.logo, { 'attr': {'data-default-file': assetFinder.logoPath(app.user.company.logoName) ?? asset('frontend/images/no-company.png')} }) }}
+                                {{ form(form) }}
+                            </div><!-- postdetails -->
 
-                        <div class="buttons">
-                            <button type="submit" class="btn">Save</button>
+                            <div class="section company-information">
+                                <h4>{{ 'Password' | trans }}</h4>
+                                {{ form_row(userForm.plainPassword) }}
+                            </div><!-- career-objective -->
+
+                            <div class="buttons">
+                                <button type="submit" class="btn">{{ 'Update Profile' | trans }}</button>
+                            </div>
+                        </fieldset>
+
+                        {{ form_end(form) }}
+                    </div>
+
+                    <!-- quick-rules -->
+                    <div class="col-lg-4">
+                        <div class="section quick-rules">
+                            <h4>Quick rules</h4>
+                            <p class="lead">Posting an ad on <a href="#">jobs.com</a> is free! However, all ads must follow our rules:</p>
+
+                            <ul>
+                                <li>Make sure you post in the correct category.</li>
+                                <li>Do not post the same ad more than once or repost an ad within 48 hours.</li>
+                                <li>Do not upload pictures with watermarks.</li>
+                                <li>Do not post ads containing multiple items unless it's a package deal.</li>
+                                <li>Do not put your email or phone numbers in the title or description.</li>
+                                <li>Make sure you post in the correct category.</li>
+                                <li>Do not post the same ad more than once or repost an ad within 48 hours.</li>
+                                <li>Do not upload pictures with watermarks.</li>
+                                <li>Do not post ads containing multiple items unless it's a package deal.</li>
+                            </ul>
                         </div>
-                    </div><!-- change-password -->
-                </div><!-- user-pro-edit -->
+                    </div><!-- quick-rules -->
+                </div><!-- photos-ad -->
             </div>
-            {{ form_end(form) }}
+
+
         </div><!-- container -->
     </section><!-- ad-profile-page -->
 

@@ -1,7 +1,5 @@
 <?php
 
-namespace Daniyarsan\Helpers;
-
 namespace App\Service;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;

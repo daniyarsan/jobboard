@@ -40,8 +40,6 @@ class CompanyType extends AbstractType
             ->add('email', EmailType::class)
             ->add('website', TextType::class)
             ->add('phone', TextType::class)
-            ->add('country', CountryType::class)
-            ->add('state', TextType::class)
             ->add('address', TextType::class)
             ->add('description', TextareaType::class, [
                 'attr' => ['class' => 'wysiwyg']

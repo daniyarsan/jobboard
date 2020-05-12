@@ -61,16 +61,6 @@ class Company
     /**
      * @ORM\Column(type="string", length=190, nullable=true)
      */
-    private $country;
-
-    /**
-     * @ORM\Column(type="string", length=190, nullable=true)
-     */
-    private $state;
-
-    /**
-     * @ORM\Column(type="string", length=190, nullable=true)
-     */
     private $address;
 
     /**
@@ -97,6 +87,11 @@ class Company
      * @ORM\Column(name="modified", type="datetime", nullable=true)
      */
     private $modified;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Location", mappedBy="company", cascade={"persist", "remove"})
+     */
+    private $location;
 
     /**
      * @ORM\PrePersist
@@ -192,21 +187,15 @@ class Company
         return $this;
     }
 
-    public function getCountry(): ?string
+
+    public function getLocation(): ?Location
     {
-        return $this->country;
+        return $this->location;
     }
 
-    public function setCountry(?string $country): self
+    public function getLocationString()
     {
-        $this->country = $country;
-
-        return $this;
-    }
-
-    public function getLocation()
-    {
-        return $this->getCountry() . ', ' . $this->getState();
+        return $this->location->getAddressString();
     }
     public function getWebsite(): ?string
     {
@@ -321,22 +310,6 @@ class Company
     /**
      * @return mixed
      */
-    public function getState()
-    {
-        return $this->state;
-    }
-
-    /**
-     * @param mixed $state
-     */
-    public function setState($state): void
-    {
-        $this->state = $state;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getLogoName()
     {
         return $this->logoName;
@@ -348,5 +321,18 @@ class Company
     public function setLogoName($logoName): void
     {
         $this->logoName = $logoName;
+    }
+
+    public function setLocation(?Location $location): self
+    {
+        $this->location = $location;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newCompany = null === $location ? null : $this;
+        if ($location->getCompany() !== $newCompany) {
+            $location->setCompany($newCompany);
+        }
+
+        return $this;
     }
 }
