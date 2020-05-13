@@ -17,14 +17,12 @@
             <div class="ad-meta">
                 <ul>
                     <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ company.location }} </a></li>
-                    {# TODO: Make a category for companies #}
-{#                    <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>HR/Org. Development</a></li>#}
-                    <li><a href="#"><i class="fa fa-briefcase" aria-hidden="true"></i> {{ company.jobs|length }}</a></li>
+                    <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i></a></li>
                 </ul>
             </div><!-- ad-meta -->
         </div><!-- ad-info -->
         <div class="button">
-            <a href="{{ path('frontend_companies_details', {id: company.getId() }) }}" class="btn btn-primary">{{ 'View' | trans }}</a>
+            <a href="{{ path('frontend_jobs_index') }}" class="btn btn-primary">{{ company.jobs|length }} {{ 'Jobs' | trans }}</a>
         </div>
     </div><!-- item-info -->
 </div><!-- ad-item -->

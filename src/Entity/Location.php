@@ -148,4 +148,9 @@ class Location
         return $this->address;
     }
 
+    public function __toString()
+    {
+        return $this->getAddressString();
+    }
+
 }

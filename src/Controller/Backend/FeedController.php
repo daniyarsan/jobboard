@@ -213,6 +213,7 @@ class FeedController extends AbstractController
             'disciplines' => $xmlParser->getDisciplinesToAdd(),
             'specialties' => $xmlParser->getSpecialtiesToAdd()
         ]);
+
         $em = $this->getDoctrine()->getManager();
         $em->persist($feed);
         $em->flush($feed);
