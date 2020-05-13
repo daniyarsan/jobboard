@@ -84,6 +84,11 @@ class Feed
     private $lastImport;
 
     /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $metaUnique = [];
+
+    /**
      * @ORM\PrePersist
      */
     public function onPrePersist()
@@ -268,6 +273,18 @@ class Feed
     public function setLastImport(?\DateTimeInterface $lastImport): self
     {
         $this->lastImport = $lastImport;
+
+        return $this;
+    }
+
+    public function getMetaUnique(): ?array
+    {
+        return $this->metaUnique;
+    }
+
+    public function setMetaUnique(?array $metaUnique): self
+    {
+        $this->metaUnique = $metaUnique;
 
         return $this;
     }

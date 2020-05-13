@@ -12,8 +12,9 @@ class XmlParser
 {
     private $em;
     private $xmlReader;
-    private $feed;
     private $counter;
+    private $disciplinesToAdd = [];
+    private $specialtiesToAdd = [];
 
     public function __construct(EntityManagerInterface $em)
     {
@@ -52,10 +53,27 @@ class XmlParser
 
             /* Loop through part of xml and call Job methods for hydration */
             foreach ($mapperFields as $mapKey => $mapItem) {
+                $value = $xmlItem[$mapItem];
+                if ($mapItem == 'discipline') {
+                    $disciplineEntity = $this->em->getRepository('App:Discipline')->findDisciplineByKeyword($value);
+                    if (!$disciplineEntity) {
+                         $this->disciplinesToAdd[] = $value;
+                         continue;
+                    }
+                }
+
+                if ($mapItem == 'specialty') {
+                    $specialtyEntity = $this->em->getRepository('App:Category')->findCategoryByKeyword($value);
+                    if (!$specialtyEntity) {
+                        $this->specialtiesToAdd[] = $value;
+                        continue;
+                    }
+                }
+
                 if (!empty($mapperFields[$mapKey])) {
                     $method = 'set' . ucfirst($mapKey);
                     if (method_exists($job, $method)) {
-                        call_user_func([$job, $method], $xmlItem[$mapItem]);
+                        call_user_func([$job, $method], $value);
                     }
                 }
             }
@@ -80,14 +98,22 @@ class XmlParser
         return $this->counter;
     }
 
+    public function getSpecialtiesToAdd()
+    {
+        return $this->specialtiesToAdd;
+    }
+
+    public function getDisciplinesToAdd()
+    {
+        return $this->disciplinesToAdd;
+    }
+
     public static function getXmlAsArray($xmlString): ?array
     {
         $xml = self::getArrayFromXmlString($xmlString);
 
         return  array_keys($xml);
     }
-
-
 
     protected static function getArrayFromXmlString($xmlString)
     {

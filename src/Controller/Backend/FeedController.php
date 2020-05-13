@@ -209,6 +209,14 @@ class FeedController extends AbstractController
 
         $xmlParser->parse($feed);
 
+        $feed->setMetaUnique([
+            'disciplines' => $xmlParser->getDisciplinesToAdd(),
+            'specialties' => $xmlParser->getSpecialtiesToAdd()
+        ]);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($feed);
+        $em->flush($feed);
+
         $this->addFlash('success', $xmlParser->getCounter() . ' Jobs have been imported from the feed');
 
         return $this->redirectToRoute('admin_feeds_index');

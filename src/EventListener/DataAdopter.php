@@ -31,33 +31,36 @@ class DataAdopter
         if ($entity instanceof Job) {
             $job = $args->getObject();
             $disciplineString = $job->getDiscipline();
+
+            /** Store Discipline if exist */
             if (is_string($disciplineString)) {
                 $disciplineEntity = $this->manager->getRepository('App:Discipline')->findDisciplineByKeyword($disciplineString);
-                $job->setDiscipline($disciplineEntity);
+                if ($disciplineEntity) {
+                    $job->setDiscipline($disciplineEntity);
+                }
             }
 
-            /** Store Category if exist or Create new Category if doesnt exist */
+            /** Store Category if exist */
             $categoryName = $job->getCategoryString();
             if (!empty($categoryName)) {
                 $categories = $this->manager->getRepository('App:Category')->findCategoryByKeyword($categoryName);
 
                 if ($categories) {
                     $job->setCategoriesCollection(new ArrayCollection($categories));
-                } else {
-                    $category = new Category();
-                    $category->setName($categoryName);
-                    $job->addCategory($category);
-                    $this->manager->persist($category);
-                    $this->manager->flush();
                 }
+//                else {
+//                    $category = new Category();
+//                    $category->setName($categoryName);
+//                    $job->addCategory($category);
+//                    $this->manager->persist($category);
+//                    $this->manager->flush();
+//                }
             }
-            /** Store Category if exist or Create new Category if doesnt exist */
 
             /** Transform short State into Long State during import */
             if (preg_match('/^[A-Z]{2}$/', $job->getState())) {
                 $job->setState((States::list())[ $job->getState() ]);
             }
-            /** Transform short State into Long State during import */
         }
 
         return;
