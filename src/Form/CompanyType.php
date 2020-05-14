@@ -41,6 +41,7 @@ class CompanyType extends AbstractType
             ->add('website', TextType::class)
             ->add('phone', TextType::class)
             ->add('address', TextType::class)
+            ->add('youtube', TextType::class)
             ->add('description', TextareaType::class, [
                 'attr' => ['class' => 'wysiwyg']
             ]);

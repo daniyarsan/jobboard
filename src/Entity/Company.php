@@ -94,6 +94,16 @@ class Company
     private $location;
 
     /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $glassdoor = [];
+
+    /**
+     * @ORM\Column(type="string", length=190, nullable=true)
+     */
+    private $youtube;
+
+    /**
      * @ORM\PrePersist
      */
     public function onPrePersist()
@@ -332,6 +342,35 @@ class Company
         if ($location->getCompany() !== $newCompany) {
             $location->setCompany($newCompany);
         }
+
+        return $this;
+    }
+
+    public function getGlassdoor(): ?array
+    {
+        return $this->glassdoor;
+    }
+
+    public function setGlassdoor(?array $glassdoor): self
+    {
+        $this->glassdoor = $glassdoor;
+
+        return $this;
+    }
+
+    public function getYoutube(): ?string
+    {
+        return $this->youtube;
+    }
+
+    public function setYoutube(?string $youtube): self
+    {
+        if ($youtube) {
+            preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $youtube, $match);
+            $youtube = $match[1];
+        }
+
+        $this->youtube = $youtube;
 
         return $this;
     }

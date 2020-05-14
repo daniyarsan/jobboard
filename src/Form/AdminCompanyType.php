@@ -39,7 +39,8 @@ class AdminCompanyType extends AbstractType
             ->add('email', EmailType::class)
             ->add('website', TextType::class)
             ->add('phone', TextType::class)
-            ->add('address', CountryType::class)
+            ->add('address', TextType::class)
+            ->add('youtube',TextType::class)
             ->add('description', TextareaType::class)
             ->add('save', SubmitType::class)
             ->add('saveAndExit', SubmitType::class, ['label' => 'Save and Exit']);

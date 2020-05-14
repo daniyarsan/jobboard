@@ -42,10 +42,17 @@ class JobRepository extends ServiceEntityRepository
             ->setParameter('filterKeyword', '%' . $request->query->get('keyword') . '%');
         }
 
-        // By Company
+        // By Company Id
         if (!empty($request->query->get('company'))) {
             $qb->andWhere('job.company = :companyId')/*OR job.description LIKE :filterKeyword*/
             ->setParameter('companyId', $request->query->get('company'));
+        }
+
+        // By Company Name
+        if (!empty($request->query->get('agency'))) {
+            $qb->leftJoin('job.company', 'company')
+                ->andWhere('company.name = :agency')
+            ->setParameter('agency', $request->query->get('agency'));
         }
 
         // Categories

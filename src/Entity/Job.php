@@ -257,6 +257,7 @@ class Job
         return $this->state;
     }
 
+
     /**
      * @param mixed $state
      */

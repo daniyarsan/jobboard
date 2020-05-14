@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Drivers\CompanyDriver;
 use App\Entity\Job;
 use App\Entity\Location;
 use App\Form\CompanyType;
@@ -38,10 +39,12 @@ class MyCompanyController extends AbstractController
     /**
      * @Route("/settings", name="_settings")
      */
-    public function settings(Request $request,
-                             TranslatorInterface $translator,
-                             FileManager $fileManager,
-                             ProviderAggregator $aggregator)
+    public function settings(
+        Request $request,
+        CompanyDriver $driver,
+        TranslatorInterface $translator,
+        FileManager $fileManager
+    )
     {
         /*if (!in_array('ROLE_COMPANY', $this->getUser()->getRoles())) {
         }*/
@@ -56,27 +59,11 @@ class MyCompanyController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /* Logo Upload */
             if ($logoFile = $form[ 'logo' ]->getData()) {
                 $company->setLogoName($fileManager->uploadLogo($logoFile));
             }
-
-
-            $locationData = $aggregator->geocodeQuery(GeocodeQuery::create($company->getAddress()));
-            $location = $company->getLocation()
-                ->setAddress($locationData->first()->getFormattedAddress())
-                ->setCity($locationData->first()->getLocality())
-                ->setCountry($locationData->first()->getCountry())
-                ->setState($locationData->first()->getAdminLevels()->first()->getName())
-                ->setLat($locationData->first()->getCoordinates()->getLatitude())
-                ->setLon($locationData->first()->getCoordinates()->getLongitude());
-            $company->setLocation($location);
-            $company->setAddress($locationData->first()->getFormattedAddress());
-
             try {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($company);
-                $em->flush();
+                $driver->saveCompany($company);
                 $this->addFlash('success', $translator->trans('Company details has been successfully saved.'));
             } catch (\Exception $e) {
                 $this->addFlash('danger', $translator->trans('Error: ' . $e->getMessage()));

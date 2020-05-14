@@ -68,6 +68,9 @@
                                 <i class="mdi mdi-play"></i></a>
                         {% endif %}
                         <a data-toggle="modal" href="#delete-{{ company.id }}" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+
+                        <a href="{{ path('admin_companies_glassdoor', {'id': company.id}) }}" class="action-icon">
+                            <i class="mdi mdi-glassdoor"></i></a>
                     </td>
                 </tr>
                 {{ dialogs.confirm('delete-' ~ company.id, 'Confirmation', 'The selected item will be removed permanently. Are you sure?', '', path('admin_companies_set', {id: company.id, action: 'remove'})) }}

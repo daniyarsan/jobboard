@@ -27,12 +27,18 @@
 
                     <div class="user">
                         <h2>{{ company.name }}</h2>
+                        <img class="rating-icon" src="{{ asset('frontend/images/glassdoor.svg') }}" alt="">
+                        <div class="ratings">
+                            <div class="empty-stars"></div>
+                            <div class="full-stars" style="width:{{ (company.glassdoor.overallRating/5)*100 }}%"></div>
+                        </div>
+                        <span>{{ company.glassdoor.numberOfRatings }} reviews</span>
 {#                        <h5><i class="fa fa-star" aria-hidden="true"></i></h5>#}
                     </div>
 
                     <div class="favorites-user">
                         <div class="my-ads">
-                            <a href="{{ path('frontend_jobs_index') }}">{{ company.jobs|length }}<small>{{ 'jobs' | trans }}</small></a>
+                            <a href="{{ path('frontend_jobs_index', {'agency' : company.name}) }}">{{ company.jobs|length }}<small>{{ 'Jobs' | trans }}</small></a>
                         </div>
                         <div class="favorites">
                             <a href="{{ path('frontend_main_apply') }}">0<small>{{ 'Applied' | trans }}</small></a>
@@ -56,11 +62,13 @@
                             </div>
                         </div>
 
-                        <div class="section video">
-                            <div class="embed-responsive embed-responsive-16by9">
-                                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/qN3OueBm9F4" allowfullscreen></iframe>
+                        {% if company.youtube %}
+                            <div class="section video">
+                                <div class="embed-responsive embed-responsive-16by9">
+                                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ company.youtube }}" allowfullscreen></iframe>
+                                </div>
                             </div>
-                        </div>
+                        {% endif %}
                     </div>
 
                     <div class="col-sm-4">
@@ -70,6 +78,7 @@
                                 <li><span class="icon"><i class="fa fa-phone" aria-hidden="true"></i></span> <a href="tel:{{ company.phone }}">{{ company.phone }}</a></li>
                                 <li><span class="icon"><i class="fa fa-globe" aria-hidden="true"></i></span> <a href="{{ company.website }}">Website</a></li>
                                 <li><span class="icon"><i class="fa fa-envelope-o" aria-hidden="true"></i></span> <a href="emailto:{{ company.email }}">{{ company.email }}</a></li>
+                                <li><span class="icon"><i class="icofont icofont-bank" aria-hidden="true"></i></span> {{ company.glassdoor.industryName }}</li>
                             </ul>
                         </div>
 

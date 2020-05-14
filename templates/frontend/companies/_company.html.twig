@@ -17,7 +17,7 @@
             <div class="ad-meta">
                 <ul>
                     <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ company.location }} </a></li>
-                    <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i></a></li>
+                    <li><i class="fa fa-tags" aria-hidden="true"></i> {% if company.glassdoor.industry is defined %}{{ company.glassdoor.industry }}{% endif %}</li>
                 </ul>
             </div><!-- ad-meta -->
         </div><!-- ad-info -->

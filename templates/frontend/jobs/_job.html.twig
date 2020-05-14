@@ -18,15 +18,13 @@
                 <ul>
                     <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ job.country }}, {{ job.state }} </a></li>
                     <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>{{ job.discipline }} </a></li>
-                    <li>
-                        <a href="{{ path('frontend_companies_details', {id: job.company.getId() }) }}">
-                            <i class="fa fa-university" aria-hidden="true"></i>
-                            {{ job.company }}
-                        </a>
-                    </li>
+                    <li><a href="#"><i class="fa fa-calendar" aria-hidden="true"></i>{{ job.created|date('d/m/Y') }} </a></li>
                 </ul>
             </div><!-- ad-meta -->
         </div><!-- ad-info -->
+        <div class="button">
+            <a href="{{ path('frontend_jobs_details', {'id' : job.id}) }}" class="btn btn-primary">{{ 'Apply Now' | trans }}</a>
+        </div>
     </div><!-- item-info -->
 </div><!-- job-ad-item -->
 

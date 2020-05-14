@@ -36,11 +36,10 @@
                             <span><span><a href="#" class="title">{{ job.title }}</a></span></span>
                             <div class="ad-meta">
                                 <ul>
-                                    <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ job.location }}</a></li>
+                                    <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ job.locationString }}</a></li>
 {#                                    <li><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i>Full Time</a></li>#}
                                     <li><i class="fa fa-building-o" aria-hidden="true"></i><a href="{{ path('frontend_companies_details', {id : job.company.id}) }}"> {{ job.company.name }}</a></li>
-{#                                    <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>HR/Org. Development</a></li>#}
-                                    <li><i class="fa fa-clock-o" aria-hidden="true"></i>  {{ job.created|date('D m Y') }}</li>
+                                    <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>HR/Org. Development</a></li>
                                 </ul>
                             </div><!-- ad-meta -->
                         </div><!-- ad-info -->
@@ -76,10 +75,10 @@
                                 </ul>
                             </div>
                             <div class="section company-info">
-                                <h1>Company Info</h1>
+                                <h1>{{ 'About ' | trans }} {{ job.company.name }}</h1>
                                 <ul>
                                     <li>Compnay Name: <a href="#">{{ job.company.name }}c</a></li>
-                                    <li>Address: {{ job.company.state }}</li>
+                                    <li>Address: {{ job.company.address }}</li>
                                     <li>Compnay SIze:  2k Employee</li>
                                     <li>Industry: <a href="#">Technology</a></li>
                                     <li>Phone: +1234 567 8910</li>

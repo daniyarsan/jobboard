@@ -6,29 +6,15 @@ namespace App\Service;
 class GlassDoor
 {
 
-    public $app;
-    //public static $url = "http://api.glassdoor.com/api/api.htm?v=1&format=json&t.p=53483&t.k=d1JJqb9N42k&action=employers&q=pharmaceuticals&userip=128.127.80.167&useragent=Mozilla/%2F4.0";
     public $urlApi = "http://api.glassdoor.com/api/api.htm";
-    public $limit = 25;
-    public $radius = 200;
-    public $noIP = 4;
-    public $testLimit = 0;
-    private $output = false;
-    private $totalResults;
-    private $totalCount = 0;
     private $publisherID = '53483';
     private $publisherKey = 'd1JJqb9N42k';
+    //public static $url = "http://api.glassdoor.com/api/api.htm?v=1&format=json&t.p=53483&t.k=d1JJqb9N42k&action=employers&q=pharmaceuticals&userip=128.127.80.167&useragent=Mozilla/%2F4.0";
+    public $limit = 25;
+    public $radius = 200;
 
 
-    public function __construct()
-    {
-        $config = new \Glassdoor\Config('53483', 'd1JJqb9N42k', 'http://api.glassdoor.com/api/api.htm', 'json');
-        $conn = new \Glassdoor\Connection($config);
-        $action = new \Glassdoor\Action\Company();
-        $action->addparam('query', 'American Mobile Healthcare');
-        $response = $conn->call($action);
-        dump($response); exit;
-    }
+
 
     public function urlConfig($values)
     {

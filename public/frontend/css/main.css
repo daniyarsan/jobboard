@@ -1754,7 +1754,6 @@ a.verified i {
 }
 
 .job-profile .user h2 {
-    font-weight: 300;
     color: #002056;
     margin-top: 30px;
 }
@@ -1811,6 +1810,7 @@ a.verified i {
 .job-profile .user-menu li a {
     color: #002056;
     font-size: 16px;
+    text-transform: uppercase;
 }
 
 .job-profile .user-menu li.active a,
@@ -2160,7 +2160,8 @@ input:-moz-placeholder {
 }
 
 .banner-job h1 {
-    font-size: 50px;
+    font-size: 35px;
+    line-height: 55px;
 }
 
 .banner-job h3 {
@@ -2316,9 +2317,9 @@ input:-moz-placeholder {
 
 .job-ad-item .btn.btn-primary {
     margin-top: 15px;
-    width: 150px;
-    height: 50px;
-    font-size: 18px;
+    width: 130px;
+    height: 40px;
+    font-size: 13px;
 }
 
 .workshop-traning {
@@ -3194,12 +3195,12 @@ input, select, a, .transition,
 
 @font-face {
     font-family: 'MyriadPro-Regular', sans-serif;
-    src: url('fonts/MyriadPro-Regular.eot.html');
-    src: url('fonts/MyriadPro-Regular.eot-.html#iefix') format('embedded-opentype'),
-    url('fonts/MyriadPro-Regular.woff2.html') format('woff2'),
-    url('fonts/MyriadPro-Regular.woff.html') format('woff'),
-    url('fonts/MyriadPro-Regular.ttf.html') format('truetype'),
-    url('fonts/MyriadPro-Regular.svg.html#MyriadPro-Regular') format('svg');
+    src: url('../fonts/MyriadPro-Regular.eot.html');
+    src: url('../fonts/MyriadPro-Regular.eot-.html#iefix') format('embedded-opentype'),
+    url('../fonts/MyriadPro-Regular.woff2.html') format('woff2'),
+    url('../fonts/MyriadPro-Regular.woff.html') format('woff'),
+    url('../fonts/MyriadPro-Regular.ttf.html') format('truetype'),
+    url('../fonts/MyriadPro-Regular.svg.html#MyriadPro-Regular') format('svg');
     font-weight: normal;
     font-style: normal;
 
@@ -3207,12 +3208,12 @@ input, select, a, .transition,
 
 @font-face {
     font-family: 'Devanagari-Regular', sans-serif;
-    src: url('fonts/devanagari-normal-webfont.eot.html');
-    src: url('fonts/devanagari-normal-webfont.eot-.html#iefix') format('embedded-opentype'),
-    url('fonts/devanagari-normal-webfont.woff2.html') format('woff2'),
-    url('fonts/devanagari-normal-webfont.woff.html') format('woff'),
-    url('fonts/devanagari-normal-webfont.ttf.html') format('truetype'),
-    url('fonts/devanagari-normal-webfont.svg.html#devanagarinormal') format('svg');
+    src: url('../fonts/devanagari-normal-webfont.eot.html');
+    src: url('../fonts/devanagari-normal-webfont.eot-.html#iefix') format('embedded-opentype'),
+    url('../fonts/devanagari-normal-webfont.woff2.html') format('woff2'),
+    url('../fonts/devanagari-normal-webfont.woff.html') format('woff'),
+    url('../fonts/devanagari-normal-webfont.ttf.html') format('truetype'),
+    url('../fonts/devanagari-normal-webfont.svg.html#devanagarinormal') format('svg');
     font-weight: normal;
     font-style: normal;
 
@@ -3579,3 +3580,51 @@ select::-ms-expand {
     word-break: normal;
 }
 
+
+.ratings {
+    position: relative;
+    display: inline-block;
+    color: #b1b1b1;
+    overflow: hidden;
+    line-height: 30px;
+    vertical-align: middle;
+}
+
+.mdi-glassdoor {
+    font-size: 20px;
+    color: #7CB227;
+}
+
+.full-stars{
+    position: absolute;
+    left: 0;
+    top: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #7CB227;
+}
+.rating-icon {
+    height: 30px;
+}
+
+.empty-stars:before,
+.full-stars:before {
+    content: "\2605\2605\2605\2605\2605";
+    font-size: 14pt;
+}
+
+.empty-stars:before {
+    -webkit-text-stroke: 1px #848484;
+}
+
+.full-stars:before {
+    -webkit-text-stroke: 1px #7CB227;
+}
+
+/* Webkit-text-stroke is not supported on firefox or IE */
+/* Firefox */
+@-moz-document url-prefix() {
+    .full-stars{
+        color: #7CB227;
+    }
+}

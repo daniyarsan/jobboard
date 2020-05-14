@@ -2,6 +2,7 @@
 
 namespace App\Controller\Backend;
 
+use App\Drivers\CompanyDriver;
 use App\Service\GlassDoor;
 use App\Entity\Company;
 use App\Entity\User;
@@ -115,27 +116,26 @@ class CompaniesController extends AbstractController
      * @ParamConverter("company", class="App\Entity\Company")
      * @Template("admin/companies/edit.html.twig")
      */
-    public function edit(Request $request, Company $company, TranslatorInterface $translator, FileManager $fileManager)
+    public function edit(
+        Request $request,
+        Company $company,
+        CompanyDriver $driver,
+        FileManager $fileManager,
+        TranslatorInterface $translator
+    )
     {
         $form = $this->createForm(AdminCompanyType::class, $company);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($logoFile = $form[ 'logo' ]->getData()) {
+                $company->setLogoName($fileManager->uploadLogo($logoFile));
+            }
             try {
-                $company = $form->getData();
-
-                /* Logo Upload */
-                if ($logoFile = $form[ 'logo' ]->getData()) {
-                    $company->setLogoName($fileManager->uploadLogo($logoFile));
-                }
-
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($company);
-                $em->flush();
-
-                $this->addFlash('success', $translator->trans('Company has been successfully updated.'));
+                $driver->saveCompany($company);
+                $this->addFlash('success', $translator->trans('Company details has been successfully saved.'));
             } catch (\Exception $e) {
-                $this->addFlash('danger', $translator->trans('An error occurred when saving object.'));
+                $this->addFlash('danger', $translator->trans('Error: ' . $e->getMessage()));
             }
 
             if ($form->get('saveAndExit')->isClicked()) {
@@ -144,7 +144,10 @@ class CompaniesController extends AbstractController
             return $this->redirect($this->generateUrl('admin_companies_edit', ['id' => $company->getId()]));
         }
 
-        return ['form' => $form->createView()];
+        return [
+            'form' => $form->createView(),
+            'company' => $company
+        ];
     }
 
 
@@ -215,10 +218,17 @@ class CompaniesController extends AbstractController
      *
      * @Route("/companies/glassdoor/{id}", name="_glassdoor")
      */
-    public function glassdoor(Company $company, GlassDoor $glassDoor)
+    public function glassdoor(Company $company, GlassDoor $glassDoor, TranslatorInterface $translator)
     {
-        $cmp = $glassDoor->getCompany($company->getName());
-        dump($cmp); exit;
+        $companyDetails = $glassDoor->getCompany($company->getName());
+        $company->setGlassdoor($companyDetails);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($company);
+        $em->flush();
+
+        $this->addFlash('success', $translator->trans('Company has uploaded glassdoor details.'));
+
+        return $this->redirectToRoute('admin_companies_edit', ['id' => $company->getId()]);
     }
 
 
