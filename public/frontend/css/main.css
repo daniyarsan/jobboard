@@ -2547,14 +2547,14 @@ input:-moz-placeholder {
 
 .job-short-info li,
 .company-info li {
-    color: #002056;
+    color: #818181;
     margin-bottom: 15px;
     font-size: 16px;
 }
 
 .company-info li a,
 .job-short-info li a {
-    color: #002056;
+    color: #818181;
 }
 
 .job-short-info li {
@@ -2589,7 +2589,7 @@ input:-moz-placeholder {
 
 .job-short-info li:last-child {
     line-height: 25px;
-    margin: 0;
+    /*margin: 0;*/
 }
 
 .company-info .share-social li {
