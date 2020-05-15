@@ -2297,7 +2297,7 @@ input:-moz-placeholder {
 
 
 .job-ad-item .item-image {
-    width: 150px;
+    /*width: 150px;*/
     /*height: 85px;*/
     border: 1px solid #f3f3f3;
     overflow: hidden;
@@ -2314,9 +2314,9 @@ input:-moz-placeholder {
 }
 
 .job-ad-item .btn.btn-primary {
+    font-size: 15px;
     /*margin-top: 15px;*/
-    font-size: 16px;
-    width: 150px;
+    /*width: 150px;*/
 }
 
 .workshop-traning {
