@@ -21,7 +21,6 @@
                         <span class="fas fa-sort-alpha-{% if entities.getParams.direction == 'desc' %}down{% else %}up{% endif %}"></span>
                     {% endif %}
                 </th>
-                <th>{{ 'Fields to add' | trans }}</th>
                 <th>{{ 'Last Imported'|trans }}</th>
                 <th style="width: 25%">{{ 'Action'|trans }}</th>
             </tr>
@@ -37,12 +36,6 @@
                     </td>
                     <td class="table-user">
                         <a href="{{ path('admin_feeds_edit', {'id': feed.id, 'return_url': path('admin_feeds_index') ~ query_string()}) }}" class="text-body font-weight-semibold">{{ feed.name }}</a>
-                    </td>
-                    <td>
-                        {% for key, field in feed.metaUnique %}
-                            <h5>{{ key }}</h5>
-                            {{ field|join(', ') }}
-                        {% endfor %}
                     </td>
                     <td>{{ feed.created|date("d/m/Y") }} </td>
                     <td>

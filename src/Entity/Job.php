@@ -95,6 +95,36 @@ class Job
 
     private $categoryString;
 
+    /**
+     * @ORM\Column(type="string", length=190, nullable=true)
+     */
+    private $jobType;
+
+    /**
+     * @ORM\Column(type="string", length=190, nullable=true)
+     */
+    private $shift;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $startDate;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $benefits;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $requirements;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $refId;
+
 
     public function __construct()
     {
@@ -376,6 +406,78 @@ class Job
     public function getLocationString()
     {
         return sprintf('%s, %s', $this->country, $this->state);
+    }
+
+    public function getJobType(): ?string
+    {
+        return $this->jobType;
+    }
+
+    public function setJobType(?string $jobType): self
+    {
+        $this->jobType = $jobType;
+
+        return $this;
+    }
+
+    public function getShift(): ?string
+    {
+        return $this->shift;
+    }
+
+    public function setShift(?string $shift): self
+    {
+        $this->shift = $shift;
+
+        return $this;
+    }
+
+    public function getStartDate(): ?\DateTimeInterface
+    {
+        return $this->startDate;
+    }
+
+    public function setStartDate(?\DateTimeInterface $startDate): self
+    {
+        $this->startDate = $startDate;
+
+        return $this;
+    }
+
+    public function getBenefits(): ?string
+    {
+        return $this->benefits;
+    }
+
+    public function setBenefits(?string $benefits): self
+    {
+        $this->benefits = $benefits;
+
+        return $this;
+    }
+
+    public function getRequirements(): ?string
+    {
+        return $this->requirements;
+    }
+
+    public function setRequirements(?string $requirements): self
+    {
+        $this->requirements = $requirements;
+
+        return $this;
+    }
+
+    public function getRefId(): ?int
+    {
+        return $this->refId;
+    }
+
+    public function setRefId(?int $refId): self
+    {
+        $this->refId = $refId;
+
+        return $this;
     }
 
 }

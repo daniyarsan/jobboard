@@ -54,21 +54,6 @@ class XmlParser
             /* Loop through part of xml and call Job methods for hydration */
             foreach ($mapperFields as $mapKey => $mapItem) {
                 $value = $xmlItem[$mapItem];
-                if ($mapItem == 'discipline') {
-                    $disciplineEntity = $this->em->getRepository('App:Discipline')->findDisciplineByKeyword($value);
-                    if (!$disciplineEntity) {
-                         $this->disciplinesToAdd[] = $value;
-                         continue;
-                    }
-                }
-
-                if ($mapItem == 'specialty') {
-                    $specialtyEntity = $this->em->getRepository('App:Category')->findCategoryByKeyword($value);
-                    if (!$specialtyEntity) {
-                        $this->specialtiesToAdd[] = $value;
-                        continue;
-                    }
-                }
 
                 if (!empty($mapperFields[$mapKey])) {
                     $method = 'set' . ucfirst($mapKey);
@@ -138,5 +123,17 @@ class XmlParser
          return false;
         /*$xml = simplexml_load_string($xmlString, 'SimpleXMLElement', LIBXML_NOCDATA);
         return $xml->getName();*/
+    }
+
+    public function checkMissingValues(string $field): ?array
+    {
+//        if ($mapItem == 'discipline') {
+//            $disciplineEntity = $this->em->getRepository('App:Discipline')->findDisciplineByKeyword($value);
+//            if (!$disciplineEntity) {
+//                $this->disciplinesToAdd[] = $value;
+//                continue;
+//            }
+//        }
+
     }
 }
