@@ -101,7 +101,6 @@ class Job
         $this->categories = new ArrayCollection();
     }
 
-
     /**
      * @ORM\PrePersist
      */

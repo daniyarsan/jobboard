@@ -4,15 +4,15 @@
 
 {% block body %}
     <section class="job-bg page job-details-page">
-        <div class="container">
+        <div class="container-fluid">
 
             <div class="breadcrumb-section">
-                <ol class="breadcrumb">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="job-list.html">Engineer/Architects</a></li>
-                    <li>UI & UX Designer</li>
-                </ol><!-- breadcrumb -->
-                <h2 class="title">Creative & Design</h2>
+                {{ breadcrumbs.display('frontend/_parts/breadcrumbs.html.twig', {
+                    'frontend_main_index' : 'Home' | trans,
+                    'frontend_jobs_index' : 'Jobs' | trans,
+                } ) }}
+
+                <h2 class="title">{{ job.company.name }} {{ 'jobs' | trans }}</h2>
             </div><!-- breadcrumb -->
 
             <div class="job-details">
@@ -20,78 +20,88 @@
 
                 <div class="section job-ad-item">
                     <div class="item-info">
-                        <div class="item-image-box">
-                            <div class="item-image">
-                                {% if job.company.logoName %}
-                                    <a href="{{ path('frontend_companies_details', {id: job.company.getId() }) }}">
-                                        <img src="{{ assetFinder.logoPath(job.company.logoName) }}" class="img-fluid" alt="">
-                                    </a>
-                                {% else %}
-                                    <img src="{{ asset('images/no-company.png') }}" class="img-fluid" alt="">
-                                {% endif %}
-                            </div><!-- item-image -->
+                        <div class="ad-info">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <span>
+                                        <a href="#" class="title">{{ job.title }}</a>
+                                    </span>
+                                    <div class="ad-meta">
+                                        <ul>
+                                            <li><i class="fa fa-calendar" aria-hidden="true"></i> {{ date( job.created|date ).diff( date() ).format('%a') }} {{ 'day ago' | trans }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="button">
+                                        <a href="{{ path('application_job', {'id' : job.id}) }}" class="btn btn-primary" > {{ 'Apply Now' | trans }}</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="ad-info">
-                            <span><span><a href="#" class="title">{{ job.title }}</a></span></span>
-                            <div class="ad-meta">
-                                <ul>
-                                    <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ job.locationString }}</a></li>
-{#                                    <li><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i>Full Time</a></li>#}
-                                    <li><i class="fa fa-building-o" aria-hidden="true"></i><a href="{{ path('frontend_companies_details', {id : job.company.id}) }}"> {{ job.company.name }}</a></li>
-                                    <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>HR/Org. Development</a></li>
-                                </ul>
-                            </div><!-- ad-meta -->
-                        </div><!-- ad-info -->
+
                     </div><!-- item-info -->
-                    <div class="social-media">
-                        <div class="button">
-                            <a href="#" class="btn btn-primary" data-url="{{ path('application_job', {'id' : job.id}) }}" data-toggle="modal" data-target="#apply-popup-id"><i class="fa fa-briefcase" aria-hidden="true"></i> Apply Now</a>
-                            <a href="#" class="btn btn-primary bookmark"><i class="fa fa-bookmark-o" aria-hidden="true"></i>Bookmark</a>
-                        </div>
-                    </div>
+
                 </div><!-- job-ad-item -->
 
                 <div class="job-details-info">
                     <div class="row">
                         <div class="col-md-8">
                             <div class="section job-description">
-                                <div class="description-info">
-                                    <h1>Description</h1>
+                                <div class="job-description-section job-short-info">
+                                    <h2>{{ 'Details' | trans }} </h2>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <ul>
+                                                <li><span class="icon"><i class="fa fa-stethoscope" aria-hidden="true"></i></span> {{ job.categories|join(', ') }}</li>
+                                                <li><span class="icon"><i class="fa fa-map-marker" aria-hidden="true"></i></span> {{ job.locationString }}</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <ul>
+                                                <li><a href="#"><i class="fa fa-user-md" aria-hidden="true"></i> {{ job.discipline }}</a></li>
+                                            </ul>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="job-description-section description-info">
+                                    <h2>{{ 'About Job' | trans }} </h2>
+
                                     {{ job.description|raw }}
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-4">
-                            <div class="section job-short-info">
-                                <h1>Short Info</h1>
-                                <ul>
-                                    <li><span class="icon"><i class="fa fa-bolt" aria-hidden="true"></i></span>Posted: 1 day ago</li>
-                                    <li><span class="icon"><i class="fa fa-user-plus" aria-hidden="true"></i></span> Job poster: <a href="#">Lance Ladaga</a></li>
-                                    <li><span class="icon"><i class="fa fa-industry" aria-hidden="true"></i></span>Industry: <a href="#">Marketing and Advertising</a></li>
-                                    <li><span class="icon"><i class="fa fa-line-chart" aria-hidden="true"></i></span>Experience: <a href="#">Entry level</a></li>
-                                    <li><span class="icon"><i class="fa fa-key" aria-hidden="true"></i></span>Job function: Advertising,Design, Art/Creative</li>
-                                </ul>
-                            </div>
+                        <div class="col-md-4 side-sections">
                             <div class="section company-info">
-                                <h1>{{ 'About ' | trans }} {{ job.company.name }}</h1>
+
+                                <div class="item-image-box">
+                                    <div class="item-image">
+                                        {% if job.company.logoName %}
+                                            <a href="{{ path('frontend_companies_details', {id: job.company.getId() }) }}">
+                                                <img src="{{ assetFinder.logoPath(job.company.logoName) }}" class="img-fluid" alt="">
+                                            </a>
+                                        {% else %}
+                                            <img src="{{ asset('images/no-company.png') }}" class="img-fluid" alt="">
+                                        {% endif %}
+                                    </div><!-- item-image -->
+                                </div>
+
                                 <ul>
-                                    <li>Compnay Name: <a href="#">{{ job.company.name }}c</a></li>
-                                    <li>Address: {{ job.company.address }}</li>
-                                    <li>Compnay SIze:  2k Employee</li>
-                                    <li>Industry: <a href="#">Technology</a></li>
-                                    <li>Phone: +1234 567 8910</li>
-                                    <li>Email: <a href="#"><span class="__cf_email__" data-cfemail="422b2c242d0226302d32202d3a6c212d2f">[email&#160;protected]</span></a></li>
-                                    <li>Website: <a href="#">www.dropbox.com</a></li>
+                                    <li><i class="fa fa-industry"></i> <a href="#">{{ job.company.name }}</a></li>
+                                    <li><i class="fa fa-map-marker"></i> {{ job.company.address }}</li>
+                                    <li><i class="fa fa-phone"></i> {{ job.company.phone }}</li>
+                                    <li><i class="fa fa-globe"></i> <a href="{{ job.company.website }}">{{ 'Website' | trans }}</a></li>
                                 </ul>
-                                <ul class="share-social">
-                                    <li><a href="#"><i class="fa fa-facebook-official" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-twitter-square" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a></li>
-                                </ul>
+
+                                <a href="{{ path('frontend_companies_details', {'id' : job.company.id}) }}" class="btn btn-success btn-block">{{ 'About company' | trans }}</a>
                             </div>
+
                         </div>
                     </div><!-- row -->
                 </div><!-- job-details-info -->
@@ -109,7 +119,7 @@
 {% block javascript %}
     <script>
         /* Dynamically set action of apply modal after apply button click */
-        $('#apply-popup-id').on('show.bs.modal', function(e) {
+        $('#apply-popup-id').on('show.bs.modal', function (e) {
             var url = $(e.relatedTarget).data('url');
             $(this).find('form').attr('action', url);
         });

@@ -2248,7 +2248,7 @@ input:-moz-placeholder {
 
 .job-ad-item .item-image-box,
 .job-ad-item .ad-info {
-    float: left;
+    /*float: left;*/
 }
 
 .job-ad-item .ad-info {
@@ -2294,9 +2294,7 @@ input:-moz-placeholder {
     color: #00a651;
 }
 
-.job-ad-item .button {
-    float: right;
-}
+
 
 .job-ad-item .item-image {
     width: 150px;
@@ -2316,10 +2314,9 @@ input:-moz-placeholder {
 }
 
 .job-ad-item .btn.btn-primary {
-    margin-top: 15px;
-    width: 130px;
-    height: 40px;
-    font-size: 13px;
+    /*margin-top: 15px;*/
+    font-size: 16px;
+    width: 150px;
 }
 
 .workshop-traning {
@@ -2432,7 +2429,7 @@ input:-moz-placeholder {
 }
 
 .job-details .job-ad-item.section {
-    padding-bottom: 50px;
+    padding-bottom: 25px;
 }
 
 .job-details .ad-info {
@@ -2442,7 +2439,7 @@ input:-moz-placeholder {
 .job-details .ad-info span,
 .job-details .ad-info span a {
     display: inline-block;
-    font-size: 30px;
+    font-size: 22px;
 }
 
 .social-media {
@@ -2525,6 +2522,17 @@ input:-moz-placeholder {
     line-height: 22px;
 }
 
+.job-description .job-description-section {
+    margin-top: 20px;
+}
+
+.job-description.section h2 {
+    border-bottom: 1px solid rgba(0, 32, 86, 0.41);
+    padding: 10px 0;
+    margin-bottom: 25px;
+    font-size: 20px;
+}
+
 .job-details-info h1 {
     font-size: 18px;
     font-weight: 500;
@@ -2535,10 +2543,6 @@ input:-moz-placeholder {
 .description-info span {
     margin-bottom: 20px;
     display: block;
-}
-.description-info h2 {
-    border-bottom: 1px solid rgba(0, 32, 86, 0.41);
-    padding: 10px 0;
 }
 
 .job-short-info li,
@@ -3627,4 +3631,25 @@ select::-ms-expand {
     .full-stars{
         color: #7CB227;
     }
+}
+
+.side-sections .button {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.side-sections .button a {
+    display: block;
+    text-transform: uppercase;
+    font-size: 20px;
+}
+.side-sections .company-info .item-image-box {
+    margin: 0 0 20px;
+    padding: 0 20px;
+}
+
+.side-sections .company-info ul li i, .job-description ul li i {
+    color: #818181;
+    font-size: 25px;
+    margin-right: 20px;
 }
