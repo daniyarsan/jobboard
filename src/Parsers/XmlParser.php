@@ -68,6 +68,16 @@ class XmlParser
                 $job->setCountry($feed->getDefaultCountry());
             }
 
+            $disciplineEntity = $this->em->getRepository('App:Discipline')->findDisciplineByKeyword($job->getDiscipline());
+            if (!$disciplineEntity) {
+                $this->disciplinesToAdd[] = $job->getDiscipline();
+                continue;
+            }
+            $categories = $this->em->getRepository('App:Category')->findCategoryByKeyword($job->getCategoryString());
+            if (!$categories) {
+                $this->specialtiesToAdd[] = $job->getCategoryString();
+            }
+
             $this->em->persist($job);
             $this->em->flush();
 
@@ -123,17 +133,5 @@ class XmlParser
          return false;
         /*$xml = simplexml_load_string($xmlString, 'SimpleXMLElement', LIBXML_NOCDATA);
         return $xml->getName();*/
-    }
-
-    public function checkMissingValues(string $field): ?array
-    {
-//        if ($mapItem == 'discipline') {
-//            $disciplineEntity = $this->em->getRepository('App:Discipline')->findDisciplineByKeyword($value);
-//            if (!$disciplineEntity) {
-//                $this->disciplinesToAdd[] = $value;
-//                continue;
-//            }
-//        }
-
     }
 }

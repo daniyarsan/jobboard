@@ -61,19 +61,6 @@ class DisciplineRepository extends ServiceEntityRepository
         return array_map('current', $result);
     }
 
-    public function findCategoryByKeyword($discipline)
-    {
-        $result = $this->createQueryBuilder('d')
-            ->where('c.name = :discipline')
-            ->setParameter('discipline', $discipline)
-            ->orWhere('d.synonyms LIKE :disciplineLike')
-            ->setParameter('disciplineLike', '%' . $discipline . '%')
-            ->getQuery()
-            ->getResult();
-
-        return $result;
-    }
-
     public function getCategoriesByDisciplineId($disciplineId)
     {
         $result = $this->createQueryBuilder('d')
