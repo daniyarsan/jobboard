@@ -1,28 +1,38 @@
+
 <div class="job-ad-item">
     <div class="item-info">
-        <div class="item-image-box">
-            <div class="item-image">
-                {% if company.logoName %}
-                    <a href="{{ path('frontend_companies_details', {id: company.getId() }) }}">
-                        <img src="{{ assetFinder.logoPath(company.logoName) }}" alt="Image" class="img-fluid" />
-                    </a>
-                {% else %}
-                    <img src="{{ asset('frontend/images/no-company.png') }}" class="img-fluid" alt="">
-                {% endif %}
-            </div><!-- item-image -->
-        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="item-image-box">
+                    <div class="item-image">
+                        {% if company.logoName %}
+                            <a href="{{ path('frontend_companies_details', {id: company.getId() }) }}">
+                                <img src="{{ assetFinder.logoPath(company.logoName) }}" alt="Image" class="img-fluid" />
+                            </a>
+                        {% else %}
+                            <img src="{{ asset('frontend/images/no-company.png') }}" class="img-fluid" alt="">
+                        {% endif %}
+                    </div><!-- item-image -->
+                </div>
+            </div>
 
-        <div class="ad-info">
-            <span><a href="{{ path('frontend_companies_details', {id: company.getId() }) }}" class="{{ company.name }}">{{ company.name }}</a></span>
-            <div class="ad-meta">
-                <ul>
-                    <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ company.location }} </a></li>
-                    <li><i class="fa fa-tags" aria-hidden="true"></i> {% if company.glassdoor.industry is defined %}{{ company.glassdoor.industry }}{% endif %}</li>
-                </ul>
-            </div><!-- ad-meta -->
-        </div><!-- ad-info -->
-        <div class="button">
-            <a href="{{ path('frontend_jobs_index') }}" class="btn btn-primary">{{ company.jobs|length }} {{ 'Jobs' | trans }}</a>
+            <div class="col-md-8">
+                <div class="ad-info">
+                    <span><a href="{{ path('frontend_companies_details', {id: company.getId() }) }}" class="{{ company.name }}">{{ company.name }}</a></span>
+                    <div class="ad-meta">
+                        <ul>
+                            <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ company.location }} </a></li>
+                            <li><i class="fa fa-tags" aria-hidden="true"></i> {% if company.glassdoor.industry is defined %}{{ company.glassdoor.industry }}{% endif %}</li>
+                        </ul>
+                    </div><!-- ad-meta -->
+                </div><!-- ad-info -->
+            </div>
+
+            <div class="col-md-2">
+                <div class="button">
+                    <a href="{{ path('frontend_jobs_index') }}" class="btn btn-primary">{{ company.jobs|length }} {{ 'Jobs' | trans }}</a>
+                </div>
+            </div>
         </div>
     </div><!-- item-info -->
 </div><!-- ad-item -->

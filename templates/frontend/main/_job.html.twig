@@ -1,34 +1,41 @@
 <div class="job-ad-item">
     <div class="item-info">
-        <div class="item-image-box">
-            <div class="item-image">
-                {% if job.company.logoName %}
-                    <a href="{{ path('frontend_jobs_details', {'id' : job.id}) }}">
-                        <img src="{{ assetFinder.logoPath(job.company.logoName) }}" class="img-fluid" alt="">
-                    </a>
-                {% else %}
-                    <img src="{{ asset('frontend/images/no-company.png') }}" class="img-fluid" alt="">
-                {% endif %}
-            </div><!-- item-image -->
-        </div>
-
-        <div class="ad-info">
-            <span><a href="{{ path('frontend_jobs_details', {'id' : job.id}) }}" class="title">{{ job.title|capitalize|truncate(60)}}</a></span>
-            <div class="ad-meta">
-                <ul>
-                    <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ job.country }}, {{ job.state }} </a></li>
-                    <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>{{ job.discipline }} </a></li>
-                    <li>
-                        <a href="{{ path('frontend_companies_details', {id: job.company.getId() }) }}">
-                            <i class="fa fa-university" aria-hidden="true"></i>
-                            {{ job.company }}
-                        </a>
-                    </li>
-                </ul>
-            </div><!-- ad-meta -->
-        </div><!-- ad-info -->
-        <div class="button">
-            <a href="{{ path('frontend_jobs_details', {'id' : job.id}) }}" class="btn btn-primary">{{ 'Apply Now' | trans }}</a>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="item-image-box">
+                    <div class="item-image">
+                        {% if job.company.logoName %}
+                            <a href="{{ path('frontend_jobs_details', {'id' : job.id}) }}">
+                                <img src="{{ assetFinder.logoPath(job.company.logoName) }}" class="img-fluid" alt="">
+                            </a>
+                        {% else %}
+                            <img src="{{ asset('frontend/images/no-company.png') }}" class="img-fluid" alt="">
+                        {% endif %}
+                    </div><!-- item-image -->
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="ad-info">
+                    <span><a href="{{ path('frontend_jobs_details', {'id' : job.id}) }}" class="title">{{ job.title|capitalize|truncate(60)}}</a></span>
+                    <div class="ad-meta">
+                        <ul>
+                            <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ job.country }}, {{ job.state }} </a></li>
+                            <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>{{ job.discipline }} </a></li>
+                            <li>
+                                <a href="{{ path('frontend_companies_details', {id: job.company.getId() }) }}">
+                                    <i class="fa fa-university" aria-hidden="true"></i>
+                                    {{ job.company }}
+                                </a>
+                            </li>
+                        </ul>
+                    </div><!-- ad-meta -->
+                </div><!-- ad-info -->
+            </div>
+            <div class="col-md-2">
+                <div class="button">
+                    <a href="{{ path('frontend_jobs_details', {'id' : job.id}) }}" class="btn btn-primary">{{ 'Apply Now' | trans }}</a>
+                </div>
+            </div>
         </div>
     </div><!-- item-info -->
 </div><!-- job-ad-item -->
