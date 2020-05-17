@@ -49,6 +49,13 @@
                             </div>
                         </div><!-- /btn-group -->
                     </td>
+                    <td>
+                        <ul>
+                            {% for key, unique in feed.metaUnique %}
+                                <li><strong>{{ key }} </strong>: {{ unique|join(', ') }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
                 </tr>
                 {{ dialogs.confirm('delete-' ~ feed.id, 'Confirmation', 'The selected item will be removed permanently. Are you sure?', '', path('admin_feeds_set', {id: feed.id, action: 'remove'})) }}
             {% endfor %}

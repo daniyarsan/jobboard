@@ -68,14 +68,23 @@ class XmlParser
                 $job->setCountry($feed->getDefaultCountry());
             }
 
-            $categories = $this->em->getRepository('App:Category')->findCategoryByKeyword($job->getCategoryString());
-            if (!$categories) {
-                $this->specialtiesToAdd[] = $job->getCategoryString();
+            $category = $job->getCategoryString();
+            $categories = $this->em->getRepository('App:Category')->findCategoryByKeyword($category);
+            if ($categories == null) {
+                if (!in_array($category, $this->specialtiesToAdd))
+                {
+                    $this->specialtiesToAdd[] = $category;
+                }
             }
 
-            $disciplineEntity = $this->em->getRepository('App:Discipline')->findDisciplineByKeyword($job->getDiscipline());
-            if (!$disciplineEntity) {
-                $this->disciplinesToAdd[] = $job->getDiscipline();
+            $discipline = $job->getDiscipline();
+            $disciplineEntity = $this->em->getRepository('App:Discipline')->findDisciplineByKeyword($discipline);
+
+            if ($disciplineEntity == null) {
+                if (!in_array($discipline, $this->disciplinesToAdd))
+                {
+                    $this->disciplinesToAdd[] = $discipline;
+                }
             } else {
                 $this->em->persist($job);
                 $this->em->flush();
