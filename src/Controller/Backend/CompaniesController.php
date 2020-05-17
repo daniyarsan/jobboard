@@ -113,7 +113,6 @@ class CompaniesController extends AbstractController
 
     /**
      * @Route("/company/{id}", name="_edit", requirements={"id": "\d+"})
-     * @ParamConverter("company", class="App\Entity\Company")
      * @Template("admin/companies/edit.html.twig")
      */
     public function edit(

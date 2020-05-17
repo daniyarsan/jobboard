@@ -24,8 +24,11 @@
         <div class="col-lg-12">
             <div class="card-box">
                 <h5 class="text-uppercase bg-light p-2 mt-0 mb-3">{{ 'General'|trans }}</h5>
-                {{ form_row(form.logo, { 'attr': {'data-default-file': assetFinder.logoPath(company.logoName) ?? asset('frontend/images/no-company.png')} }) }}
-
+                {% if company.logoName %}
+                    {{ form_row(form.logo, { 'attr': {'data-default-file': assetFinder.logoPath(company.logoName) ?? asset('frontend/images/no-company.png')} }) }}
+                {% else %}
+                    {{ form_row(form.logo) }}
+                {% endif %}
                 {{ form(form) }}
             </div> <!-- end card-box -->
         </div> <!-- end col -->
