@@ -72,10 +72,12 @@ class CompaniesController extends AbstractController
      * @Template("admin/companies/create.html.twig")
      */
 
-    public function create(Request $request,
-                           TranslatorInterface $translator,
-                           UserPasswordEncoderInterface $passwordEncoder,
-                           FileManager $fileManager)
+    public function create(
+        Request $request,
+        TranslatorInterface $translator,
+        UserPasswordEncoderInterface $passwordEncoder,
+        FileManager $fileManager,
+        CompanyDriver $driver)
     {
         $company = new Company();
         $form = $this->createForm(AdminCompanyType::class, $company);
@@ -92,9 +94,7 @@ class CompaniesController extends AbstractController
             }
 
             try {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($company);
-                $em->flush();
+                $driver->saveCompany($company);
                 $this->addFlash('success', $translator->trans('Company has been successfully updated.'));
             } catch (\Exception $e) {
                 $this->addFlash('danger', $translator->trans('An error occurred when saving object.' . $e->getMessage()));

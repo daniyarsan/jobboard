@@ -31,22 +31,28 @@ class CompanyDriver
         $this->aggregator = $aggregator;
     }
 
-    public function saveCompany(Company $company) : void
+    public function saveCompany(Company $company)
     {
-        $locationData = $this->aggregator->geocodeQuery(GeocodeQuery::create($company->getAddress()));
-        $location = $company->getLocation() ?? new Location();
+        if (!$company->getAddress()) {
+            $locationData = $this->aggregator->geocodeQuery(GeocodeQuery::create($company->getAddress()));
+            $location = $company->getLocation() ?? new Location();
 
-        $location->setAddress($locationData->first()->getFormattedAddress())
-            ->setCity($locationData->first()->getLocality())
-            ->setCountry($locationData->first()->getCountry())
-            ->setState($locationData->first()->getAdminLevels()->first()->getName())
-            ->setLat($locationData->first()->getCoordinates()->getLatitude())
-            ->setLon($locationData->first()->getCoordinates()->getLongitude());
-        $company->setLocation($location);
-        $company->setAddress($locationData->first()->getFormattedAddress());
+            $location->setAddress($locationData->first()->getFormattedAddress())
+                ->setCity($locationData->first()->getLocality())
+                ->setCountry($locationData->first()->getCountry())
+                ->setState($locationData->first()->getAdminLevels()->first()->getName())
+                ->setLat($locationData->first()->getCoordinates()->getLatitude())
+                ->setLon($locationData->first()->getCoordinates()->getLongitude());
+            $company->setLocation($location);
+            $company->setAddress($locationData->first()->getFormattedAddress());
+        }
 
-        $this->em->persist($company);
-        $this->em->flush();
+        try {
+            $this->em->persist($company);
+            $this->em->flush();
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
     }
 
 
