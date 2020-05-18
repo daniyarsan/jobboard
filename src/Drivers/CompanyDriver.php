@@ -33,7 +33,7 @@ class CompanyDriver
 
     public function saveCompany(Company $company)
     {
-        if (!$company->getAddress()) {
+        if ($company->getAddress()) {
             $locationData = $this->aggregator->geocodeQuery(GeocodeQuery::create($company->getAddress()));
             $location = $company->getLocation() ?? new Location();
 
