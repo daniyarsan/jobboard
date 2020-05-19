@@ -205,7 +205,7 @@ class Company
 
     public function getLocationString()
     {
-        return $this->location->getAddressString();
+        return $this->location ? $this->location->getAddressString() : false;
     }
     public function getWebsite(): ?string
     {

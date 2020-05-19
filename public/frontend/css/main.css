@@ -645,6 +645,12 @@ a.verified i {
     transition: all 0.5s ease-in-out;
 }
 
+.company-info .item-image a {
+    display: block;
+    width: 70%;
+    margin: 0 auto;
+}
+
 .job-ad-item:hover .item-image img {
     -moz-transform: scale(1.05) rotate(2deg);
     -webkit-transform: scale(1.05) rotate(2deg);
@@ -2517,13 +2523,25 @@ input:-moz-placeholder {
 }
 
 .job-description {
+    font-size: 16px;
+}
+
+.job-description-section.description-info {
+    line-height: 30px;
+}
+.job-description h2 {
     color: #002056;
-    font-size: 14px;
-    line-height: 22px;
 }
 
 .job-description .job-description-section {
     margin-top: 20px;
+}
+
+.job-description .job-description-section div {
+    margin-bottom: 15px;
+    color: #818181 !important;
+    font-size: 16px !important;
+    line-height: 30px!important;
 }
 
 .job-description.section h2 {
@@ -2559,13 +2577,12 @@ input:-moz-placeholder {
 
 .job-short-info li {
     position: relative;
-    padding-left: 35px;
+    /*padding-left: 35px;*/
 }
 
 .job-short-info li span.icon {
     font-size: 18px;
     color: #002056;
-    position: absolute;
     left: 0;
     top: 0;
 }

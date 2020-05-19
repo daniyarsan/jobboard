@@ -27,6 +27,7 @@
 
                     <div class="user">
                         <h2>{{ company.name }}</h2>
+
                         {% if company.glassdoor %}
                             <img class="rating-icon" src="{{ asset('frontend/images/glassdoor.svg') }}" alt="">
                             <div class="ratings">
@@ -58,13 +59,12 @@
                 <div class="row">
                     <div class="col-sm-8">
                         <div class="section job-description">
-                            <div class="description-info">
+                            <div class="job-description-section description-info">
                                 <h2>{{ 'About' | trans }} {{ company.name }}</h2>
-                                <div class="description-info-body">
-                                    {{ company.description|raw }}
-                                </div>
+                                {{ company.description|raw }}
                             </div>
                         </div>
+
 
                         {% if company.youtube %}
                             <div class="section video">
@@ -75,14 +75,15 @@
                         {% endif %}
                     </div>
 
-                    <div class="col-sm-4">
-                        <div class="section job-short-info">
+                    <div class="col-sm-4 side-sections">
+                        <div class="section company-info">
                             <ul>
-                                <li><span class="icon"><i class="fa fa-map-marker" aria-hidden="true"></i></span> {{ company.locationString }}</li>
+                                {% if company.locationString %}
+                                    <li><span class="icon"><i class="fa fa-map-marker" aria-hidden="true"></i></span> {{ company.locationString }}</li>
+                                {% endif %}
                                 <li><span class="icon"><i class="fa fa-phone" aria-hidden="true"></i></span> <a href="tel:{{ company.phone }}">{{ company.phone }}</a></li>
                                 <li><span class="icon"><i class="fa fa-globe" aria-hidden="true"></i></span> <a href="{{ company.website }}">Website</a></li>
                                 <li><span class="icon"><i class="fa fa-envelope-o" aria-hidden="true"></i></span> <a href="emailto:{{ company.email }}">{{ company.email }}</a></li>
-                                <li><span class="icon"><i class="icofont icofont-bank" aria-hidden="true"></i></span> {{ company.glassdoor.industryName }}</li>
                             </ul>
                         </div>
 
