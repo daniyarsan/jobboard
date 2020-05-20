@@ -46,7 +46,7 @@
                         <a href="{{ path('admin_jobs_edit', {'id': job.id, 'return_url': path('admin_jobs_index') ~ query_string()}) }}" class="text-body font-weight-semibold">{{ job.title }}</a>
                     </td>
                     <td>{{ job.company }}</td>
-                    <td>{{ job.country }}</td>
+                    <td>{{ job.country }}, {{ job.state }}</td>
                     <td>{{ job.created|date("d/m/Y") }} </td>
                     <td>
                         {% if job.active %}

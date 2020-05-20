@@ -44,7 +44,9 @@
                         <a href="{{ path('admin_field_edit', {'id': field.id, 'return_url': path('admin_field_index') ~ query_string()}) }}" class="action-icon">
                             <i class="mdi mdi-square-edit-outline"></i>
                         </a>
-                        <a data-toggle="modal" href="#delete-{{ field.id }}" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                        {% if field.isSystem != true %}
+                            <a data-toggle="modal" href="#delete-{{ field.id }}" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                        {% endif %}
                     </td>
                 </tr>
                 {{ dialogs.confirm('delete-' ~ field.id, 'Confirmation', 'The selected item will be removed permanently. Are you sure?', '', path('admin_field_set', {id: field.id, action: 'remove'})) }}

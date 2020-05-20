@@ -24,6 +24,11 @@ class Field
         'country' => CountryType::class,
     ];
 
+    public const LISTING_TYPE = [
+        'job',
+        'resume'
+    ];
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

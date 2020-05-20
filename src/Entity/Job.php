@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Service\Data\States;
 use App\Service\View\DataTransformer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -92,36 +93,10 @@ class Job
      */
     private $discipline;
 
-
     private $categoryString;
 
     /**
      * @ORM\Column(type="string", length=190, nullable=true)
-     */
-    private $jobType;
-
-    /**
-     * @ORM\Column(type="string", length=190, nullable=true)
-     */
-    private $shift;
-
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
-    private $startDate;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $benefits;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $requirements;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
      */
     private $refId;
 
@@ -286,13 +261,15 @@ class Job
         return $this->state;
     }
 
-
     /**
      * @param mixed $state
      */
     public function setState($state): void
     {
-        $this->state = $state;
+        /** Transform short State into Long State during import */
+        if (preg_match('/^[A-Z]{2}$/', $this->getState())) {
+            $this->state = (States::list())[ $this->getState() ];
+        }
     }
 
     /**
@@ -323,6 +300,10 @@ class Job
         $this->extraFields[$name] = $value;
     }
 
+    public function getExtraFields()
+    {
+        return $this->extraFields;
+    }
     public function getLocation(): ?Location
     {
         return $this->location;
@@ -408,72 +389,12 @@ class Job
         return sprintf('%s, %s', $this->country, $this->state);
     }
 
-    public function getJobType(): ?string
-    {
-        return $this->jobType;
-    }
-
-    public function setJobType(?string $jobType): self
-    {
-        $this->jobType = $jobType;
-
-        return $this;
-    }
-
-    public function getShift(): ?string
-    {
-        return $this->shift;
-    }
-
-    public function setShift(?string $shift): self
-    {
-        $this->shift = $shift;
-
-        return $this;
-    }
-
-    public function getStartDate(): ?\DateTimeInterface
-    {
-        return $this->startDate;
-    }
-
-    public function setStartDate(?\DateTimeInterface $startDate): self
-    {
-        $this->startDate = $startDate;
-
-        return $this;
-    }
-
-    public function getBenefits(): ?string
-    {
-        return $this->benefits;
-    }
-
-    public function setBenefits(?string $benefits): self
-    {
-        $this->benefits = $benefits;
-
-        return $this;
-    }
-
-    public function getRequirements(): ?string
-    {
-        return $this->requirements;
-    }
-
-    public function setRequirements(?string $requirements): self
-    {
-        $this->requirements = $requirements;
-
-        return $this;
-    }
-
-    public function getRefId(): ?int
+    public function getRefId(): ?string
     {
         return $this->refId;
     }
 
-    public function setRefId(?int $refId): self
+    public function setRefId(?string $refId): self
     {
         $this->refId = $refId;
 

@@ -57,11 +57,21 @@ class FieldRepository extends ServiceEntityRepository
     public function findNotSystemFields()
     {
         $result = $this->createQueryBuilder('f')
-            ->where('f.isSystem is null')
+            ->where('f.isSystem is null or f.isSystem = 0')
             ->getQuery()
             ->getResult();
 
         return $result;
+    }
+
+    public function findFieldByName($fieldName)
+    {
+        return $this->createQueryBuilder('field')
+            ->where('field.name = :fieldName')
+            ->setParameter('fieldName', $fieldName)
+            ->getQuery()
+            ->getOneOrNullResult();
+
     }
 
 }

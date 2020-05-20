@@ -14,7 +14,9 @@ class FieldType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('description');
+            ->add('type')
+            ->add('fieldId')
+            ->add('inFilter');
 
         $builder
             ->add('save', SubmitType::class)

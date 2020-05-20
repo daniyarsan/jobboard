@@ -198,6 +198,7 @@ class JobRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('job')
             ->delete()
             ->where('job.feedId = :feedId')
+            ->andWhere('job.refId is null')
             ->setParameter('feedId', $feedId)
             ->getQuery();
 

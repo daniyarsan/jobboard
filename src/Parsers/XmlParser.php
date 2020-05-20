@@ -6,6 +6,9 @@ namespace App\Parsers;
 
 use App\Entity\Feed;
 use App\Entity\Job;
+use App\Repository\FieldRepository;
+use App\Repository\JobRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 
 class XmlParser
@@ -13,13 +16,21 @@ class XmlParser
     private $em;
     private $xmlReader;
     private $counter;
+    private $fieldRepo;
+    private $jobRepository;
     private $disciplinesToAdd = [];
     private $specialtiesToAdd = [];
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(
+        EntityManagerInterface $em,
+        FieldRepository $fieldRepo,
+        JobRepository $jobRepository
+    )
     {
         $this->xmlReader = new \XMLReader();
         $this->em = $em;
+        $this->fieldRepo = $fieldRepo;
+        $this->jobRepository = $jobRepository;
     }
 
     /**
@@ -39,53 +50,61 @@ class XmlParser
         }
 
         while ($this->xmlReader->name == $xmlRootElement) {
-            $job = new Job();
-            $job->setCompany($feed->getCompany());
-
-            $job->setActive($feed->getActivate()); // Job Auto activation by Feed setting
-            $job->setFeedId($feed->getSlug()); // For identification purposes
-
+            /* Get fields to set values for job */
+            $mapperFields = array_filter($feed->getMapper());
             /* Get xml item (job) to import */
             $xmlItem = self::getArrayFromXmlString($this->xmlReader->readOuterXML());
 
-            /* Get fields to set values for job */
-            $mapperFields = array_filter($feed->getMapper());
+            /* Remove previously imported jobs that dont have Ref id */
+            $this->jobRepository->deleteByFeedId($feed->getSlug());
+            $refId = $xmlItem[ $mapperFields[ 'refId' ] ];
+            $job = $this->jobRepository->findOneBy(['refId' => $refId]);
+            /* Update jobs that has RefId*/
 
-            /* Loop through part of xml and call Job methods for hydration */
-            foreach ($mapperFields as $mapKey => $mapItem) {
-                $value = $xmlItem[$mapItem];
-
-                if (!empty($mapperFields[$mapKey])) {
-                    $method = 'set' . ucfirst($mapKey);
-                    if (method_exists($job, $method)) {
-                        call_user_func([$job, $method], $value);
-                    }
+            if (!$job) {
+                $job = new Job();
+                $job->setCompany($feed->getCompany());
+                $job->setActive($feed->getActivate()); // Job Auto activation by Feed setting
+                $job->setFeedId($feed->getSlug()); // For identification purposes
+                /* Set Country Default Value */
+                if (empty($job->getCountry()) && $feed->getDefaultCountry()) {
+                    $job->setCountry($feed->getDefaultCountry());
                 }
             }
 
-            /* Set Country Default Value */
-            if (empty($job->getCountry()) && $feed->getDefaultCountry()) {
-                $job->setCountry($feed->getDefaultCountry());
+            /* Loop through part of xml and call Job methods for hydration */
+            foreach ($mapperFields as $mapKey => $mapItem) {
+                $value = $xmlItem[ $mapItem ];
+
+                if (!empty($mapperFields[ $mapKey ])) {
+                    $method = 'set' . ucfirst($mapKey);
+                    if (method_exists($job, $method)) {
+                        call_user_func([$job, $method], $value);
+                    } else {
+                        $job->{$mapKey} = $value;
+                    }
+                }
             }
 
             $category = $job->getCategoryString();
             $categories = $this->em->getRepository('App:Category')->findCategoryByKeyword($category);
             if ($categories == null) {
-                if (!in_array($category, $this->specialtiesToAdd))
-                {
+                if (!in_array($category, $this->specialtiesToAdd)) {
                     $this->specialtiesToAdd[] = $category;
                 }
+            } else {
+                $job->setCategoriesCollection(new ArrayCollection($categories));
             }
 
             $discipline = $job->getDiscipline();
             $disciplineEntity = $this->em->getRepository('App:Discipline')->findDisciplineByKeyword($discipline);
 
             if ($disciplineEntity == null) {
-                if (!in_array($discipline, $this->disciplinesToAdd))
-                {
+                if (!in_array($discipline, $this->disciplinesToAdd)) {
                     $this->disciplinesToAdd[] = $discipline;
                 }
             } else {
+                $job->setDiscipline($disciplineEntity);
                 $this->em->persist($job);
                 $this->em->flush();
             }
@@ -116,7 +135,7 @@ class XmlParser
     {
         $xml = self::getArrayFromXmlString($xmlString);
 
-        return  array_keys($xml);
+        return array_keys($xml);
     }
 
     protected static function getArrayFromXmlString($xmlString)
@@ -135,11 +154,11 @@ class XmlParser
 
     protected static function getXmlRootElement($xmlString)
     {
-         preg_match('/<(.*?)>/i', $xmlString, $mathc);
-         if (isset($mathc[ 1 ]) && strlen($mathc[ 1 ]) > 0)
-             return $mathc[ 1 ];
+        preg_match('/<(.*?)>/i', $xmlString, $mathc);
+        if (isset($mathc[ 1 ]) && strlen($mathc[ 1 ]) > 0)
+            return $mathc[ 1 ];
 
-         return false;
+        return false;
         /*$xml = simplexml_load_string($xmlString, 'SimpleXMLElement', LIBXML_NOCDATA);
         return $xml->getName();*/
     }

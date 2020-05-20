@@ -204,9 +204,6 @@ class FeedController extends AbstractController
         /* TODO: OPTIMIZATION Make an opportunity to load file and import from local file */
         /*file_exists($this->getParameter('import.xml.dir') . '/file.xml');*/
 
-        /* Remove previously imported jobs */
-        $jobRepository->deleteByFeedId($feed->getSlug());
-
         $xmlParser->parse($feed);
 
         $feed->setMetaUnique([
