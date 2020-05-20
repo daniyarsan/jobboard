@@ -55,15 +55,19 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <ul>
+                                                <li><span class="icon"><i class="fa fa-hashtag" aria-hidden="true"></i></span> {{ job.refId }}</li>
                                                 <li><span class="icon"><i class="fa fa-user-md" aria-hidden="true"></i></span> {{ job.discipline }}</li>
                                                 <li><span class="icon"><i class="fa fa-map-marker" aria-hidden="true"></i></span> {{ job.locationString }}</li>
+                                                {% if job.categories|join(', ') != null %}
+                                                    <li><span class="icon"><i class="fa fa-stethoscope" aria-hidden="true"></i></span> {{ job.categories|join(', ') }}</li>
+                                                {% endif %}
                                             </ul>
                                         </div>
                                         <div class="col-md-6">
                                             <ul>
-                                                {% if job.categories|join(', ') != null %}
-                                                    <li><span class="icon"><i class="fa fa-stethoscope" aria-hidden="true"></i></span> {{ job.categories|join(', ') }}</li>
-                                                {% endif %}
+                                                {% for field in job.extraFields %}
+                                                    <li><span class="icon"><i class="fa fa-tags" aria-hidden="true"></i></span> {{ field }}</li>
+                                                {% endfor %}
                                             </ul>
                                         </div>
                                     </div>
