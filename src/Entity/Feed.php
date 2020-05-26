@@ -10,6 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Feed
 {
+
+    public const UNIQUE_DISCIPLINES = 'disciplines';
+    public const UNIQUE_SPECIALTIES = 'specialties';
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

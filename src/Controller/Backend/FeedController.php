@@ -207,8 +207,8 @@ class FeedController extends AbstractController
         $xmlParser->parse($feed);
 
         $feed->setMetaUnique([
-            'disciplines' => $xmlParser->getDisciplinesToAdd(),
-            'specialties' => $xmlParser->getSpecialtiesToAdd()
+            FEED::UNIQUE_DISCIPLINES => $xmlParser->getDisciplinesToAdd(),
+            FEED::UNIQUE_SPECIALTIES => $xmlParser->getSpecialtiesToAdd()
         ]);
 
         $em = $this->getDoctrine()->getManager();

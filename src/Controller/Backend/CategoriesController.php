@@ -4,7 +4,9 @@ namespace App\Controller\Backend;
 
 use App\Entity\Category;
 use App\Form\AdminCategoryType;
+use App\Form\AdminFilterType;
 use App\Form\AdminJobFilterType;
+use App\Repository\FeedRepository;
 use App\Service\View\DataTransformer;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -28,9 +30,9 @@ class CategoriesController extends AbstractController
      * @Route("/categories", name="category_index")
      * @Template("admin/categories/index.html.twig")
      */
-    public function index(Request $request, Session $session, PaginatorInterface $paginator)
+    public function index(Request $request, Session $session, PaginatorInterface $paginator, FeedRepository $feedRepository)
     {
-        $filterForm = $this->createForm(AdminJobFilterType::class);
+        $filterForm = $this->createForm(AdminFilterType::class);
         $filterForm->handleRequest($request);
 
         $em = $this->getDoctrine()->getManager();
@@ -55,9 +57,12 @@ class CategoriesController extends AbstractController
 
         $entities = $paginator->paginate($queryBuilder, $page, $itemsPerPage, $paginatorOptions);
 
+        $specialtiesToAdd = $feedRepository->getMetaUniqueSpecialties();
+
         return [
             'entities' => $entities,
-            'filter_form' => $filterForm->createView(),
+            'specialtiesToAdd' => $specialtiesToAdd,
+            'form' => $filterForm->createView(),
             'bulk_action_form' => $this->createBulkActionForm()->createView()
         ];
     }

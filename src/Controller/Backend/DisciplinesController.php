@@ -59,7 +59,7 @@ class DisciplinesController extends AbstractController
         $disciplinesToAdd = $feedRepository->getMetaUniqueDisciplines();
 
         return [
-            'disciplinesToAdd' => array_merge(...$disciplinesToAdd),
+            'disciplinesToAdd' => $disciplinesToAdd,
             'entities' => $entities,
             'form' => $filterForm->createView(),
             'bulk_action_form' => $this->createBulkActionForm()->createView()

@@ -48,6 +48,6 @@ class CategoriesFixtures extends Fixture implements FixtureGroupInterface
      */
     public static function getGroups(): array
     {
-        return ['routine'];
+        return ['categories'];
     }
 }

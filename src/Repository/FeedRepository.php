@@ -58,9 +58,26 @@ class FeedRepository extends ServiceEntityRepository
         $return = array_map(function($item) {
             $firstKey = array_key_first($item);
             $collectionOfDisciplies = unserialize($item[$firstKey]);
-            return $collectionOfDisciplies['disciplines'] ?? false;
+            return $collectionOfDisciplies[FEED::UNIQUE_DISCIPLINES] ?? false;
         }, $result);
 
-        return array_filter($return);
+        return array_unique(array_merge(...array_filter($return)));
+    }
+
+    public function getMetaUniqueSpecialties()
+    {
+        $result = $this->createQueryBuilder('feed')
+            ->select('feed.metaUnique')
+            ->where('feed.metaUnique is not null')
+            ->getQuery()
+            ->getScalarResult();
+
+        $return = array_map(function($item) {
+            $firstKey = array_key_first($item);
+            $collectionOfDisciplies = unserialize($item[$firstKey]);
+            return $collectionOfDisciplies[FEED::UNIQUE_SPECIALTIES] ?? false;
+        }, $result);
+
+        return array_unique(array_merge(...array_filter($return)));
     }
 }

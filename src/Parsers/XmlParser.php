@@ -58,11 +58,7 @@ class XmlParser
             /* Remove previously imported jobs that dont have Ref id */
             $this->jobRepository->deleteByFeedId($feed->getSlug());
 
-            $job = new Job();
-            if (isset( $mapperFields[ 'refId' ] )) {
-                $refId = $xmlItem[ $mapperFields[ 'refId' ] ] ?? false;
-                $job = $this->jobRepository->findOneBy(['refId' => $refId]);
-            }
+            $job = isset($xmlItem[ $mapperFields[ 'refId' ] ] ) && ($job = $this->jobRepository->findOneBy(['refId' => $xmlItem[ $mapperFields[ 'refId' ] ]])) ? $job : new Job();
 
             $job->setCompany($feed->getCompany());
             $job->setActive($feed->getActivate()); // Job Auto activation by Feed setting
