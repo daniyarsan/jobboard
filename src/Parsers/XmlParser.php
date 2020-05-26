@@ -58,20 +58,18 @@ class XmlParser
             /* Remove previously imported jobs that dont have Ref id */
             $this->jobRepository->deleteByFeedId($feed->getSlug());
 
+            $job = new Job();
             if (isset( $mapperFields[ 'refId' ] )) {
                 $refId = $xmlItem[ $mapperFields[ 'refId' ] ] ?? false;
                 $job = $this->jobRepository->findOneBy(['refId' => $refId]);
             }
 
-            if (!$job) {
-                $job = new Job();
-                $job->setCompany($feed->getCompany());
-                $job->setActive($feed->getActivate()); // Job Auto activation by Feed setting
-                $job->setFeedId($feed->getSlug()); // For identification purposes
-                /* Set Country Default Value */
-                if (empty($job->getCountry()) && $feed->getDefaultCountry()) {
-                    $job->setCountry($feed->getDefaultCountry());
-                }
+            $job->setCompany($feed->getCompany());
+            $job->setActive($feed->getActivate()); // Job Auto activation by Feed setting
+            $job->setFeedId($feed->getSlug()); // For identification purposes
+            /* Set Country Default Value */
+            if (empty($job->getCountry()) && $feed->getDefaultCountry()) {
+                $job->setCountry($feed->getDefaultCountry());
             }
 
             /* Loop through part of xml and call Job methods for hydration */
