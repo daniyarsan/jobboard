@@ -38,10 +38,12 @@
                     <!-- recommended-ads -->
                     <div class="col-md-8 col-lg-9">
                         <div class="section job-list-item">
+                            {% for key, searchTag in app.request.query.all() %}
+                                <div class="badge badge-success">{{ searchTag }}</div>
+                            {% endfor %}
+
                             <div class="featured-top clearfix">
-
-                                <h4>{{ 'Found' | trans }}: {{ jobs.getTotalItemCount }} jobs</h4>
-
+                                <h4>{{ 'Found' | trans }}: {{ jobs.getTotalItemCount }} jobs </h4>
                             </div><!-- featured-top -->
 
                             {% if jobs|length %}

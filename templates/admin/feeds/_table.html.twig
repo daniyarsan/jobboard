@@ -9,7 +9,7 @@
         <table class="table table-centered table-striped">
             <thead>
             <tr>
-                <th style="width: 20px;">
+                <th>
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input bulk-item-check" id="checkAll">
                         <label class="custom-control-label" for="checkAll">&nbsp;</label>
@@ -22,7 +22,7 @@
                     {% endif %}
                 </th>
                 <th>{{ 'Last Imported'|trans }}</th>
-                <th style="width: 25%">{{ 'Action'|trans }}</th>
+                <th>{{ 'Action'|trans }}</th>
             </tr>
             </thead>
             <tbody>
@@ -48,13 +48,6 @@
                                 <a data-toggle="modal" href="#delete-{{ feed.id }}" class="dropdown-item"><i class="mdi mdi-delete"></i> {{ 'Delete' | trans }}</a>
                             </div>
                         </div><!-- /btn-group -->
-                    </td>
-                    <td>
-                        <ul>
-                            {% for key, unique in feed.metaUnique %}
-                                <li><strong>{{ key }} </strong>: {{ unique|join(', ') }}</li>
-                            {% endfor %}
-                        </ul>
                     </td>
                 </tr>
                 {{ dialogs.confirm('delete-' ~ feed.id, 'Confirmation', 'The selected item will be removed permanently. Are you sure?', '', path('admin_feeds_set', {id: feed.id, action: 'remove'})) }}

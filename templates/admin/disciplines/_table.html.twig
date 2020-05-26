@@ -1,7 +1,5 @@
 {% import 'admin/form/dialog.html.twig' as dialogs %}
 
-{{ knp_pagination_render(entities, 'admin/_parts/paginator.html.twig') }}
-
 <form method="post" action="{{ path('admin_discipline_bulk') }}" id="bulk-table-form">
     <input type="hidden" name="return_url" value="{{ path('admin_discipline_index') }}{{ query_string() }}"/>
     {{ form_widget(bulk_action_form._token) }}
@@ -57,6 +55,3 @@
         </table>
     </div>
 </form>
-
-{{ knp_pagination_render(entities, 'admin/_parts/paginator.html.twig') }}
-

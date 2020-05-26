@@ -4,7 +4,8 @@ namespace App\Controller\Backend;
 
 use App\Entity\Discipline;
 use App\Form\AdminDisciplineType;
-use App\Form\AdminJobFilterType;
+use App\Form\AdminFilterType;
+use App\Repository\FeedRepository;
 use App\Service\View\DataTransformer;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -28,15 +29,15 @@ class DisciplinesController extends AbstractController
      * @Route("/disciplines", name="discipline_index")
      * @Template("admin/disciplines/index.html.twig")
      */
-    public function index(Request $request, Session $session, PaginatorInterface $paginator)
+    public function index(Request $request, Session $session, PaginatorInterface $paginator, FeedRepository $feedRepository)
     {
-        $filterForm = $this->createForm(AdminJobFilterType::class);
+        $filterForm = $this->createForm(AdminFilterType::class);
         $filterForm->handleRequest($request);
 
         $em = $this->getDoctrine()->getManager();
         $queryBuilder = $em->getRepository('App:Discipline')->createQueryBuilder('d');
 
-        $itemsPerPage = $request->query->get('itemsPerPage', 20);
+        $itemsPerPage = $request->query->get('itemsPerPage', 100);
         $page = $request->query->get('page', 1);
 
         if ($session->get('pagesItemsPerPage') != $itemsPerPage) {
@@ -55,9 +56,12 @@ class DisciplinesController extends AbstractController
 
         $entities = $paginator->paginate($queryBuilder, $page, $itemsPerPage, $paginatorOptions);
 
+        $disciplinesToAdd = $feedRepository->getMetaUniqueDisciplines();
+
         return [
+            'disciplinesToAdd' => array_merge(...$disciplinesToAdd),
             'entities' => $entities,
-            'filter_form' => $filterForm->createView(),
+            'form' => $filterForm->createView(),
             'bulk_action_form' => $this->createBulkActionForm()->createView()
         ];
     }

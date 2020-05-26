@@ -264,11 +264,12 @@ class Job
     /**
      * @param mixed $state
      */
-    public function setState($state): void
+    public function setState($state)
     {
-        /** Transform short State into Long State during import */
-        if (preg_match('/^[A-Z]{2}$/', $this->getState())) {
-            $this->state = (States::list())[ $this->getState() ];
+        if (preg_match('/^[A-Z]{2}$/', $state)) {
+            $this->state = (States::list())[ $state ];
+        } else {
+            $this->state = $state;
         }
     }
 

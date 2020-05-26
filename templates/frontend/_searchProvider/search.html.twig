@@ -9,6 +9,15 @@
         </select>
     </div><!-- category-change -->
 
+    <div class="dropdown category-dropdown selectdiv">
+        <select name="categories">
+            <option value="">{{ 'Specialty' | trans }}</option>
+            {% for specialty in categories %}
+                <option value="{{ specialty.name }}">{{ specialty.name }}</option>
+            {% endfor %}
+        </select>
+    </div><!-- category-change -->
+
     <!-- language-dropdown -->
     <div class="dropdown category-dropdown selectdiv">
         <select name="state">

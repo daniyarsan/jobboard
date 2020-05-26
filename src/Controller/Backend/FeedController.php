@@ -3,7 +3,7 @@
 namespace App\Controller\Backend;
 
 use App\Entity\Feed;
-use App\Form\AdminJobFilterType;
+use App\Form\AdminFilterType;
 use App\Form\FeedType;
 use App\Parsers\XmlParser;
 use App\Repository\JobRepository;
@@ -31,7 +31,7 @@ class FeedController extends AbstractController
      */
     public function index(Request $request, Session $session, PaginatorInterface $pagination)
     {
-        $filterForm = $this->createForm(AdminJobFilterType::class);
+        $filterForm = $this->createForm(AdminFilterType::class);
         $filterForm->handleRequest($request);
 
         $itemsPerPage = $request->query->get('itemsPerPage', 20);
@@ -57,7 +57,7 @@ class FeedController extends AbstractController
 
         return [
             'entities' => $entities,
-            'filter_form' => $filterForm->createView(),
+            'form' => $filterForm->createView(),
             'bulk_action_form' => $this->createBulkActionForm()->createView()
         ];
     }

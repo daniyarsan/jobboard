@@ -1,12 +1,11 @@
 <div class="accordion">
     <div class="panel-group" id="filter-accordion">
         {% for filter in filterFields %}
-            {% if request.get(filter.field.fieldId) is null %}
+            {% if request.get(filter.field.fieldId) is null or request.get(filter.field.fieldId) == '' %}
                 <div class="card panel-faq">
                     <div class="card-header">
                         <button class="collapsed" data-toggle="collapse" data-target="#{{ filter.field.fieldId }}" aria-expanded="false" aria-controls="{{ filter.field.fieldId }}">{{ filter.field.name }}</button>
                     </div><!-- card-header -->
-
                     <div id="{{ filter.field.fieldId }}" class="collapse" data-parent="#filter-accordion">
                         <!-- panel-body -->
                         <div class="panel-body">
