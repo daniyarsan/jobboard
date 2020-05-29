@@ -38,12 +38,27 @@
                     <!-- recommended-ads -->
                     <div class="col-md-8 col-lg-9">
                         <div class="section job-list-item">
-                            {% for key, searchTag in app.request.query.all() %}
-                                <div class="badge badge-success">{{ searchTag }}</div>
-                            {% endfor %}
-
                             <div class="featured-top clearfix">
-                                <h4>{{ 'Found' | trans }}: {{ jobs.getTotalItemCount }} jobs </h4>
+                                <h4>
+                                    {{ 'Found' | trans }}: {{ jobs.getTotalItemCount }}
+                                    {% if app.request.query.get('disciplines') %}
+                                        {{ app.request.query.get('disciplines') }}
+                                    {% endif %}
+                                    {% if app.request.query.get('categories') %}
+                                        {{ app.request.query.get('categories') }}
+                                    {% endif %}
+                                    {{ 'jobs' | trans }}
+
+                                    {% if app.request.query.get('state') %}
+                                        {{ 'in' | trans }}
+                                        {{ app.request.query.get('state') }}
+                                    {% endif %}
+                                </h4>
+                                {% if app.request.query.all() is not empty %}
+                                    <div class="button pull-right">
+                                        <a class="btn btn-primary" href="#"><i class="fa fa-remove"></i> {{ 'Reset search' | trans }}</a>
+                                    </div>
+                                {% endif %}
                             </div><!-- featured-top -->
 
                             {% if jobs|length %}

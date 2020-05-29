@@ -38,6 +38,7 @@ class SearchProvider extends AbstractController
             'inFilter' => true
         ]);
 
+        /* Get Filters from fields */
         foreach ($fields as $key => $field) {
             $method = 'getFilterItems' . ucfirst($field->getFieldId());
             $filterFields[$key]['field'] = $field;

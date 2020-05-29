@@ -20,7 +20,7 @@
                     <div class="ad-meta">
                         <ul>
                             <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>{{ job.country }}, {{ job.state }} </a></li>
-                            <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i> {{ job.categories|join(', ') }}</a></li>
+                            <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>{{ job.discipline }} | {{ job.categories|join(', ') }}</a></li>
                             <li><a href="#"><i class="fa fa-calendar" aria-hidden="true"></i>{{ job.created|date('d/m/Y') }} </a></li>
                         </ul>
                     </div><!-- ad-meta -->
@@ -32,10 +32,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
 
     </div><!-- item-info -->
 </div><!-- job-ad-item -->

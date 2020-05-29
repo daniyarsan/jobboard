@@ -197,15 +197,15 @@ class FeedController extends AbstractController
 
     /**
      * @Route("/import/{id}", name="_import", requirements={"id": "\d+"})
-     * @ParamConverter("feed", class="App\Entity\Feed")
      */
-    public function import(Feed $feed, JobRepository $jobRepository, XmlParser $xmlParser)
+    public function import(Feed $feed, XmlParser $xmlParser)
     {
         /* TODO: OPTIMIZATION Make an opportunity to load file and import from local file */
         /*file_exists($this->getParameter('import.xml.dir') . '/file.xml');*/
 
         $xmlParser->parse($feed);
 
+        /* Get unique information from parser */
         $feed->setMetaUnique([
             FEED::UNIQUE_DISCIPLINES => $xmlParser->getDisciplinesToAdd(),
             FEED::UNIQUE_SPECIALTIES => $xmlParser->getSpecialtiesToAdd()
@@ -215,11 +215,21 @@ class FeedController extends AbstractController
         $em->persist($feed);
         $em->flush($feed);
 
-        $this->addFlash('success', $xmlParser->getCounter() . ' Jobs have been imported from the feed');
+        $this->addFlash('success', $xmlParser->getImportedCounter() . ' jobs have been imported out of ' . $xmlParser->getTotalCounter() . ' from the feed ' . $feed->getName());
 
         return $this->redirectToRoute('admin_feeds_index');
     }
 
+    /**
+     * @Route("/removejobs/{id}", name="_removejobs", requirements={"id": "\d+"})
+     */
+    public function removejobs(Feed $feed, JobRepository $jobRepository)
+    {
+        $result = $jobRepository->deleteByFeedId($feed->getSlug());
+        $this->addFlash('success', $result . ' jobs have been removed that was imported by ' . $feed->getName());
+
+        return $this->redirectToRoute('admin_feeds_index');
+    }
     private function createBulkActionForm()
     {
         return $this->createFormBuilder()

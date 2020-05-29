@@ -61,7 +61,7 @@ class FeedRepository extends ServiceEntityRepository
             return $collectionOfDisciplies[FEED::UNIQUE_DISCIPLINES] ?? false;
         }, $result);
 
-        return array_unique(array_merge(...array_filter($return)));
+        return $return ? array_unique(array_merge(...array_filter($return))) : false;
     }
 
     public function getMetaUniqueSpecialties()
@@ -78,6 +78,6 @@ class FeedRepository extends ServiceEntityRepository
             return $collectionOfDisciplies[FEED::UNIQUE_SPECIALTIES] ?? false;
         }, $result);
 
-        return array_unique(array_merge(...array_filter($return)));
+        return $return ? array_unique(array_merge(...array_filter($return))) : false;
     }
 }

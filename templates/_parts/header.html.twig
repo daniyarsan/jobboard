@@ -16,6 +16,7 @@
                     <li><i class="fa fa-user"></i></li>
                     {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
                         <li><a href="{{ path('security_login') }}">{{ 'Sign In' | trans }}</a></li>
+                        |
                         <li><a href="{{ path('security_registration') }}">{{ 'Employers' | trans }}</a></li>
                     {% else %}
                         {% if is_granted('ROLE_COMPANY') %}

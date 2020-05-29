@@ -307,6 +307,7 @@ textarea {
 .sign-in li {
     display: inline-block;
     margin-top: 6px;
+    padding: 0 10px;
 }
 
 .language-dropdown i.fa-globe,
@@ -318,7 +319,6 @@ textarea {
 
 .sign-in li:last-child {
     position: relative;
-    padding-left: 10px;
 }
 
 .nav-right .dropdown-menu {
@@ -3671,3 +3671,6 @@ select::-ms-expand {
     margin-right: 20px;
 }
 
+.job-ad-item h2 {
+    color: #002056;
+}

@@ -44,6 +44,7 @@
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="{{ path('admin_feeds_edit', {'id': feed.id, 'return_url': path('admin_feeds_index') ~ query_string()}) }}"><i class="mdi mdi-pencil"></i> {{ 'Edit' | trans }}</a>
                                 <a class="dropdown-item" href="{{ path('admin_feeds_import', {'id': feed.id}) }}"><i class="mdi mdi-import"></i> {{ 'Run' | trans }}</a>
+                                <a class="dropdown-item" href="{{ path('admin_feeds_removejobs', {'id': feed.id}) }}"><i class="mdi mdi-trash-can"></i> {{ 'Remove Feed Jobs' | trans }}</a>
                                 <div class="dropdown-divider"></div>
                                 <a data-toggle="modal" href="#delete-{{ feed.id }}" class="dropdown-item"><i class="mdi mdi-delete"></i> {{ 'Delete' | trans }}</a>
                             </div>

@@ -54,7 +54,7 @@ class CategoryRepository extends ServiceEntityRepository
             ->where('c.name = :category')
             ->setParameter('category', $category)
             ->orWhere('c.synonyms LIKE :categoryLike')
-            ->setParameter('categoryLike', '%' . $category . '%')
+            ->setParameter('categoryLike', '%"' . $category . '"%')
             ->getQuery()
             ->getResult();
 

@@ -52,7 +52,7 @@ class JobRepository extends ServiceEntityRepository
         if (!empty($request->query->get('agency'))) {
             $qb->leftJoin('job.company', 'company')
                 ->andWhere('company.name = :agency')
-            ->setParameter('agency', $request->query->get('agency'));
+                ->setParameter('agency', $request->query->get('agency'));
         }
 
         // Categories
@@ -193,16 +193,16 @@ class JobRepository extends ServiceEntityRepository
             ->execute();
     }
 
-    public function deleteByFeedId($feedId)
+    public function deleteByFeedId($feedId, $preserveByRefid = false)
     {
-        $query = $this->createQueryBuilder('job')
-            ->delete()
-            ->where('job.feedId = :feedId')
-            ->andWhere('job.refId is null')
-            ->setParameter('feedId', $feedId)
-            ->getQuery();
+        $qb = $this->createQueryBuilder('job');
+        $qb->delete()->where('job.feedId = :feedId')->setParameter('feedId', $feedId);
 
-        return $query->execute();
+        if ($preserveByRefid) {
+            $qb->andWhere('job.refId is null');
+        }
+
+        return $qb->getQuery()->execute();
     }
 
     public function unfeature()
@@ -241,6 +241,9 @@ class JobRepository extends ServiceEntityRepository
     public function getFilterItemsCategories($request)
     {
         $qb = $this->createQueryBuilder('job');
+        $qb->select('COUNT(job.id) as count, categories.name as title')
+            ->leftJoin('job.categories', 'categories');
+        $qb->where('categories.name is not null');
 
         /* Job should be active */
         if (!strstr($request->getPathInfo(), 'admin')) {
@@ -266,8 +269,6 @@ class JobRepository extends ServiceEntityRepository
         }
 
         return $qb
-            ->select('COUNT(job.id) as count, categories.name as title')
-            ->leftJoin('job.categories', 'categories')
             ->groupBy('categories')
             ->getQuery()
             ->getResult();
@@ -276,6 +277,8 @@ class JobRepository extends ServiceEntityRepository
     public function getFilterItemsState($request)
     {
         $qb = $this->createQueryBuilder('job');
+        $qb->select('COUNT(job.id) as count, job.state as title');
+        $qb->where('job.state is not null');
 
         /* Job should be active */
         if (!strstr($request->getPathInfo(), 'admin')) {
@@ -301,9 +304,7 @@ class JobRepository extends ServiceEntityRepository
                 ->setParameter('state', $request->query->get('state'));
         }
 
-        return $qb
-            ->select('COUNT(job.id) as count, job.state as title')
-            ->groupBy('job.state')
+        return $qb->groupBy('job.state')
             ->getQuery()
             ->getResult();
     }
@@ -343,15 +344,17 @@ class JobRepository extends ServiceEntityRepository
     public function getDisciplines($request)
     {
         $qb = $this->createQueryBuilder('job');
+        $qb->select('discipline.name')
+            ->leftJoin('job.discipline', 'discipline');
+
+        $qb->where('discipline.name is not null');
+
         /* Job should be active */
         if (!strstr($request->getPathInfo(), 'admin')) {
             $qb->andWhere('job.active = 1');
         }
 
-        return $qb
-            ->select('discipline.name')
-            ->leftJoin('job.discipline', 'discipline')
-            ->distinct()
+        return $qb->distinct()
             ->getQuery()
             ->getResult();
     }

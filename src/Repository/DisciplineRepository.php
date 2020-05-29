@@ -25,7 +25,7 @@ class DisciplineRepository extends ServiceEntityRepository
             ->where('d.name = :keyword')
             ->setParameter('keyword', $keyword)
             ->orWhere('d.synonyms LIKE :disciplineLike')
-            ->setParameter('disciplineLike', '%' . $keyword . '%')
+            ->setParameter('disciplineLike', '%"' . $keyword . '"%')
             ->getQuery()
             ->getOneOrNullResult();
 

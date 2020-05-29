@@ -15,7 +15,8 @@ class XmlParser
 {
     private $em;
     private $xmlReader;
-    private $counter;
+    private $importedCounter;
+    private $totalCounter;
     private $fieldRepo;
     private $jobRepository;
     private $disciplinesToAdd = [];
@@ -41,7 +42,8 @@ class XmlParser
     public function parse(Feed $feed)
     {
         /* Initiate counter */
-        $this->counter = 0;
+        $this->importedCounter = 0;
+        $this->totalCounter = 0;
         $xmlRootElement = self::getXmlRootElement($feed->getXmlText());
 
         $this->xmlReader->open($feed->getUrl());
@@ -49,20 +51,20 @@ class XmlParser
             ;
         }
 
+        $this->jobRepository->deleteByFeedId($feed->getSlug(), true); // Cleanup - remove jobs by feed id before import
+
         while ($this->xmlReader->name == $xmlRootElement) {
             /* Get fields to set values for job */
             $mapperFields = array_filter($feed->getMapper());
             /* Get xml item (job) to import */
             $xmlItem = self::getArrayFromXmlString($this->xmlReader->readOuterXML());
 
-            /* Remove previously imported jobs that dont have Ref id */
-            $this->jobRepository->deleteByFeedId($feed->getSlug());
-
-            $job = isset($xmlItem[ $mapperFields[ 'refId' ] ] ) && ($job = $this->jobRepository->findOneBy(['refId' => $xmlItem[ $mapperFields[ 'refId' ] ]])) ? $job : new Job();
+            $job = array_key_exists('refId', $mapperFields) && ($job = $this->jobRepository->findOneBy(['refId' => $xmlItem[ $mapperFields[ 'refId' ] ]])) ? $job : new Job();
 
             $job->setCompany($feed->getCompany());
             $job->setActive($feed->getActivate()); // Job Auto activation by Feed setting
             $job->setFeedId($feed->getSlug()); // For identification purposes
+
             /* Set Country Default Value */
             if (empty($job->getCountry()) && $feed->getDefaultCountry()) {
                 $job->setCountry($feed->getDefaultCountry());
@@ -70,51 +72,61 @@ class XmlParser
 
             /* Loop through part of xml and call Job methods for hydration */
             foreach ($mapperFields as $mapKey => $mapItem) {
-                $value = $xmlItem[ $mapItem ];
-
-                if (!empty($mapperFields[ $mapKey ])) {
-                    $method = 'set' . ucfirst($mapKey);
-                    if (method_exists($job, $method)) {
-                        call_user_func([$job, $method], $value);
-                    } else {
-                        $job->{$mapKey} = $value;
+                if (isset($xmlItem[ $mapItem ])) {
+                    $value = $xmlItem[ $mapItem ];
+                    if (!empty($mapperFields[ $mapKey ])) {
+                        $method = 'set' . ucfirst($mapKey);
+                        if (method_exists($job, $method)) {
+                            call_user_func([$job, $method], $value);
+                        } else {
+                            $job->{$mapKey} = $value;
+                        }
                     }
                 }
             }
 
-            $category = $job->getCategoryString();
-            $categories = $this->em->getRepository('App:Category')->findCategoryByKeyword($category);
-            if ($categories == null) {
-                if (!in_array($category, $this->specialtiesToAdd)) {
-                    $this->specialtiesToAdd[] = $category;
-                }
-            } else {
-                $job->setCategoriesCollection(new ArrayCollection($categories));
-            }
-
             $discipline = $job->getDiscipline();
-            $disciplineEntity = $this->em->getRepository('App:Discipline')->findDisciplineByKeyword($discipline);
-
-            if ($disciplineEntity == null) {
-                if (!in_array($discipline, $this->disciplinesToAdd)) {
-                    $this->disciplinesToAdd[] = $discipline;
+            $category = $job->getCategoryString();
+            if ($discipline && $category) {
+                $disciplineEntity = $this->em->getRepository('App:Discipline')->findDisciplineByKeyword($discipline);
+                if ($disciplineEntity != null) {
+                    $job->setDiscipline($disciplineEntity);
+                } else {
+                    if (!in_array($discipline, $this->disciplinesToAdd)) {
+                        $this->disciplinesToAdd[] = $discipline;
+                    }
                 }
-            } else {
-                $job->setDiscipline($disciplineEntity);
-                $this->em->persist($job);
-                $this->em->flush();
-            }
 
+                $categoriesEntities = $this->em->getRepository('App:Category')->findCategoryByKeyword($category);
+                if ($categoriesEntities) {
+                    $job->setCategoriesCollection(new ArrayCollection($categoriesEntities));
+                } else {
+                    if (!in_array($categoriesEntities, $this->specialtiesToAdd)) {
+                        $this->specialtiesToAdd[] = $category;
+                    }
+                }
+
+                if ($disciplineEntity && $categoriesEntities) {
+                    $this->em->persist($job);
+                    $this->em->flush();
+                    $this->importedCounter++;
+                }
+            }
             /* Prepare next loop */
             $this->xmlReader->next($xmlRootElement);
             unset($xmlItem); // Clean Memory and iterate counter
-            $this->counter++;
+            $this->totalCounter++;
         }
     }
 
-    public function getCounter()
+    public function getImportedCounter()
     {
-        return $this->counter;
+        return $this->importedCounter;
+    }
+
+    public function getTotalCounter()
+    {
+        return $this->totalCounter;
     }
 
     public function getSpecialtiesToAdd()

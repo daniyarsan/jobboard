@@ -23,9 +23,7 @@
                         <div class="ad-info">
                             <div class="row">
                                 <div class="col-md-10">
-                                    <span>
-                                        <a href="#" class="title">{{ job.title }}</a>
-                                    </span>
+                                    <h2>{{ job.title }}</h2>
                                     <div class="ad-meta">
                                         <ul>
                                             <li><i class="fa fa-calendar" aria-hidden="true"></i> {{ date( job.created|date ).diff( date() ).format('%a') }} {{ 'day ago' | trans }}</li>
@@ -34,7 +32,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <div class="button">
-                                        <a href="{{ path('application_job', {'id' : job.id}) }}" class="btn btn-primary btn-block" > {{ 'Apply Now' | trans }}</a>
+                                        <a href="{{ path('application_job', {'id' : job.id}) }}" class="btn btn-primary btn-block"> {{ 'Apply Now' | trans }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -55,21 +53,26 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <ul>
-                                                <li><span class="icon"><i class="fa fa-hashtag" aria-hidden="true"></i></span> {{ job.refId }}</li>
+                                                {% if job.refId %}
+                                                    <li><span class="icon"><i class="fa fa-crosshairs" aria-hidden="true"></i></span> {{ job.refId }}</li>
+                                                {% endif %}
                                                 <li><span class="icon"><i class="fa fa-user-md" aria-hidden="true"></i></span> {{ job.discipline }}</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <ul>
                                                 <li><span class="icon"><i class="fa fa-map-marker" aria-hidden="true"></i></span> {{ job.locationString }}</li>
                                                 {% if job.categories|join(', ') != null %}
                                                     <li><span class="icon"><i class="fa fa-stethoscope" aria-hidden="true"></i></span> {{ job.categories|join(', ') }}</li>
                                                 {% endif %}
                                             </ul>
                                         </div>
-                                        <div class="col-md-6">
-                                            <ul>
-                                                {% for field in job.extraFields %}
-                                                    <li><span class="icon"><i class="fa fa-tags" aria-hidden="true"></i></span> {{ field }}</li>
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
+
+                                        {% for key, field in job.extraFields %}
+                                            <div class="col-md-6">
+                                                <span class="icon">{{ key }}</span> : {{ field }}
+                                            </div>
+                                        {% endfor %}
                                     </div>
 
                                 </div>
@@ -77,7 +80,7 @@
                                 <div class="job-description-section description-info">
                                     <h2>{{ 'About Job' | trans }} </h2>
 
-                                    {{ job.description }}
+                                    {{ job.description|raw }}
                                 </div>
                             </div>
                         </div>
