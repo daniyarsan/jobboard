@@ -7,3 +7,4 @@
 /public/uploads/
 /templ/
 /.htaccess
+.env.local
