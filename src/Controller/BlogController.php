@@ -15,7 +15,7 @@ class BlogController extends AbstractController
 {
     /**
      * @Route("/blog", name="blog")
-     * @Template("blog/index.html.twig")
+     * @Template("frontend/blog/index.html.twig")
      */
     public function index(Request $request, Session $session, PaginatorInterface $paginator)
     {
@@ -51,7 +51,7 @@ class BlogController extends AbstractController
     /**
      * @Route("/blog/{slug}", name="blog_details", requirements={"id": "\d+"})
      * @ParamConverter("blog", class="App\Entity\Blog")
-     * @Template("blog/details.html.twig")
+     * @Template("frontend/blog/details.html.twig")
      */
     public function blogDetails(Request $request, Blog $blog)
     {

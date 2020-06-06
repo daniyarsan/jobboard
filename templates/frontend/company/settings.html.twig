@@ -52,7 +52,7 @@
                         <fieldset>
                             <div class="section express-yourself">
                                 <h4>{{ 'Profile Details' | trans }}</h4>
-                                {{ form_row(form.logo, { 'attr': {'data-default-file': assetFinder.logoPath(app.user.company.logoName) ?? asset('frontend/images/no-company.png')} }) }}
+                                {{ form_row(form.logo, { 'attr': {'data-default-file': app.user.company.logoName ? assetFinder.logoPath(app.user.company.logoName) : asset('frontend/images/no-company.png')} }) }}
                                 {{ form(form) }}
                             </div><!-- postdetails -->
 

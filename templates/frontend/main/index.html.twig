@@ -56,11 +56,11 @@
                     <div class="col-md-4">
                         <div class="single-cta">
                             <div class="cta-icon icon-jobs">
-                                <img src="images/icon/31.png" alt="Icon" class="img-fluid">
+                                <img src="{{ asset('frontend/images/icon/31.png') }}" alt="Icon" class="img-fluid">
                             </div><!-- cta-icon -->
                             <h3>{{ totalJobsCount }}</h3>
                             <h4>{{ 'Live Jobs' | trans }}</h4>
-                            <p>All states are included</p>
+                            <p>{{ 'All agencies are included' | trans }}</p>
                         </div>
                     </div><!-- single-cta -->
 
@@ -68,22 +68,22 @@
                         <div class="single-cta">
                             <!-- cta-icon -->
                             <div class="cta-icon icon-company">
-                                <img src="images/icon/32.png" alt="Icon" class="img-fluid">
+                                <img src="{{ asset('frontend/images/icon/32.png') }}" alt="Icon" class="img-fluid">
                             </div><!-- cta-icon -->
-                            <h3>20</h3>
+                            <h3>{{ totalAgenciesCount }}</h3>
                             <h4>{{ 'Agencies' | trans }}</h4>
-                            <p>Unlimited opportunities</p>
+                            <p>{{ 'Throughout US' | trans }}</p>
                         </div>
                     </div><!-- single-cta -->
 
                     <div class="col-md-4">
                         <div class="single-cta">
                             <div class="cta-icon icon-candidate">
-                                <img src="images/icon/33.png" alt="Icon" class="img-fluid">
+                                <img src="{{ asset('frontend/images/icon/33.png') }}" alt="Icon" class="img-fluid">
                             </div><!-- cta-icon -->
-                            <h3>123, 000</h3>
-                            <h4>Successful Travelers</h4>
-                            <p>Next step its up to you. Go and Apply</p>
+                            <h3>{{ totalAppliedCount }}</h3>
+                            <h4>{{ 'Successful Travelers' | trans }}</h4>
+                            <p>Join our community of successful Travelers</p>
                         </div>
                     </div><!-- single-cta -->
                 </div><!-- row -->

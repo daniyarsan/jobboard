@@ -106,4 +106,12 @@ class CompanyRepository extends ServiceEntityRepository
 
         return false;
     }
+
+    public function getTotal()
+    {
+        return $this->createQueryBuilder('c')
+            ->select('count(c)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

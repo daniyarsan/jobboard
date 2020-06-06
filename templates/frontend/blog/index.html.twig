@@ -1,55 +1,78 @@
-{% extends 'base-index.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block title %}{% endblock %}
+{% set pageTitle = 'Latest News'|trans %}
+
+{% block title %}{{ pageTitle }}{% endblock %}
 
 {% block body %}
-    <!-- Breadcrumb -->
-    <div class="alice-bg padding-top-70 padding-bottom-70">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="breadcrumb-area">
-                        <h1>Blogs</h1>
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Blog List</li>
-                            </ol>
-                        </nav>
+    <section class=" job-bg ad-details-page">
+        <div class="container-fluid">
+            <div class="breadcrumb-section">
+                {{ breadcrumbs.display('frontend/_parts/breadcrumbs.html.twig', {
+                    'frontend_main_index' : 'Home' | trans
+                } ) }}
+                <h2 class="title">{{ pageTitle }}</h2>
+            </div>
+
+            <div class="job-postdetails">
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="section workshop-traning">
+                            <div class="row">
+                                {% for blog in blogs %}
+                                    <div class="col-md-6">
+                                        <div class="workshop">
+                                            {% if blog.imageName is defined %}
+                                                <img src="{{ assetFinder.getBlogsPath(blog.imageName) }}" alt="Image" class="img-fluid">
+                                            {% endif %}
+                                            <h3><a href="{{ path('blog_details', {'slug': blog.slug}) }}">{{ blog.title }}</a></h3>
+
+                                            <div class="workshop-price">
+                                                <p>{{ blog.content|striptags("&nbsp;&gt;")|truncate(200, '...')|raw }}</p>
+                                            </div>
+                                            <div class="ad-meta">
+                                                <div class="meta-content">
+                                                    <span class="dated"><a href="#">{{ blog.created|date("j. F Y")  }}</a></span>
+                                                </div>
+                                                <div class="user-option pull-right">
+                                                    <a href="#"><i class="fa fa-map-marker"></i> </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="alert alert-danger">{{ 'No blogs available in system' | trans }}</div>
+                                {% endfor %}
+                            </div>
+
+
+
+                            {{ knp_pagination_render(blogs, '_parts/paginator.html.twig') }}
+                        </div>
                     </div>
+
+                    <div class="col-lg-3">
+                        <div class="section quick-rules">
+                            <h4>Quick rules</h4>
+                            <p class="lead">Posting an ad on <a href="#">jobs.com</a> is free! However, all ads must follow our rules:</p>
+
+                            <ul>
+                                <li>Make sure you post in the correct category.</li>
+                                <li>Do not post the same ad more than once or repost an ad within 48 hours.</li>
+                                <li>Do not upload pictures with watermarks.</li>
+                                <li>Do not post ads containing multiple items unless it's a package deal.</li>
+                                <li>Do not put your email or phone numbers in the title or description.</li>
+                                <li>Make sure you post in the correct category.</li>
+                                <li>Do not post the same ad more than once or repost an ad within 48 hours.</li>
+                                <li>Do not upload pictures with watermarks.</li>
+                                <li>Do not post ads containing multiple items unless it's a package deal.</li>
+                            </ul>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Breadcrumb End -->
+    </section>
 
-    <div class="alice-bg section-padding-bottom">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="blog-post-wrapper">
-                        {% for blog in blogs %}
-                            <article class="blog-list">
-                                <div class="info">
-                                    <span class="date">{{ blog.created|date("j. F Y")  }}</span>
-                                    <span class="comments"><i data-feather="eye"></i>0</span>
-                                </div>
-                                <div class="content">
-                                    <h3><a href="{{ path('blog_details', {'slug': blog.slug}) }}">{{ blog.title }}</a></h3>
-                                    <p>{{ blog.content|striptags("&nbsp;&gt;")|truncate(200, '...')|raw }}</p>
-                                </div>
-                                <div class="read-more">
-                                    <a href="{{ path('blog_details', {'slug': blog.slug}) }}" class="button">Read More</a>
-                                </div>
-                            </article>
-                        {% else %}
-                            <div class="alert alert-danger">No blogs</div>
-                        {% endfor %}
-
-                        {{ knp_pagination_render(blogs, '_parts/paginator.html.twig') }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 {% endblock %}

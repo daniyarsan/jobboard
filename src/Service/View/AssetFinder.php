@@ -12,6 +12,7 @@ class AssetFinder
     public const RESUMES_DIR = '/resume';
     public const LOGOS_DIR = '/logo';
     public const AVATARS_DIR = '/avatar';
+    public const BLOGS_DIR = '/blog';
 
     public function getAvatarPath(string $fileName): string
     {
@@ -26,6 +27,11 @@ class AssetFinder
     public function getImagePath(string $fileName): string
     {
         return self::UPLOADS_DIR  . self::AVATARS_DIR . '/' . $fileName;
+    }
+
+    public function getBlogsPath(string $fileName): string
+    {
+        return self::UPLOADS_DIR  . self::BLOGS_DIR . '/' . $fileName;
     }
 
     public function getResumesPath(string $fileName)

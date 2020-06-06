@@ -6,6 +6,7 @@ use App\Entity\Profile;
 use App\Entity\User;
 use App\Form\CandidateType;
 use App\Repository\CategoryRepository;
+use App\Repository\CompanyRepository;
 use App\Repository\DisciplineRepository;
 use App\Repository\JobRepository;
 use App\Service\FileManager;
@@ -29,10 +30,12 @@ class FrontendController extends AbstractController
      */
     public function index(
         DisciplineRepository $disciplineRepository,
-        JobRepository $jobRepository)
+        JobRepository $jobRepository,
+        CompanyRepository $companyRepository)
     {
         $recentJobs = $jobRepository->findBy([],['id'=>'DESC'],10,0);
         $totalJobsCount = $jobRepository->getTotal();
+        $totalAgenciesCount = $companyRepository->getTotal();
 
         $disciplines = $jobRepository->findForHomepage();
 //        shuffle($disciplines);
@@ -40,7 +43,9 @@ class FrontendController extends AbstractController
         return [
             'disciplines' => array_slice($disciplines, 0, 12),
             'recentJobs' => $recentJobs,
-            'totalJobsCount' => $totalJobsCount
+            'totalJobsCount' => $totalJobsCount,
+            'totalAgenciesCount' => $totalAgenciesCount,
+            'totalAppliedCount' => 79189
         ];
     }
 

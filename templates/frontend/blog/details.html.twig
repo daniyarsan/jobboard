@@ -1,267 +1,38 @@
-{% extends 'base-index.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block title %}{% endblock %}
+{% block title %}{{ blog.title }}{% endblock %}
 
 {% block body %}
-    <!-- Breadcrumb -->
-    <div class="alice-bg padding-top-70 padding-bottom-70">
+    <section class="job-bg ad-details-page">
         <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="breadcrumb-area">
-                        <h1>{{ blog.title }}</h1>
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{ path('frontend_main_index') }}">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><a href="{{ path('blog') }}">Blog List</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">{{ blog.title }}</li>
-                            </ol>
-                        </nav>
-                    </div>
-                </div>
+            <div class="breadcrumb-section">
+                {{ breadcrumbs.display('frontend/_parts/breadcrumbs.html.twig', {
+                    'frontend_main_index' : 'Home' | trans
+                } ) }}
+                <h2 class="title">{{ blog.title }}</h2>
             </div>
-        </div>
-    </div>
-    <!-- Breadcrumb End -->
 
-    <div class="alice-bg padding-top-60 section-padding-bottom">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="blog-post-details-container">
-                        <div class="blog-details-wrapper">
-                            <div class="info">
-                                <span class="date">{{ blog.created|date("j. F Y")  }}</span>
-                                <span class="comments"><i data-feather="eye"></i>42</span>
+            <div class="resume-content">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="career-objective section">
+                            <div class="icons">
+                                <i class="fa fa-black-tie" aria-hidden="true"></i>
                             </div>
-                            <div class="post-content">
-                                <h2>{{ blog.title }}</h2>
-                                <img src="{{ vich_uploader_asset(blog, 'image') }}" class="img-fluid" alt="">
-                                {{ blog.content | raw }}
+                            <div class="blog-info">
+                                <h3>{{ blog.title }}</h3>
+                                <div class="blog-image text-center">
+                                    {% if blog.imageName is defined %}
+                                        <img src="{{ assetFinder.getBlogsPath(blog.imageName) }}" alt="Image" class="img-fluid">
+                                    {% endif %}
+                                </div>
+                                <p>{{ blog.content | raw }}</p>
                             </div>
                         </div>
-
-
-                        {#<div class="post-comment-block">#}
-                            {#<div class="comment-respond">#}
-                                {#<h4>Write A Comment</h4>#}
-                                {#<form action="#">#}
-                                    {#<div class="row">#}
-                                        {#<div class="col-md-6">#}
-                                            {#<div class="form-group">#}
-                                                {#<input type="text" placeholder="Name" class="form-control">#}
-                                            {#</div>#}
-                                        {#</div>#}
-                                        {#<div class="col-md-6">#}
-                                            {#<div class="form-group">#}
-                                                {#<input type="email" placeholder="Email address" class="form-control">#}
-                                            {#</div>#}
-                                        {#</div>#}
-                                    {#</div>#}
-                                    {#<div class="row">#}
-                                        {#<div class="col-md-12">#}
-                                            {#<div class="form-group">#}
-                                                {#<textarea placeholder="Comment" class="form-control"></textarea>#}
-                                            {#</div>#}
-                                            {#<div class="form-group">#}
-                                                {#<input class="custom-radio" type="checkbox" id="radio-4" name="termsandcondition">#}
-                                                {#<label for="radio-4">#}
-                                                    {#<span class="dot"></span> Notify me of follow-up comments by email.#}
-                                                {#</label>#}
-                                            {#</div>#}
-                                        {#</div>#}
-                                    {#</div>#}
-                                    {#<button class="button primary-bg">Submit</button>#}
-                                {#</form>#}
-                            {#</div>#}
-                            {#<div class="comment-area">#}
-                                {#<h4>5 Comments</h4>#}
-                                {#<ul class="comments">#}
-                                    {#<li class="comment">#}
-                                        {#<div class="comment-wrap">#}
-                                            {#<div class="comment-info">#}
-                                                {#<div class="commenter-thumb">#}
-                                                    {#<img src="images/blog/2.jpg" class="img-fluid" alt="">#}
-                                                {#</div>#}
-                                                {#<div class="commenter-info">#}
-                                                    {#<span class="commenter-name">Lisa Parsons</span>#}
-                                                    {#<span class="date">28 Dec 2019</span>#}
-                                                {#</div>#}
-                                                {#<div class="reply">#}
-                                                    {#<button type="button" class="reply-button" data-toggle="modal" data-target="#modal-skill25">Reply</button>#}
-                                                    {#<div class="modal fade" id="modal-skill25" tabindex="-1" role="dialog" aria-hidden="true">#}
-                                                        {#<div class="modal-dialog" role="document">#}
-                                                            {#<div class="modal-content">#}
-                                                                {#<div class="modal-body">#}
-                                                                    {#<div class="comment-respond">#}
-                                                                        {#<h4>Write A Comment</h4>#}
-                                                                        {#<form action="#">#}
-                                                                            {#<div class="row">#}
-                                                                                {#<div class="col-md-6">#}
-                                                                                    {#<div class="form-group">#}
-                                                                                        {#<input type="text" placeholder="Name" class="form-control">#}
-                                                                                    {#</div>#}
-                                                                                {#</div>#}
-                                                                                {#<div class="col-md-6">#}
-                                                                                    {#<div class="form-group">#}
-                                                                                        {#<input type="email" placeholder="Email address" class="form-control">#}
-                                                                                    {#</div>#}
-                                                                                {#</div>#}
-                                                                            {#</div>#}
-                                                                            {#<div class="row">#}
-                                                                                {#<div class="col-md-12">#}
-                                                                                    {#<div class="form-group">#}
-                                                                                        {#<textarea placeholder="Comment" class="form-control"></textarea>#}
-                                                                                    {#</div>#}
-                                                                                    {#<div class="form-group">#}
-                                                                                        {#<input class="custom-radio" type="checkbox" id="radio-6" name="termsandcondition2">#}
-                                                                                        {#<label for="radio-6">#}
-                                                                                            {#<span class="dot"></span> Notify me of follow-up comments by email.#}
-                                                                                        {#</label>#}
-                                                                                    {#</div>#}
-                                                                                {#</div>#}
-                                                                            {#</div>#}
-                                                                            {#<button class="button primary-bg">Submit</button>#}
-                                                                        {#</form>#}
-                                                                    {#</div>#}
-                                                                {#</div>#}
-                                                            {#</div>#}
-                                                        {#</div>#}
-                                                    {#</div>#}
-                                                {#</div>#}
-                                            {#</div>#}
-                                            {#<div class="comment-body">#}
-                                                {#<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>#}
-                                            {#</div>#}
-                                        {#</div>#}
-                                        {#<ul class="comments child-comment">#}
-                                            {#<li class="comment">#}
-                                                {#<div class="comment-wrap">#}
-                                                    {#<div class="comment-info">#}
-                                                        {#<div class="commenter-thumb">#}
-                                                            {#<img src="images/blog/3.jpg" class="img-fluid" alt="">#}
-                                                        {#</div>#}
-                                                        {#<div class="commenter-info">#}
-                                                            {#<span class="commenter-name">Ethel N. Myers</span>#}
-                                                            {#<span class="date">28 Dec 2019</span>#}
-                                                        {#</div>#}
-                                                        {#<div class="reply">#}
-                                                            {#<button type="button" class="reply-button" data-toggle="modal" data-target="#modal-skill26">Reply</button>#}
-                                                            {#<div class="modal fade" id="modal-skill26" tabindex="-1" role="dialog" aria-hidden="true">#}
-                                                                {#<div class="modal-dialog" role="document">#}
-                                                                    {#<div class="modal-content">#}
-                                                                        {#<div class="modal-body">#}
-                                                                            {#<div class="comment-respond">#}
-                                                                                {#<h4>Write A Comment</h4>#}
-                                                                                {#<form action="#">#}
-                                                                                    {#<div class="row">#}
-                                                                                        {#<div class="col-md-6">#}
-                                                                                            {#<div class="form-group">#}
-                                                                                                {#<input type="text" placeholder="Name" class="form-control">#}
-                                                                                            {#</div>#}
-                                                                                        {#</div>#}
-                                                                                        {#<div class="col-md-6">#}
-                                                                                            {#<div class="form-group">#}
-                                                                                                {#<input type="email" placeholder="Email address" class="form-control">#}
-                                                                                            {#</div>#}
-                                                                                        {#</div>#}
-                                                                                    {#</div>#}
-                                                                                    {#<div class="row">#}
-                                                                                        {#<div class="col-md-12">#}
-                                                                                            {#<div class="form-group">#}
-                                                                                                {#<textarea placeholder="Comment" class="form-control"></textarea>#}
-                                                                                            {#</div>#}
-                                                                                            {#<div class="form-group">#}
-                                                                                                {#<input class="custom-radio" type="checkbox" id="radio-7" name="termsandcondition3">#}
-                                                                                                {#<label for="radio-7">#}
-                                                                                                    {#<span class="dot"></span> Notify me of follow-up comments by email.#}
-                                                                                                {#</label>#}
-                                                                                            {#</div>#}
-                                                                                        {#</div>#}
-                                                                                    {#</div>#}
-                                                                                    {#<button class="button primary-bg">Submit</button>#}
-                                                                                {#</form>#}
-                                                                            {#</div>#}
-                                                                        {#</div>#}
-                                                                    {#</div>#}
-                                                                {#</div>#}
-                                                            {#</div>#}
-                                                        {#</div>#}
-                                                    {#</div>#}
-                                                    {#<div class="comment-body">#}
-                                                        {#<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>#}
-                                                    {#</div>#}
-                                                {#</div>#}
-                                            {#</li>#}
-                                        {#</ul>#}
-                                    {#</li>#}
-                                    {#<li class="comment">#}
-                                        {#<div class="comment-wrap">#}
-                                            {#<div class="comment-info">#}
-                                                {#<div class="commenter-thumb">#}
-                                                    {#<img src="images/blog/1.jpg" class="img-fluid" alt="">#}
-                                                {#</div>#}
-                                                {#<div class="commenter-info">#}
-                                                    {#<span class="commenter-name">Rovert Carlos</span>#}
-                                                    {#<span class="date">28 Dec 2019</span>#}
-                                                {#</div>#}
-                                                {#<div class="reply">#}
-                                                    {#<button type="button" class="reply-button" data-toggle="modal" data-target="#modal-skill27">Reply</button>#}
-                                                    {#<div class="modal fade" id="modal-skill27" tabindex="-1" role="dialog" aria-hidden="true">#}
-                                                        {#<div class="modal-dialog" role="document">#}
-                                                            {#<div class="modal-content">#}
-                                                                {#<div class="modal-body">#}
-                                                                    {#<div class="comment-respond">#}
-                                                                        {#<h4>Write A Comment</h4>#}
-                                                                        {#<form action="#">#}
-                                                                            {#<div class="row">#}
-                                                                                {#<div class="col-md-6">#}
-                                                                                    {#<div class="form-group">#}
-                                                                                        {#<input type="text" placeholder="Name" class="form-control">#}
-                                                                                    {#</div>#}
-                                                                                {#</div>#}
-                                                                                {#<div class="col-md-6">#}
-                                                                                    {#<div class="form-group">#}
-                                                                                        {#<input type="email" placeholder="Email address" class="form-control">#}
-                                                                                    {#</div>#}
-                                                                                {#</div>#}
-                                                                            {#</div>#}
-                                                                            {#<div class="row">#}
-                                                                                {#<div class="col-md-12">#}
-                                                                                    {#<div class="form-group">#}
-                                                                                        {#<textarea placeholder="Comment" class="form-control"></textarea>#}
-                                                                                    {#</div>#}
-                                                                                    {#<div class="form-group">#}
-                                                                                        {#<input class="custom-radio" type="checkbox" id="radio-8" name="termsandcondition8">#}
-                                                                                        {#<label for="radio-8">#}
-                                                                                            {#<span class="dot"></span> Notify me of follow-up comments by email.#}
-                                                                                        {#</label>#}
-                                                                                    {#</div>#}
-                                                                                {#</div>#}
-                                                                            {#</div>#}
-                                                                            {#<button class="button primary-bg">Submit</button>#}
-                                                                        {#</form>#}
-                                                                    {#</div>#}
-                                                                {#</div>#}
-                                                            {#</div>#}
-                                                        {#</div>#}
-                                                    {#</div>#}
-                                                {#</div>#}
-                                            {#</div>#}
-                                            {#<div class="comment-body">#}
-                                                {#<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>#}
-                                            {#</div>#}
-                                        {#</div>#}
-                                    {#</li>#}
-                                {#</ul>#}
-                                {#<div class="view-all">#}
-                                    {#<a href="#">View all comments</a>#}
-                                {#</div>#}
-                            {#</div>#}
-                        {#</div>#}
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
 {% endblock %}

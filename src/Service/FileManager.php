@@ -17,13 +17,6 @@ class FileManager
         $this->settings = $parameterBag;
     }
 
-    /**
-     * Returns content by path
-     * @param string $path
-     * @return string
-     * @throws FileNotFoundException
-     */
-
     public function getFileContent(string $path)
     {
         if (!file_exists($path)) {
@@ -39,23 +32,11 @@ class FileManager
         return $content;
     }
 
-    /**
-     * Checkes if directory exists
-     * @param $dir
-     * @return bool
-     */
     public function dirCheck($dir)
     {
         return !is_dir($dir) ? false : true;
     }
 
-    /**
-     * Scan directory and get files of particular extension. If no extension - returns all files.
-     *
-     * @param $dir
-     * @param bool $ext
-     * @return array
-     */
     public function getFilesInDirByExtension($dir, $extension = false)
     {
         $ext = '';
@@ -65,40 +46,29 @@ class FileManager
         return glob($dir . '/[!~]*' . $ext);
     }
 
-    /**
-     * Uploads file to defined path
-     *
-     * @param UploadedFile $file
-     * @param $path
-     * @return string
-     */
-    public function uploadLogo(UploadedFile $file)
+    public function upload(UploadedFile $file, $dir)
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
         $fileName = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
 
         try {
-            $file->move($this->settings->get('logos_dir'), $fileName);
+            $file->move($dir, $fileName);
         } catch (FileException $e) {
             throw new FileException('File cant be uploaded');
         }
 
         return $fileName;
+    }
+
+    public function uploadLogo(UploadedFile $file)
+    {
+        return $this->upload($file, $this->settings->get('logos_dir'));
     }
 
     public function uploadResume(UploadedFile $file)
     {
-        $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-        $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-        $fileName = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
-
-        try {
-            $file->move($this->settings->get('resumes_dir'), $fileName);
-        } catch (FileException $e) {
-            throw new FileException('File cant be uploaded');
-        }
-
-        return $fileName;
+        return $this->upload($file, $this->settings->get('resumes_dir'));
     }
+
 }
